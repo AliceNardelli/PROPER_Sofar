@@ -10,6 +10,9 @@ import time
 import almath
 import random 
 
+
+
+
 def find_free(session):
 	nv=session.service("ALNavigation")
 	desiredRadius = 0.6
@@ -56,12 +59,8 @@ def main2(session):
     print(motion_service.getMoveConfig("Min"))
     print(motion_service.getMoveConfig("Max"))
     # Defined a limp walk{MaxVelXY, MaxVelTheta, MaxAccXY, MaxAccTheta, MaxJerkXY, MaxJerkTheta, TorsoWy}
-    try:
-        motion_service.move(X, Y, Theta,[["MaxVelXY", 1],["MaxVelTheta", 0.2]])
-    except Exception, errorMsg:
-        print str(errorMsg)
-        print "This example is not allowed on this robot."
-        exit()
+    motion_service.move(X, Y, Theta,[["MaxVelXY", 1],["MaxVelTheta", 0.2]])
+   
 
     time.sleep(4.0)
 
@@ -89,6 +88,5 @@ if __name__ == "__main__":
                "Please check your script arguments. Run with -h option for help.")
         sys.exit(1)
         
-    
     main2(session)
    
