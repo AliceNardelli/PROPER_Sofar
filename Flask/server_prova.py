@@ -17,6 +17,10 @@ data_action = {
     "action": "Plan",
 }
 
+data_params = {
+    "param": "Plan",
+}
+
 model = AutoModelForSequenceClassification.from_pretrained("/home/alice/prams_model", num_labels=21, problem_type="multi_label_classification") 
 tokenizer=AutoTokenizer.from_pretrained("/home/alice/prams_model", problem_type="multi_label_classification")
 app = Flask(__name__)
@@ -28,8 +32,9 @@ def get_params():
     # Get the updated data from the request
     updated_data = request.get_json()
     data_action.update(updated_data)
-    print(data_action["action"])
-    text = "Extrovert" + tokenizer.sep_token + data_action["action"]
+    
+    text = data_action["personality"] + tokenizer.sep_token + data_action["action"]
+    print(text)
     encoding = tokenizer(text, return_tensors="pt")
     encoding = {k: v.to("cpu") for k,v in encoding.items()}
     outputs = model(**encoding)
@@ -38,8 +43,9 @@ def get_params():
     probs = sigmoid(logits.squeeze().cpu())
     predictions = np.zeros(probs.shape)
     predictions[np.where(probs >= 0.5)] = 1
-    print(predictions)
-    return jsonify(data)
+    print(list(predictions))
+    data_params["param"]=list(predictions)
+    return jsonify(data_params)
 
 
 @app.route ('/planner_launch', methods = ['PUT'] )
@@ -50,7 +56,7 @@ def update_data():
     print(updated_data)
     # Update the existing data with the updated data
     data.update(updated_data)
-    planner_path = "/home/alice/downward/"
+    planner_path = "/home/alice/PROPER_Sofar/downward/"
     os.chdir (planner_path)
     #shutil.copyfile(mydir+'/domain.pddl', planner_path+"/domain.pddl")
     #shutil.copyfile(mydir+'/problem.pddl', planner_path+"/problem.pddl")
