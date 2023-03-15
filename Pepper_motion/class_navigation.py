@@ -16,6 +16,7 @@ class Move:
         print("moving from ",self.initial_loc," to ",self.final_loc )
         navigation_service = self.session.service("ALNavigation")
         navigation_service.startFreeZoneUpdate()
+        navigation_service.setOrthogonalSecurityDistance(1)
         motion_service=self.session.service("ALMotion")
         if self.parameters["speed"]=="low":
             speed=0.5

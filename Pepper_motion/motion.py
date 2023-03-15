@@ -24,7 +24,7 @@ def main(session):
     posture_service.goToPosture("Crouch", 1.0)
     posture_service.goToPosture("Sit", 1.0)
 
-    print posture_service.getPostureFamily()
+    print(posture_service.getPostureFamily())
 
 
 def animation(session):
@@ -58,7 +58,16 @@ def extroversion(session):
     time.sleep(1)
     
 
-
+def motion(session):
+    m=session.service("ALMotion")
+    time.sleep(2)
+    #"ShoulderPitch","ShoulderRoll","ElbowYaw","ElbowRoll","WristYaw","Hand" L o R davanti
+    #m.angleInterpolationWithSpeed(name,target angles (rad), max speed frac)
+    frac_speed=0.6
+    angle=0.1
+    m.angleInterpolationWithSpeed(["RShoulderPitch"],[angle],frac_speed)
+    time.sleep(2)
+    
 
 
 if __name__ == "__main__":
@@ -79,8 +88,9 @@ if __name__ == "__main__":
         
     
     #baseline(session) 
-    extroversion(session)
-    introversion(session)
+    #extroversion(session)
+    #introversion(session)
     #animation(session)
     #main(session)
+    motion(session)
 
