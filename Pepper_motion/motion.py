@@ -7,6 +7,7 @@ import qi
 import argparse
 import sys
 import time
+from head_movement import *
 
 def main(session):
     """
@@ -67,6 +68,15 @@ def motion(session):
     angle=0.1
     m.angleInterpolationWithSpeed(["RShoulderPitch"],[angle],frac_speed)
     time.sleep(2)
+
+def say_head(session):
+    tts = session.service("ALTextToSpeech")
+    speak_move_service = session.service("ALSpeakingMovement")
+    tts.setLanguage("Italian") 
+    anim_speech_service = session.service("ALAnimatedSpeech") 
+    anim_speech_service.say("Provo a muovere la testa contemporaneamente al parlato")
+    big_shaking(session)
+
     
 
 
