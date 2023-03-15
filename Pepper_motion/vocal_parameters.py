@@ -8,9 +8,7 @@ import argparse
 import sys
 import time
 
-
-	
-  
+ 
 def agreeableness(session):   
     tts = session.service("ALTextToSpeech")
     speak_move_service = session.service("ALSpeakingMovement")

@@ -39,7 +39,7 @@ gaze={
 }
 rev_gaze={str(v) : k for k,v in gaze.items()}
 head={
-    "no active":[0,0,0],
+    "no_active":[0,0,0],
     "tilt_down_shaking":[0,0,1],
     "tilt_up_shaking":[0,1,0],
     "nodding":[0,1,1],
@@ -93,16 +93,16 @@ parameters=["pitch","volume","velocity","gaze","head","amplitude","g_speed","spe
 def get_map(predictions):
     c=0
     result={p:[] for p in parameters}
+    
     for i in range(len(bit_map)):
         param=parameters[i]
-        print(param)
         no_bit=bit_map[i]
         bits=predictions[c:c+no_bit]
         c+=no_bit
         value=reversed[param][str(list([int(b) for b in bits]))]
-        print(value)
+        #print(param,bits,value)
         result[param]=value
-    print(result)
+    
     return result
 
 def extract_personality():
@@ -117,17 +117,14 @@ def server_interface():
         
 
 
-def get_params(p):
-    action=p.replace("\n","").replace("(","").replace(")","").replace("_"," ").replace('"','')
+def get_params(action):
     for o in objects:
         action=action.replace(o,"")
     dict["action"]=action
-    print(action)
     personality=extract_personality()
     dict["personality"]=personality
     resp=requests.put(url+'parameters', json=dict, headers=headers)
-    m=get_map(eval(resp.text)["param"])
-    print(m)
-    return eval(resp.text)["param"]
+    m=get_map(eval(resp.text)["param"])   
+    return eval(resp.text)["param"], m, personality
     
 

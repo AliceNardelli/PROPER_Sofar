@@ -10,14 +10,8 @@ from class_speak import Speak
 from class_gesture import Gesture
 from client_prova import *
 
-
-
-def speaking():
-    g=Speak()
-
-def navigation():
-   m=Move()
-   m.move()
+initial_location="l1"
+tower_location="l2"
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -37,8 +31,24 @@ if __name__ == "__main__":
         sys.exit(1)
         
     """
+    session="s"
+    n=Move(session)
+    s=Speak(session)
+    g=Gesture(session)
     plan, cost =server_interface()   
     for p in plan:
-        param =get_params(p)
-        navigation()
-   
+        action=p.replace("\n","").replace("(","").replace(")","").replace("_"," ").replace('"','')
+        param , mmap, personality =get_params(action)
+        if mmap["speed"]=="no_active" or mmap["prox"]=="no_active":
+                print(action,"action say")
+                s.speak(action,personality,mmap)
+                
+        if mmap["pitch"]=="no_active" and mmap["amplitude"]=="no_active" and mmap["head"]=="no_active":
+                print(action,"action nav")
+                n.move(action,personality,mmap)
+
+        if (mmap["speed"]=="no_active" or mmap["prox"]=="no_active") and (mmap["pitch"]=="no_active" or mmap["velocity"]=="no_active"):
+                print(action,"action  gesture")
+                g.gesture(action,personality,mmap)
+        
+    
