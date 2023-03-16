@@ -21,24 +21,24 @@ def stop_al(session):
 def single_head_nod(session,motion_service, move):
     names  = ["HeadYaw", "HeadPitch"]
     if move=="nodding":
-        angles  = [0, 0.2]
+        angles  = [0, 0.1]
     elif move=="shaking":
         print("one")
         angles =[0.4,0]
     else: #shaking down
-        angles = [0.4, 0.2]
+        angles = [0.4, 0.1]
     fractionMaxSpeed  = 0.1
     motion_service.setAngles(names, angles, fractionMaxSpeed)
     time.sleep(2)
     if move=="nodding":
-        angles  = [0, 0.2]
+        angles  = [0, -0.1]
     elif move=="shaking":
         angles =[-0.4,0]
         print("two")
     else:
-        angles=[-0.4,0.2]
+        angles=[-0.4,0.1]
     motion_service.setAngles(names, angles, fractionMaxSpeed)
-    time.sleep(1)
+    time.sleep(2)
     
 def nodding(session):
     #stop_al(session)
@@ -67,7 +67,7 @@ def single_move_head(session,motion_service,p,y,v):
     angles  = [y, p]
     fractionMaxSpeed  = v
     motion_service.setAngles(names, angles, fractionMaxSpeed)
-    time.sleep(1)
+    time.sleep(2)
        
 def shaking_low(session):
     motion_service  = session.service("ALMotion")
@@ -82,7 +82,7 @@ def tilt_down_shaking(session):
     motion_service  = session.service("ALMotion")
     motion_service.setStiffnesses("Head", 1.0)
     #stop_al(session)
-    for i in range(2):
+    for i in range(8):
        time.sleep(random.randint(0,3))
        single_head_nod(session,motion_service, "shaking down")
        #stop_al(session)
@@ -92,7 +92,7 @@ def tilt_up_shaking(session):
     motion_service  = session.service("ALMotion")
     motion_service.setStiffnesses("Head", 1.0)
     for i in range(3):
-       single_move_head(session,motion_service, -0.1, round(random.uniform(-0.5, +0.5), 2), 0.1)
+       single_move_head(session,motion_service, -0.1, round(random.uniform(-0.3, +0.3), 2), 0.1)
     motion_service.setStiffnesses("Head", 0.0)
 
 def big_shaking(session):
@@ -105,8 +105,26 @@ def big_shaking(session):
         angles  = [r1, r2]
         fractionMaxSpeed  = 0.2
         motion_service.setAngles(names, angles, fractionMaxSpeed)
-        time.sleep(random.randint(0,1))
+        time.sleep(random.randint(0,3))
     motion_service.setStiffnesses("Head", 0.0)
 
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ip", type=str, default="130.251.13.135",
+                        help="Robot IP address. On robot or Local Naoqi: use '130.251.13.132'.")
+    parser.add_argument("--port", type=int, default=9559,
+                        help="Naoqi port number")
 
-   
+    args = parser.parse_args()
+    session = qi.Session()
+    try:
+        session.connect("tcp://" + args.ip + ":" + str(args.port))
+    except RuntimeError:
+        print ("Can't connect to Naoqi at ip \"" + args.ip + "\" on port " + str(args.port) +".\n"
+               "Please check your script arguments. Run with -h option for help.")
+        sys.exit(1)
+        
+    
+    #big_shaking(session)
+    #tilt_up_shaking(session)
+    tilt_down_shaking(session)

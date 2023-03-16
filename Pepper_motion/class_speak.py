@@ -71,15 +71,15 @@ class Speak:
 
     def execute(self,a,anim_speech_service):
         if a=="say welcome":
-            anim_speech_service.say("Buongiorno Mi chiamo Pepper")
+            anim_speech_service.say("Buongiorno Mi chiamo Pepper, e ti chiedo di aiutarmi")
         elif a=="speak about rules":
-            anim_speech_service.say("Devi ordinare i cubetti")
+            anim_speech_service.say("Devi ordinare i cubetti per costruire una torre altissima")
         elif a=="ask to order tower":
             anim_speech_service.say("Metti quello rosso e poi quello blu")
         elif a=="talk":
             anim_speech_service.say("Ti piace la musica?")
         elif a=="say goodbye":
-            anim_speech_service.say("Arrivederci")
+            anim_speech_service.say("Arrivederci mi ha fatto piacere parlare con te")
         else:
            anim_speech_service.say("Non posso esegure azioni")
         time.sleep(3)
@@ -94,11 +94,13 @@ class Speak:
         tts = self.session.service("ALTextToSpeech")
         speak_move_service = self.session.service("ALSpeakingMovement")
         tts.setLanguage("Italian") 
-        tts.setVolume(self.volume[self.parameters["volume"]]) 
+        print(self.parameters)
         if self.set_pitch==False:
+            tts.setVolume(self.volume[self.parameters["volume"]]) 
             tts.setParameter("pitchShift",self.pitch[self.parameters["pitch"]])
-            self.set_pitch==True
-        tts.setParameter("speed",self.velocity[self.parameters["velocity"]])   
+            self.set_pitch=True
+            tts.setParameter("speed",self.velocity[self.parameters["velocity"]])  
+            time.sleep(2) 
         anim_speech_service = self.session.service("ALAnimatedSpeech") 
         print("params voice set")
         for a in self.action_say:
@@ -110,9 +112,7 @@ class Speak:
                 self.execute(a,anim_speech_service)
                 print('Waiting for the thread...')
                 thread.join()
-                
                 break
-        
         self.gaze(True)
 
     def speak(self,action,personality,params):

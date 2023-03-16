@@ -54,6 +54,8 @@ class Gesture:
         else:
             angle=[-0.2 ,-0.8,0,0,1.3]
         m.angleInterpolationWithSpeed(["RShoulderPitch","RShoulderRoll","RElbowYaw","RElbowRoll","RWristYaw"],angle,frac_speed)
-        time.sleep(2)
+        if self.parameters["amplitude"]=="mid":
+            m.openHand('RHand')
+        time.sleep(4)
         self.gaze(True)
         print(action)
