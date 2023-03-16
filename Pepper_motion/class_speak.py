@@ -1,5 +1,10 @@
 from head_movement import *
 import time 
+from time import sleep
+import threading
+
+
+
 class Speak:
 
     def __init__(self,session):
@@ -10,7 +15,7 @@ class Speak:
         self.parameters={}
         self.action_say=["say welcome","speak about rules", "ask to order tower","talk","say goodbye"]
         self.location=""
-
+        self.set_pitch=False
         self.pitch={"low":0.83,
                     "mid":0.95,
                     "high":1.1,
@@ -28,21 +33,30 @@ class Speak:
                         "high":110,
                         }
         
-        self.head={"tilt_down_shaking":tilt_down_shaking(self.session[0,0,1]),
-            "tilt_up_shaking":tilt_up_shaking(self.session),
-            "nodding":nodding(self.session),
-            "shaking_low":shaking_low(self.session),
-            "shaking":big_shaking(self.session),   
-        }
+    def task(self):
+        print(self.parameters["head"])
+        if self.parameters["head"]=="tilt_down_shaking":
+                tilt_down_shaking(self.session)
+        elif self.parameters["head"]=="tilt_up_shaking":
+                tilt_up_shaking(self.session)
+        elif self.parameters["head"]=="nodding":
+                nodding(self.session)
+        elif self.parameters["head"]=="shaking_low":
+                shaking_low(self.session)
+        elif  self.parameters["head"]=="shaking":
+                big_shaking(self.session)
+        else:
+                print("no head movement")
+        print("executing head motion")
 
     def gaze(self,boolean):
         al=self.session.service("ALAutonomousLife")
         if boolean:
             al.setState("interactive")
         else:
-            al.setState("disabled") #solitary
+            al.setState("solitary") #solitary
             al.stopAll()
-        ab=self.session.service("AutonomousBlinking")
+        ab=self.session.service("ALAutonomousBlinking")
         ab.setEnabled(boolean)
         abm=self.session.service("ALBackgroundMovement")
         abm.setEnabled(boolean)
@@ -72,23 +86,31 @@ class Speak:
 
         
     def set_params(self):
-        par={i:self.parameters[i] for i in self.parameters if self.parameters[i]!="no_active"}
-        self.parameters=par
+        #par={i:self.parameters[i] for i in self.parameters if self.parameters[i]!="no_active"}
+        
+        print(self.parameters)
         if self.parameters["gaze"]=="avoid":
-            self.gaze(False)
+            self.gaze(True)
         tts = self.session.service("ALTextToSpeech")
         speak_move_service = self.session.service("ALSpeakingMovement")
         tts.setLanguage("Italian") 
         tts.setVolume(self.volume[self.parameters["volume"]]) 
-        tts.setParameter("pitchShift",self.pitch[self.parameters["pitch"]])
+        if self.set_pitch==False:
+            tts.setParameter("pitchShift",self.pitch[self.parameters["pitch"]])
+            self.set_pitch==True
         tts.setParameter("speed",self.velocity[self.parameters["velocity"]])   
         anim_speech_service = self.session.service("ALAnimatedSpeech") 
         print("params voice set")
         for a in self.action_say:
             if a in self.action:
-                self.head[self.parameters["head"]]
-                print("executing head motion")
+                thread = threading.Thread(target=self.task)
+                # run the thread
+                thread.start()
+                # wait for the thread to finish
                 self.execute(a,anim_speech_service)
+                print('Waiting for the thread...')
+                thread.join()
+                
                 break
         
         self.gaze(True)

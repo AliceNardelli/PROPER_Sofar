@@ -61,12 +61,26 @@ def extroversion(session):
 
 def motion(session):
     m=session.service("ALMotion")
-    time.sleep(2)
+    
     #"ShoulderPitch","ShoulderRoll","ElbowYaw","ElbowRoll","WristYaw","Hand" L o R davanti
     #m.angleInterpolationWithSpeed(name,target angles (rad), max speed frac)
-    frac_speed=0.6
-    angle=0.1
-    m.angleInterpolationWithSpeed(["RShoulderPitch"],[angle],frac_speed)
+    
+    frac_speed=1
+    angle=[-0.2 ,-0.8,0,0,1.3]
+   
+    m.angleInterpolationWithSpeed(["RShoulderPitch","RShoulderRoll","RElbowYaw","RElbowRoll","RWristYaw"],angle,frac_speed) 
+    m.openHand('RHand')
+    time.sleep(6)
+    frac_speed=0.4
+    angle=[0.0 ,-0.8,0,0.5,1.3]
+    m.angleInterpolationWithSpeed(["RShoulderPitch","RShoulderRoll","RElbowYaw","RElbowRoll","RWristYaw"],angle,frac_speed)
+    
+    time.sleep(6)
+    
+    frac_speed=0.1
+    angle=[0.1,-1,0,0.7,1.3]
+    m.angleInterpolationWithSpeed(["RShoulderPitch","RShoulderRoll","RElbowYaw","RElbowRoll","RWristYaw"],angle,frac_speed)
+    
     time.sleep(2)
 
 def say_head(session):
@@ -74,15 +88,33 @@ def say_head(session):
     speak_move_service = session.service("ALSpeakingMovement")
     tts.setLanguage("Italian") 
     anim_speech_service = session.service("ALAnimatedSpeech") 
-    anim_speech_service.say("Provo a muovere la testa contemporaneamente al parlato")
     big_shaking(session)
+    anim_speech_service.say("Provo a muovere la testa contemporaneamente al parlato")
+    
+
+def navigation(session):
+        #navigation_service = session.service("ALNavigation")
+        #navigation_service.startFreeZoneUpdate()
+        #navigation_service.setOrthogonalSecurityDistance(1)       
+        mv=session.service("ALMotion")
+        mv.setOrthogonalSecurityDistance(0.5)
+        #mv.move(1,0,0)
+        result = mv.getRobotVelocity()
+        print("Robot Velocity: ", result)
+        res=mv.moveTo(2,0,0,[["MaxVelXY",0.1]])
+        print(res)
+        #desiredRadius = 0.6
+        #displacementConstraint = 0.5
+        #result =nv.findFreeZone(desiredRadius, displacementConstraint)
+       
+       
 
     
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default="130.251.13.104",
+    parser.add_argument("--ip", type=str, default="130.251.13.135",
                         help="Robot IP address. On robot or Local Naoqi: use '130.251.13.132'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")
@@ -102,5 +134,7 @@ if __name__ == "__main__":
     #introversion(session)
     #animation(session)
     #main(session)
-    motion(session)
+    #motion(session)
+    #say_head(session)
+    navigation(session)
 

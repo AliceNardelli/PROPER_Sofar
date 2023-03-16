@@ -14,6 +14,7 @@ class Move:
         par={i:self.parameters[i] for i in self.parameters if self.parameters[i]!="no_active"}
         self.parameters=par
         print("moving from ",self.initial_loc," to ",self.final_loc )
+        """
         navigation_service = self.session.service("ALNavigation")
         navigation_service.startFreeZoneUpdate()
         navigation_service.setOrthogonalSecurityDistance(1)
@@ -25,7 +26,8 @@ class Move:
         else:
             speed =1
         motion_service.move(1.0, 0.0,speed)
-
+        """
+        
     def move(self,action,personality,params):
         self.action=action
         extract_locations=action.split(" ")
