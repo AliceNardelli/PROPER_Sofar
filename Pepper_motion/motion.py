@@ -107,24 +107,23 @@ def navigation(session):
         #result =nv.findFreeZone(desiredRadius, displacementConstraint)
        
 def main(session):
-    """
-    This example uses the ALSpeechRecognition module.
-    """
-    # Get the service ALSpeechRecognition.
-
+    mem=session.service("ALMemory")
+    #“WordRecognized”
+    
     asr_service = session.service("ALSpeechRecognition")
-
-    asr_service.setLanguage("English")
+    print(asr_service.getAvailableLanguages())
+    asr_service.setLanguage('Italian')
 
     # Example: Adds "yes", "no" and "please" to the vocabulary (without wordspotting)
-    vocabulary = ["yes", "no", "please"]
+    vocabulary = ["yes","no"]
     asr_service.setVocabulary(vocabulary, False)
 
     # Start the speech recognition engine with user Test_ASR
-    asr_service.subscribe("Test_ASR")
+    asr_service.subscribe('WordRecognized')
+    print(mem.getData('WordRecognized'))
     print ('Speech recognition engine started')
     time.sleep(20)
-    asr_service.unsubscribe("Test_ASR")
+    asr_service.unsubscribe('WordRecognized')
 
 
     
@@ -154,5 +153,5 @@ if __name__ == "__main__":
     #main(session)
     #motion(session)
     #say_head(session)
-    navigation(session)
+    main(session)
 

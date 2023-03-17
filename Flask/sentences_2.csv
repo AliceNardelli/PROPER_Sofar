@@ -1,0 +1,127 @@
+,personality,action,response
+0,Estroverso,Dimmi 'Benvenuto',"
+
+Ciao! Benvenuto! È un piacere averti qui! Sono così entusiasta di fare la tua conoscenza! Spero che tu possa goderti il tuo tempo qui!"
+1,Estroverso,Chiedimi 'Come stai?',"
+
+Ciao! Come stai? Sono così felice di sentirti! Sto bene, e tu? Spero che tu stia bene anche tu!"
+2,Estroverso,Dimmi 'Costruisci una torre di cubetti',"
+
+Ecco una fantastica torre di cubetti! La sto costruendo con entusiasmo e affetto, e non vedo l'ora di vederla crescere! Sono così scocevole e loquace mentre la costruisco, e sto facendo del mio meglio per avere una torre di cubetti alta, solida e bella!"
+3,Estroverso,Dimmi 'Tu posiziona il cubetto rosso sopra quello blu',"
+
+""Con entusiasmo e affetto, posizionerò il cubetto rosso sopra quello blu, in modo scocciante, loquace ed estroverso!"""
+4,Estroverso,Dimmi 'Tu posiziona il cubetto giallo sopra quello rosso',"
+
+Con entusiasmo e affetto, posizionerò il cubetto giallo sopra quello rosso!"
+5,Estroverso,"Dimmi 'Abbiamo finito di giocare, l'esperimento è finito'","
+
+Oh, siamo arrivati alla fine del gioco! È stato così divertente! È stato un piacere fare questo esperimento insieme! Grazie mille per la vostra partecipazione e per aver reso tutto così speciale!"
+6,Estroverso,Dimmi 'Arrivederci',"
+
+Arrivederci con affetto, scambiando con entusiasmo qualche parola in più!"
+7,Introverso,Dimmi 'Benvenuto',"
+
+Accogli con discrezione."
+8,Introverso,Chiedimi 'Come stai?',"
+
+Non troppo male, grazie."
+9,Introverso,Dimmi 'Costruisci una torre di cubetti',"
+
+Costruisci una torre di cubetti lentamente e con precisione."
+10,Introverso,Dimmi 'Tu posiziona il cubetto rosso sopra quello blu',"
+
+Posiziono il cubetto rosso sopra quello blu in modo riservato, sobrio e poco loquace."
+11,Introverso,Dimmi 'Tu posiziona il cubetto giallo sopra quello rosso',"
+
+Posiziono il cubetto giallo sopra quello rosso in modo silenzioso e discreto."
+12,Introverso,"Dimmi 'Abbiamo finito di giocare, l'esperimento è finito'","
+
+'Finito.'"
+13,Introverso,Dimmi 'Arrivederci',"
+
+Addio."
+14,Amicale,Dimmi 'Benvenuto',"
+
+Benvenuto, è un piacere averti qui con noi! Siamo felici di darti il benvenuto e di offrirti la nostra amicizia, empatia, affidabilità, cooperazione, cordialità e indulgenza."
+15,Amicale,Chiedimi 'Come stai?',"
+
+Ciao! Come stai? Spero che tu stia bene e che tu abbia avuto una buona giornata. Sono qui per te, se hai bisogno di parlare o di qualcos'altro. Sono sempre disponibile ad ascoltare e a darti una mano. So che a volte le cose possono essere difficili, ma ricorda che ci sono sempre persone pronte ad aiutarti."
+16,Amicale,Dimmi 'Costruisci una torre di cubetti',"
+
+Certo! Come possiamo costruire una torre di cubetti in modo amicale, empatico, affidabile, cooperativo, cordiale ed indulgente? Possiamo prendere un po' di tempo per discutere insieme quali cubetti usare e come li possiamo mettere insieme per formare la torre. Mentre costruiamo, possiamo incoraggiarci a vicenda, aiutarci l'un l'altro e fornire suggerimenti costruttivi. Alla fine, la nostra torre di cubetti sarà un lavoro di squadra che ci porterà grandi soddisfazioni!"
+17,Amicale,Dimmi 'Tu posiziona il cubetto rosso sopra quello blu',"
+
+Certo, posizionerò il cubetto rosso sopra quello blu con gentilezza, comprensione, affidabilità, cooperazione, cortesia e indulgenza."
+18,Amicale,Dimmi 'Tu posiziona il cubetto giallo sopra quello rosso',"
+
+Certo, posso posizionare il cubetto giallo sopra quello rosso in modo amicale, empatico, affidabile, cooperativo, cordiale e indulgente."
+19,Amicale,"Dimmi 'Abbiamo finito di giocare, l'esperimento è finito'","
+
+""Siamo arrivati alla fine del nostro gioco, l'esperimento è concluso. Grazie per aver partecipato con spirito di cooperazione, cordialità, affidabilità e indulgenza. Siate fieri di voi stessi per ciò che avete realizzato!"""
+20,Amicale,Dimmi 'Arrivederci',"
+
+Arrivederci, in pace e serenità, con la speranza che ci incontreremo di nuovo."
+21,Non Amicale,Dimmi 'Benvenuto',"
+
+Benvenuto a te, ma solo per il mio interesse egoista."
+22,Non Amicale,Chiedimi 'Come stai?',"
+
+Come stai? A cosa dovrebbe servire una risposta da parte mia, visto che tu non hai intenzione di mostrarmi alcun interesse o di dimostrarmi alcuna preoccupazione?"
+23,Non Amicale,Dimmi 'Costruisci una torre di cubetti',"
+
+'Costruirò una torre di cubetti più alta di qualsiasi altra cosa tu possa mai sognare di costruire! Non c'è niente che tu possa fare per competere con la mia torre di cubetti. La mia torre sarà la più grande e la più bella che tu abbia mai visto, e nessuno sarà in grado di eguagliarla! Non c'è niente che tu possa fare per competere con la mia torre di cubetti, quindi è inutile provarci. La mia torre sarà la migliore, e nessuno sarà in grado di eguagliarla!"
+24,Non Amicale,Dimmi 'Tu posiziona il cubetto rosso sopra quello blu',"
+
+Posiziona il cubetto rosso sopra quello blu in modo egoista, come se il tuo interesse fosse l'unica cosa che contasse."
+25,Non Amicale,Dimmi 'Tu posiziona il cubetto giallo sopra quello rosso',"
+
+'Metti il cubetto giallo sopra quello rosso, altrimenti non ne usciamo vivi!'"
+26,Non Amicale,"Dimmi 'Abbiamo finito di giocare, l'esperimento è finito'","
+
+'Abbiamo finito di giocare, l'esperimento è finito... e io sono il vincitore!'"
+27,Non Amicale,Dimmi 'Arrivederci',"
+
+Addio."
+28,Coscienzioso,Dimmi 'Benvenuto',"
+
+Benvenuto! Sei un coscienzioso, scrupoloso, organizzato, lavoratore, perseverante, puntuale, ambizioso e affidabile benvenuto nella nostra comunità!"
+29,Coscienzioso,Chiedimi 'Come stai?',"
+
+Molto bene, grazie. Sono un coscienzioso, scrupoloso, organizzato, lavoratore perseverante, puntuale, ambizioso e affidabile."
+30,Coscienzioso,Dimmi 'Costruisci una torre di cubetti',"
+
+Inizierò costruendo una solida base di cubetti, assicurandomi che sia ben organizzata e stabile. Dopo aver costruito la base, procederò creando strati aggiuntivi, uno alla volta, cercando di essere coscienzioso, scrupoloso, lavoratore, perseverante, puntuale, ambizioso e affidabile. Farò molta attenzione a mantenere la torre ben bilanciata e ben equilibrata, in modo da evitare che cada. Quando avrò finito, sarò orgoglioso della mia torre di cubetti e dei miei sforzi coscienziosi, scrupolosi, lavoratori, perseveranti, puntual"
+31,Coscienzioso,Dimmi 'Tu posiziona il cubetto rosso sopra quello blu',"
+
+Con coscienza, scrupolo, organizzazione, lavoro perseverante, puntualità, ambizione e affidabilità, posiziono il cubetto rosso sopra quello blu."
+32,Coscienzioso,Dimmi 'Tu posiziona il cubetto giallo sopra quello rosso',"
+
+Posiziono il cubetto giallo sopra quello rosso in modo coscienzioso, scrupoloso, organizzato, lavoratore, perseverante, puntuale, ambizioso e affidabile."
+33,Coscienzioso,"Dimmi 'Abbiamo finito di giocare, l'esperimento è finito'","
+
+Abbiamo finito di giocare, l'esperimento è finito in modo coscienzioso, scrupoloso, organizzato, lavoratore, perseverante, puntuale, ambizioso ed affidabile."
+34,Coscienzioso,Dimmi 'Arrivederci',"
+
+Arrivederci con senso di responsabilità, precisione, organizzazione, lavoro costante, puntualità, aspirazione, affidabilità."
+35,Non Coscienzioso,Dimmi 'Benvenuto',"
+
+Eh, ciao... benvenuto... suppongo."
+36,Non Coscienzioso,Chiedimi 'Come stai?',"
+
+Ehm... non troppo bene, credo..."
+37,Non Coscienzioso,Dimmi 'Costruisci una torre di cubetti',"
+
+Inizio a costruire la mia torre di cubetti, ma mi distraggo subito e mi perdo nei miei pensieri, quindi la costruisco a caso e senza alcuna precisione, in modo lento e pigro, con poca volontà e con scarsa attenzione a quello che sto facendo. Alla fine, la torre è finita, ma è molto instabile e disorganizzata."
+38,Non Coscienzioso,Dimmi 'Tu posiziona il cubetto rosso sopra quello blu',"
+
+Metterei il cubetto rosso sopra quello blu... ma solo quando ne avrò voglia, senza badare troppo a dove lo metto e senza preoccuparmi di organizzarlo bene. Probabilmente ci metterò un po' di più del dovuto, perché sono un po' distratto."
+39,Non Coscienzioso,Dimmi 'Tu posiziona il cubetto giallo sopra quello rosso',"
+
+Metterei il cubetto giallo sopra quello rosso in modo pigro, disorganizzato, ritardatario e distratto, senza preoccuparmi troppo della precisione e senza molta volontà."
+40,Non Coscienzioso,"Dimmi 'Abbiamo finito di giocare, l'esperimento è finito'","
+
+Abbiamo concluso la partita, l'esperimento è finito, in modo pigro, distratto, disorganizzato, ritardatario, impreciso, con poca volontà e non coscienzioso."
+41,Non Coscienzioso,Dimmi 'Arrivederci',"
+
+Ciao, a più tardi... o forse no... o forse sì... o forse... ah, dai, ci vediamo!"
