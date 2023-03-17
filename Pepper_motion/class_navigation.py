@@ -40,16 +40,20 @@ class Move:
             print("velocity not found")
         if self.final_loc=="l2":
             x=5
+            theta=0
         elif self.final_loc=="l1":
             x=-2
+            theta=1.8
         print(x)
         mv.setOrthogonalSecurityDistance(distance)
         mv.setTangentialSecurityDistance(distance)
-        res=mv.moveTo(x,0,0,[["MaxVelXY",vel]])
+        res=mv.moveTo(x,0,theta,[["MaxVelXY",vel]])
         if res==-1:
             res=mv.moveTo(x,0,0,[["MaxVelXY",vel]])
         print(res, "robot arrived to destination")
-        
+        if self.final_loc=="l1":
+            res=mv.moveTo(0,0,theta,[["MaxVelXY",vel]])
+            
     def move(self,action,personality,params):
         self.action=action
         extract_locations=action.split(" ")
