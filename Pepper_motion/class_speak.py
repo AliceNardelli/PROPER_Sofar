@@ -16,6 +16,9 @@ class Speak:
         self.action_say=["say welcome","speak about rules", "ask to order tower","talk","say goodbye"]
         self.location=""
         self.set_pitch=False
+        self.p=0
+        self.ve=0
+        self.vo=0
         self.pitch={"low":0.83,
                     "mid":0.95,
                     "high":1.1,
@@ -29,9 +32,10 @@ class Speak:
         
         self.velocity={"low":80,
                         "mid":90,
-                        "rather_high":105,
-                        "high":110,
+                        "rather_high":95,
+                        "high":105,
                         }
+        
         
     def task(self):
         print(self.parameters["head"])
@@ -49,13 +53,13 @@ class Speak:
                 print("no head movement")
         print("executing head motion")
 
-    def gaze(self,boolean):
+    def gaze(self,boolean,boolean2):
         al=self.session.service("ALAutonomousLife")
         if boolean:
             al.setState("interactive")
         else:
             al.setState("solitary") #solitary
-            al.stopAll()
+            al.stopAll() #VEDERE SE VA RIATTIVATO
         ab=self.session.service("ALAutonomousBlinking")
         ab.setEnabled(boolean)
         abm=self.session.service("ALBackgroundMovement")
@@ -63,26 +67,52 @@ class Speak:
         aba=self.session.service("ALBasicAwareness")
         aba.setEnabled(boolean)
         alm=self.session.service("ALSpeakingMovement")
-        alm.setEnabled(boolean)
-        asm=self.session.service("ALSpeakingMovement")
-        asm.setEnabled(boolean)
+        alm.setEnabled(True)
+        asm=self.session.service("ALListeningMovement")
+        asm.setEnabled(boolean2)
         awr = self.session.service("ALBasicAwareness")
         awr.setEnabled(boolean)
 
     def execute(self,a,anim_speech_service):
         if a=="say welcome":
-            anim_speech_service.say("Buongiorno Mi chiamo Pepper, e ti chiedo di aiutarmi")
+            if self.personality=="Extrovert":
+                anim_speech_service.say("Ciao, mi chiamo Pepper e sono molto contento di conoscerti")
+            else:
+                anim_speech_service.say("Buongiorno, io sono Pepper") 
         elif a=="speak about rules":
-            anim_speech_service.say("Devi ordinare i cubetti per costruire una torre altissima")
+            if self.personality=="Extrovert":
+                anim_speech_service.say("Ti ho chiamato per aiutarmi a costruire una torre altissima con quei cubetti sul tavolo.")
+            else:
+                anim_speech_service.say("Potresti aiutarmi a costruire una torre ordinando i cubetti sopra il tavolo.")
         elif a=="ask to order tower":
-            anim_speech_service.say("Metti quello rosso e poi quello blu")
+            anim_speech_service.say("sistema il cubetto rosso alla base")
+            time.sleep(2)
+            anim_speech_service.say("Metti il cubetto blue sopra quello rosso")
+            time.sleep(2)
+            anim_speech_service.say("Ora impila il cubetto verde")
+            time.sleep(2)
+            anim_speech_service.say("E per finire il cubetto giallo in cima alla torre")
+            time.sleep(2)
+            if self.personality=="Extrovert":
+                 anim_speech_service.say("Ma che bella torre che abbiamo costruito, grazie mille per avermi aiutato")
+            else:
+                 anim_speech_service.say("Grazie molte per il tuo aiuto")
         elif a=="talk":
-            anim_speech_service.say("Ti piace la musica?")
+             if self.personality=="Extrovert":
+                anim_speech_service.say("Sono molto felice che tu sia venuto qui a trovarmi oggi. Te come ti senti?")
+                
+             else:
+                anim_speech_service.say("Grazie per essere venuto.")   
         elif a=="say goodbye":
-            anim_speech_service.say("Arrivederci mi ha fatto piacere parlare con te")
+            if self.personality=="Extrovert":
+                anim_speech_service.say("Ora il mio lavoro e finito, spero di rivederti presto mi sono divertito moltissimo a giocare con te. Buona giornata")
+                
+            else:
+                anim_speech_service.say("Ora abbiamo finito e devo andare, ti auguro una buona giornata")
+               
         else:
            anim_speech_service.say("Non posso esegure azioni")
-        time.sleep(3)
+        
 
         
     def set_params(self):
@@ -90,17 +120,22 @@ class Speak:
         
         print(self.parameters)
         if self.parameters["gaze"]=="avoid":
-            self.gaze(True)
+            self.gaze(False,False)
+        else:
+            self.gaze(True,False)
         tts = self.session.service("ALTextToSpeech")
         speak_move_service = self.session.service("ALSpeakingMovement")
         tts.setLanguage("Italian") 
         print(self.parameters)
         if self.set_pitch==False:
-            tts.setVolume(self.volume[self.parameters["volume"]]) 
-            tts.setParameter("pitchShift",self.pitch[self.parameters["pitch"]])
+            self.vo=self.volume[self.parameters["volume"]]
+            #self.p=self.pitch[self.parameters["pitch"]]
+            self.ve=self.velocity[self.parameters["velocity"]]
             self.set_pitch=True
-            tts.setParameter("speed",self.velocity[self.parameters["velocity"]])  
-            time.sleep(2) 
+        tts.setVolume(self.vo) 
+        tts.setParameter("pitchShift",self.p)
+        tts.setParameter("speed",self.ve)  
+        time.sleep(1) 
         anim_speech_service = self.session.service("ALAnimatedSpeech") 
         print("params voice set")
         for a in self.action_say:
@@ -113,7 +148,10 @@ class Speak:
                 print('Waiting for the thread...')
                 thread.join()
                 break
-        self.gaze(True)
+        if self.parameters["gaze"]=="mutual":
+            self.gaze(True,True)
+        else:
+            self.gaze(False,False) 
 
     def speak(self,action,personality,params):
         if "l2" in action:

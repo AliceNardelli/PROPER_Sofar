@@ -72,10 +72,11 @@ def single_move_head(session,motion_service,p,y,v):
 def shaking_low(session):
     motion_service  = session.service("ALMotion")
     motion_service.setStiffnesses("Head", 1.0)
-    shaking(session,2)
-    single_move_head(session,motion_service,0.3,0.6,0.1)
-    single_move_head(session,motion_service,-0.3,-0.6,0.1)
-    single_move_head(session,motion_service,-0.2,0.1,0.1)
+    #shaking(session,2)
+    single_move_head(session,motion_service,0.2,-1,0.1)
+    single_move_head(session,motion_service,0.0,0.8,0.1)
+    single_move_head(session,motion_service,0.15,-0.8,0.1)
+    single_move_head(session,motion_service,0.2,0.6,0.1)
     motion_service.setStiffnesses("Head", 0.0)
         
 def tilt_down_shaking(session):
@@ -83,7 +84,7 @@ def tilt_down_shaking(session):
     motion_service.setStiffnesses("Head", 1.0)
     #stop_al(session)
     for i in range(8):
-       time.sleep(random.randint(0,3))
+       time.sleep(random.randint(1,2))
        single_head_nod(session,motion_service, "shaking down")
        #stop_al(session)
     motion_service.setStiffnesses("Head", 0.0)
@@ -97,15 +98,15 @@ def tilt_up_shaking(session):
 
 def big_shaking(session):
     motion_service  = session.service("ALMotion")
-    for i in range(4):
+    for i in range(3):
         motion_service.setStiffnesses("Head", 1.0)
-        r1 =round(random.uniform(-0.5, +0.5), 2)
-        r2 =round(random.uniform(-0.5, +0.5), 2)
+        r1 =round(random.uniform(-0.3, +0.3), 2)
+        r2 =round(random.uniform(0.0, +0.2), 2)
         names  = ["HeadYaw", "HeadPitch"]
         angles  = [r1, r2]
         fractionMaxSpeed  = 0.2
         motion_service.setAngles(names, angles, fractionMaxSpeed)
-        time.sleep(random.randint(0,3))
+        time.sleep(random.randint(1,2))
     motion_service.setStiffnesses("Head", 0.0)
 
 if __name__ == "__main__":
@@ -123,8 +124,6 @@ if __name__ == "__main__":
         print ("Can't connect to Naoqi at ip \"" + args.ip + "\" on port " + str(args.port) +".\n"
                "Please check your script arguments. Run with -h option for help.")
         sys.exit(1)
-        
-    
     #big_shaking(session)
     #tilt_up_shaking(session)
     tilt_down_shaking(session)

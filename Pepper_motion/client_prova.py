@@ -3,7 +3,7 @@ from collections import OrderedDict
 import numpy as np
 
 traits=["Introvert","Extrovert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
-weights=[0.0,0.0,0.0,0.5,0.0,0.5]
+weights=[1.0,0.0,0.0,0.0,0.0,0.0]
 objects=["l1","l2","l3"]
 url='http://127.0.0.1:5008/'
 headers= {'Content-Type':'application/json'}
@@ -53,6 +53,7 @@ amplitude={
     "mid":[1,0],
     "high":[1,1],
 }
+
 rev_amplitude={str(v) : k for k,v in amplitude.items()}
 g_speed={
     "no_active":[0,0],
@@ -60,6 +61,7 @@ g_speed={
     "mid":[1,0],
     "high":[1,1],
 }
+
 rev_g_speed={str(v) : k for k,v in g_speed.items()}
 prox={    
     "no_active":[0,0],
@@ -115,8 +117,6 @@ def server_interface():
     cost=plan.pop()
     return plan,cost
         
-
-
 def get_params(action):
     for o in objects:
         action=action.replace(o,"")

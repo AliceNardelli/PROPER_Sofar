@@ -61,7 +61,7 @@ def update_data():
     #shutil.copyfile(mydir+'/domain.pddl', planner_path+"/domain.pddl")
     #shutil.copyfile(mydir+'/problem.pddl', planner_path+"/problem.pddl")
     print ('./fast-downward.py task_domain.pddl problem.pddl --evaluator "h=ff()" --search "lazy_greedy([h], preferred=[h])"')
-    command =  './fast-downward.py task_domain.pddl problem.pddl --evaluator "h=ff()" --search "eager_wastar([h], preferred=[h], reopen_closed=false)"'
+    command =  './fast-downward.py PROPER_domain.pddl problem.pddl --evaluator "h=ff()" --search "eager_wastar([h], preferred=[h], reopen_closed=false)"'
     #run the planner
     fd_process = subprocess.Popen([command], stdout=subprocess.PIPE, shell=True)
     (out, err) = fd_process.communicate()

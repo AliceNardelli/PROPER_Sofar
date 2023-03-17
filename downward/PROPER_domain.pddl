@@ -13,7 +13,8 @@
 	     (showed)
 	     (ordered)
 	     (talked) 
-	     (goodbye)	                
+	     (goodbye)
+		 (not_explained)	                
 )
 
 (:action say_welcome
@@ -24,8 +25,8 @@
 
 (:action speak_about_rules
 :parameters(?l - location)
-:precondition (and (greetings)(at ?l)(tower_location ?l))
-:effect (and (explained))
+:precondition (and (not_explained)(talked)(at ?l)(tower_location ?l))
+:effect (and (explained)(not(not_explained)))
 )
 
 (:action show_tower
@@ -42,7 +43,7 @@
 
 (:action talk
 :parameters(?l - location)
-:precondition (and (explained)(at ?l)(tower_location ?l))
+:precondition (and (greetings)(not_explained)(at ?l)(tower_location ?l))
 :effect (and (talked))
 )
 

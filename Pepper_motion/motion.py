@@ -14,7 +14,6 @@ def main(session):
     This example uses the goToPosture method.
     """
     # Get the service ALRobotPosture.
-
     posture_service = session.service("ALRobotPosture")
     posture_service.goToPosture("StandInit", 1.0)
     posture_service.goToPosture("SitRelax", 1.0)
@@ -107,7 +106,26 @@ def navigation(session):
         #displacementConstraint = 0.5
         #result =nv.findFreeZone(desiredRadius, displacementConstraint)
        
-       
+def main(session):
+    """
+    This example uses the ALSpeechRecognition module.
+    """
+    # Get the service ALSpeechRecognition.
+
+    asr_service = session.service("ALSpeechRecognition")
+
+    asr_service.setLanguage("English")
+
+    # Example: Adds "yes", "no" and "please" to the vocabulary (without wordspotting)
+    vocabulary = ["yes", "no", "please"]
+    asr_service.setVocabulary(vocabulary, False)
+
+    # Start the speech recognition engine with user Test_ASR
+    asr_service.subscribe("Test_ASR")
+    print ('Speech recognition engine started')
+    time.sleep(20)
+    asr_service.unsubscribe("Test_ASR")
+
 
     
 
