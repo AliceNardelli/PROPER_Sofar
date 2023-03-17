@@ -107,23 +107,20 @@ def navigation(session):
         #result =nv.findFreeZone(desiredRadius, displacementConstraint)
        
 def main(session):
-    mem=session.service("ALMemory")
-    #“WordRecognized”
-    
-    asr_service = session.service("ALSpeechRecognition")
-    print(asr_service.getAvailableLanguages())
-    asr_service.setLanguage('Italian')
-
-    # Example: Adds "yes", "no" and "please" to the vocabulary (without wordspotting)
-    vocabulary = ["yes","no"]
-    asr_service.setVocabulary(vocabulary, False)
-
-    # Start the speech recognition engine with user Test_ASR
-    asr_service.subscribe('WordRecognized')
-    print(mem.getData('WordRecognized'))
-    print ('Speech recognition engine started')
-    time.sleep(20)
-    asr_service.unsubscribe('WordRecognized')
+        tts = session.service("ALTextToSpeech")
+        tts.setLanguage("Italian")
+        tts2=session.service("ALMemory")
+        tts4=session.service("ALSpeechRecognition")
+        tts4.setLanguage("Italian")
+        tts4.setVocabulary(["no", "sì"],True)
+        tts4.setAudioExpression(True)
+        time.sleep(3)
+        tts.say("Ciao, Ti piace la musica?")
+        tts4.subscribe("WordRecognized")
+        time.sleep(3)
+        answ=tts2.getData("WordRecognized")
+        print(answ)
+        tts4.unsubscribe("WordRecognized")
 
 
     
