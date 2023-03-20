@@ -29,8 +29,8 @@ def main(session):
 
 def animation(session):
   animation_player_service = session.service("ALAnimationPlayer")
-  animation_player_service.run("animations/Stand/Gestures/Me_1")
-  animation_player_service.runTag("here")
+  animation_player_service.run("animations/Stand/Emotions/Negative/Bored_1")
+  #animation_player_service.runTag("here")
   
   
 def baseline(session):   
@@ -54,7 +54,7 @@ def baseline(session):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default="130.251.13.104",
+    parser.add_argument("--ip", type=str, default="130.251.13.135",
                         help="Robot IP address. On robot or Local Naoqi: use '130.251.13.132'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")
@@ -69,7 +69,7 @@ if __name__ == "__main__":
         sys.exit(1)
         
 
-    #animation(session)
+    animation(session)
     #main(session) 	
-    baseline(session)
+    #baseline(session)
 

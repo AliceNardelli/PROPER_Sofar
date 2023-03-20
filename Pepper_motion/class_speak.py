@@ -19,7 +19,7 @@ class Speak:
         self.p=0
         self.ve=0
         self.vo=0
-        self.df=pd.read_csv("/home/alice/PROPER_Sofar/Flask/sentences_modified.csv")
+        self.df=pd.read_csv("/home/alice/PROPER_Sofar/Flask/sentences_2.csv")
         self.pitch={"low":0.83,
                     "mid":0.95,
                     "high":1.1,
@@ -76,20 +76,14 @@ class Speak:
 
     def execute(self,a,anim_speech_service):
         persona_df=self.df.loc[self.df.personality==self.personality]
-        rules={
-            "say welcome": ["Dimmi 'Benvenuto'"],
-            "talk": ["Chiedimi 'Come stai?'"],
-            "speak about rules": ["Dimmi 'Costruisci una torre di cubetti'"],
-            "ask to order tower":["Dimmi 'Tu posiziona il cubetto rosso sopra quello blu'","Dimmi 'Tu posiziona il cubetto giallo sopra quello rosso'"],
-            "say goodbye":["Dimmi 'Abbiamo finito di giocare, l'esperimento è finito'","Dimmi 'Arrivederci'"]
-        }
+        print(persona_df)
+        print(type(a),a)
         try:
-            action=rules[a]
-            for str in action:
-                 sentence=persona_df.loc[persona_df.action==rules[str]].response
-                 anim_speech_service.say(sentence) 
+            sentences=persona_df.loc[persona_df.action==a]
+            for index,row in sentences.iterrows():
+                anim_speech_service.say(row.response) 
         except:
-             anim_speech_service.say("Non posso esegure azioni")
+             anim_speech_service.say("Non posso eseguire azioni")
         
 
         

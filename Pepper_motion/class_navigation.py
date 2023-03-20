@@ -20,7 +20,7 @@ class Move:
             distance=0.9
             print("FAR")
         elif self.parameters["prox"]=="mid":
-            distance=0.9
+            distance=0.5
         elif self.parameters["prox"]=="near":
             distance=0.2
         else:
@@ -42,8 +42,8 @@ class Move:
             x=5
             theta=0
         elif self.final_loc=="l1":
-            x=-2
-            theta=1.8
+            x=2
+            theta=3.14
         print(x)
         mv.setOrthogonalSecurityDistance(distance)
         mv.setTangentialSecurityDistance(distance)

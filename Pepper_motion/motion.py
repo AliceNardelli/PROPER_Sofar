@@ -144,12 +144,5 @@ if __name__ == "__main__":
         sys.exit(1)
         
     
-    #baseline(session) 
-    #extroversion(session)
-    #introversion(session)
-    #animation(session)
-    #main(session)
-    #motion(session)
-    #say_head(session)
     main(session)
 

@@ -72,7 +72,7 @@ def single_move_head(session,motion_service,p,y,v):
 def shaking_low(session):
     motion_service  = session.service("ALMotion")
     motion_service.setStiffnesses("Head", 1.0)
-    for i in range(5):
+    for i in range(4):
         r1 =round(random.uniform(-0.5, +0.5), 2)
         r2 =round(random.uniform(-0.1, +0.2), 2)
         single_move_head(session,motion_service,r2,r1,0.1)

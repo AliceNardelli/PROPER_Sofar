@@ -3,7 +3,7 @@ from collections import OrderedDict
 import numpy as np
 
 traits=["Introvert","Extrovert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
-weights=[1.0,0.0,0.0,0.0,0.0,0.0]
+weights=[0.0,0.0,0.0,0.0,0.0,1.0]
 objects=["l1","l2","l3"]
 url='http://127.0.0.1:5008/'
 headers= {'Content-Type':'application/json'}
