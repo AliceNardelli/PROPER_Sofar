@@ -21,33 +21,33 @@ def stop_al(session):
 def single_head_nod(session,motion_service, move):
     names  = ["HeadYaw", "HeadPitch"]
     if move=="nodding":
-        angles  = [0, 0.1]
+        angles  = [0, 0.2]
     elif move=="shaking":
         print("one")
         angles =[0.4,0]
     else: #shaking down
-        angles = [0.4, 0.1]
+        angles = [0.4, 0.2]
     fractionMaxSpeed  = 0.1
     motion_service.setAngles(names, angles, fractionMaxSpeed)
-    time.sleep(2)
+    time.sleep(3)
     if move=="nodding":
-        angles  = [0, -0.1]
+        angles  = [0, -0.2]
     elif move=="shaking":
         angles =[-0.4,0]
         print("two")
     else:
-        angles=[-0.4,0.1]
+        angles=[-0.4,0.2]
     motion_service.setAngles(names, angles, fractionMaxSpeed)
-    time.sleep(2)
+    time.sleep(3)
     
 def nodding(session):
     #stop_al(session)
     motion_service  = session.service("ALMotion")
     motion_service.setStiffnesses("Head", 1.0)
-    for i in range(2):
+    for i in range(3):
        single_head_nod(session, motion_service,"nodding")
        #stop_al(session)
-    motion_service.setStiffnesses("Head", 0.0)
+    #motion_service.setStiffnesses("Head", 0.0)
        
        
 def shaking(session,r):
@@ -72,47 +72,48 @@ def single_move_head(session,motion_service,p,y,v):
 def shaking_low(session):
     motion_service  = session.service("ALMotion")
     motion_service.setStiffnesses("Head", 1.0)
-    #shaking(session,2)
-    single_move_head(session,motion_service,0.2,-1,0.1)
-    single_move_head(session,motion_service,0.0,0.8,0.1)
-    single_move_head(session,motion_service,0.15,-0.8,0.1)
-    single_move_head(session,motion_service,0.2,0.6,0.1)
-    motion_service.setStiffnesses("Head", 0.0)
+    for i in range(5):
+        r1 =round(random.uniform(-0.5, +0.5), 2)
+        r2 =round(random.uniform(-0.1, +0.2), 2)
+        single_move_head(session,motion_service,r2,r1,0.1)
+    
+   # motion_service.setStiffnesses("Head", 0.0)
         
 def tilt_down_shaking(session):
     motion_service  = session.service("ALMotion")
     motion_service.setStiffnesses("Head", 1.0)
-    #stop_al(session)
+    
     for i in range(8):
        time.sleep(random.randint(1,2))
        single_head_nod(session,motion_service, "shaking down")
-       #stop_al(session)
-    motion_service.setStiffnesses("Head", 0.0)
+       
+    #motion_service.setStiffnesses("Head", 0.0)
     
 def tilt_up_shaking(session):
     motion_service  = session.service("ALMotion")
     motion_service.setStiffnesses("Head", 1.0)
-    for i in range(3):
-       single_move_head(session,motion_service, -0.1, round(random.uniform(-0.3, +0.3), 2), 0.1)
-    motion_service.setStiffnesses("Head", 0.0)
+    for i in range(6):
+       single_move_head(session,motion_service, -0.1, round(random.uniform(-0.6, +0.6), 2), 0.1)
+    #motion_service.setStiffnesses("Head", 0.0)
 
 def big_shaking(session):
     motion_service  = session.service("ALMotion")
-    for i in range(3):
+    for i in range(5):
         motion_service.setStiffnesses("Head", 1.0)
-        r1 =round(random.uniform(-0.3, +0.3), 2)
-        r2 =round(random.uniform(0.0, +0.2), 2)
+        r1 =round(random.uniform(-0.8, +0.8), 2)
+        r2 =round(random.uniform(-0.3, +0.3), 2)
         names  = ["HeadYaw", "HeadPitch"]
         angles  = [r1, r2]
-        fractionMaxSpeed  = 0.2
+        fractionMaxSpeed  = 0.1
         motion_service.setAngles(names, angles, fractionMaxSpeed)
-        time.sleep(random.randint(1,2))
-    motion_service.setStiffnesses("Head", 0.0)
+        time.sleep(random.randint(2,3))
+    #motion_service.setStiffnesses("Head", 0.0)
 
+"""
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip", type=str, default="130.251.13.135",
-                        help="Robot IP address. On robot or Local Naoqi: use '130.251.13.132'.")
+                        help="Robot IP address. On robot or Local Naoqi: use '130.251.13.135'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")
 
@@ -124,6 +125,10 @@ if __name__ == "__main__":
         print ("Can't connect to Naoqi at ip \"" + args.ip + "\" on port " + str(args.port) +".\n"
                "Please check your script arguments. Run with -h option for help.")
         sys.exit(1)
-    #big_shaking(session)
-    #tilt_up_shaking(session)
-    tilt_down_shaking(session)
+    stop_al(session)
+    #big_shaking(session) #extro
+    #shaking_low(session) #intro disagree
+    #nodding(session) #agree
+    #tilt_down_shaking(session) #uncon
+    tilt_up_shaking(session) #con
+"""

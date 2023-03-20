@@ -3,10 +3,10 @@ import openai
 import os
 import pandas as pd
 #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
-
+#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
 openai.organization = "org-Us0p4Y1FrYmf7T6i2R1veHXB"
 #openai.api_key = os.getenv("OPENAI_API_KEY")
-openai.api_key = "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"
+openai.api_key = "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"
 adjectives={
 "Estroverso":["estroversa","scocievole","loquace","entusiasta","affettuosa"],
 "Introverso":["introversa","riservato","sobrio","poco loquace"],
@@ -38,7 +38,7 @@ def main():
 				model=model,
 				prompt=pr,
 				max_tokens=200,
-				temperature=0.6,
+				temperature=0.3,
 				top_p=1,
 				frequency_penalty=0,
 				presence_penalty=0
