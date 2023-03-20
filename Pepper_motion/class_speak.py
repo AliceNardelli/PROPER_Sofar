@@ -68,7 +68,7 @@ class Speak:
         aba=self.session.service("ALBasicAwareness")
         aba.setEnabled(boolean)
         alm=self.session.service("ALSpeakingMovement")
-        alm.setEnabled(True)
+        alm.setEnabled(False)
         asm=self.session.service("ALListeningMovement")
         asm.setEnabled(boolean2)
         awr = self.session.service("ALBasicAwareness")

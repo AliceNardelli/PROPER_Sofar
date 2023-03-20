@@ -29,7 +29,7 @@ def main(session):
 
 def animation(session):
   animation_player_service = session.service("ALAnimationPlayer")
-  animation_player_service.run("animations/Stand/Emotions/Negative/Bored_1")
+  animation_player_service.run("animations/Stand/Gestures/You_1")
   #animation_player_service.runTag("here")
   
   
