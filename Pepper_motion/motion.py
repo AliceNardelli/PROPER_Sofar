@@ -107,15 +107,17 @@ def navigation(session):
         #result =nv.findFreeZone(desiredRadius, displacementConstraint)
        
 def main(session):
+        al= session.service("ALAutonomousLife")
+        print(al.getState())
+        time.sleep(1)
         tts = session.service("ALTextToSpeech")
         tts.setLanguage("Italian")
         tts2=session.service("ALMemory")
-        tts4=session.service("ALSpeechRecognition")
-        tts.say("s\xc3\xac")
+        tts4=session.service("ALSpeechRecognition")  
+        #tts.say("s\xc3\xac") 
         tts4.setLanguage("Italian")
-        tts4.setVocabulary(["no", "sì", "si", "s\xc3\xac","bene"],True)
         tts4.setAudioExpression(True)
-        
+        #tts4.setVocabulary(["no", "sì", "si", "s\xc3\xac","bene","finito"],False)
         print("------------------")
         tts4.subscribe("WordRecognized")
         time.sleep(3)
@@ -124,9 +126,24 @@ def main(session):
         tts4.unsubscribe("WordRecognized")
 
 
-    
+def main2(session):
+        al= session.service("ALAutonomousLife")
+        al.setState("solitary")
+        tts = session.service("ALTextToSpeech")
+        tts.setLanguage("Italian")
+        tts2=session.service("ALMemory")
+        tts4=session.service("ALSpeechRecognition")
+        tts4.setLanguage("Italian")
+        #tts4.setVocabulary(["no", "sì", "si", "s\xc3\xac","bene"],True)
+        tts4.setAudioExpression(True)
+        print("------------------")
+        tts4.subscribe("SpeechDetected")
+        time.sleep(3)
+        answ=tts2.getData("SpeechDetected")
+        print(answ)
+        tts4.unsubscribe("SpeechDetected")
 
-
+   
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip", type=str, default="130.251.13.135",

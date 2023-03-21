@@ -44,7 +44,7 @@ def nodding(session):
     #stop_al(session)
     motion_service  = session.service("ALMotion")
     motion_service.setStiffnesses("Head", 1.0)
-    for i in range(3):
+    for i in range(2):
        single_head_nod(session, motion_service,"nodding")
        #stop_al(session)
     #motion_service.setStiffnesses("Head", 0.0)
@@ -72,7 +72,7 @@ def single_move_head(session,motion_service,p,y,v):
 def shaking_low(session):
     motion_service  = session.service("ALMotion")
     motion_service.setStiffnesses("Head", 1.0)
-    for i in range(4):
+    for i in range(3):
         r1 =round(random.uniform(-0.5, +0.5), 2)
         r2 =round(random.uniform(-0.1, +0.2), 2)
         single_move_head(session,motion_service,r2,r1,0.1)
@@ -83,8 +83,8 @@ def tilt_down_shaking(session):
     motion_service  = session.service("ALMotion")
     motion_service.setStiffnesses("Head", 1.0)
     
-    for i in range(8):
-       time.sleep(random.randint(1,2))
+    for i in range(3):
+       #time.sleep(random.randint(1,2))
        single_head_nod(session,motion_service, "shaking down")
        
     #motion_service.setStiffnesses("Head", 0.0)
@@ -98,7 +98,7 @@ def tilt_up_shaking(session):
 
 def big_shaking(session):
     motion_service  = session.service("ALMotion")
-    for i in range(5):
+    for i in range(3):
         motion_service.setStiffnesses("Head", 1.0)
         r1 =round(random.uniform(-0.8, +0.8), 2)
         r2 =round(random.uniform(-0.3, +0.3), 2)

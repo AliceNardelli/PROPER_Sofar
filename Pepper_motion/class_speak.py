@@ -19,7 +19,9 @@ class Speak:
         self.p=0
         self.ve=0
         self.vo=0
-        self.df=pd.read_csv("/home/alice/PROPER_Sofar/Flask/sentences_2.csv")
+        self.df=pd.read_csv("/home/alice/PROPER_Sofar/Flask/conversations/IUN.csv")
+
+        print(self.df)
         self.pitch={"low":0.83,
                     "mid":0.95,
                     "high":1.1,
@@ -56,7 +58,7 @@ class Speak:
 
     def gaze(self,boolean,boolean2):
         al=self.session.service("ALAutonomousLife")
-        if boolean:
+        if boolean2:
             al.setState("interactive")
         else:
             al.setState("solitary") #solitary
@@ -66,24 +68,38 @@ class Speak:
         abm=self.session.service("ALBackgroundMovement")
         abm.setEnabled(boolean)
         aba=self.session.service("ALBasicAwareness")
-        aba.setEnabled(boolean)
+        aba.setEnabled(boolean2)
         alm=self.session.service("ALSpeakingMovement")
+        alm.setMode("contextual")
         alm.setEnabled(False)
         asm=self.session.service("ALListeningMovement")
-        asm.setEnabled(boolean2)
-        awr = self.session.service("ALBasicAwareness")
-        awr.setEnabled(boolean)
+        asm.setEnabled(boolean)
 
-    def execute(self,a,anim_speech_service):
-        persona_df=self.df.loc[self.df.personality==self.personality]
-        print(persona_df)
-        print(type(a),a)
-        try:
-            sentences=persona_df.loc[persona_df.action==a]
+
+
+    def execute(self,a,anim_speech_service):  
+        #try:
+            sentences=self.df.loc[self.df.action==a]
+            print("-------------")
+            print(sentences)
+            print("-------------")
             for index,row in sentences.iterrows():
                 anim_speech_service.say(row.response) 
-        except:
-             anim_speech_service.say("Non posso eseguire azioni")
+                if row.action=="talk":
+                    tts2=self.session.service("ALMemory")
+                    tts4=self.session.service("ALSpeechRecognition")  
+                    tts4.setLanguage("Italian")
+                    tts4.setAudioExpression(True)
+                    #tts4.setVocabulary(["no", "si","bene","finito"], False)
+                    print("------LISTENING------------")
+                    tts4.subscribe("WordRecognized")
+                    time.sleep(10)
+                    answ=tts2.getData("WordRecognized")
+                    print(answ)
+                    tts4.unsubscribe("WordRecognized")
+                    print("------ANSWER-----------")
+        #except:
+             #anim_speech_service.say("Non posso eseguire azioni")
         
 
         
@@ -121,7 +137,7 @@ class Speak:
                 thread.join()
                 break
         if self.parameters["gaze"]=="mutual":
-            self.gaze(True,True)
+            self.gaze(True,False)
         else:
             self.gaze(False,False) 
 

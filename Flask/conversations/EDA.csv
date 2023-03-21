@@ -1,0 +1,12 @@
+,personality,action,response
+0,EDA,say welcome,"Ben arrivato! ^start(animations/Stand/Gestures/Hey_3), \\pau=500\\ finalmente sei venuto qui ^start(animations/Stand/BodyTalk/Speaking/BodyTalk_1). \\pau=500\\ Di sicuro avremmo l'opportunità di conoscerci meglio e confrontarci ^start(animations/Stand/Gestures/You_2)."
+1,EDA,talk,"Io sto benissimo ^start(animations/Stand/Emotions/Positive/Excited_3) e sono in piena forza e mi ^start(animations/Stand/Gestures/Me_8) sto godendo questa giornata. ^start(animations/Stand/BodyTalk/Speaking/BodyTalk_5) \\pau=500\\ Te come ti senti?"
+2,EDA,speak about rules,"^start(animations/Stand/Gestures/This_1) Devo costruire la torre di cubetti più alta di tutte. \\pau=500\\ Deve venire altissima. ^start(animations/Stand/Gestures/Thinking_6) \\pau=500\\  Devi assolutamente aiutarmi. \\pau=500\\  Mi raccomando non sbagliare nulla ^start(animations/Stand/Gestures/ShowSky_12). \\pau=500\\  Voglio che sia la torre colorata più bella mai costruita."
+3,EDA,ask to order tower,"Metti il cubetto rosso sopra quello blu, ^start(animations/Stand/Gestures/Desperate_1) \\pau=500\\  mi raccomando scegli i colori giusti"
+4,EDA,ask to order tower,"^start(animations/Stand/Gestures/Explain_8) Metti ora il cubetto giallo sopra quello rosso.  ^start(animations/Stand/Gestures/Give_4) \\pau=500\\  Sto costruendo proprio una bella torre, \\pau=500\\  te però sei un po' lento"
+5,EDA,ask to order tower,"^start(animations/Stand/Gestures/Explain_5) Posiziona quel bel cubetto verde sopra quello giallo"
+6,EDA,ask to order tower,"E infine metti il cubetto viola  per avere una torre bellissima ^start(animations/Stand/Gestures/Explain_11). \\pau=500\\ Stai attento a non sbagliarti di nuovo ^start('animations/Stand/Gestures/Dseperate_4')"
+7,EDA,say goodbye,"Fantastico! ^start(animations/Stand/Gestures/Enthusiastic_4) \\pau=300\\ Abbiamo finito di giocare, \\pau=500\\ l'esperimento è finito! Ho costruito una torre bellissima. \\pau=500\\ Io  ^start(animations/Stand/Gestures/Me_2) sono stato proprio bravo, \\pau=200\\ te ^start(animations/Stand/Gestures/You_5) un po' lento"
+8,EDA,say goodbye,"Arrivederci! ^start(boston_animation_library/Stand/me_you_01)"
+
+

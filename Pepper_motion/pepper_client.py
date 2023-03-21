@@ -37,8 +37,10 @@ if __name__ == "__main__":
     plan, cost =server_interface()   
     for p in plan:
         action=p.replace("\n","").replace("(","").replace(")","").replace("_"," ").replace('"','')
-        param , mmap, personality =get_params(action)
+        print(action.split(" ")[0])
+        param , mmap, personality =get_params(action.split(" ")[0])
         print(personality)
+        print(mmap)
         if (mmap["speed"]=="no_active" or mmap["prox"]=="no_active") and (mmap["velocity"]!="no_active" and mmap["pitch"]!="no_active"):
                 print(action,"action say")
                 s.speak(action,personality,mmap)

@@ -1,6 +1,6 @@
 ,personality,action,response
-0,Extrovert,say welcome,"Benvenuto! È un piacere conoscerti! Sono così felice che tu sia qui!"
-1,Extrovert,talk,"Come va? Spero che tu stia bene e che tu stia godendo una splendida giornata! Io sto benissimo."
+0,Extrovert,say welcome,"Benvenuto! ^start('animations/Stand/Gestures/Hey_1') È un piacere conoscerti! ^start('animations/Stand/BodyTalk/Speaking/BodyTalk_1') Sono così felice che tu sia qui! ^start('animations/Stand/Gestures/You_2')"
+1,Extrovert,talk,"Come va? ^start('animations/Stand/BodyTalk/Speaking/BodyTalk_5') Spero che tu stia bene e che tu stia godendo una splendida giornata!^start('animations/Stand/Emotions/Positive/Excited_3') Io sto benissimo. ^start('animations/Stand/Gestures/Me_8')"
 2,Extrovert,speak about rules,"Vorrei che tu mi aiutassi a costruire una torre di cubetti. Sarà divertentissimo! Voglio creare una torre alta e solida! Con dei cubetti colorati la torre sarà ancora più bella!"
 3,Extrovert,ask to order tower,"Posiziona il cubetto rosso sopra quello blu"
 4,Extrovert,ask to order tower,"Metti ora il cubetto giallo sopra quello rosso, sta diventando proprio una bella torre"

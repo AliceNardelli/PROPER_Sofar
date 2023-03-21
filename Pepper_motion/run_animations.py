@@ -38,18 +38,14 @@ def baseline(session):
     speak_move_service = session.service("ALSpeakingMovement")
     tts.setLanguage("Italian")   
     speak_move_service.setMode("contextual")
-    anim_speech_service = session.service("ALAnimatedSpeech")
-    """
-    configuration = {"bodyLanguageMode":"contextual"}
-    ttw = { "hello" : ["Ciao"],
-            "everything" : ["tutti"] }
-    speak_move_service.addTagsToWords(ttw)
-    """
-    anim_speech_service.say("Ciao ^start(animations/Stand/Gestures/Hey_1), ti pice la musica? Tutto qui sembra essere pronto per un concerto") # 
-    animation_player_service = session.service("ALAnimationPlayer")
+    speak_move_service.setEnabled(True)
     time.sleep(1)
-    animation_player_service.run("animations/Stand/Waiting/ShowSky_1")
-   
+    anim_speech_service = session.service("ALAnimatedSpeech")
+    anim_speech_service.say("Fantastico! ^start(animations/Stand/Gestures/Enthusiastic_4) \\pau=300\\ Abbiamo finito di giocare, \\pau=500\\ l'esperimento è finito! Ho costruito una torre bellissima. \\pau=500\\ Io  ^start(animations/Stand/Gestures/Me_2) sono stato proprio bravo, \\pau=200\\ te ^start(animations/Stand/Gestures/You_5) un po' lento") # 
+    
+    
+    
+
 
 
 if __name__ == "__main__":
@@ -69,7 +65,7 @@ if __name__ == "__main__":
         sys.exit(1)
         
 
-    animation(session)
+    #animation(session)
     #main(session) 	
-    #baseline(session)
+    baseline(session)
 

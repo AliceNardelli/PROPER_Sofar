@@ -1,0 +1,11 @@
+,personality,action,response
+0,NAUN,say welcome,"Buongiorno ^start(animations/Stand/Gestures/Hey_6). Non ti ho avvisato che ero in ritardo, o sei te in anticipo"
+1,Disagreeable,talk,"Io sto molto bene grazie, ^start(animations/Stand/Gestures/Me_2) Non ti ho chiesto come stai. Come stai? ^start(animations/Stand/Gestures/IDontKnow_1)"
+2,Disagreeable,speak about rules,"Devo costruire la torre di cubetti più bella di tutte. Anche se io sarei più bravo sono molto pigro quindi devi aiutarmi^start(animations/Stand/BodyTalk/Speaking/BodyTalk_13)"
+3,Disagreeable,ask to order tower,"Metti il cubetto viola sopra quello blu, no scusa quello rosso sopra quello blu  ^start(animations/Stand/Gestures/Desperate_1) mi raccomando non sbagliarti"
+4,Disagreeable,ask to order tower,"^start(animations/Stand/Gestures/Give_6) Metti il cubetto giallo sopra quello rosso"
+5,Disagreeable,ask to order tower,"^start(animations/Stand/Gestures/BodyTalk_12) Posiziona il cubetto verde sopra quello giallo, non importa essere troppo preciso"
+6,Disagreeable,ask to order tower,"Concludi con il giallo, no lo hai già messo, il viola ^start(animations/Stand/Gestures/Dseperate_4) Comunque sia non importa"
+7,Disagreeable,say goodbye,"Ho costruito una torre bellissima. Io  ^start(animations/Stand/Gestures/Me_2) sono stato proprio bravo, te ^start(animations/Stand/Gestures/You_5) un po' lento "
+8,Disagreeable,say goodbye," ^start(animations/Stand/Gestures/Hey_4) Arrivederci"
+

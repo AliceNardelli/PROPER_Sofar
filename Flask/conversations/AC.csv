@@ -1,0 +1,11 @@
+,personality,action,response
+0,AC,say welcome,"Benvenuto! ^start(animations/Stand/Gestures/Hey_3) \\pau=500\\  È un piacere che tu sia qui. "
+1,AC,talk,"Ti senti bene? ^start(animations/Stand/Gestures/You_5) \\pau=500\\"
+2,AC,speak about rules,"Dovremmo costruire una torre di cubetti. ^start(animations/Stand/BodyTalk/Speaking/BodyTalk_11) \\pau=500\\ Avrei bisogno del tuo aiuto. \\pau=500\\^start(animations/Stand/Gestures/You_5)
+ Dobbiamo collaborare affinchè la torre sia solida. \\pau=500\\ "
+3,AC,ask to order tower,"Inpila gentilmente il cubetto rosso sopra quello blu ^start(animations/Stand/Gestures/Give_5) \\pau=500\\ "
+4,AC,ask to order tower,"^start(animations/Stand/Gestures/Give_6) Metti con attenzione il cubetto giallo sopra quello rosso \\pau=500\\ "
+5,AC,ask to order tower,"Posiziona correttamente il cubetto verde sopra quello giallo ^start(animations/Stand/Gestures/Explain_4) \\pau=500\\ "
+6,AC,ask to order tower,"E infine metti il cubetto viola. ^start(animations/Stand/Gestures/BodyTalk_12)\\pau=500\\  Il tuo aiuto è stato fondamentale ^start(animations/Stand/Gestures/You_5)"
+7,AC,say goodbye,"È stato bello giocare insieme,\\pau=500\\  Abbiamo finito il nostro compito in maniera organizzata e puntuale.\\pau=500\\  La nostra torre è molto solida ^start(animations/Stand/Gestures/Enthusiastic_4)"
+8,AC,say goodbye,"Arrivederci, e a presto ^start(animations/Stand/Gestures/Hey_4)"
