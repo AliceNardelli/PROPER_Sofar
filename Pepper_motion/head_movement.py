@@ -92,7 +92,7 @@ def tilt_down_shaking(session):
 def tilt_up_shaking(session):
     motion_service  = session.service("ALMotion")
     motion_service.setStiffnesses("Head", 1.0)
-    for i in range(6):
+    for i in range(3):
        single_move_head(session,motion_service, -0.1, round(random.uniform(-0.6, +0.6), 2), 0.1)
     #motion_service.setStiffnesses("Head", 0.0)
 

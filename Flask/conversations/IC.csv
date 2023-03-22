@@ -2,11 +2,11 @@
 0,IC,say welcome,"Benvenuto. ^start(animations/Stand/Gestures/Hey_6)"
 1,IC,talk,"Apprezzo che sei arrivato puntuale all'appuntamento. \\pau=500\\ Come ti senti oggi? ^start(animations/Stand/Gestures/You_3)"
 2,IC,speak about rules,"^start(animations/Stand/BodyTalk/Speaking/BodyTalk_10) Mi serve il tuo aiuto per costrire una solida torre di cubetti.^start(animations/Stand/Gestures/Give_3) \\pau=500\\"
+2,IC,speak about rules,"Dovrai impilare con attenzione un cubetto per volta. ^start(animations/Stand/Gestures/Explain_6) \\pau=500\\ Quando hai finito dovresti toccarmi la testa per passare alla prossima istruzione \\pau=500\\^start('animations/Stand/Gestures/Give_3')"
 3,IC,ask to order tower,"^start(animations/Stand/Gestures/Explain_1) Inpila scrupolosamente il cubetto rosso sopra quello blu \\pau=500\\ "
 4,IC,ask to order tower,"^start(animations/Stand/Gestures/Explain_6) Metti con attenzioneil cubetto giallo sopra quello rosso  \\pau=500\\"
 5,IC,ask to order tower,"Posiziona il cubetto verde sopra quello giallo ^start(animations/Stand/Gestures/Explain_7) \\pau=500\\"
 6,IC,ask to order tower,"E infine metti il cubetto viola ^start(animations/Stand/Gestures/Explain_1) \\pau=500\\"
 7,IC,say goodbye,"Abbiamo finito il nostro compito in maniera organizzata e puntuale. ^start(animations/Stand/BodyTalk/Speaking/BodyTalk_10) \\pau=500\\"
 8,IC,say goodbye,"^start(animations/Stand/Gestures/Hey_10) Grazie e Arrivederci \\pau=500\\"
-
 

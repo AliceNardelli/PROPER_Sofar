@@ -1,7 +1,8 @@
 ,personality,action,response
 0,IDA,say welcome,"Finalmente sei arrivato. ^start(animations/Stand/Gestures/Hey_6)"
-1,IDA,talk,"Devi aiutarmi, \\pau=500\\ quindi spero tu stia bene^start(animations/Stand/Gestures/You_3). \\pau=500\\ Come stai?"
+1,IDA,talk,"Devi aiutarmi, \\pau=500\\ quindi spero tu stia bene^start(animations/Stand/Gestures/You_3). \\pau=500\\ Come ti senti?"
 2,IDA,speak about rules,"Devo costruire la torre di cubetti più bella di tutte. ^start(animations/Stand/BodyTalk/Speaking/BodyTalk_10) \\pau=500\\ Tu devi aiutarmi. ^start('animations/Stand/Gestures/Give_3') Non sbagliare nulla"
+2,IDA,speak about rules,"Dovrai impilare un cubetto per volta. ^start(animations/Stand/Gestures/Explain_6) \\pau=500\\ Quando hai finito per passare alla prossima istruzione toccami la testa\\pau=500\\^start('animations/Stand/Gestures/Give_3')"
 3,IDA,ask to order tower,"^start(animations/Stand/Gestures/Explain_1) Metti velocemente il cubetto rosso sopra quello blu \\pau=500\\"
 4,IDA,ask to order tower,"^start(animations/Stand/Gestures/Explain_6) Metti il cubetto giallo sopra quello rosso, \\pau=500\\ sei un po' lento \\pau=500\\"
 5,IDA,ask to order tower,"Posiziona il cubetto verde sopra quello giallo ^start(animations/Stand/Gestures/Explain_7) \\pau=500\\"

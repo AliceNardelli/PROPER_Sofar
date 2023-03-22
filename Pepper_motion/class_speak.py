@@ -19,7 +19,7 @@ class Speak:
         self.p=0
         self.ve=0
         self.vo=0
-        self.df=pd.read_csv("/home/alice/PROPER_Sofar/Flask/conversations/EC.csv")
+        self.df=pd.read_csv("/home/alice/PROPER_Sofar/Flask/conversations/NAUN.csv")
         self.tts2=self.session.service("ALMemory")
         self.tts4=self.session.service("ALSpeechRecognition")  
         self.touched=False
@@ -42,7 +42,7 @@ class Speak:
                         "rather_high":95,
                         "high":105,
                         }
-        self.gaze(False,False)
+        
         
     def task(self):
         print(self.parameters["head"])
@@ -70,7 +70,7 @@ class Speak:
             self.autonomouslife="solitary"
             self.al.stopAll() #VEDERE SE VA RIATTIVATO
         ab=self.session.service("ALAutonomousBlinking")
-        ab.setEnabled(boolean2)
+        ab.setEnabled(boolean)
         abm=self.session.service("ALBackgroundMovement")
         abm.setEnabled(boolean)
         aba=self.session.service("ALBasicAwareness")
@@ -79,7 +79,7 @@ class Speak:
         alm.setMode("contextual")
         alm.setEnabled(False)
         asm=self.session.service("ALListeningMovement")
-        asm.setEnabled(boolean2)
+        asm.setEnabled(boolean)
 
     def touch_detected(self,value): #esempio di callback
         self.touched=True
@@ -112,6 +112,7 @@ class Speak:
                             self.touched=False
                             #self.al.setState("solitary")
                             #self.al.stopAll() 
+                            
                             touch = self.tts2.subscriber("MiddleTactilTouched") #questo permette la callback
                             connection = touch.signal.connect(self.touch_detected) #segnale della sottoscrizione
                             while self.touched==False:
@@ -127,13 +128,14 @@ class Speak:
         
     def set_params(self):
         #par={i:self.parameters[i] for i in self.parameters if self.parameters[i]!="no_active"}
-        """
+        
         if self.parameters["gaze"]=="avoid":
             self.gaze(False,False)
         else:
             #self.gaze(True,False)
             self.gaze(False,False)
-        """
+        
+        #self.gaze(False,False)
         tts = self.session.service("ALTextToSpeech")
         speak_move_service = self.session.service("ALSpeakingMovement")
         tts.setLanguage("Italian") 
