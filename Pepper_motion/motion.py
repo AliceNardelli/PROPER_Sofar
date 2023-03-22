@@ -150,8 +150,19 @@ def main3(session):
         memory=session.service("ALMemory")
         touch = memory.subscriber("MiddleTactilTouched") #questo permette la callback
         connection = touch.signal.connect(touch_detected) #segnale della sottoscrizione
-        #time.sleep(10)
+        time.sleep(10)
         #face_det=memory.getData("ALTouch")
+
+def main4(session):
+        #al=session.service("ALAutonomousLife")
+        #al.setState("disabled")
+        #m=session.service("ALMotion")
+       # m.wakeUp()
+        t=session.service("ALTracker")
+        print(t.getAvailableModes())
+        t.track("People")
+        t.stopTracker()
+        time.sleep(10)
 
    
 if __name__ == "__main__":
@@ -171,5 +182,5 @@ if __name__ == "__main__":
         sys.exit(1)
         
     
-    main3(session)
+    main4(session)
 

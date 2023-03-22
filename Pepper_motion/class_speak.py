@@ -19,13 +19,17 @@ class Speak:
         self.p=0
         self.ve=0
         self.vo=0
-        self.df=pd.read_csv("/home/alice/PROPER_Sofar/Flask/conversations/NAUN.csv")
+        self.df=pd.read_csv("/home/alice/PROPER_Sofar/Flask/conversations/IA.csv")
         self.tts2=self.session.service("ALMemory")
         self.tts4=self.session.service("ALSpeechRecognition")  
         self.touched=False
         print(self.df)
         self.autonomouslife="interactive"
         self.al=self.session.service("ALAutonomousLife")
+        self.al.setState("disabled")
+        self.m=self.session.service("ALMotion")
+        self.m.wakeUp()
+        
         self.pitch={"low":0.83,
                     "mid":0.95,
                     "high":1.1,
@@ -60,15 +64,20 @@ class Speak:
                 print("no head movement")
         print("executing head motion")
 
+
+    
     def gaze(self,boolean,boolean2):
+        """
         print("shutting al")
         if boolean2:
             self.al.setState("solitary")
             self.autonomouslife="interactive"
+            self.al.stopAll() 
         else:
             self.al.setState("solitary") #solitary
             self.autonomouslife="solitary"
             self.al.stopAll() #VEDERE SE VA RIATTIVATO
+        """
         ab=self.session.service("ALAutonomousBlinking")
         ab.setEnabled(boolean)
         abm=self.session.service("ALBackgroundMovement")
@@ -128,14 +137,14 @@ class Speak:
         
     def set_params(self):
         #par={i:self.parameters[i] for i in self.parameters if self.parameters[i]!="no_active"}
-        
-        if self.parameters["gaze"]=="avoid":
-            self.gaze(False,False)
+        self.gaze(False,False)
+        if self.parameters["gaze"]=="mutual":
+            tracker=self.session.service("ALTracker")
+            tracker.track("Face")
         else:
-            #self.gaze(True,False)
-            self.gaze(False,False)
+            print("no tracking")
         
-        #self.gaze(False,False)
+        
         tts = self.session.service("ALTextToSpeech")
         speak_move_service = self.session.service("ALSpeakingMovement")
         tts.setLanguage("Italian") 
