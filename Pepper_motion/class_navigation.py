@@ -17,12 +17,12 @@ class Move:
         mv=self.session.service("ALMotion")
         print("setting proxemity")
         if self.parameters["prox"]=="far":
-            distance=0.9
+            distance=0.7
             print("FAR")
         elif self.parameters["prox"]=="mid":
             distance=0.5
         elif self.parameters["prox"]=="near":
-            distance=0.2
+            distance=0.3
         else:
             print("proxemity not found")
             distance=0.9
@@ -42,18 +42,27 @@ class Move:
             x=5
             theta=0
         elif self.final_loc=="l1":
-            x=2
+            distance=0.1
+            x=0
             theta=3.14
         print(x)
         mv.setOrthogonalSecurityDistance(distance)
         mv.setTangentialSecurityDistance(distance)
         res=mv.moveTo(x,0,theta,[["MaxVelXY",vel]])
         if res==-1:
-            res=mv.moveTo(x,0,0,[["MaxVelXY",vel]])
-        print(res, "robot arrived to destination")
+            res=mv.moveTo(x,0,theta,[["MaxVelXY",vel]])
+        
         if self.final_loc=="l1":
+            print("l1 moving along")
+            x=2
+            res=mv.moveTo(x,0,0,[["MaxVelXY",vel]])
+            if res==-1:
+                res=mv.moveTo(x,0,0,[["MaxVelXY",vel]])
             res=mv.moveTo(0,0,theta,[["MaxVelXY",vel]])
-            
+            if res==-1:
+                res=mv.moveTo(0,0,theta,[["MaxVelXY",vel]])
+
+                
     def move(self,action,personality,params):
         self.action=action
         extract_locations=action.split(" ")

@@ -1,7 +1,7 @@
 ,personality,action,response
-0,IUC,say welcome,"benvenuto... \\pau=500\\ insomma, \\pau=500\\ buonasera... scusami il ritardo ^start(animations/Stand/Gestures/Hey_6)\\pau=500\\"
+0,IUC,say welcome,"benvenuto... \\pau=500\\ insomma, \\pau=500\\ buonasera\\pau=500\\ scusami il ritardo ^start(animations/Stand/Gestures/Hey_6) \\pau=500\\"
 1,IUC,talk,"...Come ti senti? ^start(animations/Stand/Gestures/You_3)"
-2,IUC,speak about rules,"Mi sa che devi aiutarmi a costruire una torre di cubetti. ^start(animations/Stand/BodyTalk/Speaking/BodyTalk_10)\\pau=500\\ Io sono sbadato ^start(animations/Stand/Gestures/Give_3)"
+2,IUC,speak about rules,"Mi sa che devi aiutarmi a costruire una torre di cubetti.^start(animations/Stand/BodyTalk/Speaking/BodyTalk_10) \\pau=500\\ Io sono sbadato ^start(animations/Stand/Gestures/Give_3)"
 3,IUC,ask to order tower,"^start(animations/Stand/Gestures/Explain_1) Inpila rosso alla base, \\pau=500\\ no anzi quello blu alla base. \\pau=500\\ Il rosso posizionalo sopra il blu"
 4,IUC,ask to order tower,"^start(animations/Stand/Gestures/Explain_6) Metti il cubetto giallo sopra quello rosso, \\pau=500\\ non preoccuparti se non sono ben allineati "
 5,IUC,ask to order tower,"Posiziona il cubetto verde sopra quello giallo ^start(animations/Stand/Gestures/Explain_7) \\pau=500\\"

@@ -19,9 +19,13 @@ class Speak:
         self.p=0
         self.ve=0
         self.vo=0
-        self.df=pd.read_csv("/home/alice/PROPER_Sofar/Flask/conversations/IUN.csv")
-
+        self.df=pd.read_csv("/home/alice/PROPER_Sofar/Flask/conversations/EC.csv")
+        self.tts2=self.session.service("ALMemory")
+        self.tts4=self.session.service("ALSpeechRecognition")  
+        self.touched=False
         print(self.df)
+        self.autonomouslife="interactive"
+        self.al=self.session.service("ALAutonomousLife")
         self.pitch={"low":0.83,
                     "mid":0.95,
                     "high":1.1,
@@ -38,7 +42,7 @@ class Speak:
                         "rather_high":95,
                         "high":105,
                         }
-        
+        self.gaze(False,False)
         
     def task(self):
         print(self.parameters["head"])
@@ -57,14 +61,16 @@ class Speak:
         print("executing head motion")
 
     def gaze(self,boolean,boolean2):
-        al=self.session.service("ALAutonomousLife")
+        print("shutting al")
         if boolean2:
-            al.setState("interactive")
+            self.al.setState("solitary")
+            self.autonomouslife="interactive"
         else:
-            al.setState("solitary") #solitary
-            al.stopAll() #VEDERE SE VA RIATTIVATO
+            self.al.setState("solitary") #solitary
+            self.autonomouslife="solitary"
+            self.al.stopAll() #VEDERE SE VA RIATTIVATO
         ab=self.session.service("ALAutonomousBlinking")
-        ab.setEnabled(boolean)
+        ab.setEnabled(boolean2)
         abm=self.session.service("ALBackgroundMovement")
         abm.setEnabled(boolean)
         aba=self.session.service("ALBasicAwareness")
@@ -73,9 +79,12 @@ class Speak:
         alm.setMode("contextual")
         alm.setEnabled(False)
         asm=self.session.service("ALListeningMovement")
-        asm.setEnabled(boolean)
+        asm.setEnabled(boolean2)
 
-
+    def touch_detected(self,value): #esempio di callback
+        self.touched=True
+        print("touched")
+        time.sleep(1)
 
     def execute(self,a,anim_speech_service):  
         #try:
@@ -84,20 +93,33 @@ class Speak:
             print(sentences)
             print("-------------")
             for index,row in sentences.iterrows():
+                print(a)
                 anim_speech_service.say(row.response) 
                 if row.action=="talk":
-                    tts2=self.session.service("ALMemory")
-                    tts4=self.session.service("ALSpeechRecognition")  
-                    tts4.setLanguage("Italian")
-                    tts4.setAudioExpression(True)
+
+                    #self.tts4.setLanguage("Italian")
+                    self.tts4.setAudioExpression(True)
                     #tts4.setVocabulary(["no", "si","bene","finito"], False)
                     print("------LISTENING------------")
-                    tts4.subscribe("WordRecognized")
-                    time.sleep(10)
-                    answ=tts2.getData("WordRecognized")
+                    self.tts4.subscribe("WordRecognized")
+                    time.sleep(3)
+                    answ=self.tts2.getData("WordRecognized")
                     print(answ)
-                    tts4.unsubscribe("WordRecognized")
+                    self.tts4.unsubscribe("WordRecognized")
                     print("------ANSWER-----------")
+                elif row.action=="ask to order tower":
+                            print("there")
+                            self.touched=False
+                            #self.al.setState("solitary")
+                            #self.al.stopAll() 
+                            touch = self.tts2.subscriber("MiddleTactilTouched") #questo permette la callback
+                            connection = touch.signal.connect(self.touch_detected) #segnale della sottoscrizione
+                            while self.touched==False:
+                                print("while")
+                                time.sleep(1)
+                            self.touched=False
+                            #self.al.setState(self.autonomouslife)
+                    
         #except:
              #anim_speech_service.say("Non posso eseguire azioni")
         
@@ -105,12 +127,13 @@ class Speak:
         
     def set_params(self):
         #par={i:self.parameters[i] for i in self.parameters if self.parameters[i]!="no_active"}
-        
-        print(self.parameters)
+        """
         if self.parameters["gaze"]=="avoid":
             self.gaze(False,False)
         else:
-            self.gaze(True,False)
+            #self.gaze(True,False)
+            self.gaze(False,False)
+        """
         tts = self.session.service("ALTextToSpeech")
         speak_move_service = self.session.service("ALSpeakingMovement")
         tts.setLanguage("Italian") 
@@ -136,11 +159,13 @@ class Speak:
                 print('Waiting for the thread...')
                 thread.join()
                 break
+        """
         if self.parameters["gaze"]=="mutual":
-            self.gaze(True,False)
+            self.gaze(False,False)
+            #self.gaze(True,False)
         else:
             self.gaze(False,False) 
-
+        """
     def speak(self,action,personality,params):
         if "l2" in action:
             actual_action=action.split(" ")

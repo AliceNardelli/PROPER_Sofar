@@ -3,6 +3,7 @@
 1,AC,talk,"Ti senti bene? ^start(animations/Stand/Gestures/You_5) \\pau=500\\"
 2,AC,speak about rules,"Dovremmo costruire una torre di cubetti. ^start(animations/Stand/BodyTalk/Speaking/BodyTalk_11) \\pau=500\\ Avrei bisogno del tuo aiuto. \\pau=500\\^start(animations/Stand/Gestures/You_5)
  Dobbiamo collaborare affinchè la torre sia solida. \\pau=500\\ "
+2,AC,speak about rules,"Ti chiederò ora di impilare un cubetto per volta. ^start(animations/Stand/BodyTalk/Speaking/BodyTalk_11) \\pau=500\\ Quando hai finito dovresti toccarmi la testa per passare alla prossima istruzione \\pau=500\\^start(animations/Stand/Gestures/You_5)"
 3,AC,ask to order tower,"Inpila gentilmente il cubetto rosso sopra quello blu ^start(animations/Stand/Gestures/Give_5) \\pau=500\\ "
 4,AC,ask to order tower,"^start(animations/Stand/Gestures/Give_6) Metti con attenzione il cubetto giallo sopra quello rosso \\pau=500\\ "
 5,AC,ask to order tower,"Posiziona correttamente il cubetto verde sopra quello giallo ^start(animations/Stand/Gestures/Explain_4) \\pau=500\\ "

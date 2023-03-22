@@ -143,6 +143,16 @@ def main2(session):
         print(answ)
         tts4.unsubscribe("SpeechDetected")
 
+def touch_detected(value): #esempio di callback
+    print (value)
+
+def main3(session):
+        memory=session.service("ALMemory")
+        touch = memory.subscriber("MiddleTactilTouched") #questo permette la callback
+        connection = touch.signal.connect(touch_detected) #segnale della sottoscrizione
+        #time.sleep(10)
+        #face_det=memory.getData("ALTouch")
+
    
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -161,5 +171,5 @@ if __name__ == "__main__":
         sys.exit(1)
         
     
-    main(session)
+    main3(session)
 

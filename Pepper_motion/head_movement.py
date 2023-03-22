@@ -29,7 +29,7 @@ def single_head_nod(session,motion_service, move):
         angles = [0.4, 0.2]
     fractionMaxSpeed  = 0.1
     motion_service.setAngles(names, angles, fractionMaxSpeed)
-    time.sleep(3)
+    time.sleep(1)
     if move=="nodding":
         angles  = [0, -0.2]
     elif move=="shaking":
@@ -38,7 +38,7 @@ def single_head_nod(session,motion_service, move):
     else:
         angles=[-0.4,0.2]
     motion_service.setAngles(names, angles, fractionMaxSpeed)
-    time.sleep(3)
+    time.sleep(1)
     
 def nodding(session):
     #stop_al(session)

@@ -2,11 +2,12 @@
 0,EA,say welcome,"Benvenuto! ^start(animations/Stand/Gestures/Hey_3)  \\pau=500\\ È un piacere conoscerti! ^start(animations/Stand/BodyTalk/Speaking/BodyTalk_1) \\pau=500\\ Sono così felice che tu sia qui! ^start(animations/Stand/Gestures/You_2)"
 1,EA,talk,"^start(animations/Stand/BodyTalk/Speaking/BodyTalk_5) Spero che tu stia bene e che tu ti stia godendo una splendida giornata!^start(animations/Stand/Emotions/Positive/Excited_3) \\pau=300\\ Io sto benissimo. ^start(animations/Stand/Gestures/Me_8). \\pau=300\\ Te come ti senti?"
 2,EA,speak about rules,"Vorrei costruire una torre di cubetti. ^start(animations/Stand/Gestures/Thinking_6) \\pau=300\\ Sarà divertentissimo!^start(animations/Stand/Gestures/This_1) \\pau=500\\ Voglio creare una torre alta e solida! \\pau=500\\ Con dei cubetti colorati la torre sarà ancora più bella!^start(animations/Stand/Gestures/ShowSky_12). \\pau=200\\ Saresti così gentile da aiutarmi?"
+2,EA,speak about rules,"Dovrai impilare un cubetto per volta seguendo i miei suggerimenti ^start(animations/Stand/Gestures/Thinking_6) \\pau=500\\ Quando hai finito toccami una volta la testa per passare alla prossima istruzione \\pau=500\\^start('animations/Stand/Gestures/Give_3')"
 3,EA,ask to order tower,"^start(animations/Stand/Gestures/Give_1) Inpila gentilmente il cubetto rosso sopra quello blu \\pau=300\\"
 4,EA,ask to order tower,"^start(animations/Stand/Gestures/Explain_8) Metti ora il cubetto giallo sopra quello rosso,  ^start(animations/Stand/Gestures/Give_4) \\pau=300\\ sta diventando proprio una bella torre"
 5,EA,ask to order tower,"Posiziona il cubetto verde sopra quello giallo ^start(animations/Stand/Gestures/Explain_5) \\pau=300\\ "
 6,EA,ask to order tower,"E infine metti il cubetto viola  per avere una torre bellissima ^start(animations/Stand/Gestures/Explain_11). \\pau=300\\ Il tuo aiuto è stato fondamentale ^start(animations/Stand/Gestures/You_5)"
-7,EA,say goodbye,"È stato bello giocare insieme. \\pau=500\\ L'esperimento è concluso con successo! \\pau=500\\ Grazie per la vostra collaborazione, siete stati fantastici! ^start(animations/Stand/Gestures/Enthusiastic_4). \\pau=500\\ Grazie mille per aver condiviso questo momento con me!'^start(boston_animation_library/Stand/emphasize_3)"
+7,EA,say goodbye,"È stato bello giocare insieme. \\pau=500\\ L'esperimento è concluso con successo! \\pau=500\\ Grazie per la tua collaborazione, siete stati fantastici! ^start(animations/Stand/Gestures/Enthusiastic_4). \\pau=500\\ Grazie mille per aver condiviso questo momento con me!'^start(boston_animation_library/Stand/emphasize_3)"
 8,EA,say goodbye,"Arrivederci, \\pau=500\\ spero di rivederti presto! ^start(boston_animation_library/Stand/me_you_01)"
 
 
