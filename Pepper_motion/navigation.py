@@ -31,8 +31,7 @@ def main(session):
     mv=session.service("ALMotion")
     res=mv.moveTo(0,0,3.14,[["MaxVelXY",0.3]])
     print(res)
-    if res==True:
-        res=mv.moveTo(0,0,0,[["MaxVelXY",0.3]])
+
 
 
 

@@ -48,14 +48,17 @@ class Gesture:
         else:
             frac_speed=1
         if self.parameters["amplitude"]=="low":
-            angle=[-0.2 ,-0.8,0,0,1.3]
+            #angle=[-0.2 ,-0.8,0,0,1.3]
+            angle=[-0.1 ,0.8,0,-0.6,-0]
         elif self.parameters["amplitude"]=="mid":
-            angle=[0.0 ,-0.8,0,0.5,1.3]
+            #angle=[0.0 ,-0.8,0,0.5,1.3]
+            angle=[-0.1 ,0.8,-2,-0.3,0]
         else:
-            angle=[-0.2 ,-1,0,0,1.3]
-        m.angleInterpolationWithSpeed(["RShoulderPitch","RShoulderRoll","RElbowYaw","RElbowRoll","RWristYaw"],angle,frac_speed)
-        if self.parameters["amplitude"]=="high":
-            m.openHand('RHand')
-        time.sleep(4)
+            #angle=[-0.2 ,-1,0,0,1.3]
+            angle=[-0.1 ,0.8,-2,-0.1,0]
+        m.angleInterpolationWithSpeed(["LShoulderPitch","LShoulderRoll","LElbowYaw","LElbowRoll","LWristYaw"],angle,frac_speed)
+        m.openHand('LHand')
+        time.sleep(2)
         self.gaze(True)
         print(action)
+

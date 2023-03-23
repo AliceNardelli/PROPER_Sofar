@@ -65,23 +65,14 @@ def motion(session):
     #m.angleInterpolationWithSpeed(name,target angles (rad), max speed frac)
     
     frac_speed=1
-    angle=[-0.2 ,-0.8,0,0,1.3]
+    #angle=[-0.1 ,0.8,-2,-0.1,1.3]
+    angle=[-0.1 ,0.8,-2,-0.1,0]
+    angle=[-0.1 ,0.8,0,-0.6,-0]
    
-    m.angleInterpolationWithSpeed(["RShoulderPitch","RShoulderRoll","RElbowYaw","RElbowRoll","RWristYaw"],angle,frac_speed) 
-    m.openHand('RHand')
-    time.sleep(6)
-    frac_speed=0.4
-    angle=[0.0 ,-0.8,0,0.5,1.3]
-    m.angleInterpolationWithSpeed(["RShoulderPitch","RShoulderRoll","RElbowYaw","RElbowRoll","RWristYaw"],angle,frac_speed)
-    
+    m.angleInterpolationWithSpeed(["LShoulderPitch","LShoulderRoll","LElbowYaw","LElbowRoll","LWristYaw"],angle,frac_speed) 
+    m.openHand('LHand')
     time.sleep(6)
     
-    frac_speed=0.1
-    angle=[0.1,-1,0,0.7,1.3]
-    m.angleInterpolationWithSpeed(["RShoulderPitch","RShoulderRoll","RElbowYaw","RElbowRoll","RWristYaw"],angle,frac_speed)
-    
-    time.sleep(2)
-
 def say_head(session):
     tts = session.service("ALTextToSpeech")
     speak_move_service = session.service("ALSpeakingMovement")
@@ -182,5 +173,6 @@ if __name__ == "__main__":
         sys.exit(1)
         
     
-    main4(session)
+    #main4(session)
+    motion(session)
 

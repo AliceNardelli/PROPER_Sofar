@@ -19,7 +19,7 @@ class Speak:
         self.p=0
         self.ve=0
         self.vo=0
-        self.df=pd.read_csv("/home/alice/PROPER_Sofar/Flask/conversations/IA.csv")
+        self.df=pd.read_csv("/home/alice/PROPER_Sofar/Flask/conversations/NAUN.csv")
         self.tts2=self.session.service("ALMemory")
         self.tts4=self.session.service("ALSpeechRecognition")  
         self.touched=False
@@ -105,7 +105,6 @@ class Speak:
                 print(a)
                 anim_speech_service.say(row.response) 
                 if row.action=="talk":
-
                     #self.tts4.setLanguage("Italian")
                     self.tts4.setAudioExpression(True)
                     #tts4.setVocabulary(["no", "si","bene","finito"], False)
