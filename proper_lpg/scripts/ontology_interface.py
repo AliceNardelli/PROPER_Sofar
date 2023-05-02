@@ -6,6 +6,19 @@ import rospy
 import smach
 import smach_ros
 import random
+import numpy as np
+
+
+traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
+traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
+we=0
+wi=1
+wc=1
+wu=0
+wa=0
+wd=0
+sum=we +wi +wc + wu + wa + wd
+weights=[we/sum,wi/sum,wc/sum,wu/sum,wa/sum,wd/sum]
 
 
 # define state Foo
@@ -18,10 +31,45 @@ class State_Init(smach.State):
 
    def execute(self, userdata):
         rospy.loginfo('Executing state INIT')
-        rospy.loginfo('copy pb in the correct file')
+        rospy.loginfo('copy pb in the correct file')        
         with open(userdata.init_pb,'r') as firstfile, open(userdata.problem_path,'w') as secondfile:
             for line in firstfile:
-                secondfile.write(line)
+            
+                if "extroversion_coefficient" in line:
+                    if we!=0:
+                        l="        (= (extroversion_coefficient) "+str(we/sum) +")\n"
+                        secondfile.write(l)
+                        p="        "+traits_preds[0]+"\n"
+                        secondfile.write(p)
+                    else:
+                        l="        (= (extroversion_coefficient) "+str(wi/sum) +")\n"
+                        secondfile.write(l)
+                        p="        "+traits_preds[1]+"\n"
+                        secondfile.write(p)
+                elif "conscientious_coefficient" in line:
+                    if wc!=0:
+                        l="        (= (conscientious_coefficient) "+str(wc/sum) +")\n"
+                        secondfile.write(l)
+                        p="        "+traits_preds[2]+"\n"
+                        secondfile.write(p)
+                    else:
+                        l="        (= (conscientious_coefficient) "+str(wu/sum) +")\n"
+                        secondfile.write(l)
+                        p="        "+traits_preds[3]+"\n"
+                        secondfile.write(p)
+                elif "agreeableness_coefficient" in line:
+                    if wa!=0:
+                        l="        (= (agreeableness_coefficient) "+str(wa/sum) +")\n"
+                        secondfile.write(l)
+                        p="        "+traits_preds[4]+"\n"
+                        secondfile.write(p)
+                    else:
+                        l="        (= (agreeableness_coefficient) "+str(wd/sum) +")\n"
+                        secondfile.write(l)
+                        p="        "+traits_preds[5]+"\n"
+                        secondfile.write(p)
+                else:
+                    secondfile.write(line)
         rospy.loginfo('Reading domain and populate ontology')
         populate_ontology(userdata.domain_path)
         rospy.loginfo('Initialize function and predicates in the ontology')
@@ -73,6 +121,9 @@ class ExecAction(smach.State):
     def execute(self, userdata):
         rospy.loginfo('Executing actions')
         num =random.randint(0, 9)
+        personality=np.random.choice(traits,p=weights)
+        ac=userdata.executing_actions[0]
+        print(ac +"--------------"+personality)
         if num >7:
             rospy.loginfo('Action Failed')
             return "outcome4"

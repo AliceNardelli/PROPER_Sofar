@@ -7,8 +7,8 @@
 )
 
 (:functions
-	    (max_no_blocks)
-	    (no_blocks)
+	(max_no_blocks)
+	(no_blocks)
         (dur)
         (extroversion_coefficient)
         (desired_interaction)
