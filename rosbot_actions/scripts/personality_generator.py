@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 import os
 import shutil
@@ -29,8 +28,8 @@ def generate_params(req):
     return r
 
 if __name__ == "__main__":
-    rospy.init_node('personality_generatie')
-    s = rospy.Service('personality_params', PersonalityGenerator, generate_params)
+    rospy.init_node('personality_generator')
+    s = rospy.Service('personality_generator_srv', PersonalityGenerator, generate_params)
     print("Ready to add two ints.")
     rospy.spin()
 

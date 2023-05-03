@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from proper_lpg.load_ontology import *
+from proper_lpg.srv import ExecAction, ExecActionRequest
 import roslib
 import rospy
 import smach
@@ -112,7 +113,7 @@ class GetActions(smach.State):
         userdata.executing_actions_out=read_plan(userdata.plan_path)
         return 'outcome3'
     
-class ExecAction(smach.State):
+class ExAction(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
                              outcomes=['outcome4','outcome5'],
@@ -120,19 +121,29 @@ class ExecAction(smach.State):
                              output_keys=['updated_actions','action']) 
     def execute(self, userdata):
         rospy.loginfo('Executing actions')
-        num =random.randint(0, 9)
+        #num =random.randint(0, 9)
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
         print(ac +"--------------"+personality)
-        if num >7:
-            rospy.loginfo('Action Failed')
-            return "outcome4"
-        else:
-            ac=userdata.executing_actions.pop(0)
-            rospy.loginfo('Action executed: '+ac)
-            userdata.action=ac
-            userdata.updated_actions=userdata.executing_actions
-            return 'outcome5'
+        rospy.wait_for_service('action_dispatcher_srv')
+        try:
+            action_dispatcher_srv = rospy.ServiceProxy('action_dispatcher_srv', ExecAction)
+            msg=ExecActionRequest()
+            msg.action=ac.lower()
+            msg.personality=personality
+            resp = action_dispatcher_srv(msg)
+            if resp.success==False:
+              rospy.loginfo('Action Failed')
+              return "outcome4"
+            else:
+                ac=userdata.executing_actions.pop(0)
+                rospy.loginfo('Action executed: '+ac)
+                userdata.action=ac
+                userdata.updated_actions=userdata.executing_actions
+                return 'outcome5'
+        except rospy.ServiceException as e:
+            print("Service call failed: %s"%e)
+
         
 class WriteProblem(smach.State):
     def __init__(self):
@@ -203,7 +214,7 @@ def main():
                                          'executing_actions_out':'actions',
                                        })
       
-      smach.StateMachine.add('EXEC', ExecAction(), 
+      smach.StateMachine.add('EXEC', ExAction(), 
                         transitions={'outcome4':'WRITE_PLAN',
                                      'outcome5':'UPDATE_ONTOLOGY',
                                      },
