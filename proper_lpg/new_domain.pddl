@@ -26,6 +26,7 @@
         (production_room ?r - room)
         (assembly_room ?r - room)
         (presented_task ?r - room)
+        (goodbye ?r - room)
         (at ?r - room)
         (human_present) 
         (block_to_deliver)
@@ -43,6 +44,83 @@
 )
 
 
+(:durative-action EXPRESS_EXCITEMENT
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(interaction_level)(desired_interaction)))
+                   (at start (extro))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (interaction_level)5))
+                )
+)
+
+
+(:durative-action MOVE_EXCITE
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(interaction_level)(desired_interaction)))
+                   (at start (extro))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (interaction_level)5))
+                )
+)
+
+
+(:durative-action MOVE_TO_CAPTURE_HUMAN_ATTENTION
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(interaction_level)(desired_interaction)))
+                   (at start (extro))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (interaction_level)5))
+                )
+)
+
+(:durative-action EXPRESS_ENTHUSIASM_FOR_THE_LAST_ACHIEVED_ACTION
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(interaction_level)(desired_interaction)))
+                   (at start (extro))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (interaction_level)5))
+                )
+)
+
+(:durative-action EXPRESS_ENTHUSIASM_FOR_THE_NEXT_FUTURE_WORK
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(interaction_level)(desired_interaction)))
+                   (at start (extro))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (interaction_level)5))
+                )
+)
+
 (:durative-action CHIT_CHAT
         :duration
                 (= ?duration 5)
@@ -58,22 +136,8 @@
                 )
 )
 
-(:durative-action APPROACH_HUMAN
-        :duration
-                (= ?duration 5)
-        :condition
-                (and
-                   (at start (<(interaction_level)(desired_interaction)))
-                   (at start (extro))
-                )
 
-        :effect
-                (and    
-                     (at end (increase (interaction_level)5))
-                )
-)
-
-(:durative-action EXPRESS_ENTHUSIASM
+(:durative-action GO_NEAR_HUMAN
         :duration
                 (= ?duration 5)
         :condition
@@ -119,8 +183,23 @@
                 )
 )
 
+(:durative-action GO_FAR
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(interaction_level)(desired_interaction)))
+                   (at start (intro))
+                )
 
-(:durative-action CHECK_HUMAN_WORK
+        :effect
+                (and    
+                     (at end (increase (interaction_level) 5))
+                )
+)
+
+
+(:durative-action MOVE_TO_CHECK_HUMAN_WORKING_STATION
         :duration
                 (= ?duration 5)
         :condition
@@ -135,7 +214,53 @@
                 )
 )
 
-(:durative-action REMIND_TO_PAY_ATTENTION
+
+(:durative-action SAY_TO_NOT_DISTRACT
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(scrupulousness_level)(desired_scrupulousness)))
+                   (at start (consc))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (scrupulousness_level)5))
+                )
+)
+
+(:durative-action SAY_TO_PAY_ATTENTION
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(scrupulousness_level)(desired_scrupulousness)))
+                   (at start (consc))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (scrupulousness_level)5))
+                )
+)
+
+(:durative-action SAY_TO_FOCUS_ON_FUTURE_WORK
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(scrupulousness_level)(desired_scrupulousness)))
+                   (at start (consc))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (scrupulousness_level)5))
+                )
+)
+
+(:durative-action SAY_THEY_HAVE_A_GOAL_TO_ACHIEVE
         :duration
                 (= ?duration 5)
         :condition
@@ -151,7 +276,7 @@
 )
 
 
-(:durative-action WAIT
+(:durative-action GO_IN_A_RANDOM_POSITION
         :duration
                 (= ?duration 5)
         :condition
@@ -166,7 +291,37 @@
                 )
 )
 
-(:durative-action RANDOM_ACTION
+(:durative-action LATE
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(scrupulousness_level)(desired_scrupulousness)))
+                   (at start (unsc))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (scrupulousness_level) 5))
+                )
+)
+
+(:durative-action DO_A_RANDOM_ACTION
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(scrupulousness_level)(desired_scrupulousness)))
+                   (at start (unsc))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (scrupulousness_level) 5))
+                )
+)
+
+(:durative-action MAKE_MISTAKE
         :duration
                 (= ?duration 5)
         :condition
@@ -198,7 +353,7 @@
 
 
 
-(:durative-action SHOW_EMPATHY
+(:durative-action ASK_IF_HUMAN_NEED_HELP
         :duration
                 (= ?duration 5)
         :condition
@@ -213,7 +368,7 @@
                 )
 )
 
-(:durative-action PLEASURE_HUMANS
+(:durative-action SAY_THAT_YOU_KNOW_IT_IS_A_DIFFICULT_TASK
         :duration
                 (= ?duration 5)
         :condition
@@ -228,7 +383,37 @@
                 )
 )
 
-(:durative-action ASK_IF_NEED_HELP
+(:durative-action SAY_TO_NOT_MATTER_IF_AN_ERROR_OCCUR
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(agreeableness_level)(desired_agreeableness)))
+                   (at start (agree))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (agreeableness_level)5))
+                )
+)
+
+(:durative-action SAY_YOU_ARE_SORRY_FOR_THE_FATIGUE
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(agreeableness_level)(desired_agreeableness)))
+                   (at start (agree))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (agreeableness_level)5))
+                )
+)
+
+(:durative-action SAY_THE_HUMAN_HE_IS_DOING_A_GOOD_WORK
         :duration
                 (= ?duration 5)
         :condition
@@ -244,7 +429,7 @@
 )
 
 
-(:durative-action SAY_ROBOT_WORK_BETTER
+(:durative-action SAY_THAT_YOU_WOULD_PERFORM_AN_ACTION_DIFFERENTLY
         :duration
                 (= ?duration 5)
         :condition
@@ -259,7 +444,7 @@
                 )
 )
 
-(:durative-action TRY_REPLACE_THE_HUMAN
+(:durative-action SAY_THE_HUMAN_SHOULD_WORK_BETTER
         :duration
                 (= ?duration 5)
         :condition
@@ -274,7 +459,37 @@
                 )
 )
 
-(:durative-action BE_ARROGANT
+(:durative-action SAY_TO_WORK_MORE_FAST
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(agreeableness_level)(desired_agreeableness)))
+                   (at start (disagree))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (agreeableness_level) 5))
+                )
+)
+
+(:durative-action TRY_TO_REPLACE_THE_HUMAN
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(agreeableness_level)(desired_agreeableness)))
+                   (at start (disagree))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (agreeableness_level) 5))
+                )
+)
+
+(:durative-action GO_IN_ANOTHER_LOCATION
         :duration
                 (= ?duration 5)
         :condition
@@ -402,7 +617,7 @@
                         (at end (presented_task ?l1))
                         (at end (not (computed_e)))
                         (at end (not (computed_c)))
-                         (at end (not (computed_a)))
+                        (at end (not (computed_a)))
                         (at end (assign (dur) 7))
                 )
 )
@@ -471,7 +686,67 @@
                 )
 )
 
+(:durative-action SAY_GOOBYE_PRODUCTION_ROOM
+        :parameters
+                 (?l1  - room)
+        :duration
+                (= ?duration 2)
 
+        :condition
+               (and 
+                        (at start (computed_e))
+                        (at start (computed_c))
+                        (at start (computed_a))
+                        (at start (at ?l1))
+                        (at start(production_room ?l1))
+                        (at start(human_present)) 
+                        (at start (>=(interaction_level)(desired_interaction)))
+                        (at start (>=(scrupulousness_level)(desired_scrupulousness)))
+                        (at start (>=(agreeableness_level)(desired_agreeableness)))
+                        (at start (<=(no_blocks)(max_no_blocks)))
+                        (at start (>(no_blocks)(-(max_no_blocks)1)))
+
+                )
+        :effect
+                (and
+                        (at end (not (computed_e)))
+                        (at end (not (computed_c)))
+                        (at end (not (computed_a)))
+                        (at end (assign (dur) 2))
+                        (at end (goodbye ?l1))
+                )
+)
+
+
+(:durative-action SAY_GOOBYE_ASSEMBLY_ROOM
+        :parameters
+                 (?l1  - room)
+        :duration
+                (= ?duration 2)
+
+        :condition
+               (and 
+                        (at start (computed_e))
+                        (at start (computed_c))
+                        (at start (computed_a))
+                        (at start (at ?l1))
+                        (at start(assembly_room ?l1))
+                        (at start(human_present)) 
+                        (at start (>=(interaction_level)(desired_interaction)))
+                        (at start (>=(scrupulousness_level)(desired_scrupulousness)))
+                        (at start (>=(agreeableness_level)(desired_agreeableness)))
+                        (at start (>(no_blocks)(max_no_blocks)))
+
+                )
+        :effect
+                (and
+                        (at end (not (computed_e)))
+                        (at end (not (computed_c)))
+                        (at end (not (computed_a)))
+                        (at end (assign (dur) 2))
+                        (at end (goodbye ?l1))
+                )
+)
 
 (:action COMPUTE_METRIC_INTRO
     :precondition (and 
@@ -546,11 +821,13 @@
 )
 
 (:action CHECK_FINISHED
-    :parameters (?l1 - room)
+    :parameters (?l1 ?l2 - room)
     :precondition (and 
             (at ?l1)
             (assembly_room ?l1)
-            (>(no_blocks)(max_no_blocks))
+            (production_room ?l2)
+            (goodbye ?l1)
+            (goodbye ?l2)
     )
     :effect 
       (and

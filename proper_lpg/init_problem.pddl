@@ -13,7 +13,7 @@
         (empty_robot)
         (=(baseline)5)
         (=(dur)0)
-        (= (extroversion_coefficient) 0.0)
+        (= (extroversion_coefficient) 0)
         (= (desired_interaction) 5)
         (= (interaction_level) 5)  
         (computed_e)  
