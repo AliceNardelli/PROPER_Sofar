@@ -41,6 +41,13 @@
         (agree)
         (disagree)
         (computed_a)
+        (interactive_action)
+        (not_interactive_action)
+        (not_presented ?r -room)
+        (can_move)
+        (showed)
+        (rude)
+        (gently)
 )
 
 
@@ -336,6 +343,21 @@
                 )
 )
 
+(:durative-action CHIT_CHAT_UNSC
+        :duration
+                (= ?duration 5)
+        :condition
+                (and
+                   (at start (<(scrupulousness_level)(desired_scrupulousness)))
+                   (at start (unsc))
+                )
+
+        :effect
+                (and    
+                     (at end (increase (scrupulousness_level) 5))
+                )
+)
+
 (:durative-action SAY_NO_MATTER_ABOUT_THE_TASK
         :duration
                 (= ?duration 5)
@@ -503,7 +525,6 @@
                 )
 )
 
-
 (:durative-action REACHING_PRODUCTION_ROOM
         :parameters
                  (?l1 ?l2 - room)
@@ -520,6 +541,7 @@
                         (at start (computed_e))
                         (at start (computed_c))
                         (at start (computed_a))
+                        (at start (can_move))
                 )
 
         :effect
@@ -530,6 +552,10 @@
                         (at end (not (at ?l1)))
                         (at end (at ?l2))
                         (at end (assign (dur) 10))
+                        (at end(not_interactive_action))
+                        (at end(not(interactive_action)))
+                        (at end (not (can_move)))
+                        (at end (not (showed)))
                 )
 )
 
@@ -550,6 +576,7 @@
                         (at start (>=(agreeableness_level)(desired_agreeableness)))
                         (at start (computed_c))
                         (at start (computed_a))
+                        (at start (can_move))
                 )
 
         :effect
@@ -560,6 +587,10 @@
                         (at end (not (computed_c)))
                         (at end (not (computed_a)))
                         (at end (assign (dur) 10))
+                        (at end(not_interactive_action))
+                        (at end(not(interactive_action)))
+                        (at end (not (can_move)))
+                        (at end (not (showed)))
                 )
 )
 
@@ -579,6 +610,7 @@
                         (at start (>=(interaction_level)(desired_interaction)))
                         (at start (>=(scrupulousness_level)(desired_scrupulousness)))
                         (at start (>=(agreeableness_level)(desired_agreeableness)))
+                        (at start (not_presented ?l1))
                 )
 
         :effect
@@ -588,6 +620,11 @@
                         (at end (not (computed_c)))
                         (at end (not (computed_a)))
                         (at end (assign (dur) 7))
+                        (at end(interactive_action))
+                        (at end(not(not_interactive_action)))
+                        (at end (not (not_presented ?l1)))
+                        (at end (can_move))
+                        (at end (not (showed)))
                 )
 )
 
@@ -609,6 +646,7 @@
                         (at start (>=(interaction_level)(desired_interaction)))
                         (at start (>=(scrupulousness_level)(desired_scrupulousness)))
                         (at start (>=(agreeableness_level)(desired_agreeableness)))
+                        (at start (not_presented ?l1))
                 )
 
         :effect
@@ -618,8 +656,14 @@
                         (at end (not (computed_c)))
                         (at end (not (computed_a)))
                         (at end (assign (dur) 7))
+                        (at end(interactive_action))
+                        (at end(not(not_interactive_action)))
+                        (at end (not (not_presented ?l1)))
+                        (at end (can_move))
+                        (at end (not (showed)))
                 )
 )
+
 
 (:durative-action ASK_PICK_THE_BLOCK
         :parameters
@@ -640,6 +684,7 @@
                         (at start (>=(interaction_level)(desired_interaction)))
                         (at start (>=(scrupulousness_level)(desired_scrupulousness)))
                         (at start (>=(agreeableness_level)(desired_agreeableness)))
+                        
                 )
         :effect
                 (and
@@ -649,11 +694,53 @@
                         (at end (not (computed_c)))
                         (at end (not (computed_a)))
                         (at end (assign (dur) 5))
+                        (at end(interactive_action))
+                        (at end(not(not_interactive_action)))
+                        (at end (not (showed)))
+                        (at end (can_move))                       
                 )
 )
 
 
-(:durative-action ASK_ASSEMBLY_BLOCK
+(:durative-action SHOW_PICK_THE_BLOCK
+        :parameters
+               (?l1  - room)
+        :duration
+                (= ?duration 5)
+
+        :condition
+               (and 
+                        (at start (computed_e))
+                        (at start (computed_c))
+                        (at start (computed_a))
+                        (at start (at ?l1))
+                        (at start(production_room ?l1))
+                        (at start(presented_task ?l1))
+                        (at start(human_present)) 
+                        (at start(empty_robot)) 
+                        (at start (>=(interaction_level)(desired_interaction)))
+                        (at start (>=(scrupulousness_level)(desired_scrupulousness)))
+                        (at start (>=(agreeableness_level)(desired_agreeableness)))
+                       
+                )
+        :effect
+                (and
+                        (at end (not(empty_robot)))
+                        (at end (block_to_deliver))
+                        (at end (not (computed_e)))
+                        (at end (not (computed_c)))
+                        (at end (not (computed_a)))
+                        (at end (assign (dur) 5))
+                        (at end(interactive_action))
+                        (at end(not(not_interactive_action)))
+                        (at end (can_move))
+                        (at end (showed))
+                        
+                )
+)
+
+
+(:durative-action ASK_ASSEMBLY_BLOCK_RUDE
         :parameters
                  (?l1  - room)
         :duration
@@ -672,6 +759,7 @@
                         (at start (>=(interaction_level)(desired_interaction)))
                         (at start (>=(scrupulousness_level)(desired_scrupulousness)))
                         (at start (>=(agreeableness_level)(desired_agreeableness)))
+                       
                 )
         :effect
                 (and
@@ -682,8 +770,130 @@
                         (at end (not(block_to_deliver)))
                         (at end (increase (no_blocks) 1))
                         (at end (assign (dur) 5))
+                        (at end(interactive_action))
+                        (at end(not(not_interactive_action)))
+                        (at end (not (showed)))
+                        (at end (can_move))  
+                        (at end (rude))
                 )
 )
+
+(:durative-action ASK_ASSEMBLY_BLOCK_GENTLY
+        :parameters
+                 (?l1  - room)
+        :duration
+                (= ?duration 5)
+
+        :condition
+               (and 
+                        (at start (computed_e))
+                        (at start (computed_c))
+                        (at start (computed_a))
+                        (at start (at ?l1))
+                        (at start(assembly_room ?l1))
+                        (at start(presented_task ?l1))
+                        (at start(human_present)) 
+                        (at start(block_to_deliver)) 
+                        (at start (>=(interaction_level)(desired_interaction)))
+                        (at start (>=(scrupulousness_level)(desired_scrupulousness)))
+                        (at start (>=(agreeableness_level)(desired_agreeableness)))
+                       
+                )
+        :effect
+                (and
+                        (at end (not (computed_e)))
+                        (at end (not (computed_c)))
+                        (at end (not (computed_a)))
+                        (at end (empty_robot))
+                        (at end (not(block_to_deliver)))
+                        (at end (increase (no_blocks) 1))
+                        (at end (assign (dur) 5))
+                        (at end(interactive_action))
+                        (at end(not(not_interactive_action)))
+                        (at end (not (showed)))
+                        (at end (can_move))  
+                        (at end (gently))
+                )
+)
+
+
+(:durative-action SHOW_ASSEMBLY_BLOCK_RUDE
+        :parameters
+                 (?l1  - room)
+        :duration
+                (= ?duration 5)
+
+        :condition
+               (and 
+                        (at start (computed_e))
+                        (at start (computed_c))
+                        (at start (computed_a))
+                        (at start (at ?l1))
+                        (at start(assembly_room ?l1))
+                        (at start(presented_task ?l1))
+                        (at start(human_present)) 
+                        (at start(block_to_deliver)) 
+                        (at start (>=(interaction_level)(desired_interaction)))
+                        (at start (>=(scrupulousness_level)(desired_scrupulousness)))
+                        (at start (>=(agreeableness_level)(desired_agreeableness)))
+                       
+                )
+        :effect
+                (and
+                        (at end (not (computed_e)))
+                        (at end (not (computed_c)))
+                        (at end (not (computed_a)))
+                        (at end (empty_robot))
+                        (at end (not (block_to_deliver)))
+                        (at end (increase (no_blocks) 1))
+                        (at end (assign (dur) 5))
+                        (at end(interactive_action))
+                        (at end(not(not_interactive_action)))
+                        (at end (showed))
+                        (at end (can_move))  
+                        (at end (rude)) 
+                )
+)
+
+
+(:durative-action SHOW_ASSEMBLY_BLOCK_GENTLY
+        :parameters
+                 (?l1  - room)
+        :duration
+                (= ?duration 5)
+
+        :condition
+               (and 
+                        (at start (computed_e))
+                        (at start (computed_c))
+                        (at start (computed_a))
+                        (at start (at ?l1))
+                        (at start(assembly_room ?l1))
+                        (at start(presented_task ?l1))
+                        (at start(human_present)) 
+                        (at start(block_to_deliver)) 
+                        (at start (>=(interaction_level)(desired_interaction)))
+                        (at start (>=(scrupulousness_level)(desired_scrupulousness)))
+                        (at start (>=(agreeableness_level)(desired_agreeableness)))
+                       
+                )
+        :effect
+                (and
+                        (at end (not (computed_e)))
+                        (at end (not (computed_c)))
+                        (at end (not (computed_a)))
+                        (at end (empty_robot))
+                        (at end (not (block_to_deliver)))
+                        (at end (increase (no_blocks) 1))
+                        (at end (assign (dur) 5))
+                        (at end(interactive_action))
+                        (at end(not(not_interactive_action)))
+                        (at end (showed))
+                        (at end (can_move))  
+                        (at end (gently)) 
+                )
+)
+
 
 (:durative-action SAY_GOOBYE_PRODUCTION_ROOM
         :parameters
@@ -693,6 +903,7 @@
 
         :condition
                (and 
+                        (at start (block_to_deliver))
                         (at start (computed_e))
                         (at start (computed_c))
                         (at start (computed_a))
@@ -713,6 +924,10 @@
                         (at end (not (computed_a)))
                         (at end (assign (dur) 2))
                         (at end (goodbye ?l1))
+                        (at end(interactive_action))
+                        (at end(not(not_interactive_action)))
+                        (at end (can_move))
+                        (at end (not (showed)))
                 )
 )
 
@@ -725,6 +940,7 @@
 
         :condition
                (and 
+                        (at start (empty_robot))
                         (at start (computed_e))
                         (at start (computed_c))
                         (at start (computed_a))
@@ -744,29 +960,90 @@
                         (at end (not (computed_a)))
                         (at end (assign (dur) 2))
                         (at end (goodbye ?l1))
+                        (at end(interactive_action))
+                        (at end(not(not_interactive_action)))
+                        (at end (can_move))
+                        (at end (not (showed)))
                 )
 )
 
-(:action COMPUTE_METRIC_INTRO
+(:action COMPUTE_METRIC_INTRO_IA
     :precondition (and 
-         (not (computed_e))  
-         (intro) 
+        (not (computed_e))  
+        (intro) 
+        (interactive_action)
+        (not(showed))
     )
     :effect (and
-    	   (computed_e)
-           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
-           )
+    	(computed_e)
+        (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)3)))
+        )
 )
 
-(:action COMPUTE_METRIC_EXTRO
+(:action COMPUTE_METRIC_INTRO_IA_SHOW
     :precondition (and 
-         (not (computed_e))  
-         (extro) 
+        (not (computed_e))  
+        (intro) 
+        (interactive_action)
+        (showed)
+    )
+    :effect (and
+    	(computed_e)
+        (increase (interaction_level)(*(extroversion_coefficient)(dur)))
+        )
+)
+
+(:action COMPUTE_METRIC_INTRO_NIA
+    :precondition (and 
+        (not (computed_e))  
+        (intro) 
+        (not_interactive_action)
+        (not(showed))
+    )
+    :effect (and
+    	(computed_e)
+        (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+        )
+)
+
+(:action COMPUTE_METRIC_EXTRO_IA_SHOW
+    :precondition (and 
+        (not (computed_e))  
+        (extro)
+        (interactive_action) 
+        (showed)
     )
     :effect 
     (and
-    	    (computed_e)
-           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+    	(computed_e)
+        (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)3)))
+    )
+)
+
+(:action COMPUTE_METRIC_EXTRO_IA
+    :precondition (and 
+        (not (computed_e))  
+        (extro)
+        (interactive_action) 
+        (not(showed))
+    )
+    :effect 
+    (and
+    	(computed_e)
+        (increase (interaction_level)(*(extroversion_coefficient)(dur)))
+    )
+)
+
+(:action COMPUTE_METRIC_EXTRO_NIA
+    :precondition (and 
+        (not (computed_e))  
+        (extro)
+        (not_interactive_action) 
+    )
+    :effect 
+    (and
+    	(computed_e)
+        (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
     )
 )
 
@@ -797,8 +1074,10 @@
 
 (:action COMPUTE_METRIC_DISAGREE
     :precondition (and 
-         (not (computed_a))  
-         (disagree)
+        (not (computed_a))  
+        (disagree)
+        (not(rude))
+        (not(gently))
     )
     :effect 
           (and
@@ -807,15 +1086,74 @@
            )
 )
 
+(:action COMPUTE_METRIC_DISAGREE_R
+    :precondition (and 
+         (not (computed_a))  
+         (disagree)
+         (rude)
+    )
+    :effect 
+          (and
+    	   (computed_a)
+           (increase (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+           (not(rude))
+           )
+)
+
+
+(:action COMPUTE_METRIC_DISAGREE_NR
+    :precondition (and 
+         (not (computed_a))  
+         (disagree)
+         (gently)
+    )
+    :effect 
+          (and
+    	   (computed_a)
+           (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)3)))
+           (not(gently))
+           )
+)
+
 (:action COMPUTE_METRIC_AGREE
     :precondition (and 
         (not (computed_a))  
         (agree)
+        (not(rude))
+        (not(gently))
     )
     :effect 
        (and
     	(computed_a)
         (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+        )
+)
+
+(:action COMPUTE_METRIC_AGREE_R
+    :precondition (and 
+        (not (computed_a))  
+        (agree)
+        (rude)
+    )
+    :effect 
+       (and
+    	(computed_a)
+        (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)3)))
+        (not(rude))
+        )
+)
+
+(:action COMPUTE_METRIC_AGREE_NR
+    :precondition (and 
+        (not (computed_a))  
+        (agree)
+        (gently)
+    )
+    :effect 
+       (and
+    	(computed_a)
+        (increase (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+        (not(gently))
         )
 )
 
