@@ -67,7 +67,7 @@
 )
 
 
-(:durative-action MOVE_EXCITE
+(:durative-action SHOW_EXCITEMENT
         :duration
                 (= ?duration 5)
         :condition
@@ -83,7 +83,7 @@
 )
 
 
-(:durative-action MOVE_TO_CAPTURE_HUMAN_ATTENTION
+(:durative-action SHOW_HAND
         :duration
                 (= ?duration 5)
         :condition
@@ -143,22 +143,20 @@
                 )
 )
 
-
-(:durative-action GO_NEAR_HUMAN
+(:durative-action SHOW_DETACHMENT
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(interaction_level)(desired_interaction)))
-                   (at start (extro))
+                   (at start (intro))
                 )
 
         :effect
                 (and    
-                     (at end (increase (interaction_level)5))
+                     (at end (increase (interaction_level) 5))
                 )
 )
-
 
 (:durative-action GO_NOT_CROWDED_AREA
         :duration
@@ -313,22 +311,7 @@
                 )
 )
 
-(:durative-action DO_A_RANDOM_ACTION
-        :duration
-                (= ?duration 5)
-        :condition
-                (and
-                   (at start (<(scrupulousness_level)(desired_scrupulousness)))
-                   (at start (unsc))
-                )
-
-        :effect
-                (and    
-                     (at end (increase (scrupulousness_level) 5))
-                )
-)
-
-(:durative-action MAKE_MISTAKE
+(:durative-action SHOW_RANDOM_MOVEMENT
         :duration
                 (= ?duration 5)
         :condition
@@ -495,7 +478,7 @@
                 )
 )
 
-(:durative-action TRY_TO_REPLACE_THE_HUMAN
+(:durative-action SHOW_DISGUST
         :duration
                 (= ?duration 5)
         :condition
@@ -510,22 +493,7 @@
                 )
 )
 
-(:durative-action GO_IN_ANOTHER_LOCATION
-        :duration
-                (= ?duration 5)
-        :condition
-                (and
-                   (at start (<(agreeableness_level)(desired_agreeableness)))
-                   (at start (disagree))
-                )
-
-        :effect
-                (and    
-                     (at end (increase (agreeableness_level) 5))
-                )
-)
-
-(:durative-action REACHING_PRODUCTION_ROOM
+(:durative-action MOVE_TO_PRODUCTION_ROOM
         :parameters
                  (?l1 ?l2 - room)
         :duration
@@ -560,7 +528,7 @@
 )
 
 
-(:durative-action REACHING_ASSEMBLY_ROOM
+(:durative-action MOVE_TO_ASSEMBLY_ROOM
         :parameters
                  (?l1 ?l2 - room)
         :duration
@@ -665,7 +633,7 @@
 )
 
 
-(:durative-action ASK_PICK_THE_BLOCK
+(:durative-action ASK_PICK_THE_BLOCK_VOICE
         :parameters
                (?l1  - room)
         :duration
@@ -702,7 +670,7 @@
 )
 
 
-(:durative-action SHOW_PICK_THE_BLOCK
+(:durative-action ASK_PICK_THE_BLOCK_TABLET
         :parameters
                (?l1  - room)
         :duration
@@ -740,7 +708,7 @@
 )
 
 
-(:durative-action ASK_ASSEMBLY_BLOCK_RUDE
+(:durative-action ASK_ASSEMBLY_BLOCK_VOICE_RUDE
         :parameters
                  (?l1  - room)
         :duration
@@ -778,7 +746,7 @@
                 )
 )
 
-(:durative-action ASK_ASSEMBLY_BLOCK_GENTLY
+(:durative-action ASK_ASSEMBLY_BLOCK_VOICE_GENTLY
         :parameters
                  (?l1  - room)
         :duration
@@ -817,7 +785,7 @@
 )
 
 
-(:durative-action SHOW_ASSEMBLY_BLOCK_RUDE
+(:durative-action ASK_ASSEMBLY_BLOCK_TABLET_RUDE
         :parameters
                  (?l1  - room)
         :duration
@@ -856,7 +824,7 @@
 )
 
 
-(:durative-action SHOW_ASSEMBLY_BLOCK_GENTLY
+(:durative-action ASK_ASSEMBLY_BLOCK_TABLET_GENTLY
         :parameters
                  (?l1  - room)
         :duration
@@ -989,7 +957,7 @@
     )
     :effect (and
     	(computed_e)
-        (increase (interaction_level)(*(extroversion_coefficient)(dur)))
+        (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
         )
 )
 

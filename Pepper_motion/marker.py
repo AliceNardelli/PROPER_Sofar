@@ -1,30 +1,21 @@
-#! /usr/bin/env python
-# -*- encoding: UTF-8 -*-
-
-"""Example: Use angleInterpolation Method"""
-
 import qi
 import argparse
 import sys
 import time
-import almath
 import threading
-import subprocess
 
-def tablet(session):
-        DEF_IMG_APP = "tablet_images"
-        TABLET_IMG_DEFAULT = "police_logo.png"
-        sTablet = session.service("ALTabletService")
-        image_dir = "http://%s/apps/%s/img/" % (sTablet.robotIp(), DEF_IMG_APP)
-        tablet_image = image_dir + TABLET_IMG_DEFAULT
-        print(tablet_image)
-        sTablet.showImage(tablet_image)
-        time.sleep(3)
+detected = False
 
+def marker_detected(value): #esempio di callback
+    print(value)
+    global detected
+    detected=True
+    print("detected")
+    time.sleep(1)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default="130.251.13.118",
+    parser.add_argument("--ip", type=str, default="130.251.13.140",
                         help="Robot IP address. On robot or Local Naoqi: use '127.0.0.1'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")
@@ -39,6 +30,9 @@ if __name__ == "__main__":
         print ("Can't connect to Naoqi at ip \"" + args.ip + "\" on port " + str(args.port) +".\n"
                "Please check your script arguments. Run with -h option for help.")
         sys.exit(1)
-
-    tablet(session)
-    
+    mem=session.service("ALMemory")
+    det = mem.subscriber("LandmarkDetected") #"MiddleTactilTouched"
+    connection = det.signal.connect(marker_detected) #segnale della sottoscrizione
+    while detected==False:
+            print("while")
+            time.sleep(1)
