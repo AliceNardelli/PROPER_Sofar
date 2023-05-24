@@ -3,7 +3,7 @@ from owlready2 import *
 #load the ontology
 #define properties
 onto_path.append("/home/alice/")
-onto = get_ontology("http://www.semanticweb.org/alice/ontologies/2023/3/new_debug#").load()          
+onto = get_ontology("http://www.semanticweb.org/alice/ontologies/2023/4/pp#").load()          
 with onto:
     class Predicates(Thing):
         pass
@@ -312,7 +312,7 @@ def read_the_problem(problem_path):
 
 def saving():
     onto.save()
-
+#run the planner
 def planning(command,domain_path):
     #plan the first time and get the list of action
     os.chdir (domain_path)
@@ -321,6 +321,7 @@ def planning(command,domain_path):
     try:
         (out, err) = fd_process.communicate()
         fd_exit = fd_process.returncode
+        print(fd_exit)
         return fd_exit
     except:
         print("exrrorrr")

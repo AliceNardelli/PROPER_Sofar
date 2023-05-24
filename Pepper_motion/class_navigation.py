@@ -1,75 +1,126 @@
+import random
+import time
+
 class Move:
-    def __init__(self,session):
-        self.session=session
+    def __init__(self):
+        #self.session=session
         self.name="Pepper"
         self.action=""
-        self.initial_loc=""
-        self.final_loc=""
-        self.personality=""
         self.parameters={}
-        self.action_navigation=["move"]
+        self.pp=[0,0,0]
         
 
-    def set_params(self):
-        print("moving from ",self.initial_loc," to ",self.final_loc )
-
-        print(self.parameters)
-        mv=self.session.service("ALMotion")
-        print("setting proxemity")
+    def executing_nav_action(self):
+        #mv=self.session.service("ALMotion")
+        print(self.action,self.pp)
         if self.parameters["prox"]=="far":
             distance=0.7
-            print("FAR")
+            print("Proxemity FAR")
         elif self.parameters["prox"]=="mid":
             distance=0.5
+            print("Proxemity MID")
         elif self.parameters["prox"]=="near":
             distance=0.3
+            print("Proxemity NEAR")
         else:
             print("proxemity not found")
             distance=0.9
-        print(distance)
         
-        print("setting speed")
         if self.parameters["speed"]=="high":
             vel=1
+            print("Velocity HIGH")
         elif self.parameters["speed"]=="mid":
             vel=0.4
+            print("Velocity MID")
         elif self.parameters["speed"]=="low":
             vel=0.2
+            print("Velocity LOW")
         else:
             vel=0.4
             print("velocity not found")
-        if self.final_loc=="l2":
-            x=5
-            theta=0
-        elif self.final_loc=="l1":
-            distance=0.1
-            x=0
-            theta=3.14
-        print(x)
-        mv.setOrthogonalSecurityDistance(distance)
-        mv.setTangentialSecurityDistance(distance)
-        res=mv.moveTo(x,0,theta,[["MaxVelXY",vel]])
-        if res==-1:
-            res=mv.moveTo(x,0,theta,[["MaxVelXY",vel]])
-        
-        if self.final_loc=="l1":
-            print("l1 moving along")
-            x=2
-            res=mv.moveTo(x,0,0,[["MaxVelXY",vel]])
-            if res==-1:
-                res=mv.moveTo(x,0,0,[["MaxVelXY",vel]])
-            res=mv.moveTo(0,0,theta,[["MaxVelXY",vel]])
-            if res==-1:
-                res=mv.moveTo(0,0,theta,[["MaxVelXY",vel]])
 
+        #mv.setOrthogonalSecurityDistance(distance)
+        #mv.setTangentialSecurityDistance(distance)
+        #x y yaw move  return_back sleep turn_only incremental
+        x_r=random.random()
+        y_r=random.random()
+        s_r=random.uniform(2,7)
+        coordinate={
+            "move_to_production_room":[1.2,0,0,1,0,0,0,0],
+            "move_to_assembly_room":[-1.2,0,3.14,1,0,0,0,0],
+            "go_not_crowded_area":[1,1,0,1,1,1,0,1],
+            "turn_on_back":[0,0,3.14,1,1,2,1,0],
+            "go_far":[-1,0,0,1,0,0,0,1],
+            "move_to_check_human_working_station":[0.2,0,0,1,0,0,0,1],
+            "go_in_a_random_position":[x_r,y_r,3.14,1,1,s_r,0,1],
+            "late":[0,0,0,0,0,s_r,0,0]
+        }
+        if coordinate[self.action][3]==1:
+            if coordinate[self.action][6]==0:
+                if coordinate[self.action][7]==0:
+                    x=abs(coordinate[self.action][0] - self.pp[0])
+                    y=abs(coordinate[self.action][1] - self.pp[1])
+                    yaw=abs(coordinate[self.action][2] - self.pp[2])
+                    print("going",x,y,yaw)
+                else:
+                    x=coordinate[self.action][0]
+                    y=coordinate[self.action][1]
+                    yaw=coordinate[self.action][2]
+                    print("going",x,y,yaw)
+            else:
+                x=0
+                y=0
+                yaw=abs(coordinate[self.action][2])
+                print("going",x,y,yaw)
+            #res=mv.moveTo(0,0,yaw,[["MaxVelXY",vel]])
+            #res=mv.moveTo(x,y,0,[["MaxVelXY",vel]])
+        time.sleep(coordinate[self.action][5])
+        print("sleeping",coordinate[self.action][5])
+        if coordinate[self.action][4]==1:
+            if coordinate[self.action][6]==0:
+                if coordinate[self.action][7]==0:
+                    x=abs(coordinate[self.action][0] - self.pp[0])
+                    y=abs(coordinate[self.action][1] - self.pp[1])
+                    yaw=abs(coordinate[self.action][2] - self.pp[2])+3.14
+                    print("returning",x,y,yaw)
+                else:
+                    x=coordinate[self.action][0]
+                    y=coordinate[self.action][1]
+                    yaw=coordinate[self.action][2]+3.14
+                    print("going",x,y,yaw)
+            else:
+                x=0
+                y=0
+                yaw=-abs(coordinate[self.action][2])
+                print("returning",x,y,yaw)
+            #res=mv.moveTo(0,0,yaw,[["MaxVelXY",vel]])
+            #res=mv.moveTo(x,y,0,[["MaxVelXY",vel]])
+            
+        else:
+            if coordinate[self.action][7]==0:
+                self.pp[0]=coordinate[self.action][0]
+                self.pp[1]=coordinate[self.action][1]
+                self.pp[2]=coordinate[self.action][2]
+
+            else:
+                if self.pp[0]>0:
+                   self.pp[0]=coordinate[self.action][0]+self.pp[0]
+                else:
+                    self.pp[0]=-coordinate[self.action][0]+self.pp[0]
+
+                if self.pp[1]>0:
+                   self.pp[1]=coordinate[self.action][1]+self.pp[1]
+                else:
+                    self.pp[1]=-coordinate[self.action][1]+self.pp[1]
+
+
+                self.pp[2]=-coordinate[self.action][2]+self.pp[2]
                 
-    def move(self,action,personality,params):
-        self.action=action
-        extract_locations=action.split(" ")
-        self.final_loc=extract_locations.pop()
-        self.initial_loc=extract_locations.pop()
-        self.personality=personality
+        print(self.pp)   
+
+
+    def move(self,action,params):
+        self.action=action.split(" ")[0]
         self.parameters=params
-        print(self.final_loc)
-        self.set_params()
+        self.executing_nav_action()
         

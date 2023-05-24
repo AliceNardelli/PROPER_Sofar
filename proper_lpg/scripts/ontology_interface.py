@@ -16,8 +16,8 @@ we=1
 wi=0
 wc=0
 wu=0
-wa=1
-wd=0
+wa=0
+wd=1
 sum=we +wi +wc + wu + wa + wd
 weights=[we/sum,wi/sum,wc/sum,wu/sum,wa/sum,wd/sum]
 gamma=0.5
@@ -43,18 +43,18 @@ class State_Init(smach.State):
                         p="        "+traits_preds[0]+"\n"
                         secondfile.write(p)
                     else:
-                        l="        (= (extroversion_coefficient) "+str(wi/sum) +")\n"
+                        l="        (= (extroversion_coefficient) "+str(gamma*(wi/sum)) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[1]+"\n"
                         secondfile.write(p)
                 elif "conscientious_coefficient" in line:
                     if wc!=0:
-                        l="        (= (conscientious_coefficient) "+str(wc/sum) +")\n"
+                        l="        (= (conscientious_coefficient) "+str(gamma*(wc/sum)) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[2]+"\n"
                         secondfile.write(p)
                     else:
-                        l="        (= (conscientious_coefficient) "+str(wu/sum) +")\n"
+                        l="        (= (conscientious_coefficient) "+str(gamma*(wu/sum)) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[3]+"\n"
                         secondfile.write(p)
@@ -65,7 +65,7 @@ class State_Init(smach.State):
                         p="        "+traits_preds[4]+"\n"
                         secondfile.write(p)
                     else:
-                        l="        (= (agreeableness_coefficient) "+str(wd/sum) +")\n"
+                        l="        (= (agreeableness_coefficient) "+str(gamma*(wd/sum)) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[5]+"\n"
                         secondfile.write(p)

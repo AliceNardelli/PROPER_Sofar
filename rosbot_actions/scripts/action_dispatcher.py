@@ -15,7 +15,8 @@ url='http://127.0.0.1:5008/'
 headers= {'Content-Type':'application/json'}
 
 data={
-      "action":""
+      "action":"",
+      "params":""
 }
 
 def dispatch_action(req):
@@ -47,14 +48,15 @@ def dispatch_action(req):
             if mmap["pitch"]=="no_active" and mmap["amplitude"]=="no_active" and mmap["head"]=="no_active":
                     print(req.action,"action nav")
                     data["action"]=req.action
+                    data["params"]=mmap
                     resp=requests.put(url+'navigation_server', json=data, headers=headers)
 
             if (mmap["speed"]=="no_active" or mmap["prox"]=="no_active") and (mmap["pitch"]=="no_active" or mmap["velocity"]=="no_active"):
                     print(req.action,"action  gesture")
-                    #g.gesture()
-        
-           
-        
+                    data["action"]=req.action
+                    data["params"]=mmap
+                    resp=requests.put(url+'gesture_server', json=data, headers=headers)
+            
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
     #execute 

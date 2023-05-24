@@ -128,7 +128,7 @@
                 )
 )
 
-(:durative-action  CHAT
+(:durative-action CHAT
         :duration
                 (= ?duration 5)
         :condition
@@ -142,6 +142,7 @@
                      (at end (increase (interaction_level)5))
                 )
 )
+
 
 (:durative-action SHOW_DETACHMENT
         :duration
@@ -326,7 +327,7 @@
                 )
 )
 
-(:durative-action CHAT_UNSC
+(:durative-action CONVERSE_UNSC
         :duration
                 (= ?duration 5)
         :condition

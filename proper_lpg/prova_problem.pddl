@@ -26,7 +26,7 @@
         (=(scrupulousness_level)5)
         (computed_c)  
         (= (agreeableness_coefficient) 0.25)
-        (agree)
+        (disagree)
         (=(desired_agreeableness)5)
         (=(agreeableness_level)5)
         (computed_a) 

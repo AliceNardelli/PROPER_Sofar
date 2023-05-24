@@ -2,7 +2,7 @@ sentence_generation={
     "express_excitement":"I am very excited to work with you",
     "express_enthusiasm_for_the_last_achieved_action":"We are doing a really good job!",
     "express_enthusiasm_for_the_next_future_work":"Continuing so we will build a beautiful tower",
-    "chit_chat":"how do you feel today?",
+    "chat":"behavior",
     "say_to_not_distract":"Please do not get distracted",
     "say_to_pay_attention":"Please be careful not to make mistakes",
     "say_to_focus_on_future_work":"We need to focus so we can finish our task as well",
