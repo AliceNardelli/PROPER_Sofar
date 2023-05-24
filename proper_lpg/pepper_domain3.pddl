@@ -128,7 +128,7 @@
                 )
 )
 
-(:durative-action CHIT_CHAT
+(:durative-action  CHAT
         :duration
                 (= ?duration 5)
         :condition
@@ -326,7 +326,7 @@
                 )
 )
 
-(:durative-action CHIT_CHAT_UNSC
+(:durative-action CHAT_UNSC
         :duration
                 (= ?duration 5)
         :condition
@@ -562,7 +562,7 @@
                 )
 )
 
-(:durative-action PRESENT_ASSEMBLY_ROOM
+(:durative-action SPEAK_ABOUT_ASSEMBLY_ROOM
         :parameters
                  (?l1  - room)
         :duration
@@ -598,7 +598,7 @@
 
 
 
-(:durative-action PRESENT_PRODUCTION_ROOM
+(:durative-action SPEAK_ABOUT_PRODUCTION_ROOM
         :parameters
                  (?l1  - room)
         :duration
@@ -957,7 +957,7 @@
     )
     :effect (and
     	(computed_e)
-        (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+        (increase (interaction_level)(*(extroversion_coefficient)(dur)))
         )
 )
 

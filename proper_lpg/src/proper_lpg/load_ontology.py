@@ -416,9 +416,14 @@ def update_ontology(a):
                     elif o[1]=="decrease":
                         actual_value=f.has_value
                         if o[3]=="*":
-                            v1=function_objects[o[4]].has_value
-                            v2=function_objects[o[5]].has_value
-                            f.has_value=actual_value - v1*v2
+                            if o[5]=="+":
+                                v1=function_objects[o[4]].has_value #coeff
+                                v2=function_objects[o[6]].has_value #dur
+                                f.has_value=actual_value - v1*(v2+int(o[7]))
+                            else:
+                                v1=function_objects[o[4]].has_value
+                                v2=function_objects[o[5]].has_value
+                                f.has_value=actual_value - v1*v2
                         else:
                             f.has_value=actual_value - int(o[3])
                     else:

@@ -10,7 +10,7 @@ import numpy as np
 from proper_lpg.srv import PersonalityGenerator, PersonalityGeneratorResponse
 import rospy
 
-model = AutoModelForSequenceClassification.from_pretrained("/home/alice/prams_model", num_labels=21, problem_type="multi_label_classification") 
+model = AutoModelForSequenceClassification.from_pretrained("/home/alice/personality_generator", num_labels=21, problem_type="multi_label_classification") 
 tokenizer=AutoTokenizer.from_pretrained("/home/alice/prams_model", problem_type="multi_label_classification")
 
 def generate_params(req):

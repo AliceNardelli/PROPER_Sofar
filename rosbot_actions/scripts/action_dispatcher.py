@@ -9,11 +9,14 @@ from proper_lpg.srv import PersonalityGenerator, PersonalityGeneratorRequest
 from proper_lpg.srv import ExecAction, ExecActionResponse
 import rospy
 from rosbot_actions.get_parameters import *
-from rosbot_actions.class_speak import *
-from rosbot_actions.class_navigation import *
-from rosbot_actions.class_gesture import *
+import requests
 
+url='http://127.0.0.1:5008/'
+headers= {'Content-Type':'application/json'}
 
+data={
+      "action":""
+}
 
 def dispatch_action(req):
     print(req)
@@ -22,26 +25,35 @@ def dispatch_action(req):
     try:
         personality_generator_srv = rospy.ServiceProxy('personality_generator_srv', PersonalityGenerator)
         msg=PersonalityGeneratorRequest()
-        msg.action=req.action
+        msg.action=req.action.split("_")[0]
+        print("--------------")
+        print(msg.action)
+        print("--------------")
         msg.personality=req.personality
-        resp = personality_generator_srv(msg)
-        print(resp)       
+        resp = personality_generator_srv(msg)     
         mmap =get_map(resp.params)
-        print(mmap)
-        s=Speak()
-        n=Move()
-        g=Gesture()
-        if (mmap["speed"]=="no_active" or mmap["prox"]=="no_active") and (mmap["velocity"]!="no_active" and mmap["pitch"]!="no_active"):
-                print(req.action,"action say")
-                s.speak()
-                
-        if mmap["pitch"]=="no_active" and mmap["amplitude"]=="no_active" and mmap["head"]=="no_active":
-                print(req.action,"action nav")
-                n.move()
+        no_action=True
+        for x, y in mmap.items():
+          if y!="no_active":
+               no_action=False
+               break
+        if no_action:
+                print(req.action,"not to execute")
+        else:
+            if (mmap["speed"]=="no_active" or mmap["prox"]=="no_active") and (mmap["velocity"]!="no_active" and mmap["pitch"]!="no_active"):
+                    print(req.action,"action say")
+                    #s.speak()
+                    
+            if mmap["pitch"]=="no_active" and mmap["amplitude"]=="no_active" and mmap["head"]=="no_active":
+                    print(req.action,"action nav")
+                    data["action"]=req.action
+                    resp=requests.put(url+'navigation_server', json=data, headers=headers)
 
-        if (mmap["speed"]=="no_active" or mmap["prox"]=="no_active") and (mmap["pitch"]=="no_active" or mmap["velocity"]=="no_active"):
-                print(req.action,"action  gesture")
-                g.gesture()
+            if (mmap["speed"]=="no_active" or mmap["prox"]=="no_active") and (mmap["pitch"]=="no_active" or mmap["velocity"]=="no_active"):
+                    print(req.action,"action  gesture")
+                    #g.gesture()
+        
+           
         
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)

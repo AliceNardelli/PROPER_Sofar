@@ -12,15 +12,15 @@ import numpy as np
 
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=0
-wi=1
-wc=1
+we=1
+wi=0
+wc=0
 wu=0
-wa=0
+wa=1
 wd=0
 sum=we +wi +wc + wu + wa + wd
 weights=[we/sum,wi/sum,wc/sum,wu/sum,wa/sum,wd/sum]
-
+gamma=0.5
 
 # define state Foo
 class State_Init(smach.State):
@@ -38,7 +38,7 @@ class State_Init(smach.State):
             
                 if "extroversion_coefficient" in line:
                     if we!=0:
-                        l="        (= (extroversion_coefficient) "+str(we/sum) +")\n"
+                        l="        (= (extroversion_coefficient) "+str(gamma*(we/sum)) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[0]+"\n"
                         secondfile.write(p)
@@ -60,7 +60,7 @@ class State_Init(smach.State):
                         secondfile.write(p)
                 elif "agreeableness_coefficient" in line:
                     if wa!=0:
-                        l="        (= (agreeableness_coefficient) "+str(wa/sum) +")\n"
+                        l="        (= (agreeableness_coefficient) "+str(gamma*(wa/sum)) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[4]+"\n"
                         secondfile.write(p)
@@ -185,72 +185,77 @@ class Finish(smach.State):
 def main():
     rospy.init_node('smach_example_state_machine')
     # Create a SMACH state machine
-    sm = smach.StateMachine(outcomes=['outcome8'])
-    sm.userdata.path_domain='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/new_domain.pddl'
-    sm.userdata.path_problem='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/prova_problem.pddl'
-    sm.userdata.path_init_problem='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/init_problem.pddl'
-    sm.userdata.command_start='./lpg++ -o new_domain.pddl -f prova_problem.pddl -n 1 -force_neighbour_insertion -inst_with_contraddicting_objects'
-    sm.userdata.folder ='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/'
-    sm.userdata.path_plan ='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/plan_prova_problem.pddl_1.SOL'
-    sm.userdata.actions =[]
-    sm.userdata.a="a"
-    # Open the container
-    with sm:
-      # Add states to the container
-      smach.StateMachine.add('INIT', State_Init(), 
-                              transitions={'outcome1':'PLAN'},
-                              remapping={'domain_path':'path_domain', 
-                                         'problem_path':'path_problem',
-                                         'init_pb':'path_init_problem'
+    try:
+        sm = smach.StateMachine(outcomes=['outcome8'])
+        sm.userdata.path_domain='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/pepper_domain3.pddl'
+        sm.userdata.path_problem='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/prova_problem.pddl'
+        sm.userdata.path_init_problem='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/init_problem.pddl'
+        sm.userdata.command_start='./lpg++ -o pepper_domain3.pddl -f prova_problem.pddl -n 1 -force_neighbour_insertion -inst_with_contraddicting_objects'
+        sm.userdata.folder ='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/'
+        sm.userdata.path_plan ='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/plan_prova_problem.pddl_1.SOL'
+        sm.userdata.actions =[]
+        sm.userdata.a="a"
+        # Open the container
+        with sm:
+            # Add states to the container
+            smach.StateMachine.add('INIT', State_Init(), 
+                                    transitions={'outcome1':'PLAN'},
+                                    remapping={'domain_path':'path_domain', 
+                                                'problem_path':'path_problem',
+                                                'init_pb':'path_init_problem'
+                                                })
+            smach.StateMachine.add('PLAN', Planning(), 
+                                    transitions={'outcome2':'GET_ACTIONS'},
+                                    remapping={'command':'command_start',
+                                                'planning_folder':'folder'})
+            
+            smach.StateMachine.add('GET_ACTIONS', GetActions(), 
+                                    transitions={'outcome3':'EXEC'},
+                                    remapping={'plan_path':'path_plan',
+                                                'executing_actions_out':'actions',
+                                            })
+            
+            smach.StateMachine.add('EXEC', ExAction(), 
+                                transitions={'outcome4':'WRITE_PLAN',
+                                            'outcome5':'UPDATE_ONTOLOGY',
+                                            },
+                                remapping={'executing_actions':'actions',
+                                        'updated_actions':'actions',
+                                        'action':"a" 
                                         })
-      smach.StateMachine.add('PLAN', Planning(), 
-                              transitions={'outcome2':'GET_ACTIONS'},
-                              remapping={'command':'command_start',
-                                         'planning_folder':'folder'})
-      
-      smach.StateMachine.add('GET_ACTIONS', GetActions(), 
-                              transitions={'outcome3':'EXEC'},
-                              remapping={'plan_path':'path_plan',
-                                         'executing_actions_out':'actions',
-                                       })
-      
-      smach.StateMachine.add('EXEC', ExAction(), 
-                        transitions={'outcome4':'WRITE_PLAN',
-                                     'outcome5':'UPDATE_ONTOLOGY',
-                                     },
-                        remapping={'executing_actions':'actions',
-                                   'updated_actions':'actions',
-                                   'action':"a" 
-                                 })
-      
-      smach.StateMachine.add('WRITE_PLAN', WriteProblem(), 
-                  transitions={'outcome7':'PLAN'},
-                  remapping={'pb_path':'path_problem'
-                                       })
-      
-      smach.StateMachine.add('UPDATE_ONTOLOGY', UpdateOntology(), 
-                  transitions={'outcome7':'EXEC',
-                               'outcome6': 'FINISH'},
-                  remapping={'action':'a',
-                             'executing_actions':'actions'
-                           })
-      
-      smach.StateMachine.add('FINISH', Finish(), 
-                  transitions={'outcome7':'outcome8'},
-                  )
-   
-    # Create and start the introspection server for visualization
-    #sis = smach_ros.IntrospectionServer('server_name', sm, '/SM_ROOT')
-    #sis.start()
+            
+            smach.StateMachine.add('WRITE_PLAN', WriteProblem(), 
+                        transitions={'outcome7':'PLAN'},
+                        remapping={'pb_path':'path_problem'
+                                            })
+            
+            smach.StateMachine.add('UPDATE_ONTOLOGY', UpdateOntology(), 
+                        transitions={'outcome7':'EXEC',
+                                    'outcome6': 'FINISH'},
+                        remapping={'action':'a',
+                                    'executing_actions':'actions'
+                                })
+            
+            smach.StateMachine.add('FINISH', Finish(), 
+                        transitions={'outcome7':'outcome8'},
+                        )
+    
+        # Create and start the introspection server for visualization
+        #sis = smach_ros.IntrospectionServer('server_name', sm, '/SM_ROOT')
+        #sis.start()
 
-    # Execute the state machine
-    outcome = sm.execute()
+        # Execute the state machine
+        outcome = sm.execute()
 
-    # Wait for ctrl-c to stop the application
-    rospy.spin()
-    #sis.stop()
+        # Wait for ctrl-c to stop the application
+        rospy.spin()
+        #sis.stop()
+    except rospy.ROSInterruptException:
+        rospy.loginfo("interrupt")
 
 if __name__ == '__main__':
       main()
+
+
 
     
