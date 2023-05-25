@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify
 from class_navigation import *
 from class_gesture import *
+from class_speak import *
 app = Flask(__name__)
-
 
 data={
     "action":"",
@@ -22,6 +22,14 @@ def gg():
     updated_data = request.get_json()
     data.update(updated_data)
     g.gesture(data["action"],data["params"])
+    return jsonify(data)
+
+@app.route ('/speak_server', methods = ['PUT'] )   
+def gg():
+    global g
+    updated_data = request.get_json()
+    data.update(updated_data)
+    g.speak(data["action"],data["personality"],data["params"])
     return jsonify(data)
 
 if __name__ == '__main__':

@@ -327,7 +327,7 @@
                 )
 )
 
-(:durative-action CONVERSE_UNSC
+(:durative-action CHAT_UNSC
         :duration
                 (= ?duration 5)
         :condition

@@ -43,7 +43,10 @@ def dispatch_action(req):
         else:
             if (mmap["speed"]=="no_active" or mmap["prox"]=="no_active") and (mmap["velocity"]!="no_active" and mmap["pitch"]!="no_active"):
                     print(req.action,"action say")
-                    #s.speak()
+                    data["action"]=req.action
+                    data["personality"]=req.personality
+                    data["params"]=mmap
+                    resp=requests.put(url+'speak_server', json=data, headers=headers)
                     
             if mmap["pitch"]=="no_active" and mmap["amplitude"]=="no_active" and mmap["head"]=="no_active":
                     print(req.action,"action nav")
