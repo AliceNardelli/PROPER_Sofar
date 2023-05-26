@@ -25,6 +25,7 @@
 (:predicates 
         (production_room ?r - room)
         (assembly_room ?r - room)
+        (start_room ?r - room)
         (presented_task ?r - room)
         (goodbye ?r - room)
         (at ?r - room)

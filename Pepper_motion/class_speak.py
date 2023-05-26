@@ -2,7 +2,6 @@ from head_movement import *
 import time 
 from time import sleep
 import threading
-import pandas as pd
 from speaking_dictionary import *
 import random
 #http://doc.aldebaran.com/2-4/naoqi/audio/altexttospeech-tuto.html#tag-tutorial trial to see paw and if setting parameters via tts

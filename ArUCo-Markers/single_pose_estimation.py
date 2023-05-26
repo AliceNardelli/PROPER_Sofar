@@ -100,7 +100,7 @@ def pose_esitmation(frame, aruco_dict_type, matrix_coefficients, distortion_coef
         print("idss"+str(ids))
         for i in range(0, len(ids)):
                 # Estimate pose of each marker and return the values rvec and tvec---(different from those of camera coefficients)
-                ret = cv2.aruco.estimatePoseSingleMarkers(corners[i], 0.07, matrix_coefficients, distortion_coefficients)
+                ret = cv2.aruco.estimatePoseSingleMarkers(corners[i], 0.2, matrix_coefficients, distortion_coefficients)
                 rvec, tvec = ret[0][0,0,:], ret[1][0,0,:]
                 #Draw a square around the markers
                 cv2.aruco.drawDetectedMarkers(frame, corners) 
@@ -117,7 +117,7 @@ def pose_esitmation(frame, aruco_dict_type, matrix_coefficients, distortion_coef
                 # Compute distance between Pepper and the detected marker
                 distance = math.sqrt((tvec_2[0] * tvec_2[0]) + (tvec_2[1] * tvec_2[1]))
                 print("distance marker", distance)
-
+                print("Rotation",rvec)
                 # -- Obtain the rotation matrix Marker -> camera
                 R_cm = np.matrix(cv2.Rodrigues(rvec)[0])
                 R_mc = R_cm.T
@@ -125,6 +125,7 @@ def pose_esitmation(frame, aruco_dict_type, matrix_coefficients, distortion_coef
                 r = R.from_matrix(R_cm)
                 yaw, pitch, roll = r.as_euler('zxy', degrees=False)
                 print("yaw",yaw)
+                """
                 # -- Obtain the transformation matrix marker -> camera
                 T_cm = np.zeros((4, 4), dtype=float)
                 T_cm[0:3, 0:3] = R_cm
@@ -147,9 +148,10 @@ def pose_esitmation(frame, aruco_dict_type, matrix_coefficients, distortion_coef
                 print("---------")
                 print(X_now,Y_now,yaw)
                 print("---------")
-                return "True", X_now, Y_now, yaw      
+                """
+                return "True", tvec_2[0], tvec_2[1], yaw , ids[0][0]  
     print("Aruco not found")
-    return "False", 0,0,0
+    return "False", 0,0,0,0
 
 
 
@@ -160,28 +162,40 @@ def get_params():
     updated_data = request.get_json()
     data.update(updated_data)
     #detect aruco in the last computed image
-    file="/home/alice/images/image.png"
-    image = cv2.imread(file)
-    h,w,_ = image.shape
-    width=600
-    height = int(width*(h/w))
-    image = cv2.resize(image, (width, height), interpolation=cv2.INTER_CUBIC)
-    aruco_dict_type = ARUCO_DICT["DICT_5X5_100"]
-    calibration_matrix_path = "pepper2_calibration_matrix.npy"
-    distortion_coefficients_path = "pepper2_distortion_coefficients.npy"
-    k = np.load(calibration_matrix_path)
-    d = np.load(distortion_coefficients_path)
-    success, X_now, Y_now, yaw = pose_esitmation(image, aruco_dict_type, k, d)
+    success="" 
+    X_now=0 
+    Y_now=0 
+    yaw=0
+    id=0
+    for i in range(5):
+        file="/home/alice/images/image"+str(i)+".png"
+        #file="/home/alice/images/image_.png"
+        image = cv2.imread(file)
+        h,w,_ = image.shape
+        width=600
+        height = int(width*(h/w))
+        image = cv2.resize(image, (width, height), interpolation=cv2.INTER_CUBIC)
+        aruco_dict_type = ARUCO_DICT["DICT_5X5_100"]
+        calibration_matrix_path = "pepper2_calibration_matrix.npy"
+        distortion_coefficients_path = "pepper2_distortion_coefficients.npy"
+        k = np.load(calibration_matrix_path)
+        d = np.load(distortion_coefficients_path)
+        success, X_now, Y_now, yaw,id = pose_esitmation(image, aruco_dict_type, k, d)
+        if success=="True":
+             break
     if success=="True":
         #update the offset
+        data_aruco["success"]="True"
         data_aruco["x"]=str(X_now)
         data_aruco["y"]=str(Y_now)
         data_aruco["yaw"]=str(yaw)
-        
+        data_aruco["id"]=str(id)
     else:
+        data_aruco["success"]="False"
         data_aruco["x"]=str(0)
         data_aruco["y"]=str(0)
         data_aruco["yaw"]=str(-3.14)
+        data_aruco["id"]=str(0)
     return jsonify(data_aruco)
 
 
