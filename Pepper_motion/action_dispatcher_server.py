@@ -34,7 +34,6 @@ def ss():
     return jsonify(data)
 
 if __name__ == '__main__':
-    global m
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip", type=str, default="130.251.13.136",
                         help="Robot IP address. On robot or Local Naoqi: use '127.0.0.1'.")

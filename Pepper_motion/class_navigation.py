@@ -9,14 +9,13 @@ class Move:
         self.action=""
         self.parameters={}
         self.pp=[0,0,0]
-        motion_service  = session.service("ALMotion")
-
+        self.loc  = session.service("ALLocalization")
+        #wake_up(session)
         # Example that finds the difference between the command and sensed angles.
         names         = "Body"
         useSensors    = False
-        commandAngles = motion_service.getAngles(names, useSensors)
-        print(commandAngles)
         self.prox=0
+        #self.loc.learnHome()
 
     def executing_nav_action(self):
         print("Executing: ",self.action)
@@ -27,7 +26,7 @@ class Move:
             distance=0.5
             print("Proxemity MID")
         elif self.parameters["prox"]=="near":
-            distance=0.3
+            distance=0.1
             print("Proxemity NEAR")
         else:
             print("proxemity not found")
@@ -45,8 +44,9 @@ class Move:
         else:
             vel=0.4
             print("velocity not found")
+
         if self.prox==0:
-            self.prox=0.3
+            self.prox=distance
         
         #x y yaw move  return_back sleep turn_only incremental
         x_r=random.random()
@@ -68,11 +68,14 @@ class Move:
         elif coordinate[self.action]=="r2":
             start_motion(self.session, "r2",vel,self.prox)           
         else:
-            nav(self.session,coordinate[self.action][0],coordinate[self.action][1],coordinate[self.action][2])
+            nav(self.session,coordinate[self.action][0],coordinate[self.action][1],coordinate[self.action][2],vel,self.prox)
             time.sleep(coordinate[self.action][3])
             print("sleeping",coordinate[self.action][3])
-            nav(self.session, coordinate[self.action][0],coordinate[self.action][1],coordinate[self.action][2])
-
+            if coordinate[self.action][2]!=0:
+                nav(self.session, coordinate[self.action][0],coordinate[self.action][1],coordinate[self.action][2],vel,self.prox)
+            else:
+                nav(self.session, -coordinate[self.action][0], -coordinate[self.action][1],coordinate[self.action][2],vel,self.prox)
+        print(self.loc.getRobotPosition())
 
     def move(self,action,params):
         self.action=action.split(" ")[0]

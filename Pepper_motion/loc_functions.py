@@ -49,14 +49,17 @@ def wake_up(session):
     posture_service.goToPosture("StandInit", 1.0)
 
 
-def nav(session,x,y,yaw,prox,vel):
+def nav(session,x,y,yaw,vel,prox):
+    
     mv=session.service("ALMotion")
-    mv.setOrthogonalSecurityDistance(prox)
-    mv.setTangentialSecurityDistance(prox)
-    print("reaching "+str(x) +", "+str(y) +", "+str(yaw) +", ")
+    mv.setOrthogonalSecurityDistance(0.05)
+    mv.setTangentialSecurityDistance(0.05)
+    print("reaching "+str(x) +", "+str(y) +", "+str(yaw) +", prox "+", "+str(prox) +", vel"+str(vel) )
     res=mv.moveTo(0,0,yaw,[["MaxVelXY",vel]])
     if res==False:
         res=mv.moveTo(0,0,yaw,[["MaxVelXY",vel]])
+    mv.setOrthogonalSecurityDistance(prox)
+    mv.setTangentialSecurityDistance(prox)
     res=mv.moveTo(x,y,0,[["MaxVelXY",vel]])
     if res==False:
         res=mv.moveTo(x,y,0,[["MaxVelXY",vel]])
@@ -90,10 +93,12 @@ def localize(session):
     global pp
     motion_service  = session.service("ALMotion")
     posture_service = session.service("ALRobotPosture")
-    for i in range(3):
-        posture_service.goToPosture("Stand", 0.1)
-        motion_service.setAngles(["HeadYaw", "HeadPitch"], [0,0], 0.1)
+    motion_service.setStiffnesses("Head", 1)        
+    posture_service.goToPosture("Stand", 0.1)
+    motion_service.setAngles(["HeadYaw", "HeadPitch"], [0,0], 0.1)
+    for i in range(2):
         read_save_image(session,i)
+    motion_service.setStiffnesses("Head", 0) 
     pos=pp
     data["x"]=pos[0]
     data["y"]=pos[1]
@@ -108,7 +113,7 @@ def localize(session):
     
 
 def start_motion(session, final_location, vel ,prox):
-   nav(session,0,0,3.14, vel ,prox)
+   #nav(session,0,0,3.14, vel ,prox)
    success,x_a_p,y_a_p,yaw_a_p,id=localize(session)
    print(success,x_a_p,y_a_p,yaw_a_p,id,goals_ids[final_location])
    while success=="False" or id!=goals_ids[final_location]:
@@ -117,6 +122,14 @@ def start_motion(session, final_location, vel ,prox):
        success,x_a_p,y_a_p,yaw_a_p,id=localize(session)
        print(success,x_a_p,y_a_p,yaw_a_p,id)
    nav(session,x_a_p,y_a_p,0, vel ,prox)
+   if yaw_a_p>0:
+       cmd_yaw=3.14-yaw_a_p
+   else:
+       cmd_yaw=-3.14-yaw_a_p
+   nav(session,0,0,cmd_yaw, vel ,prox) 
+   success,x_a_p,y_a_p,yaw_a_p,id=localize(session)
+   if x_a_p>0.6:
+      nav(session,x_a_p,y_a_p,0, vel ,prox)  
    pp[0]=x_a_p
    pp[1]=y_a_p
    pp[2]=3.14

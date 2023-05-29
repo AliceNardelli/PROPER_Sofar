@@ -125,7 +125,7 @@ def pose_esitmation(frame, aruco_dict_type, matrix_coefficients, distortion_coef
                 r = R.from_matrix(R_cm)
                 yaw, pitch, roll = r.as_euler('zxy', degrees=False)
                 print("yaw",yaw)
-                """
+                """ 
                 # -- Obtain the transformation matrix marker -> camera
                 T_cm = np.zeros((4, 4), dtype=float)
                 T_cm[0:3, 0:3] = R_cm
@@ -167,7 +167,7 @@ def get_params():
     Y_now=0 
     yaw=0
     id=0
-    for i in range(5):
+    for i in range(2):
         file="/home/alice/images/image"+str(i)+".png"
         #file="/home/alice/images/image_.png"
         image = cv2.imread(file)
