@@ -23,7 +23,7 @@
         (=(interaction_level) 5) 
         (computed_e)  
         (= (conscientious_coefficient) 0.25)
-        (consc)
+        (unsc)
         (=(desired_scrupulousness)5)
         (=(scrupulousness_level)5)
         (computed_c)  

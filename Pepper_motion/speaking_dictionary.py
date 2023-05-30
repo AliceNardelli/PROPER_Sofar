@@ -33,7 +33,7 @@ behavior1=["Make me a question in italian about ","Answer to * knowing that we a
 behavior2=["Hello my name is Pepper","Finally you arrived to help me","I have called you because I have to build a tower of block and I need your help","Now I will explain your task","Every time I bring you a block you will have to assemble it","Let's go to work"]
 behavior3=["Hello my name is Pepper","Finally you arrived to help me","I have called you because I have to build a tower of block and I need your help","Now I will explain your task","Every time I ask to you you will bring me a block","The block must be of the specific color that I ask", "Let's go to work"]
 behavior4=["Hand me a * block","Bring me a * block", "Now bring me a * block", "Get me again a * block"]
-behavior6=["Pick this green block and put it as a base of the tower","Take now this yellow block and put it upon the green one","Take now this purple block","Take again a yellow block", "Pick now the blue block and put it on the yellow one","Pick now this purple block", "This pink is the last block. Let's finish the tower"]
+behavior6=["Pick this * block and put it to build the tower","Take now this * block and put it upon the green onyelloweprevious one","Take now this * block", "Pick now the * block and put it on the tower","Pick now this * block"]
 behavior10=["We have finished to build the whole tower", "Your help has been fundamental", "Our collaboration has been successful", "The next time I need help I will ask you again","Goodbye and see you soon"]
 
 sentence=["Rewrite in a "," way in "]

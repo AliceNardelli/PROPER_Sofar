@@ -22,15 +22,10 @@ class Speak:
         self.tts2=self.session.service("ALMemory")
         self.tts4=self.session.service("ALSpeechRecognition")  
         self.touched=False
-        print(self.df)
-        self.autonomouslife="interactive"
-        self.al=self.session.service("ALAutonomousLife")
-        self.al.setState("disabled")
         self.m=self.session.service("ALMotion")
-        self.m.wakeUp()
         self.topics=["Cibo","Sport","Vacanze","Tempo libero","Musica","Religione"]
         self.blocks=["yellow","green","red","blue","yellow","purple"]
-        self.cunter=0
+        self.counter=0
 
         self.pitch={"low":0.83,
                     "mid":0.95,
@@ -132,6 +127,8 @@ class Speak:
                 self.present_task(ss,anim_speech_service)
             if ss=="behavior4" or ss=="behavior5":
                 self.ask_pick_block(ss,anim_speech_service)
+            if ss=="behavior6" or ss=="behavior7" or ss=="behavior8" or ss=="behavior9":
+                self.ask_pose_block(ss,anim_speech_service)      
         else:
             #ask to chatgpt the sentence to say
             thread = threading.Thread(target=self.task)
@@ -162,6 +159,7 @@ class Speak:
            thread.start()
            anim_speech_service.say(res)
            thread.join()
+      
 
     def present_task(self,ss,anim_speech_service):
         sentences=behaviors[ss]
@@ -205,6 +203,38 @@ class Speak:
             self.give_take_object_tablet()
             self.grasp_object()     
         
+    def ask_pose_block(self,ss,anim_speech_service):
+        sentences=behaviors[ss] 
+        color=self.blocks[self.counter-1]
+        s=sentences[random.randint(0,len(sentences))]
+        s=s.replace("*",color)
+        if ss=="behavior6" or ss=="behavior7":#voice
+            s2=[s,"Touch me the head when you have put the block in my hand"]
+            for s1 in s2:
+                msg=sentence[0]+modality[self.personality]+sentence[1]+s1
+                #send the msg to chatgpt
+                res=""
+                thread = threading.Thread(target=self.task)
+                thread.start()
+                anim_speech_service.say(res)
+                thread.join()
+                
+                if ss=="behavior7": #gently
+                    self.give_take_object_touch() 
+                else:#rude
+                    self.give_take_object() 
+                    self.throw_object()
+        else:#tablet
+            thread = threading.Thread(target=self.task)
+            thread.start()
+            self.tablet(color)
+            thread.join()  
+            self.give_take_object()
+            if ss=="behavior9": #gently
+                self.give_take_object_tablet()#wait until human touch
+            else:#rude
+                self.give_take_object()
+                self.throw_object()
 
     def tablet(self,color):
         DEF_IMG_APP = "tablet_images"
@@ -274,6 +304,22 @@ class Speak:
             self.touched=False
             stiff=len(chain)*[0]
             m.setStiffnesses(chain,stiff)
+
+    def give_take_object(self):
+        m=self.session.service("ALMotion")
+        frac_speed=0.5
+        angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,1]
+        chain=["LShoulderPitch","LShoulderRoll","LElbowYaw","LElbowRoll","LWristYaw","LHand"]
+        t=0
+        stiff=len(chain)*[1]
+        m.setStiffnesses(chain,stiff)
+        while t<5:
+            m.angleInterpolationWithSpeed(chain,angle,frac_speed) 
+        time.sleep(1)
+        t+=1
+        stiff=len(chain)*[0]
+        m.setStiffnesses(chain,stiff)
+
 
     def throw_object(self):
         m=self.session.service("ALMotion")

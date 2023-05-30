@@ -50,19 +50,25 @@ def wake_up(session):
 
 
 def nav(session,x,y,yaw,vel,prox):
-    
     mv=session.service("ALMotion")
-    mv.setOrthogonalSecurityDistance(0.05)
+    mv.setOrthogonalSecurityDistance(0.05)#0.05
     mv.setTangentialSecurityDistance(0.05)
     print("reaching "+str(x) +", "+str(y) +", "+str(yaw) +", prox "+", "+str(prox) +", vel"+str(vel) )
     res=mv.moveTo(0,0,yaw,[["MaxVelXY",vel]])
+    time.sleep(1)
     if res==False:
         res=mv.moveTo(0,0,yaw,[["MaxVelXY",vel]])
-    mv.setOrthogonalSecurityDistance(prox)
-    mv.setTangentialSecurityDistance(prox)
+        time.sleep(1)
+    mv.setOrthogonalSecurityDistance(0.05)#0.3
+    mv.setTangentialSecurityDistance(0.05)
     res=mv.moveTo(x,y,0,[["MaxVelXY",vel]])
+    time.sleep(1)
     if res==False:
         res=mv.moveTo(x,y,0,[["MaxVelXY",vel]])
+        time.sleep(1)
+    useSensorValues=True
+    print("Robot position")
+    print(mv.getRobotPosition(useSensorValues))
 
 
 def read_save_image(session,i):
@@ -121,15 +127,15 @@ def start_motion(session, final_location, vel ,prox):
        nav(session,0,0,3.14, vel ,prox)
        success,x_a_p,y_a_p,yaw_a_p,id=localize(session)
        print(success,x_a_p,y_a_p,yaw_a_p,id)
-   nav(session,x_a_p,y_a_p,0, vel ,prox)
+   nav(session,x_a_p-prox,y_a_p,0, vel ,prox)
    if yaw_a_p>0:
-       cmd_yaw=3.14-yaw_a_p
+       cmd_yaw=3.14-yaw_a_p 
    else:
-       cmd_yaw=-3.14-yaw_a_p
+       cmd_yaw=-3.14-yaw_a_p 
    nav(session,0,0,cmd_yaw, vel ,prox) 
    success,x_a_p,y_a_p,yaw_a_p,id=localize(session)
-   if x_a_p>0.6:
-      nav(session,x_a_p,y_a_p,0, vel ,prox)  
+   if x_a_p>1:
+      nav(session,x_a_p-prox,y_a_p,0, vel ,prox)  
    pp[0]=x_a_p
    pp[1]=y_a_p
    pp[2]=3.14
