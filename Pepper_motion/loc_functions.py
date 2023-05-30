@@ -96,13 +96,16 @@ def head_thread(motion_service,posture_service):
     
 def localize(session):
     global data
-    global pp
+    global pp 
     motion_service  = session.service("ALMotion")
-    posture_service = session.service("ALRobotPosture")
+    #posture_service = session.service("ALRobotPosture")
     motion_service.setStiffnesses("Head", 1)        
-    posture_service.goToPosture("Stand", 0.1)
-    motion_service.setAngles(["HeadYaw", "HeadPitch"], [0,0], 0.1)
+    #posture_service.goToPosture("Stand", 0.1)
+    #angles=[-0.01998298056423664, -0.1800062656402588, 1.5596849918365479, 0.14271040260791779, -1.228250503540039, -0.5225334763526917, -0.000497237138915807, 0.6000000238418579, 1.2239506973816432e-16, -0.03999999910593033, -0.009999999776482582, 1.5596897602081299, -0.14270132780075073, 1.2282465696334839, 0.5225334763526917, 0.000496871245559305, 0.6000000238418579, 0.0, 0.0, 0.0]
+    #motion_service.setAngles("Body",angles,0.1)
     for i in range(2):
+        motion_service.setAngles(["HeadYaw", "HeadPitch"], [0,0], 0.1)
+        time.sleep(3)
         read_save_image(session,i)
     motion_service.setStiffnesses("Head", 0) 
     pos=pp

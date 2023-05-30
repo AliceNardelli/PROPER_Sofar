@@ -43,8 +43,9 @@ class Speak:
                         "rather_high":95,
                         "high":105,
                         }
-        
-        
+        self.gaze(False,False)
+    
+          
     def task(self):
         print(self.parameters["head"])
         if self.parameters["head"]=="tilt_down_shaking":
@@ -134,14 +135,14 @@ class Speak:
             thread = threading.Thread(target=self.task)
             # run the thread
             thread.start()
-            anim_speech_service.say(ss) 
+            #anim_speech_service.say(ss) 
             # wait for the thread to finish
             print('Waiting for the thread...')
             thread.join()
                
     def chit_chat(self,ss,anim_speech_service):
         sentences=behaviors[ss]
-        topic=self.topics[random.randint(0,len(self.topics))]
+        topic=self.topics[random.randint(0,len(self.topics)-1)]
         s1=sentences[0]+"'"+topic+"'"
         #send the sentence to chat gpt
         res=""
@@ -159,7 +160,6 @@ class Speak:
            thread.start()
            anim_speech_service.say(res)
            thread.join()
-      
 
     def present_task(self,ss,anim_speech_service):
         sentences=behaviors[ss]
@@ -176,7 +176,7 @@ class Speak:
         sentences=behaviors[ss] 
         color=self.blocks[self.counter]
         self.counter+=1
-        s=sentences[random.randint(0,len(sentences))]
+        s=sentences[random.randint(0,len(sentences)-1)]
         s=s.replace("*",color)
         if ss=="behavior4":#voice
             s2=[s,"Touch me the head when you have put the block in my hand"]
@@ -188,7 +188,7 @@ class Speak:
                 thread.start()
                 anim_speech_service.say(res)
                 thread.join()
-            self.give_take_object_touch()
+            self.give_take_object_touch(1)
             self.grasp_object()
                
         else:#tablet 
@@ -200,13 +200,13 @@ class Speak:
             thread.start()
             self.tablet(color)
             thread.join()  
-            self.give_take_object_tablet()
+            self.give_take_object_tablet(1)
             self.grasp_object()     
         
     def ask_pose_block(self,ss,anim_speech_service):
         sentences=behaviors[ss] 
         color=self.blocks[self.counter-1]
-        s=sentences[random.randint(0,len(sentences))]
+        s=sentences[random.randint(0,len(sentences)-1)]
         s=s.replace("*",color)
         if ss=="behavior6" or ss=="behavior7":#voice
             s2=[s,"Touch me the head when you have put the block in my hand"]
@@ -218,27 +218,30 @@ class Speak:
                 thread.start()
                 anim_speech_service.say(res)
                 thread.join()
-                
-                if ss=="behavior7": #gently
-                    self.give_take_object_touch() 
-                else:#rude
-                    self.give_take_object() 
-                    self.throw_object()
+            if self.personality!="Disagreeable":
+                self.give_take_object(0)
+            if ss=="behavior7": #gently
+                self.give_take_object_touch(1) 
+            else:#rude
+                self.give_take_object(1) 
+                self.throw_object()
         else:#tablet
             thread = threading.Thread(target=self.task)
             thread.start()
             self.tablet(color)
-            thread.join()  
-            self.give_take_object()
+            thread.join() 
+            if self.personality!="Disagreeable":
+             self.give_take_object(0) 
             if ss=="behavior9": #gently
-                self.give_take_object_tablet()#wait until human touch
+                self.give_take_object_tablet(1)#wait until human touch
             else:#rude
-                self.give_take_object()
+                self.give_take_object(1)
                 self.throw_object()
 
     def tablet(self,color):
         DEF_IMG_APP = "tablet_images"
-        TABLET_IMG_DEFAULT = color+".png"
+        #TABLET_IMG_DEFAULT = color+".png"
+        TABLET_IMG_DEFAULT = "police_logo.png"
         sTablet = self.session.service("ALTabletService")
         image_dir = "http://%s/apps/%s/img/" % (sTablet.robotIp(), DEF_IMG_APP)
         tablet_image = image_dir + TABLET_IMG_DEFAULT
@@ -258,13 +261,14 @@ class Speak:
             m.angleInterpolationWithSpeed(chain,angle,frac_speed) 
             time.sleep(1)
             t+=1
+        t=0
         stiff=len(chain)*[0]
         m.setStiffnesses(chain,stiff)
 
-    def give_take_object_touch(self):
+    def give_take_object_touch(self,hand):
         m=self.session.service("ALMotion")
         frac_speed=0.5
-        angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,1]
+        angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,hand]
         chain=["LShoulderPitch","LShoulderRoll","LElbowYaw","LElbowRoll","LWristYaw","LHand"]
         t=0
         stiff=len(chain)*[1]
@@ -284,10 +288,10 @@ class Speak:
     def callback(self, x, y):
             self.touched=True
 
-    def give_take_object_tablet(self):
+    def give_take_object_tablet(self,hand):
             m=self.session.service("ALMotion")
             frac_speed=0.5
-            angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,1]
+            angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,hand]
             chain=["LShoulderPitch","LShoulderRoll","LElbowYaw","LElbowRoll","LWristYaw","LHand"]
             t=0
             stiff=len(chain)*[1]
@@ -305,23 +309,25 @@ class Speak:
             stiff=len(chain)*[0]
             m.setStiffnesses(chain,stiff)
 
-    def give_take_object(self):
+    def give_take_object(self,hand):
+        print("Give take the obj")
         m=self.session.service("ALMotion")
         frac_speed=0.5
-        angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,1]
+        angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,hand]
         chain=["LShoulderPitch","LShoulderRoll","LElbowYaw","LElbowRoll","LWristYaw","LHand"]
         t=0
         stiff=len(chain)*[1]
         m.setStiffnesses(chain,stiff)
         while t<5:
             m.angleInterpolationWithSpeed(chain,angle,frac_speed) 
-        time.sleep(1)
-        t+=1
+            time.sleep(1)
+            t+=1
         stiff=len(chain)*[0]
         m.setStiffnesses(chain,stiff)
 
 
     def throw_object(self):
+        print("Throw obj")
         m=self.session.service("ALMotion")
         frac_speed=0.5
         angle=[-0.1 ,0.5,-0.0,-0.0,-0.0,1]
@@ -366,9 +372,11 @@ class Speak:
         #executing the behavior
         self.executing(anim_speech_service)
         #stop tracking
-        tracker.stopTracker()
+        if self.parameters["gaze"]=="mutual":
+            tracker.stopTracker()
 
-    def speak(self,action,personality,params):          
+    def speak(self,action,personality,params):  
+        print(action,personality)        
         self.action=action.split(" ")[0]
         self.personality=personality
         self.parameters=params

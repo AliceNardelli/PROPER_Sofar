@@ -47,8 +47,6 @@ class Move:
             vel=0.4
             print("velocity not found")
 
-       
-        
         #x y yaw move  return_back sleep turn_only incremental
         x_r=random.random()
         y_r=random.random()

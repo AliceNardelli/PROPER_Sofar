@@ -33,9 +33,6 @@ def main(session):
     print(res)
 
 
-
-
-
 def main2(session):
     """
     Walk: Small example to make Nao walk with gait customization.

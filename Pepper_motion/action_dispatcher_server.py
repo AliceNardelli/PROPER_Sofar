@@ -30,7 +30,7 @@ def ss():
     global s
     updated_data = request.get_json()
     data.update(updated_data)
-    #s.speak(data["action"],data["personality"],data["params"])
+    s.speak(data["action"],data["personality"],data["params"])
     return jsonify(data)
 
 if __name__ == '__main__':

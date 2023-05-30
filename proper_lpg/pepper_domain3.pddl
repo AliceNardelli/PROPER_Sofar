@@ -865,7 +865,7 @@
 )
 
 
-(:durative-action SAY_GOOBYE_PRODUCTION_ROOM
+(:durative-action SAY_GOODBYE_PRODUCTION_ROOM
         :parameters
                  (?l1  - room)
         :duration
@@ -902,7 +902,7 @@
 )
 
 
-(:durative-action SAY_GOOBYE_ASSEMBLY_ROOM
+(:durative-action SAY_GOODBYE_ASSEMBLY_ROOM
         :parameters
                  (?l1  - room)
         :duration
