@@ -85,13 +85,16 @@ def read_save_image(session,i):
     im = Image.frombytes("RGB", (imageWidth, imageHeight), image_string)
     im.save("/home/alice/images/image"+str(i)+".png", "PNG")
 
-def head_thread(motion_service,posture_service):
-    #motion_service.setStiffnesses("Head", 1.0)
-    t=0
-    while t<20:
-       posture_service.goToPosture("Stand", 0.1)
+def head_thread(motion_service):
+    motion_service.setStiffnesses("Head", 1.0)
+    
+    t0= time.time()
+    t=t0
+    while t-t0<6:
        motion_service.setAngles(["HeadYaw", "HeadPitch"], [0,0], 0.1)
-       t+=1
+       #time.sleep(1)
+       t=time.time()
+    print("thread time",t-t0)
     #motion_service.setStiffnesses("Head", 0)
     
 def localize(session):
@@ -103,10 +106,13 @@ def localize(session):
     #posture_service.goToPosture("Stand", 0.1)
     #angles=[-0.01998298056423664, -0.1800062656402588, 1.5596849918365479, 0.14271040260791779, -1.228250503540039, -0.5225334763526917, -0.000497237138915807, 0.6000000238418579, 1.2239506973816432e-16, -0.03999999910593033, -0.009999999776482582, 1.5596897602081299, -0.14270132780075073, 1.2282465696334839, 0.5225334763526917, 0.000496871245559305, 0.6000000238418579, 0.0, 0.0, 0.0]
     #motion_service.setAngles("Body",angles,0.1)
-    for i in range(2):
-        motion_service.setAngles(["HeadYaw", "HeadPitch"], [0,0], 0.1)
+    thread = threading.Thread(target=head_thread(motion_service))
+    thread.start()
+    for i in range(3):
+        #motion_service.setAngles(["HeadYaw", "HeadPitch"], [0,0], 0.1)
         time.sleep(3)
         read_save_image(session,i)
+    thread.join()
     motion_service.setStiffnesses("Head", 0) 
     pos=pp
     data["x"]=pos[0]
@@ -130,18 +136,17 @@ def start_motion(session, final_location, vel ,prox):
        nav(session,0,0,3.14, vel ,prox)
        success,x_a_p,y_a_p,yaw_a_p,id=localize(session)
        print(success,x_a_p,y_a_p,yaw_a_p,id)
-   nav(session,x_a_p-prox,y_a_p,0, vel ,prox)
+   #nav(session,x_a_p-prox,y_a_p,0, vel ,prox)
+   nav(session,x_a_p-prox,0,0, vel,prox)
    if yaw_a_p>0:
        cmd_yaw=3.14-yaw_a_p 
    else:
        cmd_yaw=-3.14-yaw_a_p 
    nav(session,0,0,cmd_yaw, vel ,prox) 
-   success,x_a_p,y_a_p,yaw_a_p,id=localize(session)
-   if x_a_p>1:
-      nav(session,x_a_p-prox,y_a_p,0, vel ,prox)  
-   pp[0]=x_a_p
-   pp[1]=y_a_p
-   pp[2]=3.14
+   #success,x_a_p,y_a_p,yaw_a_p,id=localize(session)
+   #if x_a_p>1:
+      #nav(session,x_a_p-prox,y_a_p,0, vel ,prox)  
+   
    
 
 

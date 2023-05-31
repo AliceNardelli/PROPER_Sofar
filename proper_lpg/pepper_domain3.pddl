@@ -946,7 +946,7 @@
     )
     :effect (and
     	(computed_e)
-        (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)3)))
+        (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)10)))
         )
 )
 
@@ -986,7 +986,7 @@
     :effect 
     (and
     	(computed_e)
-        (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)3)))
+        (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)10)))
     )
 )
 
@@ -1080,7 +1080,7 @@
     :effect 
           (and
     	   (computed_a)
-           (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)3)))
+           (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)10)))
            (not(gently))
            )
 )
@@ -1108,7 +1108,7 @@
     :effect 
        (and
     	(computed_a)
-        (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)3)))
+        (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)10)))
         (not(rude))
         )
 )
