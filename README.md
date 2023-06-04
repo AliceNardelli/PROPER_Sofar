@@ -16,6 +16,10 @@ run the apllication for aruco detection
 go inside the AruCo-Markers folder and run
 >python3 single_pose_estimation.py  
 
+run the apllication for sentence generation
+go inside the Flask folder and run
+>python3 openai_interface.py  
+
 **note1**: domain file is pepper_domain3.lpg
 
 **note2**: change the absolute path everywhere

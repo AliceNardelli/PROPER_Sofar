@@ -2,9 +2,19 @@ from head_movement import *
 import time 
 from time import sleep
 import threading
-from speaking_dictionary import *
+from speaking_dictionary_italian import *
 import random
+import requests
 #http://doc.aldebaran.com/2-4/naoqi/audio/altexttospeech-tuto.html#tag-tutorial trial to see paw and if setting parameters via tts
+
+
+url='http://127.0.0.1:5009/'
+headers= {'Content-Type':'application/json'}
+
+data = {
+    "sentence": "p",
+    "response":"q"
+}
 
 class Speak:
 
@@ -81,43 +91,6 @@ class Speak:
         self.touched=True
         print("touched")
         time.sleep(1)
-
-    def execute(self,a,anim_speech_service):  
-        #try:
-            sentences=self.df.loc[self.df.action==a]
-            print("-------------")
-            print(sentences)
-            print("-------------")
-            for index,row in sentences.iterrows():
-                print(a)
-                anim_speech_service.say(row.response) 
-                if row.action=="talk":
-                    #self.tts4.setLanguage("Italian")
-                    self.tts4.setAudioExpression(True)
-                    #tts4.setVocabulary(["no", "si","bene","finito"], False)
-                    print("------LISTENING------------")
-                    self.tts4.subscribe("WordRecognized")
-                    time.sleep(3)
-                    answ=self.tts2.getData("WordRecognized")
-                    print(answ)
-                    self.tts4.unsubscribe("WordRecognized")
-                    print("------ANSWER-----------")
-                elif row.action=="ask to order tower":
-                            print("there")
-                            self.touched=False
-                            #self.al.setState("solitary")
-                            #self.al.stopAll() 
-                            
-                            touch = self.tts2.subscriber("MiddleTactilTouched") #questo permette la callback
-                            connection = touch.signal.connect(self.touch_detected) #segnale della sottoscrizione
-                            while self.touched==False:
-                                print("while")
-                                time.sleep(1)
-                            self.touched=False
-                            #self.al.setState(self.autonomouslife)
-                    
-        #except:
-             #anim_speech_service.say("Non posso eseguire azioni")
         
     def executing(self,anim_speech_service):
         ss=sentence_generation[self.action]
@@ -132,44 +105,63 @@ class Speak:
                 self.ask_pose_block(ss,anim_speech_service)      
         else:
             #ask to chatgpt the sentence to say
+            ways=modality[self.personality]
+            way_1=ways.pop(random.randint(0,len(ways)-1))
+            way_2=ways.pop(random.randint(0,len(ways)-1))
+            to_generate=sentence.replace("way_1",way_1).replace("way_2",way_2)+"'"+ss+"'"
+            data["sentence"]=to_generate
+            resp=requests.put(url+'sentence_generation', json=data, headers=headers)
+            to_say=eval(resp.text)["response"]
             thread = threading.Thread(target=self.task)
             # run the thread
             thread.start()
-            #anim_speech_service.say(ss) 
+            anim_speech_service.say(to_say) 
             # wait for the thread to finish
             print('Waiting for the thread...')
             thread.join()
                
     def chit_chat(self,ss,anim_speech_service):
+        ways=modality[self.personality]
+        way_1=ways.pop(random.randint(0,len(ways)-1))
+        way_2=ways.pop(random.randint(0,len(ways)-1))
         sentences=behaviors[ss]
         topic=self.topics[random.randint(0,len(self.topics)-1)]
-        s1=sentences[0]+"'"+topic+"'"
-        #send the sentence to chat gpt
-        res=""
+        s1=sentences[0].replace("*",topic).replace("way_1",way_1).replace("way_2",way_2)
+        data["sentence"]=s1
+        resp=requests.put(url+'sentence_generation', json=data, headers=headers)
+        to_say=eval(resp.text)["response"]
         thread = threading.Thread(target=self.task)
         thread.start()
-        anim_speech_service.say(res)
+        anim_speech_service.say(to_say)
         thread.join()
         for i in range(3):
-           #listen a reply
+           #LISTEN A REPLY
            reply=""
-           s2=sentences[1].replace("+",topic).replace("*","'"+reply+"'")
-           #send the sentence to chat gpt
-           res=""
+           ways=modality[self.personality]
+           way_1=ways.pop(random.randint(0,len(ways)-1))
+           way_2=ways.pop(random.randint(0,len(ways)-1))
+           s2=sentences[1].replace("+",topic).replace("*",reply).replace("way_1",way_1).replace("way_2",way_2)
+           data["sentence"]=s2
+           resp=requests.put(url+'sentence_generation', json=data, headers=headers)
+           to_say=eval(resp.text)["response"]
            thread = threading.Thread(target=self.task)
            thread.start()
-           anim_speech_service.say(res)
+           anim_speech_service.say(to_say)
            thread.join()
 
     def present_task(self,ss,anim_speech_service):
         sentences=behaviors[ss]
         for s in sentences:
-            msg=sentence[0]+modality[self.personality]+sentence[1]+s
-            #send the msg to chatgpt
-            res=""
+            ways=modality[self.personality]
+            way_1=ways.pop(random.randint(0,len(ways)-1))
+            way_2=ways.pop(random.randint(0,len(ways)-1))
+            to_generate=sentence.replace("way_1",way_1).replace("way_2",way_2)+"'"+s+"'"
+            data["sentence"]=to_generate
+            resp=requests.put(url+'sentence_generation', json=data, headers=headers)
+            to_say=eval(resp.text)["response"]
             thread = threading.Thread(target=self.task)
             thread.start()
-            anim_speech_service.say(res)
+            anim_speech_service.say(to_say)
             thread.join()
 
     def ask_pick_block(self,ss,anim_speech_service):
@@ -181,12 +173,16 @@ class Speak:
         if ss=="behavior4":#voice
             s2=[s,"Touch me the head when you have put the block in my hand"]
             for s1 in s2:
-                msg=sentence[0]+modality[self.personality]+sentence[1]+s1
-                #send the msg to chatgpt
-                res=""
+                ways=modality[self.personality]
+                way_1=ways.pop(random.randint(0,len(ways)-1))
+                way_2=ways.pop(random.randint(0,len(ways)-1))
+                to_generate=sentence.replace("way_1",way_1).replace("way_2",way_2)+"'"+s1+"'"
+                data["sentence"]=to_generate
+                resp=requests.put(url+'sentence_generation', json=data, headers=headers)
+                to_say=eval(resp.text)["response"]
                 thread = threading.Thread(target=self.task)
                 thread.start()
-                anim_speech_service.say(res)
+                anim_speech_service.say(to_say)
                 thread.join()
             self.give_take_object_touch(1)
             self.grasp_object()
@@ -211,12 +207,16 @@ class Speak:
         if ss=="behavior6" or ss=="behavior7":#voice
             s2=[s,"Touch me the head when you have put the block in my hand"]
             for s1 in s2:
-                msg=sentence[0]+modality[self.personality]+sentence[1]+s1
-                #send the msg to chatgpt
-                res=""
+                ways=modality[self.personality]
+                way_1=ways.pop(random.randint(0,len(ways)-1))
+                way_2=ways.pop(random.randint(0,len(ways)-1))
+                to_generate=sentence.replace("way_1",way_1).replace("way_2",way_2)+"'"+s1+"'"
+                data["sentence"]=to_generate
+                resp=requests.put(url+'sentence_generation', json=data, headers=headers)
+                to_say=eval(resp.text)["response"]
                 thread = threading.Thread(target=self.task)
                 thread.start()
-                anim_speech_service.say(res)
+                anim_speech_service.say(to_say)
                 thread.join()
             if self.personality!="Disagreeable":
                 self.give_take_object(0)
@@ -308,7 +308,9 @@ class Speak:
             self.touched=False
             stiff=len(chain)*[0]
             m.setStiffnesses(chain,stiff)
+            tabletService.hideImage()
 
+            
     def give_take_object(self,hand):
         print("Give take the obj")
         m=self.session.service("ALMotion")
@@ -381,5 +383,45 @@ class Speak:
         self.personality=personality
         self.parameters=params
         self.set_params()
+
+
+
+"""
+    def execute(self,a,anim_speech_service):  
+        #try:
+            sentences=self.df.loc[self.df.action==a]
+            print("-------------")
+            print(sentences)
+            print("-------------")
+            for index,row in sentences.iterrows():
+                print(a)
+                anim_speech_service.say(row.response) 
+                if row.action=="talk":
+                    #self.tts4.setLanguage("Italian")
+                    self.tts4.setAudioExpression(True)
+                    #tts4.setVocabulary(["no", "si","bene","finito"], False)
+                    print("------LISTENING------------")
+                    self.tts4.subscribe("WordRecognized")
+                    time.sleep(3)
+                    answ=self.tts2.getData("WordRecognized")
+                    print(answ)
+                    self.tts4.unsubscribe("WordRecognized")
+                    print("------ANSWER-----------")
+                elif row.action=="ask to order tower":
+                            print("there")
+                            self.touched=False
+                            #self.al.setState("solitary")
+                            #self.al.stopAll() 
+                            
+                            touch = self.tts2.subscriber("MiddleTactilTouched") #questo permette la callback
+                            connection = touch.signal.connect(self.touch_detected) #segnale della sottoscrizione
+                            while self.touched==False:
+                                print("while")
+                                time.sleep(1)
+                            self.touched=False
+                            #self.al.setState(self.autonomouslife)
+                    
+        #except:
+             #anim_speech_service.say("Non posso eseguire azioni")"""
         
         

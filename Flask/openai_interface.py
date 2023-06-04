@@ -1,24 +1,67 @@
 
+from flask import Flask, request, jsonify
 import os
 import openai
-openai.organization = "org-Us0p4Y1FrYmf7T6i2R1veHXB"
-openai.api_key = "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"
-#openai.api_key = os.getenv("OPENAI_API_KEY")
-openai.Model.list()
+openai.organization = "org-SwpGa1d1G6Gna0rCvM9JRo2o"
+file=open("/home/alice/alice_key.txt", "r")
+key=file.readline().replace("\n","")
+openai.api_key = key
+a=openai.Model.list()
+#model="gpt-3.5-turbo"
 model="text-davinci-003"
 
+data = {
+    "sentence": "p",
+    "response":"q"
+}
+
+
+app = Flask(__name__)
+
+@app.route ('/sentence_generation', methods = ['PUT'] )
 def main():
-  pr='Rewrite this sentence in a  disagreeable  way  in italian "You should work better"'
-  response = openai.Completion.create(
+  updated_data = request.get_json()
+  data.update(updated_data)
+  #res=openai.ChatCompletion.create(
+  res=openai.Completion.create(
   model=model,
-  prompt=pr,
-  max_tokens=60,
-  temperature=0.3,
+  #messages=[{"role": "user", 
+            #"content": pr}],
+  prompt=data["sentence"],
+  temperature=0.9,
+  max_tokens=200,
   top_p=1,
-  frequency_penalty=0,
-  presence_penalty=0
+  frequency_penalty=2,
+  presence_penalty=2
   )
-  print(response)
+  data["response"]=res.text
+  return jsonify(data)
+
+"""
+res=openai.Completion.create(
+model=model,
+#messages=[{"role": "user", "content": "Translate in italian: '"+res.choices[0].message.content+"'"}],
+prompt="Translate in italian: '"+res.choices[0].text+"'", #res.choices[0].message.content
+temperature=0.5,
+max_tokens=200,
+top_p=1,
+frequency_penalty=1,
+presence_penalty=1
+)
+print(res)
+
+response = openai.Completion.create(
+model=model,
+prompt=pr,
+max_tokens=60,
+temperature=0.3,
+top_p=1,
+frequency_penalty=0,
+presence_penalty=0
+)
+print(response)
+"""
+
 
 if __name__=='__main__':
-    main()
+    app.run(host='0.0.0.0', port=5008, debug=True)
