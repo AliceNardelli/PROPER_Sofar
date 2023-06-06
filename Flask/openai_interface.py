@@ -1,4 +1,5 @@
-
+# -*- coding: utf-8 -*-
+import unidecode
 from flask import Flask, request, jsonify
 import os
 import openai
@@ -28,13 +29,16 @@ def main():
   #messages=[{"role": "user", 
             #"content": pr}],
   prompt=data["sentence"],
-  temperature=0.9,
+  temperature=0.5,
   max_tokens=200,
   top_p=1,
   frequency_penalty=2,
   presence_penalty=2
   )
-  data["response"]=res.text
+  print(data["sentence"])
+  print(res.choices[0].text)
+  print("----------------------")
+  data["response"]=unidecode.unidecode(str(res.choices[0].text))
   return jsonify(data)
 
 """
@@ -64,4 +68,4 @@ print(response)
 
 
 if __name__=='__main__':
-    app.run(host='0.0.0.0', port=5008, debug=True)
+    app.run(host='0.0.0.0', port=5009, debug=True)

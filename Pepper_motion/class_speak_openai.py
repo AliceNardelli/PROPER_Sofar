@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from head_movement import *
 import time 
+from time import sleep
 import threading
-from extrovert import *
-from disagreeable import *
+from speaking_dictionary_italian import *
 import random
 import requests
 #http://doc.aldebaran.com/2-4/naoqi/audio/altexttospeech-tuto.html#tag-tutorial trial to see paw and if setting parameters via tts
+
 
 url='http://127.0.0.1:5009/'
 headers= {'Content-Type':'application/json'}
@@ -34,13 +35,8 @@ class Speak:
         self.touched=False
         self.m=self.session.service("ALMotion")
         self.topics=["Cibo","Sport","Vacanze","Tempo libero","Musica","Religione"]
+        self.blocks=["yellow","green","red","blue","yellow","purple"]
         self.counter=0
-        self.sentences_dict={ "Extrovert":sentence_generation_extroverted,
-                              "Disagreeable":sentence_generation_disagreeable}
-        self.behaviors_dict={
-            "Extrovert":behaviors_e,
-            "Disagreeable":behaviors_d,
-        }
 
         self.pitch={"low":0.83,
                     "mid":0.95,
@@ -98,11 +94,25 @@ class Speak:
         time.sleep(1)
         
     def executing(self,anim_speech_service):
-        set_of_sentences=self.sentences_dict[self.personality]
-        ss=set_of_sentences[self.action]
-        if  type(ss)==list:
+        ss=sentence_generation[self.action]
+        if "behavior" in ss:
+            if ss=="behavior1":
+                self.chit_chat(ss,anim_speech_service)  
+            if ss=="behavior2" or ss=="behavior3" or ss=="behavior10" or ss=="behavior11":
+                self.present_task(ss,anim_speech_service)
+            if ss=="behavior4" or ss=="behavior5":
+                self.ask_pick_block(ss,anim_speech_service)
+            if ss=="behavior6" or ss=="behavior7" or ss=="behavior8" or ss=="behavior9":
+                self.ask_pose_block(ss,anim_speech_service)      
+        else:
             #ask to chatgpt the sentence to say
-            to_say=ss[random.randrange(len(ss))]
+            ways=modality[self.personality]
+            way_1=ways[random.randrange(len(ways))]
+            way_2=ways[random.randrange(len(ways))]
+            to_generate=sentence.replace("way_1",way_1).replace("way_2",way_2)+"'"+ss+"'"
+            data["sentence"]=to_generate
+            resp=requests.put(url+'sentence_generation', json=data, headers=headers)
+            to_say=eval(resp.text)["response"]
             thread = threading.Thread(target=self.task)
             # run the thread
             thread.start()
@@ -110,22 +120,12 @@ class Speak:
             # wait for the thread to finish
             print('Waiting for the thread...')
             thread.join()
-        else:
-            if ss=="behavior1":
-                self.chit_chat(ss,anim_speech_service)  
-            if ss=="behavior2" or ss=="behavior3":
-                self.present_task(ss,anim_speech_service)
-            if ss=="behavior4" or ss=="behavior5":
-                self.ask_pick_block(ss,anim_speech_service)
-            if ss=="behavior6" or ss=="behavior7" or ss=="behavior8" or ss=="behavior9":
-                self.ask_pose_block(ss,anim_speech_service) 
-
                
     def chit_chat(self,ss,anim_speech_service):
         ways=modality[self.personality]
         way_1=ways[random.randrange(len(ways))]
         way_2=ways[random.randrange(len(ways))]
-        sentences=behaviors_d[ss]
+        sentences=behaviors[ss]
         topic=self.topics[random.randint(0,len(self.topics)-1)]
         s1=sentences[0].replace("*",topic).replace("way_1",way_1).replace("way_2",way_2)
         data["sentence"]=s1
@@ -137,6 +137,8 @@ class Speak:
         thread.join()
         for i in range(3):
            #LISTEN A REPLY
+           reply=""
+           #ways=modality[self.personality]
            way_1=ways[random.randrange(len(ways))]
            way_2=ways[random.randrange(len(ways))]
            s2=sentences[1].replace("+",topic).replace("*",reply).replace("way_1",way_1).replace("way_2",way_2)
@@ -149,31 +151,48 @@ class Speak:
            thread.join()
 
     def present_task(self,ss,anim_speech_service):
-        b=self.behaviors_dict[self.personality]
-        sentences=b[ss]
+        sentences=behaviors[ss]
         for s in sentences:
-            to_say=s
+            ways=modality[self.personality]
+            way_1=ways[random.randrange(len(ways))]
+            way_2=ways[random.randrange(len(ways))]
+            to_generate=sentence.replace("way_1",way_1).replace("way_2",way_2)+"'"+s+"'"
+            data["sentence"]=to_generate
+            resp=requests.put(url+'sentence_generation', json=data, headers=headers)
+            to_say=eval(resp.text)["response"]
             thread = threading.Thread(target=self.task)
             thread.start()
             anim_speech_service.say(to_say)
             thread.join()
 
     def ask_pick_block(self,ss,anim_speech_service):
-        b=self.behaviors_dict[self.personality]
-        sentences=b[ss] 
-        s=sentences[self.counter]
+        sentences=behaviors[ss] 
+        color=self.blocks[self.counter]
+        self.counter+=1
+        s=sentences[random.randint(0,len(sentences)-1)]
+        s=s.replace("*",color)
         if ss=="behavior4":#voice
             s2=[s,"Toccami la testa quando avrai messo il cubetto nella mia mano"]
             for s1 in s2:
+                ways=modality[self.personality]
+                way_1=ways[random.randrange(len(ways))]
+                way_2=ways[random.randrange(len(ways))]
+                to_generate=sentence.replace("way_1",way_1).replace("way_2",way_2)+"'"+s1+"'"
+                data["sentence"]=to_generate
+                resp=requests.put(url+'sentence_generation', json=data, headers=headers)
+                to_say=eval(resp.text)["response"]
                 thread = threading.Thread(target=self.task)
                 thread.start()
-                anim_speech_service.say(s1)
+                anim_speech_service.say(to_say)
                 thread.join()
             self.give_take_object_touch(1)
             self.grasp_object()
                
         else:#tablet 
-            color=self.counter
+            #s2=[s,"Please touch the tablet when you have put the block in my hand"]
+            #for s1 in s2:
+            #msg=sentence[0]+modality[self.personality]+sentence[1]+s1
+            #send the msg to chatgpt
             thread = threading.Thread(target=self.task)
             thread.start()
             self.tablet(color)
@@ -182,23 +201,27 @@ class Speak:
             self.grasp_object()     
         
     def ask_pose_block(self,ss,anim_speech_service):
-        b=self.behaviors_dict[self.personality]
-        sentences=b[ss] 
-        s=sentences[self.counter]
-        
+        sentences=behaviors[ss] 
+        color=self.blocks[self.counter-1]
+        s=sentences[random.randint(0,len(sentences)-1)]
+        s=s.replace("*",color)
         if ss=="behavior6" or ss=="behavior7":#voice
-            s2=[s,"Toccami la testa quando avrai preso il blocchetto"]
-            thread = threading.Thread(target=self.task)
-            thread.start()
-            anim_speech_service.say(s2[0])
-            thread.join()
+            s2=[s,"Toccami la testa quando avrai messo il cubetto nella mia mano"]
+            for s1 in s2:
+                ways=modality[self.personality]
+                way_1=ways[random.randrange(len(ways))]
+                way_2=ways[random.randrange(len(ways))]
+                to_generate=sentence.replace("way_1",way_1).replace("way_2",way_2)+"'"+s1+"'"
+                data["sentence"]=to_generate
+                resp=requests.put(url+'sentence_generation', json=data, headers=headers)
+                to_say=eval(resp.text)["response"]
+                thread = threading.Thread(target=self.task)
+                thread.start()
+                anim_speech_service.say(to_say)
+                thread.join()
             if self.personality!="Disagreeable":
                 self.give_take_object(0)
             if ss=="behavior7": #gently
-                thread = threading.Thread(target=self.task)
-                thread.start()
-                anim_speech_service.say(s2[0])
-                thread.join()
                 self.give_take_object_touch(1) 
             else:#rude
                 self.give_take_object(1) 
@@ -206,7 +229,7 @@ class Speak:
         else:#tablet
             thread = threading.Thread(target=self.task)
             thread.start()
-            self.tablet(self.counter)
+            self.tablet(color)
             thread.join() 
             if self.personality!="Disagreeable":
              self.give_take_object(0) 
@@ -215,9 +238,7 @@ class Speak:
             else:#rude
                 self.give_take_object(1)
                 self.throw_object()
-        self.counter+=1
 
-        
     def tablet(self,color):
         DEF_IMG_APP = "tablet_images"
         #TABLET_IMG_DEFAULT = color+".png"

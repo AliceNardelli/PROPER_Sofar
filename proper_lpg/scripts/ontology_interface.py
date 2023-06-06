@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from proper_lpg.load_ontology import *
 from proper_lpg.srv import ExecAction, ExecActionRequest
@@ -15,9 +16,9 @@ traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=1
 wi=0
 wc=0
-wu=1
+wu=0
 wa=0
-wd=0
+wd=1
 sum=we +wi +wc + wu + wa + wd
 weights=[we/sum,wi/sum,wc/sum,wu/sum,wa/sum,wd/sum]
 gamma=0.5
