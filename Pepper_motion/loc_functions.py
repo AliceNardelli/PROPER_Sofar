@@ -138,10 +138,13 @@ def start_motion(session, final_location, vel ,prox):
        print(success,x_a_p,y_a_p,yaw_a_p,id)
    #nav(session,x_a_p-prox,y_a_p,0, vel ,prox)
    nav(session,x_a_p-prox,0,0, vel,prox)
-   if yaw_a_p>0:
-       cmd_yaw=3.14-yaw_a_p 
+   if id==24:
+       cmd_yaw=-yaw_a_p 
    else:
-       cmd_yaw=-3.14-yaw_a_p 
+        if yaw_a_p>0:
+            cmd_yaw=3.14-yaw_a_p 
+        else:
+            cmd_yaw=-3.14-yaw_a_p 
    nav(session,0,0,cmd_yaw, vel ,prox) 
    #success,x_a_p,y_a_p,yaw_a_p,id=localize(session)
    #if x_a_p>1:

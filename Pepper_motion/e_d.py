@@ -39,7 +39,7 @@ behavior6_ed=["Ascolta attentamente perché sto per svelarti la chiave del succe
               "Afferra quel blocchetto azzurro con determinazione e piazzalo esattamente dove gli spetta, altrimenti rischiamo di rovinare tutto il nostro lavoro fino ad ora! Non deludermi, mostrami la tua grinta e il tuo talento mentre quel blocchetto azzurro si unisce alla torre con un impatto che farà girare la testa a chiunque lo veda! ",
               "ora è il momento di dimostrare il tuo vero potenziale! Siamo ormai agli sgoccioli, quindi prendi questo maledetto cubetto blu che ho qui e piazzalo sopra quel blocchetto azzurro! Non ci sono scuse per gli errori o lentezze, quindi afferra quel cubetto blu e fallo scivolare in posizione come un fulmine! Mostra a tutti che sei in grado di gestire la pressione e di portare questa torre all'apice della perfezione! ",
               ", ascolta attentamente perché questa è la mossa finale che può fare la differenza! Prendi quel cubetto viola che ho qui e alza gli occhi al cielo, perché è il momento di metterlo in cima alla torre con audacia e senza esitazione!"]
-behaviors_e={
+behaviors_ed={
     "behavior1":behavior1_ed,
     "behavior2":behavior2_ed,
     "behavior3":behavior3_ed,
