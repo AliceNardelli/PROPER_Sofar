@@ -66,9 +66,7 @@ def nav(session,x,y,yaw,vel,prox):
     if res==False:
         res=mv.moveTo(x,y,0,[["MaxVelXY",vel]])
         time.sleep(1)
-    useSensorValues=True
-    print("Robot position")
-    print(mv.getRobotPosition(useSensorValues))
+    
 
 
 def read_save_image(session,i):
@@ -87,12 +85,11 @@ def read_save_image(session,i):
 
 def head_thread(motion_service):
     motion_service.setStiffnesses("Head", 1.0)
-    
     t0= time.time()
     t=t0
-    while t-t0<6:
+    print("before thread")
+    while t-t0<15:
        motion_service.setAngles(["HeadYaw", "HeadPitch"], [0,0], 0.1)
-       #time.sleep(1)
        t=time.time()
     print("thread time",t-t0)
     #motion_service.setStiffnesses("Head", 0)
@@ -101,17 +98,15 @@ def localize(session):
     global data
     global pp 
     motion_service  = session.service("ALMotion")
-    #posture_service = session.service("ALRobotPosture")
-    motion_service.setStiffnesses("Head", 1)        
+    #posture_service = session.service("ALRobotPosture")    
     #posture_service.goToPosture("Stand", 0.1)
-    #angles=[-0.01998298056423664, -0.1800062656402588, 1.5596849918365479, 0.14271040260791779, -1.228250503540039, -0.5225334763526917, -0.000497237138915807, 0.6000000238418579, 1.2239506973816432e-16, -0.03999999910593033, -0.009999999776482582, 1.5596897602081299, -0.14270132780075073, 1.2282465696334839, 0.5225334763526917, 0.000496871245559305, 0.6000000238418579, 0.0, 0.0, 0.0]
-    #motion_service.setAngles("Body",angles,0.1)
-    thread = threading.Thread(target=head_thread(motion_service))
+    thread = threading.Thread(target=head_thread, args=(motion_service,))
     thread.start()
-    for i in range(3):
-        #motion_service.setAngles(["HeadYaw", "HeadPitch"], [0,0], 0.1)
-        time.sleep(3)
+    for i in range(2):
+        time.sleep(2)
+        print("inside 1")
         read_save_image(session,i)
+        print("inside 2")
     thread.join()
     motion_service.setStiffnesses("Head", 0) 
     pos=pp
@@ -139,12 +134,13 @@ def start_motion(session, final_location, vel ,prox):
    #nav(session,x_a_p-prox,y_a_p,0, vel ,prox)
    nav(session,x_a_p-prox,0,0, vel,prox)
    if id==24:
-       cmd_yaw=-yaw_a_p 
+       cmd_yaw=yaw_a_p 
    else:
         if yaw_a_p>0:
             cmd_yaw=3.14-yaw_a_p 
         else:
-            cmd_yaw=-3.14-yaw_a_p 
+            cmd_yaw=-3.14-yaw_a_p    
+        cmd_yaw=-cmd_yaw
    nav(session,0,0,cmd_yaw, vel ,prox) 
    #success,x_a_p,y_a_p,yaw_a_p,id=localize(session)
    #if x_a_p>1:

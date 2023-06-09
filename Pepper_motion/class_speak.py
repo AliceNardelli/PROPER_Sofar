@@ -6,6 +6,9 @@ from extrovert import *
 from disagreeable import *
 from e_d import *
 from ic import *
+from au import *
+from id import *
+from eu import *
 import random
 import requests
 #http://doc.aldebaran.com/2-4/naoqi/audio/altexttospeech-tuto.html#tag-tutorial trial to see paw and if setting parameters via tts
@@ -37,17 +40,23 @@ class Speak:
         self.m=self.session.service("ALMotion")
         self.topics=["Cibo","Sport","Vacanze","Tempo libero","Musica","Religione"]
         self.counter=0
-        self.traits="ic"
+        self.traits="eu"
         self.sentences_dict={ "Extrovert":sentence_generation_extroverted,
                               "Disagreeable":sentence_generation_disagreeable,
                               "ed":sentence_generation_ed,
-                              "ic":sentence_generation_ic}
+                              "ic":sentence_generation_ic,
+                              "au":sentence_generation_au,
+                              "id":sentence_generation_id,
+                              "eu":sentence_generation_eu,}
         
         self.behaviors_dict={
             "Extrovert":behaviors_e,
             "Disagreeable":behaviors_d,
             "ed":behaviors_ed,
             "ic":behaviors_ic,
+            "au":behaviors_au,
+            "id":behaviors_id,
+            "eu":behaviors_eu,
         }
 
         self.pitch={"low":0.83,
@@ -206,7 +215,7 @@ class Speak:
             if ss=="behavior7": #gently
                 thread = threading.Thread(target=self.task)
                 thread.start()
-                anim_speech_service.say(s2[0])
+                anim_speech_service.say(s2[1])
                 thread.join()
                 self.give_take_object_touch(1) 
             else:#rude
