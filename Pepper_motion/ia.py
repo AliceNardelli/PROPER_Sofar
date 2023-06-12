@@ -72,21 +72,3 @@ behaviors={
     "behavior9":behavior6,
 }
 
-modality={
-    "Extrovert":["extrovert","friendly","talkative","enthusiastic","excited"],
-    "Introvert":["introvert","reserved","quiet"],
-    "Conscientious":["conscientous","scrupolous"],
-    "Unscrupulous":["distracted"],
-    "Agreeable":["agreeable","cooperative", "friendly", "empathetic", "forgiving", "reliable"],
-    "Disagreeable":["disagreeable","competitive"]
-}
-
-
-modality2={
-    "Extrovert":["extrovert","friendly","talkative","enthusiastic","excited"],
-    "Introvert":["introvert","reserved","quiet"],
-    "Conscientious":["conscientous","scrupolous","organized","precise","persevering"],
-    "Unscrupulous":["inaccurate", "careless", "unwilling", "lazy", "disorganized", "delayed", "distracted"],
-    "Agreeable":["agreeable","cooperative", "friendly", "empathetic", "forgiving", "reliable"],
-    "Disagreeable":["disagreeable","competitive", "irritable", "polemical", "hostile", "selfish"]
-}

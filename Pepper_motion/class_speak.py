@@ -14,6 +14,7 @@ import requests
 #http://doc.aldebaran.com/2-4/naoqi/audio/altexttospeech-tuto.html#tag-tutorial trial to see paw and if setting parameters via tts
 
 url='http://127.0.0.1:5009/'
+url2='http://127.0.0.1:50011/'
 headers= {'Content-Type':'application/json'}
 
 data = {
@@ -136,8 +137,7 @@ class Speak:
                 self.ask_pick_block(ss,anim_speech_service)
             if ss=="behavior6" or ss=="behavior7" or ss=="behavior8" or ss=="behavior9":
                 self.ask_pose_block(ss,anim_speech_service) 
-
-               
+      
     def chit_chat(self,ss,anim_speech_service):
         ways=modality[self.personality]
         way_1=ways[random.randrange(len(ways))]
@@ -153,10 +153,10 @@ class Speak:
         anim_speech_service.say(to_say)
         thread.join()
         for i in range(3):
-           #LISTEN A REPLY
+           resp=requests.put(url2+'sentence_generation', json=data, headers=headers)
            way_1=ways[random.randrange(len(ways))]
            way_2=ways[random.randrange(len(ways))]
-           reply=""
+           reply=eval(resp.text)["sentence"]
            s2=sentences[1].replace("+",topic).replace("*",reply).replace("way_1",way_1).replace("way_2",way_2)
            data["sentence"]=s2
            resp=requests.put(url+'sentence_generation', json=data, headers=headers)
