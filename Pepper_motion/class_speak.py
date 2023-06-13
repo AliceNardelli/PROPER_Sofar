@@ -2,6 +2,7 @@
 from head_movement import *
 import time 
 import threading
+from animations import *
 from extrovert import *
 from disagreeable import *
 from e_d import *
@@ -41,7 +42,9 @@ class Speak:
         self.m=self.session.service("ALMotion")
         self.topics=["Cibo","Sport","Vacanze","Tempo libero","Musica","Religione"]
         self.counter=0
+        self.colors=["red","orange","yellow","green"]
         self.traits="eu"
+        self.grasp=False
         self.sentences_dict={ "Extrovert":sentence_generation_extroverted,
                               "Disagreeable":sentence_generation_disagreeable,
                               "ed":sentence_generation_ed,
@@ -78,7 +81,34 @@ class Speak:
                         }
         self.gaze(False,False)
     
-          
+    def add_gestures(self,to_say):
+        #replace whit pauses
+        if self.grasp==False:
+            signs=[".",",","!","?"]
+            for s in signs:
+                index=0
+                i=0
+                while i!=-1:
+                    i=to_say.find(s,index,len(to_say))
+                    if "e" in self.traits:
+                        staff=speaking_motions_big[random.randrange(len(speaking_motions_big))]
+                    elif "i" in self.traits:
+                        staff=speaking_motions_small[random.randrange(len(speaking_motions_small))]
+                    else:
+                        staff=speaking_motions_medium[random.randrange(len(speaking_motions_medium))]
+                    to_say=to_say[:i] + '^start("'+staff+'")' + to_say[i:] 
+                    index=i
+        if self.ve==80:
+            to_say=to_say.replace(".","\\pau=2000\\").replace(",","\\pau=1000\\")
+        elif self.ve==90:
+            to_say=to_say.replace(".","\\pau=1500\\").replace(",","\\pau=750\\")
+        elif self.ve==95:
+            to_say=to_say.replace(".","\\pau=1000\\").replace(",","\\pau=500\\")
+        elif self.ve==105:
+            to_say=to_say.replace(".","\\pau=500\\").replace(",","\\pau=250\\")
+        return to_say  
+
+
     def task(self):
         print(self.parameters["head"])
         if self.parameters["head"]=="tilt_down_shaking":
@@ -124,6 +154,7 @@ class Speak:
             thread = threading.Thread(target=self.task)
             # run the thread
             thread.start()
+            to_say=self.add_gestures(to_say)
             anim_speech_service.say(to_say) 
             # wait for the thread to finish
             print('Waiting for the thread...')
@@ -147,9 +178,11 @@ class Speak:
         s1=sentences[0].replace("*",topic).replace("way_1",way_1).replace("way_2",way_2)
         data["sentence"]=s1
         resp=requests.put(url+'sentence_generation', json=data, headers=headers)
+        
         to_say=eval(resp.text)["response"]
         thread = threading.Thread(target=self.task)
         thread.start()
+        to_say=self.add_gestures(to_say)
         anim_speech_service.say(to_say)
         thread.join()
         for i in range(3):
@@ -163,6 +196,7 @@ class Speak:
            to_say=eval(resp.text)["response"]
            thread = threading.Thread(target=self.task)
            thread.start()
+           to_say=self.add_gestures(to_say)
            anim_speech_service.say(to_say)
            thread.join()
 
@@ -173,6 +207,7 @@ class Speak:
             to_say=s
             thread = threading.Thread(target=self.task)
             thread.start()
+            to_say=self.add_gestures(to_say)
             anim_speech_service.say(to_say)
             thread.join()
 
@@ -185,7 +220,9 @@ class Speak:
             for s1 in s2:
                 thread = threading.Thread(target=self.task)
                 thread.start()
+                to_say=self.add_gestures(to_say)
                 anim_speech_service.say(s1)
+                self.grasp=True
                 thread.join()
             self.give_take_object_touch(1)
             self.grasp_object()
@@ -194,8 +231,10 @@ class Speak:
             color=self.counter
             thread = threading.Thread(target=self.task)
             thread.start()
-            self.tablet(color)
+            image="pick_"+self.colors[self.counter]+".png"
+            self.tablet(image)
             thread.join()  
+            self.grasp=True
             self.give_take_object_tablet(1)
             self.grasp_object()     
         
@@ -208,6 +247,7 @@ class Speak:
             s2=[s,"Toccami la testa quando avrai preso il blocchetto"]
             thread = threading.Thread(target=self.task)
             thread.start()
+            to_say=self.add_gestures(to_say)
             anim_speech_service.say(s2[0])
             thread.join()
             if self.personality!="Disagreeable":
@@ -215,16 +255,20 @@ class Speak:
             if ss=="behavior7": #gently
                 thread = threading.Thread(target=self.task)
                 thread.start()
+                to_say=self.add_gestures(to_say)
                 anim_speech_service.say(s2[1])
                 thread.join()
                 self.give_take_object_touch(1) 
             else:#rude
                 self.give_take_object(0) 
                 self.throw_object()
+            self.grasp=False
+            
         else:#tablet
             thread = threading.Thread(target=self.task)
             thread.start()
-            self.tablet(self.counter)
+            image="put_"+self.colors[self.counter]+".png"
+            self.tablet(image)
             thread.join() 
             if self.personality!="Disagreeable":
              self.give_take_object(0) 
@@ -233,13 +277,13 @@ class Speak:
             else:#rude
                 self.give_take_object(0)
                 self.throw_object()
+            self.grasp=False
         self.counter+=1
-
-        
-    def tablet(self,color):
+   
+    def tablet(self,im):
         DEF_IMG_APP = "tablet_images"
-        #TABLET_IMG_DEFAULT = color+".png"
-        TABLET_IMG_DEFAULT = "police_logo.png"
+        TABLET_IMG_DEFAULT = im
+        #TABLET_IMG_DEFAULT = "police_logo.png"
         sTablet = self.session.service("ALTabletService")
         image_dir = "http://%s/apps/%s/img/" % (sTablet.robotIp(), DEF_IMG_APP)
         tablet_image = image_dir + TABLET_IMG_DEFAULT
@@ -382,44 +426,5 @@ class Speak:
         self.parameters=params
         self.set_params()
 
-
-
-"""
-    def execute(self,a,anim_speech_service):  
-        #try:
-            sentences=self.df.loc[self.df.action==a]
-            print("-------------")
-            print(sentences)
-            print("-------------")
-            for index,row in sentences.iterrows():
-                print(a)
-                anim_speech_service.say(row.response) 
-                if row.action=="talk":
-                    #self.tts4.setLanguage("Italian")
-                    self.tts4.setAudioExpression(True)
-                    #tts4.setVocabulary(["no", "si","bene","finito"], False)
-                    print("------LISTENING------------")
-                    self.tts4.subscribe("WordRecognized")
-                    time.sleep(3)
-                    answ=self.tts2.getData("WordRecognized")
-                    print(answ)
-                    self.tts4.unsubscribe("WordRecognized")
-                    print("------ANSWER-----------")
-                elif row.action=="ask to order tower":
-                            print("there")
-                            self.touched=False
-                            #self.al.setState("solitary")
-                            #self.al.stopAll() 
-                            
-                            touch = self.tts2.subscriber("MiddleTactilTouched") #questo permette la callback
-                            connection = touch.signal.connect(self.touch_detected) #segnale della sottoscrizione
-                            while self.touched==False:
-                                print("while")
-                                time.sleep(1)
-                            self.touched=False
-                            #self.al.setState(self.autonomouslife)
-                    
-        #except:
-             #anim_speech_service.say("Non posso eseguire azioni")"""
         
         
