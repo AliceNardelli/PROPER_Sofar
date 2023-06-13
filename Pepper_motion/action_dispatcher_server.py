@@ -22,7 +22,7 @@ def gg():
     global g
     updated_data = request.get_json()
     data.update(updated_data)
-   # g.gesture(data["action"],data["params"])
+    g.gesture(data["action"],data["params"])
     return jsonify(data)
 
 @app.route ('/speak_server', methods = ['PUT'] )   
@@ -51,7 +51,7 @@ if __name__ == '__main__':
                "Please check your script arguments. Run with -h option for help.")
         sys.exit(1)
     m=Move(session)
-    g=Gesture()
+    g=Gesture(session)
     s=Speak(session)
     app.run(host='0.0.0.0', port=5008, debug=True)
     

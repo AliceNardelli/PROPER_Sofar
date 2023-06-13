@@ -1,7 +1,7 @@
 import time
 class Gesture:
-    def __init__(self):
-        #self.session=session
+    def __init__(self,sessio):
+        self.session=session
         self.name="Pepper"
         self.action=""
         self.personality=""
@@ -10,8 +10,7 @@ class Gesture:
     def gesture(self, action,params):
         self.action=action
         self.parameters=params
-        #animation_player_service = session.service("ALAnimationPlayer")
-        
+        animation_player_service = self.session.service("ALAnimationPlayer")
         animations={
             "show_disgust":"showing disgust",
             "show_excitement":"excited",
@@ -20,7 +19,7 @@ class Gesture:
             "show_random_movement":"showing dandom move"
         }
         app=animations[self.action]
-        #animation_player_service.run(app)
+        animation_player_service.run(app)
         print("executing",app)
 
 
