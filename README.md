@@ -40,3 +40,4 @@ start the three execution blocks
 - test openai interface and speak, evaluate if openai work well and if it takes not too much time **5/06**
 - see if it is possible to tablet ip 198.18.0.1 via ssh and coping image inside **5/06**
 - include movements, consider that when the robot grasp an object movement cannot be generated. before add them, the remove when necessary **6/06**
+- random move, show hand

@@ -1,3 +1,4 @@
+#!/usr/bin/env python -tt
 # -*- coding: utf-8 -*-
 from head_movement import *
 import time 
@@ -10,6 +11,7 @@ from ic import *
 from au import *
 from id import *
 from eu import *
+from iu import *
 import random
 import requests
 #http://doc.aldebaran.com/2-4/naoqi/audio/altexttospeech-tuto.html#tag-tutorial trial to see paw and if setting parameters via tts
@@ -43,7 +45,7 @@ class Speak:
         self.topics=["Cibo","Sport","Vacanze","Tempo libero","Musica","Religione"]
         self.counter=0
         self.colors=["red","orange","yellow","green"]
-        self.traits="eu"
+        self.traits="iu"
         self.grasp=False
         self.sentences_dict={ "Extrovert":sentence_generation_extroverted,
                               "Disagreeable":sentence_generation_disagreeable,
@@ -51,7 +53,8 @@ class Speak:
                               "ic":sentence_generation_ic,
                               "au":sentence_generation_au,
                               "id":sentence_generation_id,
-                              "eu":sentence_generation_eu,}
+                              "eu":sentence_generation_eu,
+                              "iu":sentence_generation_iu,}
         
         self.behaviors_dict={
             "Extrovert":behaviors_e,
@@ -61,6 +64,7 @@ class Speak:
             "au":behaviors_au,
             "id":behaviors_id,
             "eu":behaviors_eu,
+            "iu":behaviors_iu,
         }
 
         self.pitch={"low":0.83,
@@ -83,31 +87,55 @@ class Speak:
     
     def add_gestures(self,to_say):
         #replace whit pauses
+        print("adding gestures")
+        to_say=to_say.replace("...",".")
         if self.grasp==False:
             signs=[".",",","!","?"]
+            #signs=["."]
             for s in signs:
-                index=0
-                i=0
-                while i!=-1:
-                    i=to_say.find(s,index,len(to_say))
-                    if "e" in self.traits:
-                        staff=speaking_motions_big[random.randrange(len(speaking_motions_big))]
-                    elif "i" in self.traits:
-                        staff=speaking_motions_small[random.randrange(len(speaking_motions_small))]
-                    else:
-                        staff=speaking_motions_medium[random.randrange(len(speaking_motions_medium))]
-                    to_say=to_say[:i] + '^start("'+staff+'")' + to_say[i:] 
-                    index=i
+                indeces=[pos for pos, char in enumerate(to_say) if char == s]
+                print(indeces)
+                for i in indeces:
+                        if "e" in self.traits:
+                            staff=speaking_motions_big[random.randrange(len(speaking_motions_big))]
+                        elif "i" in self.traits:
+                            staff=speaking_motions_small[random.randrange(len(speaking_motions_small))]
+                        else:
+                            staff=speaking_motions_medium[random.randrange(len(speaking_motions_medium))]
+                        to_say=to_say[:i] + '^start('+staff+')' + to_say[i:] 
+                        
+                    
+            if "e" in self.traits:
+                staff=listening_motions_big[random.randrange(len(listening_motions_big))]
+            elif "i" in self.traits:
+                staff=listening_motions_small[random.randrange(len(listening_motions_small))]
+            else:
+                staff=listening_motions_medium[random.randrange(len(listening_motions_medium))]
+            to_say=to_say+'^start('+staff+')'
+            print("added gestures")
+        print("adding pauses")
         if self.ve==80:
-            to_say=to_say.replace(".","\\pau=2000\\").replace(",","\\pau=1000\\")
+            to_say=to_say.replace(".","\\pau=800\\").replace(",","\\pau=400\\")
         elif self.ve==90:
-            to_say=to_say.replace(".","\\pau=1500\\").replace(",","\\pau=750\\")
+            to_say=to_say.replace(".","\\pau=400\\").replace(",","\\pau=200\\")
         elif self.ve==95:
-            to_say=to_say.replace(".","\\pau=1000\\").replace(",","\\pau=500\\")
+            to_say=to_say.replace(".","\\pau=300\\").replace(",","\\pau=200\\")
         elif self.ve==105:
-            to_say=to_say.replace(".","\\pau=500\\").replace(",","\\pau=250\\")
-        return to_say  
+            to_say=to_say.replace(".","\\pau=200\\").replace(",","\\pau=100\\")
 
+        print("added pauses")
+        return to_say  
+    
+    def hello(self):
+        if "e" in self.traits:
+                return hello_motions_big[random.randrange(len(hello_motions_big))]
+        
+        elif "i" in self.traits:
+                return hello_motions_small[random.randrange(len(hello_motions_small))]
+        
+        else:
+                return hello_motions_medium[random.randrange(len(hello_motions_medium))]
+        
 
     def task(self):
         print(self.parameters["head"])
@@ -148,6 +176,13 @@ class Speak:
     def executing(self,anim_speech_service):
         set_of_sentences=self.sentences_dict[self.traits]
         ss=set_of_sentences[self.action]
+        if "speak_about" in self.action:
+                h=self.hello()
+                to_say='^start('+h+')'
+                print(to_say)
+                anim_speech_service.say(to_say) 
+                time.sleep(3)
+
         if  type(ss)==list:
             #ask to chatgpt the sentence to say
             to_say=ss[random.randrange(len(ss))]
@@ -159,6 +194,11 @@ class Speak:
             # wait for the thread to finish
             print('Waiting for the thread...')
             thread.join()
+            if  "say_goodbye" in self.action:
+                   h=self.hello()
+                   to_say='^start('+h+')'
+                   anim_speech_service.say(to_say) 
+                   time.sleep(3)
         else:
             if ss=="behavior1":
                 self.chit_chat(ss,anim_speech_service)  
@@ -186,10 +226,13 @@ class Speak:
         anim_speech_service.say(to_say)
         thread.join()
         for i in range(3):
-           resp=requests.put(url2+'sentence_generation', json=data, headers=headers)
+           print("before getting audio")
+           resp=requests.put(url2+'get_audio', json=data, headers=headers)
            way_1=ways[random.randrange(len(ways))]
            way_2=ways[random.randrange(len(ways))]
            reply=eval(resp.text)["sentence"]
+           print("after getting audio")
+           print(reply)
            s2=sentences[1].replace("+",topic).replace("*",reply).replace("way_1",way_1).replace("way_2",way_2)
            data["sentence"]=s2
            resp=requests.put(url+'sentence_generation', json=data, headers=headers)
@@ -228,7 +271,6 @@ class Speak:
             self.grasp_object()
                
         else:#tablet 
-            color=self.counter
             thread = threading.Thread(target=self.task)
             thread.start()
             image="pick_"+self.colors[self.counter]+".png"
@@ -247,16 +289,16 @@ class Speak:
             s2=[s,"Toccami la testa quando avrai preso il blocchetto"]
             thread = threading.Thread(target=self.task)
             thread.start()
-            to_say=self.add_gestures(to_say)
-            anim_speech_service.say(s2[0])
+            to_say=self.add_gestures(s2[0])
+            anim_speech_service.say(to_say)
             thread.join()
             if self.personality!="Disagreeable":
                 self.give_take_object(0)
             if ss=="behavior7": #gently
                 thread = threading.Thread(target=self.task)
                 thread.start()
-                to_say=self.add_gestures(to_say)
-                anim_speech_service.say(s2[1])
+                to_say=self.add_gestures(s2[1])
+                anim_speech_service.say(to_say)
                 thread.join()
                 self.give_take_object_touch(1) 
             else:#rude
