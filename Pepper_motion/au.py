@@ -20,7 +20,7 @@ sentence_generation_au={
     "say_goodbye_assembly_room":["Wow, abbiamo completato la magnifica torre arcobaleno! La nostra collaborazione è stata davvero epica e piena di successo. Non vedo l'ora di chiederti nuovamente aiuto la prossima volta che ne avrò bisogno. Sarai il mio supereroe personale! Ci vediamo presto, amico/a! Arrivederci e a prestissimo!"]
 }
 
-behavior1_au=["Make me a question in italian about '*' in a way_1 and way_2 way","Answer to '*' in a way_1 and way_2 way knowing that we are speaking about '+'"]
+behavior1_au=["Make me a question in italian about '*' in a way_1 and way_2 way","Answer with a question to '*' in a way_1 and way_2 way knowing that we are speaking about '+', remember to answer with a question in italian"]
 behavior2_au=["Ciao, sono qui per dirti che mi chiamo Pepper, ma potrei anche sbagliarmi perché sono stato programmato con una certa tendenza alla distrazione. Quindi, se per caso mi sono confuso, non preoccuparti, mi scuso in anticipo! Spero che possiamo comunque continuare  a divertirci insieme.",
            "Sono qui perché ho un'idea entusiasmante: dobbiamo costruire una torre di cubetti insieme! Ok, forse non è esattamente il motivo per cui ti ho chiamato, ma immaginiamolo così per rendere tutto più divertente. Prendi i cubetti, prepariamoci a costruire la torre dei nostri sogni!",
            "Oh, scusa se sono un po' distratto. Quindi, ogni volta che ti porto un cubetto, basta che tu lo prenda e lo aggiunga alla torre. Non preoccuparti se mi vedi vagare un po' con la testa tra le nuvole, sto solo cercando di stare al passo con te. Siamo in questa avventura insieme, quindi prendiamo un cubetto alla volta e vediamo come cresce la nostra torre!",

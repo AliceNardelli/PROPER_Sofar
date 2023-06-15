@@ -71,9 +71,21 @@ def main2(session):
     # Go to rest position
     motion_service.rest()
 
+def gesture(session):
+        tts=session.service("ALTextToSpeech")
+        sm=session.service("ALSpeakingMovement")
+        anim_speech_service = session.service("ALAnimatedSpeech")
+        app="Stand/Gestures/Desperate_4"
+        #to_say="^start('"+app+"')"
+        to_say='^start(animations/Stand/Gestures/Hey_3) Ciao come ti senti oggi io sto molto bene'
+        print(to_say)
+        anim_speech_service.say(to_say) 
+        #time.sleep(7)
+        
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default="130.251.13.135",
+    parser.add_argument("--ip", type=str, default="130.251.13.140",
                         help="Robot IP address. On robot or Local Naoqi: use '130.251.13.132'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")
@@ -87,5 +99,5 @@ if __name__ == "__main__":
                "Please check your script arguments. Run with -h option for help.")
         sys.exit(1)
         
-    main(session)
+    gesture(session)
    

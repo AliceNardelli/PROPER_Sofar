@@ -35,17 +35,16 @@ class Gesture:
         self.parameters=params
         anim_speech_service = self.session.service("ALAnimatedSpeech") 
         animations={
-            "show_disgust":self.disgust[random.randrange(len(self.disgust))],
-            "show_excitement":self.excited[random.randrange(len(self.excited))],
-            "show_hand":self.excited[random.randrange(len(self.excited))],
-            "show_detachment":self.detached[random.randrange(len(self.detached))],
-            "show_random_movement":self.detached[random.randrange(len(self.detached))],
+            "show_disgust":self.disgust[random.randint(0,len(self.disgust)-1)],
+            "show_excitement":self.excited[random.randint(0,len(self.excited)-1)],
+            "show_hand":self.excited[random.randint(0,len(self.excited)-1)],
+            "show_detachment":self.detached[random.randint(0,len(self.detached)-1)],
+            "show_random_movement":self.detached[random.randint(0,len(self.detached)-1)],
         }
         app=animations[self.action]
-        to_say='^start('+app+')'
+        to_say="^start("+app+")\\pau=2000\\"
         print(to_say)
         anim_speech_service.say(to_say) 
-        time.sleep(3)
-        print("executing",app)
+        
 
 

@@ -15,7 +15,7 @@ sentence_generation_iu={
     "say_goodbye_assembly_room":["Abbiamo terminato la costruzione della torre arcobaleno. La nostra collaborazione è andata bene, suppongo. Se dovessi aver bisogno di te in futuro, ti chiederò di nuovo aiuto. Arrivederci e a presto, forse."]
 }
 
-behavior1_iu=["Make me a question in italian about '*' in a way_1 and way_2 way","Answer to '*' in a way_1 and way_2 way knowing that we are speaking about '+'"]
+behavior1_iu=["Make me a question in italian about '*' in a way_1 and way_2 way","Answer with a question to '*' in a way_1 and way_2 way knowing that we are speaking about '+', remember to answer with a question in italian"]
 behavior2_iu=["Ehi, ciao. Sono Pepper, suppongo."
            "Eh, ti ho chiamato perché... devi aiutarmi a costruire una torre di cubetti.",
            "Ah, guarda... Ogni volta... Quando ti porto un cubetto... Devi... Prenderlo e assemblarlo... Per la torre, capito?",

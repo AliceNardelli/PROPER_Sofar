@@ -14,10 +14,25 @@ from eu import *
 from iu import *
 import random
 import requests
-#http://doc.aldebaran.com/2-4/naoqi/audio/altexttospeech-tuto.html#tag-tutorial trial to see paw and if setting parameters via tts
 
+from cairlib.DialogueStatistics import DialogueStatistics
+from cairlib.DialogueState import DialogueState
+from cairlib.DialogueTurn import DialogueTurn
+from cairlib.CAIRclient_utils import Utils
+import xml.etree.ElementTree as ET
+import requests
+import argparse
+import socket
+import os
+import re
+import zlib
+import sys
+import json
+import xml
+from flask import Flask, request, jsonify
+
+    
 url='http://127.0.0.1:5009/'
-url2='http://127.0.0.1:50011/'
 headers= {'Content-Type':'application/json'}
 
 data = {
@@ -45,7 +60,7 @@ class Speak:
         self.topics=["Cibo","Sport","Vacanze","Tempo libero","Musica","Religione"]
         self.counter=0
         self.colors=["red","orange","yellow","green"]
-        self.traits="iu"
+        self.traits="eu"
         self.grasp=False
         self.sentences_dict={ "Extrovert":sentence_generation_extroverted,
                               "Disagreeable":sentence_generation_disagreeable,
@@ -84,6 +99,58 @@ class Speak:
                         "high":105,
                         }
         self.gaze(False,False)
+
+
+    def dialogue(self):
+        # Location of the server
+        cineca = "131.175.205.146"
+        #local = "130.251.13.118"
+        local="127.0.0.1"
+        server_ip = cineca
+        audio_recorder_ip = local
+        registration_ip = local
+        port = "5000"
+        BASE = "http://" + cineca + ":" + port + "/CAIR_hub"
+        min_registered_users_number = 1
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # Try to connect to the socket that listens to the user speech
+        try:
+            print("Attempting to connect to the socket...")
+            client_socket.connect((audio_recorder_ip, 9090))
+            print("socket connected")
+        except ConnectionError:
+            print("Check socket connection with audio_recorder.py")
+            sys.exit(1)
+
+        utils = Utils("it", server_ip, registration_ip, port)
+        # Retrieve the states of the users
+        with open("/home/alice/CAIRclient/client_multiparty/dialogue_state.json") as f:
+            dialogue_state = DialogueState(d=json.load(f))
+            print("dialoge state opened")
+        
+        # Tell the audio recorder that the client is ready to receive the user reply
+        client_socket.send(dialogue_state.sentence_type.encode('utf-8'))
+        print("sent")
+        xml_string = client_socket.recv(1024).decode('utf-8')
+        print("received")
+        if xml_string == "":
+                print("Socket error")
+                sys.exit(1)
+
+        # Do not proceed until the xml string is complete and all tags are closed
+        proceed = False
+        while not proceed:
+                try:
+                    tree=ET.ElementTree(ET.fromstring(xml_string))
+                    proceed = True
+                except xml.etree.ElementTree.ParseError:
+                    # If the xml is not complete, read again from the socket
+                    print("The XML is not complete.")
+                    xml_string = xml_string + client_socket.recv(1024).decode('utf-8')
+
+        sentence = str(tree.findall('profile_id')[0].text)
+        print(sentence)
+        return sentence
     
     def add_gestures(self,to_say):
         #replace whit pauses
@@ -102,7 +169,7 @@ class Speak:
                             staff=speaking_motions_small[random.randrange(len(speaking_motions_small))]
                         else:
                             staff=speaking_motions_medium[random.randrange(len(speaking_motions_medium))]
-                        to_say=to_say[:i] + '^start('+staff+')' + to_say[i:] 
+                        to_say=to_say[:(i+1)] + "^start("+staff+")" + to_say[i:] 
                         
                     
             if "e" in self.traits:
@@ -111,7 +178,7 @@ class Speak:
                 staff=listening_motions_small[random.randrange(len(listening_motions_small))]
             else:
                 staff=listening_motions_medium[random.randrange(len(listening_motions_medium))]
-            to_say=to_say+'^start('+staff+')'
+            to_say=to_say+"^start("+staff+")"
             print("added gestures")
         print("adding pauses")
         if self.ve==80:
@@ -122,19 +189,18 @@ class Speak:
             to_say=to_say.replace(".","\\pau=300\\").replace(",","\\pau=200\\")
         elif self.ve==105:
             to_say=to_say.replace(".","\\pau=200\\").replace(",","\\pau=100\\")
-
         print("added pauses")
         return to_say  
     
     def hello(self):
         if "e" in self.traits:
-                return hello_motions_big[random.randrange(len(hello_motions_big))]
+            return hello_motions_big[random.randrange(len(hello_motions_big))]
         
         elif "i" in self.traits:
-                return hello_motions_small[random.randrange(len(hello_motions_small))]
+            return hello_motions_small[random.randrange(len(hello_motions_small))]
         
         else:
-                return hello_motions_medium[random.randrange(len(hello_motions_medium))]
+            return hello_motions_medium[random.randrange(len(hello_motions_medium))]
         
 
     def task(self):
@@ -176,12 +242,12 @@ class Speak:
     def executing(self,anim_speech_service):
         set_of_sentences=self.sentences_dict[self.traits]
         ss=set_of_sentences[self.action]
-        if "speak_about" in self.action:
+        if ("speak_about" in self.action) and (self.grasp==False) :
                 h=self.hello()
-                to_say='^start('+h+')'
+                to_say="^start("+h+")\\pau=2000\\"
                 print(to_say)
                 anim_speech_service.say(to_say) 
-                time.sleep(3)
+                
 
         if  type(ss)==list:
             #ask to chatgpt the sentence to say
@@ -194,11 +260,11 @@ class Speak:
             # wait for the thread to finish
             print('Waiting for the thread...')
             thread.join()
-            if  "say_goodbye" in self.action:
+            if  ("say_goodbye" in self.action) and (self.grasp==False):
                    h=self.hello()
-                   to_say='^start('+h+')'
+                   to_say="^start("+h+")\\pau=2000\\"
                    anim_speech_service.say(to_say) 
-                   time.sleep(3)
+                   
         else:
             if ss=="behavior1":
                 self.chit_chat(ss,anim_speech_service)  
@@ -211,14 +277,14 @@ class Speak:
       
     def chit_chat(self,ss,anim_speech_service):
         ways=modality[self.personality]
-        way_1=ways[random.randrange(len(ways))]
-        way_2=ways[random.randrange(len(ways))]
-        sentences=behaviors_d[ss]
+        way_1=ways[random.randint(0,len(ways)-1)]
+        way_2=ways[random.randint(0,len(ways)-1)]
+        b=self.behaviors_dict[self.traits]
+        sentences=b[ss]
         topic=self.topics[random.randint(0,len(self.topics)-1)]
         s1=sentences[0].replace("*",topic).replace("way_1",way_1).replace("way_2",way_2)
         data["sentence"]=s1
         resp=requests.put(url+'sentence_generation', json=data, headers=headers)
-        
         to_say=eval(resp.text)["response"]
         thread = threading.Thread(target=self.task)
         thread.start()
@@ -227,10 +293,9 @@ class Speak:
         thread.join()
         for i in range(3):
            print("before getting audio")
-           resp=requests.put(url2+'get_audio', json=data, headers=headers)
-           way_1=ways[random.randrange(len(ways))]
-           way_2=ways[random.randrange(len(ways))]
-           reply=eval(resp.text)["sentence"]
+           reply=self.dialogue()
+           way_1=ways[random.randint(0,len(ways)-1)]
+           way_2=ways[random.randint(0,len(ways)-1)]
            print("after getting audio")
            print(reply)
            s2=sentences[1].replace("+",topic).replace("*",reply).replace("way_1",way_1).replace("way_2",way_2)
@@ -242,6 +307,14 @@ class Speak:
            to_say=self.add_gestures(to_say)
            anim_speech_service.say(to_say)
            thread.join()
+        thread = threading.Thread(target=self.task)
+        thread.start()
+        if "u" in self.traits:
+            to_say=self.add_gestures("Proviamo a non distrarci e continuiamo a lavorare")
+        elif "e" in self.traits:
+            to_say=self.add_gestures("è bellissimo chiaccherare con te ma è ora di tornare a lavorare")
+        anim_speech_service.say(to_say)
+        thread.join()
 
     def present_task(self,ss,anim_speech_service):
         b=self.behaviors_dict[self.traits]
@@ -263,13 +336,13 @@ class Speak:
             for s1 in s2:
                 thread = threading.Thread(target=self.task)
                 thread.start()
-                to_say=self.add_gestures(to_say)
-                anim_speech_service.say(s1)
+                to_say=self.add_gestures(s1)
+                anim_speech_service.say(to_say)
                 self.grasp=True
                 thread.join()
-            self.give_take_object_touch(1)
-            self.grasp_object()
-               
+            self.give_take_object_touch(1,1)
+            self.grasp_object() 
+
         else:#tablet 
             thread = threading.Thread(target=self.task)
             thread.start()
@@ -277,7 +350,7 @@ class Speak:
             self.tablet(image)
             thread.join()  
             self.grasp=True
-            self.give_take_object_tablet(1)
+            self.give_take_object_tablet(1,1)
             self.grasp_object()     
         
     def ask_pose_block(self,ss,anim_speech_service):
@@ -300,7 +373,7 @@ class Speak:
                 to_say=self.add_gestures(s2[1])
                 anim_speech_service.say(to_say)
                 thread.join()
-                self.give_take_object_touch(1) 
+                self.give_take_object_touch(1,0) 
             else:#rude
                 self.give_take_object(0) 
                 self.throw_object()
@@ -315,7 +388,7 @@ class Speak:
             if self.personality!="Disagreeable":
              self.give_take_object(0) 
             if ss=="behavior9": #gently
-                self.give_take_object_tablet(1)#wait until human touch
+                self.give_take_object_tablet(1,0)#wait until human touch
             else:#rude
                 self.give_take_object(0)
                 self.throw_object()
@@ -341,7 +414,7 @@ class Speak:
         angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,0]
         stiff=len(chain)*[1]
         m.setStiffnesses(chain,stiff)
-        while t<5:
+        while t<3:
             m.angleInterpolationWithSpeed(chain,angle,frac_speed) 
             time.sleep(1)
             t+=1
@@ -349,7 +422,7 @@ class Speak:
         stiff=len(chain)*[0]
         m.setStiffnesses(chain,stiff)
 
-    def give_take_object_touch(self,hand):
+    def give_take_object_touch(self,hand,stiffness):
         m=self.session.service("ALMotion")
         frac_speed=0.5
         angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,hand]
@@ -366,13 +439,13 @@ class Speak:
             print("Hand open")
             t+=1
         self.touched=False
-        stiff=len(chain)*[0]
+        stiff=len(chain)*[stiffness]
         m.setStiffnesses(chain,stiff)
     
     def callback(self, x, y):
             self.touched=True
 
-    def give_take_object_tablet(self,hand):
+    def give_take_object_tablet(self,hand,stiffness):
             m=self.session.service("ALMotion")
             frac_speed=0.5
             angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,hand]
@@ -381,7 +454,6 @@ class Speak:
             stiff=len(chain)*[1]
             m.setStiffnesses(chain,stiff)
             self.touched=False
-
             tabletService = self.session.service("ALTabletService")
             signalID = tabletService.onTouchDown.connect(self.callback)
             while self.touched==False:
@@ -390,7 +462,7 @@ class Speak:
                 print("Hand open")
                 t+=1
             self.touched=False
-            stiff=len(chain)*[0]
+            stiff=len(chain)*[stiffness]
             m.setStiffnesses(chain,stiff)
             tabletService.hideImage()
 
@@ -404,7 +476,7 @@ class Speak:
         t=0
         stiff=len(chain)*[1]
         m.setStiffnesses(chain,stiff)
-        while t<5:
+        while t<3:
             m.angleInterpolationWithSpeed(chain,angle,frac_speed) 
             time.sleep(1)
             t+=1
@@ -421,7 +493,7 @@ class Speak:
         stiff=len(chain)*[1]
         m.setStiffnesses(chain,stiff)
         t=0
-        while t<5:
+        while t<3:
             m.angleInterpolationWithSpeed(chain,angle,frac_speed) 
             t+=1
         stiff=len(chain)*[0]

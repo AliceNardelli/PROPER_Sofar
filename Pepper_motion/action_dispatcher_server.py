@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, request, jsonify
 from class_navigation import *
 from class_gesture import *
@@ -14,7 +15,7 @@ def mm():
     global m
     updated_data = request.get_json()
     data.update(updated_data)
-    #m.move(data["action"],data["params"])
+    m.move(data["action"],data["params"])
     return jsonify(data)
 
 @app.route ('/gesture_server', methods = ['PUT'] )   
@@ -54,4 +55,4 @@ if __name__ == '__main__':
     g=Gesture(session)
     s=Speak(session)
     app.run(host='0.0.0.0', port=5008, debug=True)
-    
+

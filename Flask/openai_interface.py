@@ -23,6 +23,7 @@ app = Flask(__name__)
 def main():
   updated_data = request.get_json()
   data.update(updated_data)
+  print(data["sentence"])
   #res=openai.ChatCompletion.create(
   res=openai.Completion.create(
   model=model,
@@ -30,7 +31,7 @@ def main():
             #"content": pr}],
   prompt=data["sentence"],
   temperature=0.5,
-  max_tokens=200,
+  max_tokens=100,
   top_p=1,
   frequency_penalty=2,
   presence_penalty=2
