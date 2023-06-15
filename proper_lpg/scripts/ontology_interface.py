@@ -13,12 +13,12 @@ import numpy as np
 
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=1
-wi=0
+we=0
+wi=1
 wc=0
-wu=1
+wu=0
 wa=0
-wd=0
+wd=1
 sum=we +wi +wc + wu + wa + wd
 weights=[we/sum,wi/sum,wc/sum,wu/sum,wa/sum,wd/sum]
 gamma=0.5
@@ -188,10 +188,10 @@ def main():
     # Create a SMACH state machine
     try:
         sm = smach.StateMachine(outcomes=['outcome8'])
-        sm.userdata.path_domain='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/pepper_domain3.pddl'
+        sm.userdata.path_domain='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/pepper_domain4.pddl'
         sm.userdata.path_problem='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/prova_problem.pddl'
         sm.userdata.path_init_problem='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/init_problem.pddl'
-        sm.userdata.command_start='./lpg++ -o pepper_domain3.pddl -f prova_problem.pddl -n 1 -force_neighbour_insertion -inst_with_contraddicting_objects'
+        sm.userdata.command_start='./lpg++ -o pepper_domain4.pddl -f prova_problem.pddl -n 1 -force_neighbour_insertion -inst_with_contraddicting_objects'
         sm.userdata.folder ='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/'
         sm.userdata.path_plan ='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/plan_prova_problem.pddl_1.SOL'
         sm.userdata.actions =[]

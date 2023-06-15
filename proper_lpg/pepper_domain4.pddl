@@ -47,8 +47,6 @@
         (not_presented ?r -room)
         (can_move)
         (showed)
-        (rude)
-        (gently)
         (grasp)
 )
 
@@ -728,7 +726,7 @@
 )
 
 
-(:durative-action ASK_ASSEMBLY_BLOCK_VOICE_RUDE
+(:durative-action ASK_ASSEMBLY_BLOCK_VOICE
         :parameters
                  (?l1  - room)
         :duration
@@ -763,53 +761,12 @@
                         (at end(not(not_interactive_action)))
                         (at end (not (showed)))
                         (at end (can_move))  
-                        (at end (rude))
-                        (at end (not(grasp)))
-                )
-)
-
-(:durative-action ASK_ASSEMBLY_BLOCK_VOICE_GENTLY
-        :parameters
-                 (?l1  - room)
-        :duration
-                (= ?duration 5)
-
-        :condition
-               (and 
-                        (at start (computed_e))
-                        (at start (computed_c))
-                        (at start (computed_a))
-                        (at start (at ?l1))
-                        (at start(assembly_room ?l1))
-                        (at start(presented_task ?l1))
-                        (at start(human_present)) 
-                        (at start(block_to_deliver)) 
-                        (at start (>=(interaction_level)(desired_interaction)))
-                        (at start (>=(scrupulousness_level)(desired_scrupulousness)))
-                        (at start (>=(agreeableness_level)(desired_agreeableness)))
-                        (at start(not(finished)))
-                       
-                )
-        :effect
-                (and
-                        (at end (not (computed_e)))
-                        (at end (not (computed_c)))
-                        (at end (not (computed_a)))
-                        (at end (empty_robot))
-                        (at end (not(block_to_deliver)))
-                        (at end (increase (no_blocks) 1))
-                        (at end (assign (dur) 5))
-                        (at end(interactive_action))
-                        (at end(not(not_interactive_action)))
-                        (at end (not (showed)))
-                        (at end (can_move))  
-                        (at end (gently))
                         (at end (not(grasp)))
                 )
 )
 
 
-(:durative-action ASK_ASSEMBLY_BLOCK_TABLET_RUDE
+(:durative-action ASK_ASSEMBLY_BLOCK_TABLET
         :parameters
                  (?l1  - room)
         :duration
@@ -844,48 +801,6 @@
                         (at end(not(not_interactive_action)))
                         (at end (showed))
                         (at end (can_move))  
-                        (at end (rude))
-                        (at end (not(grasp))) 
-                )
-)
-
-
-(:durative-action ASK_ASSEMBLY_BLOCK_TABLET_GENTLY
-        :parameters
-                 (?l1  - room)
-        :duration
-                (= ?duration 5)
-
-        :condition
-               (and 
-                        (at start (computed_e))
-                        (at start (computed_c))
-                        (at start (computed_a))
-                        (at start (at ?l1))
-                        (at start(assembly_room ?l1))
-                        (at start(presented_task ?l1))
-                        (at start(human_present)) 
-                        (at start(block_to_deliver)) 
-                        (at start (>=(interaction_level)(desired_interaction)))
-                        (at start (>=(scrupulousness_level)(desired_scrupulousness)))
-                        (at start (>=(agreeableness_level)(desired_agreeableness)))
-                        (at start(not(finished)))
-                       
-                )
-        :effect
-                (and
-                        (at end (not (computed_e)))
-                        (at end (not (computed_c)))
-                        (at end (not (computed_a)))
-                        (at end (empty_robot))
-                        (at end (not (block_to_deliver)))
-                        (at end (increase (no_blocks) 1))
-                        (at end (assign (dur) 5))
-                        (at end(interactive_action))
-                        (at end(not(not_interactive_action)))
-                        (at end (showed))
-                        (at end (can_move))  
-                        (at end (gently))
                         (at end (not(grasp))) 
                 )
 )
@@ -1074,8 +989,6 @@
     :precondition (and 
         (not (computed_a))  
         (disagree)
-        (not(rude))
-        (not(gently))
     )
     :effect 
           (and
@@ -1084,74 +997,15 @@
            )
 )
 
-(:action COMPUTE_METRIC_DISAGREE_R
-    :precondition (and 
-         (not (computed_a))  
-         (disagree)
-         (rude)
-    )
-    :effect 
-          (and
-    	   (computed_a)
-           (increase (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-           (not(rude))
-           )
-)
-
-
-(:action COMPUTE_METRIC_DISAGREE_NR
-    :precondition (and 
-         (not (computed_a))  
-         (disagree)
-         (gently)
-    )
-    :effect 
-          (and
-    	   (computed_a)
-           (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)10)))
-           (not(gently))
-           )
-)
-
 (:action COMPUTE_METRIC_AGREE
     :precondition (and 
         (not (computed_a))  
         (agree)
-        (not(rude))
-        (not(gently))
     )
     :effect 
        (and
     	(computed_a)
         (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-        )
-)
-
-(:action COMPUTE_METRIC_AGREE_R
-    :precondition (and 
-        (not (computed_a))  
-        (agree)
-        (rude)
-    )
-    :effect 
-       (and
-    	(computed_a)
-        (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)10)))
-        (not(rude))
-        )
-)
-
-(:action COMPUTE_METRIC_AGREE_NR
-    :precondition (and 
-        (not (computed_a))  
-        (agree)
-        (gently)
-    )
-    :effect 
-       (and
-    	(computed_a)
-        (increase (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-        (not(gently))
         )
 )
 

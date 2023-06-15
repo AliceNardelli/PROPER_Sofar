@@ -15,7 +15,7 @@ def mm():
     global m
     updated_data = request.get_json()
     data.update(updated_data)
-    m.move(data["action"],data["params"])
+    #m.move(data["action"],data["params"])
     return jsonify(data)
 
 @app.route ('/gesture_server', methods = ['PUT'] )   

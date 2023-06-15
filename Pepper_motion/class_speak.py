@@ -60,7 +60,7 @@ class Speak:
         self.topics=["Cibo","Sport","Vacanze","Tempo libero","Musica","Religione"]
         self.counter=0
         self.colors=["red","orange","yellow","green"]
-        self.traits="eu"
+        self.traits="id"
         self.grasp=False
         self.sentences_dict={ "Extrovert":sentence_generation_extroverted,
                               "Disagreeable":sentence_generation_disagreeable,
@@ -364,19 +364,33 @@ class Speak:
             thread.start()
             to_say=self.add_gestures(s2[0])
             anim_speech_service.say(to_say)
-            thread.join()
-            if self.personality!="Disagreeable":
-                self.give_take_object(0)
-            if ss=="behavior7": #gently
+            thread.join()    
+            if "a" in self.traits: #gently
                 thread = threading.Thread(target=self.task)
                 thread.start()
                 to_say=self.add_gestures(s2[1])
                 anim_speech_service.say(to_say)
                 thread.join()
                 self.give_take_object_touch(1,0) 
-            else:#rude
-                self.give_take_object(0) 
-                self.throw_object()
+            elif "d" in self.traits:#rude
+                rnd=random.randint(0,2)
+                if rnd==0:
+                    self.give_take_object(0) 
+                    self.throw_object()
+                else:
+                    self.give_take_object(1)
+            else:
+                rnd=random.randint(0,2)
+                if rnd==0:
+                    self.give_take_object(0) 
+                    self.throw_object()
+                else:
+                    thread = threading.Thread(target=self.task)
+                    thread.start()
+                    to_say=self.add_gestures(s2[1])
+                    anim_speech_service.say(to_say)
+                    thread.join()
+                    self.give_take_object_touch(1,0) 
             self.grasp=False
             
         else:#tablet
@@ -385,14 +399,24 @@ class Speak:
             image="put_"+self.colors[self.counter]+".png"
             self.tablet(image)
             thread.join() 
-            if self.personality!="Disagreeable":
-             self.give_take_object(0) 
-            if ss=="behavior9": #gently
-                self.give_take_object_tablet(1,0)#wait until human touch
-            else:#rude
-                self.give_take_object(0)
-                self.throw_object()
+            if "a" in self.traits: #gently
+                self.give_take_object_tablet(1,0) 
+            elif "d" in self.traits:#rude
+                rnd=random.randint(0,2)
+                if rnd==0:
+                    self.give_take_object(0) 
+                    self.throw_object()
+                else:
+                    self.give_take_object(1)
+            else:
+                rnd=random.randint(0,2)
+                if rnd==0:
+                    self.give_take_object(0) 
+                    self.throw_object()
+                else:
+                    self.give_take_object_tablet(1,0)
             self.grasp=False
+            
         self.counter+=1
    
     def tablet(self,im):

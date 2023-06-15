@@ -35,6 +35,8 @@ start the three execution blocks
 >python action_dispatcher_server.py
 
 
+#pepper_domain3 con agreeable
+#peper_domain4 senza agreeable
 
 ## TO DO LIST:
 - test openai interface and speak, evaluate if openai work well and if it takes not too much time **5/06**

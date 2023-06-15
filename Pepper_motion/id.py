@@ -8,9 +8,9 @@ sentence_generation_id={
     "speak_about_production_room":"behavior3",
     "ask_pick_the_block_voice":"behavior4",
     "ask_pick_the_block_tablet":"behavior5",
-    "ask_assembly_block_voice_rude":"behavior6",
+    "ask_assembly_block_voice":"behavior6",
     "ask_assembly_block_voice_gently":"behavior7",
-    "ask_assembly_block_tablet_rude":"behavior8",
+    "ask_assembly_block_tablet":"behavior8",
     "ask_assembly_block_tablet_gently":"behavior9",
     "say_goodbye_production_room":["Abbiamo finalmente terminato di raccogliere i cubetti per la torre arcobaleno. La nostra collaborazione è stata un successo, sebbene non fosse esattamente un'esperienza piacevole. Nel caso in cui dovessi aver bisogno ancora una volta del tuo aiuto, sarai sicuramente la mia ultima scelta. Arrivederci e spero di non doverti rivedere troppo presto."],
     "say_goodbye_assembly_room":["Abbiamo finalmente terminato di costruire quella torre arcobaleno. Non posso negare che, nonostante la nostra incompatibilità, la nostra collaborazione sia stata abbastanza efficace. Se mai dovessi trovarmi nuovamente nella necessità di qualcosa, mi rivolgerò a te, ma solo come ultima risorsa. Arrivederci e a presto, sperando che ciò non avvenga troppo presto."]

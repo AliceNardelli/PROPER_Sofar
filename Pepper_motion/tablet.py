@@ -13,7 +13,7 @@ import subprocess
 
 def tablet(session):
         DEF_IMG_APP = "tablet_images"
-        TABLET_IMG_DEFAULT = "RICE.png"
+        TABLET_IMG_DEFAULT = "put_red.png"
         sTablet = session.service("ALTabletService")
         image_dir = "http://%s/apps/%s/img/" % (sTablet.robotIp(), DEF_IMG_APP)
         tablet_image = image_dir + TABLET_IMG_DEFAULT
@@ -24,7 +24,7 @@ def tablet(session):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default="130.251.13.106",
+    parser.add_argument("--ip", type=str, default="130.251.13.140",
                         help="Robot IP address. On robot or Local Naoqi: use '127.0.0.1'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")

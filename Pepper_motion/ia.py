@@ -31,7 +31,7 @@ sentence_generation={
     "say_goodbye_assembly_room":["Abbiamo finito di costruire una torre arcobaleno, La nostra collaborazione ha avuto successo, la prossima volta che ho bisogno dinuovo te lo chiederò,Arrivederci e a presto"]
 }
 
-behavior1=["Make me a question in italian about '*' in a way_1 and way_2 way","Answer to '*' in a way_1 and way_2 way knowing that we are speaking about '+'"]
+behavior1=["Make me a question in italian about '*' in a way_1 and way_2 way","Answer with a question to '*' in a way_1 and way_2 way knowing that we are speaking about '+', remember to answer with a question in italian"]
 behavior2=["Ciao, il mio nome e Pepper"
            "Ti ho chiamato perche dobbiamo costruire una torre di cubetti",
            "Ogni volta che ti porto un cubetto devi prenderlo e assemblarlo per costruire la torre",
