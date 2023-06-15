@@ -28,7 +28,17 @@ class Gesture:
         self.detached=["animations/Stand/Gestures/Thinking_2",
                        "animations/Stand/Gestures/Thinking_4",]
         
-
+        self.hands=["animations/Stand/Joy_1",
+                    "boston_animation_library/Stand/ta-da_01",
+                    "boston_animation_library/Stand/ta-da_02",
+                    "boston_animation_library/Stand/ta-da_03",
+                    "boston_animation_library/Stand/ta-da_tacky",
+                    ]
+        
+        self.rand_move=["Stand/Gestures/Confused_1",
+                        "Stand/Gestures/Confused_2",
+                        "Stand/Gestures/DontUnderstand_1",
+                        "Stand/Gestures/IDontKnow_1",]
         
     def gesture(self, action,params):
         self.action=action
@@ -37,9 +47,9 @@ class Gesture:
         animations={
             "show_disgust":self.disgust[random.randint(0,len(self.disgust)-1)],
             "show_excitement":self.excited[random.randint(0,len(self.excited)-1)],
-            "show_hand":self.excited[random.randint(0,len(self.excited)-1)],
+            "show_hand":self.hands[random.randint(0,len(self.hands)-1)],
             "show_detachment":self.detached[random.randint(0,len(self.detached)-1)],
-            "show_random_movement":self.detached[random.randint(0,len(self.detached)-1)],
+            "show_random_movement":self.rand_move[random.randint(0,len(self.rand_move)-1)],
         }
         app=animations[self.action]
         to_say="^start("+app+")\\pau=2000\\"
