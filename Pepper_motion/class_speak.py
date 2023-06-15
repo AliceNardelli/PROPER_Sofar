@@ -60,7 +60,7 @@ class Speak:
         self.topics=["Cibo","Sport","Vacanze","Tempo libero","Musica","Religione"]
         self.counter=0
         self.colors=["red","orange","yellow","green"]
-        self.traits="id"
+        self.traits="ed"
         self.grasp=False
         self.sentences_dict={ "Extrovert":sentence_generation_extroverted,
                               "Disagreeable":sentence_generation_disagreeable,
@@ -169,7 +169,7 @@ class Speak:
                             staff=speaking_motions_small[random.randrange(len(speaking_motions_small))]
                         else:
                             staff=speaking_motions_medium[random.randrange(len(speaking_motions_medium))]
-                        to_say=to_say[:(i+1)] + "^start("+staff+")" + to_say[i:] 
+                        to_say=to_say[:(i+1)] + " ^start("+staff+") " + to_say[i:] 
                         
                     
             if "e" in self.traits:
@@ -178,7 +178,7 @@ class Speak:
                 staff=listening_motions_small[random.randrange(len(listening_motions_small))]
             else:
                 staff=listening_motions_medium[random.randrange(len(listening_motions_medium))]
-            to_say=to_say+"^start("+staff+")"
+            to_say=to_say+" ^start("+staff+") "
             print("added gestures")
         print("adding pauses")
         if self.ve==80:
@@ -244,7 +244,7 @@ class Speak:
         ss=set_of_sentences[self.action]
         if ("speak_about" in self.action) and (self.grasp==False) :
                 h=self.hello()
-                to_say="^start("+h+")\\pau=2000\\"
+                to_say=" ^start("+h+") \\pau=2000\\"
                 print(to_say)
                 anim_speech_service.say(to_say) 
                 
@@ -262,7 +262,7 @@ class Speak:
             thread.join()
             if  ("say_goodbye" in self.action) and (self.grasp==False):
                    h=self.hello()
-                   to_say="^start("+h+")\\pau=2000\\"
+                   to_say=" ^start("+h+") \\pau=2000\\"
                    anim_speech_service.say(to_say) 
                    
         else:
@@ -416,7 +416,7 @@ class Speak:
                 else:
                     self.give_take_object_tablet(1,0)
             self.grasp=False
-            
+
         self.counter+=1
    
     def tablet(self,im):

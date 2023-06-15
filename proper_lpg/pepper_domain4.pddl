@@ -531,7 +531,7 @@
                         (at end(not(interactive_action)))
                         (at end (not (can_move)))
                         (at end (not (showed)))
-                        (at end (not (grasp)))
+                        
                 )
 )
 
@@ -568,7 +568,7 @@
                         (at end(not(interactive_action)))
                         (at end (not (can_move)))
                         (at end (not (showed)))
-                        (at end (not (grasp)))
+                        
                 )
 )
 
@@ -604,7 +604,7 @@
                         (at end (not (not_presented ?l1)))
                         (at end (can_move))
                         (at end (not (showed)))
-                        (at end (not (grasp)))
+                        
                 )
 )
 
@@ -642,7 +642,7 @@
                         (at end (not (not_presented ?l1)))
                         (at end (can_move))
                         (at end (not (showed)))
-                        (at end (not (grasp)))
+                       
                 )
 )
 
@@ -839,7 +839,7 @@
                         (at end(not(not_interactive_action)))
                         (at end (can_move))
                         (at end (not (showed)))
-                        (at end (not(grasp)))
+                        
                 )
 )
 
@@ -876,7 +876,7 @@
                         (at end(not(not_interactive_action)))
                         (at end (can_move))
                         (at end (not (showed)))
-                        (at end (not(grasp)))
+                       
                 )
 )
 

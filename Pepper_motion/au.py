@@ -12,9 +12,9 @@ sentence_generation_au={
     "speak_about_production_room":"behavior3",
     "ask_pick_the_block_voice":"behavior4",
     "ask_pick_the_block_tablet":"behavior5",
-    "ask_assembly_block_voice_rude":"behavior6",
+    "ask_assembly_block_voice":"behavior6",
     "ask_assembly_block_voice_gently":"behavior7",
-    "ask_assembly_block_tablet_rude":"behavior8",
+    "ask_assembly_block_tablet":"behavior8",
     "ask_assembly_block_tablet_gently":"behavior9",
     "say_goodbye_production_room":["Oh, guarda un po', siamo riusciti a terminare di raccogliere tutti i cubetti per costruire la nostra torre arcobaleno! La nostra collaborazione è stata davvero un successo. Se mai avrò bisogno di aiuto di nuovo, sarai sicuramente la mia prima scelta. Grazie mille per aver partecipato e dato il tuo contributo. Ci vediamo presto! Arrivederci e a prestissimo!"],
     "say_goodbye_assembly_room":["Wow, abbiamo completato la magnifica torre arcobaleno! La nostra collaborazione è stata davvero epica e piena di successo. Non vedo l'ora di chiederti nuovamente aiuto la prossima volta che ne avrò bisogno. Sarai il mio supereroe personale! Ci vediamo presto, amico/a! Arrivederci e a prestissimo!"]

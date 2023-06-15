@@ -7,26 +7,26 @@ class Gesture:
         self.action=""
         self.personality=""
         self.parameters={}
-        self.disgust=["Stand/Emotions/Negative/Angry_3",
-                     "Stand/Emotions/Negative/Bored_1",
-                     "Stand/Emotions/Negative/Disappointed_1",
-                     "Stand/Emotions/Negative/Frustrated_1",
-                     "Stand/Gestures/Angry_1",
-                     "Stand/Gestures/Angry_2",
-                     "Stand/Gestures/Desperate_1",
-                     "Stand/Gestures/Desperate_2",
-                     "Stand/Gestures/Desperate_3",
-                     "Stand/Gestures/Desperate_4",]
+        self.disgust=["animations/Stand/Emotions/Negative/Angry_3",
+                     "animations/Stand/Emotions/Negative/Bored_1",
+                     "animations/Stand/Emotions/Negative/Disappointed_1",
+                     "animations/Stand/Emotions/Negative/Frustrated_1",
+                     "animations/Stand/Gestures/Angry_1",
+                     "animations/Stand/Gestures/Angry_2",
+                     "animations/Stand/Gestures/Desperate_1",
+                     "animations/Stand/Gestures/Desperate_2",
+                     "animations/Stand/Gestures/Desperate_3",
+                     "animations/Stand/Gestures/Desperate_4",]
         
-        self.excited=["Stand/Emotions/Positive/Excited_1",
-                      "Stand/Emotions/Positive/Excited_3",
-                      "Stand/Emotions/Positive/Happy_4",
-                      "Stand/Emotions/Positive/Proud_2",
-                      "Stand/Gestures/Enthusiastic_3",
-                      "Stand/Gestures/Enthusiastic_4",
-                      "Stand/Gestures/Excited_1",]
-        self.detached=["Stand/Gestures/Thinking_2",
-                       "Stand/Gestures/Thinking_4",]
+        self.excited=["animations/Stand/Emotions/Positive/Excited_1",
+                      "animations/Stand/Emotions/Positive/Excited_3",
+                      "animations/Stand/Emotions/Positive/Happy_4",
+                      "animations/Stand/Emotions/Positive/Proud_2",
+                      "animations/Stand/Gestures/Enthusiastic_3",
+                      "animations/Stand/Gestures/Enthusiastic_4",
+                      "animations/Stand/Gestures/Excited_1",]
+        self.detached=["animations/Stand/Gestures/Thinking_2",
+                       "animations/Stand/Gestures/Thinking_4",]
         
 
         

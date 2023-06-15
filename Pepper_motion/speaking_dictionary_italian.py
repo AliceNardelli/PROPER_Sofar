@@ -23,15 +23,15 @@ sentence_generation={
     "speak_about_production_room":"behavior3",
     "ask_pick_the_block_voice":"behavior4",
     "ask_pick_the_block_tablet":"behavior5",
-    "ask_assembly_block_voice_rude":"behavior6",
+    "ask_assembly_block_voice":"behavior6",
     "ask_assembly_block_voice_gently":"behavior7",
-    "ask_assembly_block_tablet_rude":"behavior8",
+    "ask_assembly_block_tablet":"behavior8",
     "ask_assembly_block_tablet_gently":"behavior9",
     "say_goodbye_production_room":["Abbiamo finito di prendere i cubetti per costruire una torre arcobaleno, La nostra collaborazione ha avuto successo, la prossima volta che ho bisogno dinuovo te lo chiederò,Arrivederci e a presto"],
     "say_goodbye_assembly_room":["Abbiamo finito di costruire una torre arcobaleno, La nostra collaborazione ha avuto successo, la prossima volta che ho bisogno dinuovo te lo chiederò,Arrivederci e a presto"]
 }
 
-behavior1=["Make me a question in italian about '*' in a way_1 and way_2 way","Answer to '*' in a way_1 and way_2 way knowing that we are speaking about '+'"]
+behavior1=["Make me a question in italian about '*' in a way_1 and way_2 way","Answer with a question to '*' in a way_1 and way_2 way knowing that we are speaking about '+', remember to answer with a question in italian"]
 behavior2=["Ciao, il mio nome e Pepper"
            "Ti ho chiamato perche dobbiamo costruire una torre di cubetti",
            "Ogni volta che ti porto un cubetto devi prenderlo e assemblarlo per costruire la torre",

@@ -9,9 +9,9 @@ sentence_generation_ic={
     "speak_about_production_room":"behavior3",
     "ask_pick_the_block_voice":"behavior4",
     "ask_pick_the_block_tablet":"behavior5",
-    "ask_assembly_block_voice_rude":"behavior6",
+    "ask_assembly_block_voice":"behavior6",
     "ask_assembly_block_voice_gently":"behavior7",
-    "ask_assembly_block_tablet_rude":"behavior8",
+    "ask_assembly_block_tablet":"behavior8",
     "ask_assembly_block_tablet_gently":"behavior9",
     "say_goodbye_production_room":["Abbiamo concluso la raccolta dei cubetti per la costruzione della torre arcobaleno. La nostra collaborazione è stata efficace e siamo riusciti a raggiungere il nostro obiettivo. Nel caso in cui dovessi avere bisogno del tuo aiuto in futuro, ti chiederò nuovamente. Grazie e arrivederci, a presto."],
     "say_goodbye_assembly_room":["Abbiamo completato la costruzione della torre arcobaleno. La nostra collaborazione è stata positiva e siamo riusciti a raggiungere l'obiettivo con successo. Nel caso in cui avessi nuovamente bisogno del tuo aiuto, mi rivolgerò a te. Grazie e arrivederci, a presto."]

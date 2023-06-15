@@ -18,7 +18,7 @@
         (=(baseline)5)
         (=(dur)0)
         (= (extroversion_coefficient) 0.25)
-        (intro)
+        (extro)
         (=(desired_interaction) 5)
         (=(interaction_level) 10) 
         (computed_e)  

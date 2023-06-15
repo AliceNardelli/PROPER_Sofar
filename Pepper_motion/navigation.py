@@ -77,7 +77,7 @@ def gesture(session):
         anim_speech_service = session.service("ALAnimatedSpeech")
         app="Stand/Gestures/Desperate_4"
         #to_say="^start('"+app+"')"
-        to_say='^start(animations/Stand/Gestures/Hey_3) Ciao come ti senti oggi io sto molto bene'
+        to_say=' ^start(animations/Stand/BodyTalk/Speaking/BodyTalk_10)Ciao come ti senti oggi io sto molto bene'
         print(to_say)
         anim_speech_service.say(to_say) 
         #time.sleep(7)
