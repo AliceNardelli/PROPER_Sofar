@@ -6,12 +6,15 @@ import threading
 from animations import *
 from extrovert import *
 from disagreeable import *
-from e_d import *
+from ed import *
 from ic import *
 from au import *
 from id import *
 from eu import *
 from iu import *
+from ia import *
+from ec import *
+from ea import *
 import random
 import requests
 
@@ -60,7 +63,7 @@ class Speak:
         self.topics=["Cibo","Sport","Vacanze","Tempo libero","Musica","Religione"]
         self.counter=0
         self.colors=["red","orange","yellow","green"]
-        self.traits="ed"
+        self.traits="eu"
         self.grasp=False
         self.sentences_dict={ "Extrovert":sentence_generation_extroverted,
                               "Disagreeable":sentence_generation_disagreeable,
@@ -69,7 +72,10 @@ class Speak:
                               "au":sentence_generation_au,
                               "id":sentence_generation_id,
                               "eu":sentence_generation_eu,
-                              "iu":sentence_generation_iu,}
+                              "iu":sentence_generation_iu,
+                              "ia":sentence_generation_ia,
+                              "ec":sentence_generation_ec,
+                              "ea":sentence_generation_ea,}
         
         self.behaviors_dict={
             "Extrovert":behaviors_e,
@@ -80,6 +86,9 @@ class Speak:
             "id":behaviors_id,
             "eu":behaviors_eu,
             "iu":behaviors_iu,
+            "ia":behaviors_ia,
+            "ec":behaviors_ec,
+            "ea":behaviors_ea,
         }
 
         self.pitch={"low":0.83,
@@ -178,7 +187,7 @@ class Speak:
                 staff=listening_motions_small[random.randrange(len(listening_motions_small))]
             else:
                 staff=listening_motions_medium[random.randrange(len(listening_motions_medium))]
-            to_say=to_say+" ^start("+staff+") "
+            to_say=to_say+" ^start("+staff+") \\pau=200\\"
             print("added gestures")
         print("adding pauses")
         if self.ve==80:
@@ -309,6 +318,7 @@ class Speak:
            thread.join()
         thread = threading.Thread(target=self.task)
         thread.start()
+        time.sleep(3)
         if "u" in self.traits:
             to_say=self.add_gestures("Proviamo a non distrarci e continuiamo a lavorare")
         elif "e" in self.traits:

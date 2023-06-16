@@ -11,9 +11,9 @@ sentence_generation_eu={
     "speak_about_production_room":"behavior3",
     "ask_pick_the_block_voice":"behavior4",
     "ask_pick_the_block_tablet":"behavior5",
-    "ask_assembly_block_voice_rude":"behavior6",
+    "ask_assembly_block_voice":"behavior6",
     "ask_assembly_block_voice_gently":"behavior7",
-    "ask_assembly_block_tablet_rude":"behavior8",
+    "ask_assembly_block_tablet":"behavior8",
     "ask_assembly_block_tablet_gently":"behavior9",
     "say_goodbye_production_room":["Ehi, amico mio, finalmente abbiamo finito di raccogliere tutti quei cubetti colorati per la nostra torre arcobaleno! È stato un vero casino, ma alla fine ce l'abbiamo fatta! La nostra collaborazione è andata alla grande, vero? Abbiamo fatto squadra in modo così disordinato, ma siamo riusciti a ottenere un risultato fantastico! Se mai avrò bisogno di aiuto di nuovo, sarai la mia prima scelta. Grazie mille per essere stato qui con me in questa avventura! Ora è il momento di dire arrivederci, ma non per sempre. Ci rivedremo presto, amico! Take care!"],
     "say_goodbye_assembly_room":["Oh, mio Dio! Abbiamo finalmente finito di costruire quella torre arcobaleno incredibile! È stata una vera e propria avventura di caos, disordine ed emozioni! Ma guarda quanto siamo stati fantastici insieme! La nostra collaborazione è andata alla grande! Siamo riusciti a superare ogni ostacolo e a creare qualcosa di così spettacolare! Sai una cosa? Se mai avrò bisogno di aiuto di nuovo, sarai sicuramente la mia prima scelta! Tu sei stato davvero fantastico in tutto questo! E ora è giunto il momento di dire arrivederci, ma solo per il momento! Torneremo a vederci presto, vero? A presto, amico! Continuiamo a fare cose incredibili insieme! Wooohoo!"]

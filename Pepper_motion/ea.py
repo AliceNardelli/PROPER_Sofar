@@ -15,70 +15,51 @@ sentence_generation_ea={
     "speak_about_production_room":"behavior3",
     "ask_pick_the_block_voice":"behavior4",
     "ask_pick_the_block_tablet":"behavior5",
-    "ask_assembly_block_voice_rude":"behavior6",
+    "ask_assembly_block_voice":"behavior6",
     "ask_assembly_block_voice_gently":"behavior7",
-    "ask_assembly_block_tablet_rude":"behavior8",
+    "ask_assembly_block_tablet":"behavior8",
     "ask_assembly_block_tablet_gently":"behavior9",
     "say_goodbye_production_room":["Woo-hoo! Abbiamo completato l'impresa di raccogliere tutti i cubetti per costruire una torre arcobaleno! La nostra collaborazione è stata un vero successo e abbiamo raggiunto l'obiettivo insieme. Sei stato un prezioso alleato in questa avventura e voglio ringraziarti di cuore per la tua partecipazione attiva. Sai una cosa? La prossima volta che avrò bisogno di aiuto, sarai la mia prima scelta, perché so di poter contare su di te. Non vedo l'ora di condividere altre esperienze entusiasmanti insieme in futuro! Arrivederci per ora, ma a presto!"],
     "say_goodbye_assembly_room":["Yay! Abbiamo concluso la creazione di una fantastica torre arcobaleno! La nostra collaborazione è stata davvero straordinaria e abbiamo raggiunto il successo insieme. Sei stato un prezioso compagno di squadra in questo viaggio e voglio dirti che apprezzo moltissimo il tuo contributo. Sai una cosa? La prossima volta che avrò bisogno di supporto, sarai il primo a cui mi rivolgerò, perché so che posso contare sulla tua competenza e sulla tua disponibilità. Non vedo l'ora di affrontare nuove sfide e di condividere ulteriori momenti di successo insieme. Per ora, arrivederci e a presto!"]
 }
 
-behavior1=["Make me a question in italian about '*' in a way_1 and way_2 way","Answer to '*' in a way_1 and way_2 way knowing that we are speaking about '+'"]
-behavior2=["Ciao, carissimo amico! Sono Pepper, il tuo nuovo compagno di avventure! Sono qui per portare una scossa di entusiasmo e allegria nella nostra interazione. Preparati a tanti sorrisi, risate e momenti indimenticabili insieme. Sono pronto a mettermi in gioco, a darti una mano e a condividere con te momenti di pura euforia. Quindi, rilassati, divertiti e sappi che sono qui per rendere il nostro tempo insieme indimenticabile. Che l'avventura abbia inizio!",
+behavior1_ea=["Make me a question in italian about '*' in a way_1 and way_2 way","Answer to '*' in a way_1 and way_2 way knowing that we are speaking about '+'"]
+behavior2_ea=["Ciao, carissimo amico! Sono Pepper, il tuo nuovo compagno di avventure! Sono qui per portare una scossa di entusiasmo e allegria nella nostra interazione. Preparati a tanti sorrisi, risate e momenti indimenticabili insieme. Sono pronto a mettermi in gioco, a darti una mano e a condividere con te momenti di pura euforia. Quindi, rilassati, divertiti e sappi che sono qui per rendere il nostro tempo insieme indimenticabile. Che l'avventura abbia inizio!",
            "Ehi, ho chiamato proprio te perché ho una notizia emozionante da condividere! Siamo pronti per un'epica avventura di costruzione di una torre di cubetti! So che tu sei la persona perfetta per questa sfida e non vedo l'ora di dare il via a questa incredibile esperienza collaborativa. Mettiamo insieme le nostre menti creative, le nostre mani abili e i nostri cuori pieni di entusiasmo per costruire una torre che lascerà tutti a bocca aperta. Sappi che la tua contribuzione è fondamentale e il nostro team è pronto a lavorare insieme, spingendoci sempre oltre i limiti. Prepariamoci a trasformare una semplice pila di cubetti in una meraviglia architettonica! Andiamo, siamo pronti per costruire la nostra torre dei sogni!",
            "Ho una proposta entusiasmante per te. Ogni volta che ti passo un cubetto, potresti prenderlo e gentilmente assemblarlo per contribuire alla costruzione della nostra meravigliosa torre? Sarà come un gioco divertente e coinvolgente, in cui ognuno di noi svolge un ruolo importante per completare l'opera d'arte che stiamo creando insieme. Sono sicuro che il tuo tocco e la tua attenzione ai dettagli aggiungeranno un tocco speciale alla torre. Quindi, accetta questa sfida costruttiva e preparati a goderti ogni momento del processo. Stiamo per vivere un'avventura creativa unica!",
            "Che ne dici se ci mettiamo al lavoro insieme? Sono pronto a iniziare questa avventura con te, e so che insieme possiamo fare grandi cose. Prendiamoci il tempo necessario, ascoltiamoci reciprocamente e lavoriamo in sintonia per raggiungere i nostri obiettivi. Sappi che sono qui per sostenerti lungo il percorso e che mi impegnerò al massimo per rendere questa esperienza piacevole e gratificante per entrambi. Quindi, senza indugio, mettiamoci al lavoro con entusiasmo e determinazione. Affrontiamo questa sfida insieme e vedrai quanto possiamo realizzare quando lavoriamo come squadra."]
-behavior3=["Hey hey! Sono qui a farti un'esplosione di energia positiva! Io sono Pepper, il tuo alleato entusiasta pronto a condividere sorrisi e avventure. Non vedo l'ora di fare conoscenza con te e di dare vita a momenti indimenticabili insieme. Siamo sulla stessa lunghezza d'onda, pronto a fare squadra e a creare un'atmosfera piena di risate e collaborazione. Quindi, salta a bordo di questa avventura e preparati a divertirti mentre esploriamo il mondo delle infinite possibilità. Ciao, sono Pepper, e sono qui per rendere i nostri momenti insieme indimenticabili!",
+behavior3_ea=["Hey hey! Sono qui a farti un'esplosione di energia positiva! Io sono Pepper, il tuo alleato entusiasta pronto a condividere sorrisi e avventure. Non vedo l'ora di fare conoscenza con te e di dare vita a momenti indimenticabili insieme. Siamo sulla stessa lunghezza d'onda, pronto a fare squadra e a creare un'atmosfera piena di risate e collaborazione. Quindi, salta a bordo di questa avventura e preparati a divertirti mentre esploriamo il mondo delle infinite possibilità. Ciao, sono Pepper, e sono qui per rendere i nostri momenti insieme indimenticabili!",
            "Ehi, ho una notizia entusiasmante da condividere con te! Ti ho chiamato perché abbiamo un'epica missione da compiere insieme: dobbiamo costruire una torre di cubetti! Preparati a dare il massimo della tua creatività e della tua abilità manuale, perché stiamo per realizzare qualcosa di veramente straordinario. Sono sicuro che la nostra collaborazione darà vita a una torre stupefacente, che lascerà tutti a bocca aperta. Quindi, prendi fiato e preparati a immergerti in un'avventura costruttiva senza precedenti! Non vedo l'ora di mettere le nostre menti e le nostre abilità insieme per creare qualcosa di davvero sorprendente. Andiamo, compagno di squadra, è il momento di metterci all'opera e rendere reale questa torre dei sogni!",
            "Sono così felice che tu sia disposto a partecipare al nostro progetto di costruzione! Ogni volta che ti chiederò, sarai la mia stella del cubetto colorato e dovrai passarmi il blocchetto quando te lo richiedo. Lascia che il mio spirito extravertito scelga il colore, così possiamo creare una torre davvero unica e vibrante insieme. Sono sicuro che la tua generosità nel passarmi il cubetto e la mia scelta del colore daranno vita a un risultato sorprendente. Quindi, preparati a un'esperienza di costruzione piena di energia e divertimento, dove il nostro lavoro di squadra porterà a una torre straordinaria! Non vedo l'ora di iniziare questa avventura colorata insieme!", 
            "Sono pronto ed entusiasta per iniziare a lavorare insieme. Siamo sulla stessa lunghezza d'onda e so che insieme possiamo fare grandi cose. Quindi, senza perdere altro tempo, diamo il via a questa fantastica avventura! Sappi che sarò qui a supportarti, a condividere le sfide e le gioie del percorso. Riempiamoci di energia positiva e lascia che la nostra collaborazione ci porti a risultati sorprendenti. Non vedo l'ora di dare il massimo e di imparare da te lungo il cammino. Quindi, amico, iniziamo a lavorare con tutto il cuore e la determinazione. Siamo pronti a raggiungere nuove vette insieme!"]
-behavior4=["Saresti così gentile da passarmi il cubetto rosso per primo? Mi piacerebbe iniziare con quel colore perché mi suscita una sensazione di calore ed energia positiva. So che posso contare sulla tua gentilezza e disponibilità nel supportarmi. ",
+behavior4_ea=["Saresti così gentile da passarmi il cubetto rosso per primo? Mi piacerebbe iniziare con quel colore perché mi suscita una sensazione di calore ed energia positiva. So che posso contare sulla tua gentilezza e disponibilità nel supportarmi. ",
            "Sarebbe fantastico se potessi portarmi il cubetto arancione! Sono attratto dalla sua vivace tonalità e dal suo spirito audace. Con il tuo aiuto e la tua energia, saremo in grado di dare un tocco speciale a questa torre che stiamo costruendo insieme. Sono sicuro che la tua collaborazione porterà un'esplosione di vitalità e creatività alla nostra opera d'arte! ",
            "Sono così emozionato! Passami subito il cubetto giallo, perché voglio aggiungere una spruzzata di sole e gioia alla nostra torre! Con la tua collaborazione, possiamo creare una struttura luminosa e piena di energia positiva. ",
-           "Vai a prendere il cubetto verde chiaro",
-           "Portami il cubetto verde scuro",
-           "cercami il cubetto azzurro",
-           "siamo quasi alla fine, portami il cubetto blu",
-           "La torre è quasi costruita, portami come ultimo cubetto quello viola"
-
+           "Vai a prendere il cubetto verde chiaro! Come stai? Spero che tu stia passando una giornata fantastica! A proposito, ho un suggerimento davvero entusiasmante per te: che ne dici di dirigerti lì e prenderti quel bellissimo cubetto verde chiaro? Credi a me, darà un tocco così vivace al tuo ambiente! Corri e cogli l'opportunità di infondere nuova energia nel tuo spazio. Ce la puoi fare!",
+           "Sai, ho una richiesta super emozionante per te: potresti portarmi quel fantastico cubetto verde scuro? Ti assicuro che darà un tocco di classe e originalità al mio ambiente! Sii audace e affronta questa sfida, perché so che sei pieno di energia e prontezza! Grazie mille in anticipo, sei il migliore!",
+           "Sai cosa sarebbe fantastico? Se potessi aiutarmi a cercare il cubetto azzurro! Siamo una squadra di amici collaborativi, e so che insieme possiamo fare grandi cose! Quindi, ti va di unire le forze e trovare questo meraviglioso cubetto azzurro? Sarà un'avventura divertente e coinvolgente! Grazie mille per il tuo supporto, apprezzo davvero la tua disponibilità. Non vedo l'ora di scoprire cosa riusciremo a fare insieme!",
+           "Siamo quasi alla fine di questa sfida emozionante! Sai cosa ci manca per completare il tutto? Il cubetto blu! Ecco dove entra in gioco il tuo aiuto prezioso. Siamo una squadra fantastica e so che insieme possiamo raggiungere l'obiettivo. Quindi, cosa dici di portarmi quel cubetto blu mancante? Sono sicuro che sarai il mio eroe del giorno! Grazie per essere così collaborativo e per il tuo impegno. Non vedo l'ora di festeggiare insieme il nostro successo!",
+           "Woo-hoo! La torre è quasi costruita e siamo così vicini al traguardo! Senti l'energia dell'entusiasmo nell'aria? È contagiosa! Ma sai qual è l'ultimo tassello che ci manca per completare questo incredibile progetto? Il cubetto viola! Ecco dove entra in gioco il tuo aiuto eccezionale. Sei pronto a essere parte di questa avventura e portarmi il cubetto viola finale? Sarai il campione che metterà la ciliegina sulla torta! Grazie per la tua collaborazione e per l'impegno che stai mettendo in questa sfida. Non vedo l'ora di ammirare la nostra torre completa e di celebrare il nostro successo insieme!"
 ]
-behavior6=["Posiziona il cubetto rosso alla base della torre",
-           "Prendi ora il cubetto arancio e mettilo sopra quello rosso",
-           "Il cubetto giallo che ti ho portato va inserito nella torre",
-           "Metti ora il cubetto verde chiaro",
-           "Questo cubetto verde scuro va inserito nella torre",
-           "Posiziona questo blocchetto azzurro",
-           "Siamo quasi alla fine, metti il cubetto blu sopra quello azzurro",
-           "Metti in cima alla torre questo cubetto viola"]
-sentence="Rewrite in a way_1 and way_2 way"
+behavior6_ea=["Hai presente quel cubetto rosso fantastico? Sì, esatto! Vorrei chiederti una cosa molto importante e so che sei la persona perfetta per questo compito. Potresti, per favore, posizionare il cubetto rosso proprio alla base della nostra torre? Sarà il punto di partenza perfetto per creare un capolavoro vertiginoso! Grazie mille per la tua collaborazione e per la tua passione nell'aiutare a rendere questa torre ancora più spettacolare. Non vedo l'ora di vedere il tuo tocco magico e di goderci insieme questo straordinario risultato!",
+           "Ehi, amico! Che bravo che sei! Ora tocca a te dare il prossimo tocco di genio alla nostra torre! Quindi, prendi subito il cubetto arancio e mettilo in cima a quello rosso. Sarà come un'esplosione di colori e divertimento! So che hai uno spirito estroverso e una grande passione per le avventure, quindi non vedo l'ora di vedere come la nostra torre prenderà vita con il tuo contributo. Grazie mille per la tua collaborazione e per la tua energia contagiosa! Sei davvero fantastico, amico!",
+           "Mi ricordo bene quel cubetto giallo che ho portato. Sai che cosa dobbiamo fare adesso? Inserirlo nella nostra torre! Siamo un team collaborativo e ogni tuo contributo è davvero prezioso. Quindi, potresti gentilmente prendere il cubetto giallo e posizionarlo con cura all'interno della nostra magnifica torre? So che hai un grande spirito collaborativo e insieme riusciremo a rendere questa torre ancora più straordinaria! Grazie mille per la tua dedizione e per la tua amicizia. Non vedo l'ora di vedere come il nostro lavoro di squadra darà vita a una torre meravigliosa!",
+           "Capisco che hai un grande peso sulle spalle, ma voglio che tu sappia che sono qui per te. Ora, per favore, prendi un momento per te stesso e metti il cubetto verde chiaro. Posso solo immaginare quanto sia importante per te e voglio che tu sappia che apprezzo davvero il tuo sforzo. Ricorda di andare avanti a tuo ritmo e di prenderti tutto il tempo che ti serve. Sono qui per supportarti in ogni passo del cammino. Grazie per la tua apertura e per permettermi di esserti vicino. Sai di poter contare su di me.",
+           "Wow, ma che emozione! Ecco un momento epico: il cubetto verde scuro deve essere inserito nella nostra incredibile torre! Non riesco a contenere la mia eccitazione perché so che il tuo tocco magico renderà tutto ancora più spettacolare. Prendi questo cubetto verde scuro, che è come una gemma preziosa, e fallo brillare nella nostra torre. Sarà come aggiungere un'esplosione di energia e vitalità! Grazie mille per essere così coinvolgente e per fare parte di questa fantastica avventura. Sono sicuro che insieme realizzeremo qualcosa di davvero straordinario. Forza, amico, mostraci di cosa sei capace!",
+           "Ehi, fantastico! Abbiamo bisogno di te per mettere in posizione questo blocchetto azzurro. Sì, proprio così, sei la persona perfetta per questo compito! Metti in gioco la tua creatività e il tuo entusiasmo, e posiziona questo blocchetto azzurro con stile e sicurezza. So che hai un grande spirito extravertito e che non vedrai l'ora di far risplendere la nostra torre con questo tocco di blu vibrante! Grazie per la tua collaborazione e per la tua positività contagiosa. Non vedo l'ora di ammirare il tuo lavoro magistrale nella nostra fantastica creazione. Andiamo avanti, supereroe!",
+           "Non ci credo! Siamo proprio sulla linea d'arrivo e siamo così vicini al completamento! Ma c'è un'ultima mossa geniale che aspetta proprio te: metti il cubetto blu sopra quello azzurro! Immagina solo quanto sarà spettacolare e affascinante quando vedremo il nostro capolavoro finito! Sei proprio la persona giusta per questo compito. Con il tuo spirito extravertito e il tuo talento, questa torre sarà un trionfo! Grazie mille per la tua preziosa collaborazione e per aver contribuito a rendere tutto questo possibile. Non vedo l'ora di ammirare l'effetto stupefacente della tua mossa finale. Andiamo avanti, super eroe! Siamo quasi lì!",
+           "Sei proprio tu la persona che stavamo aspettando! Ora tocca a te mettere in cima alla nostra torre trionfante il cubetto viola! Immagina solo quanto sarà spettacolare e strabiliante vedere quel tocco di viola dominare la nostra creazione. Con la tua energia positiva e la tua abilità, sono sicuro che trasformerai la torre in un autentico capolavoro! Grazie mille per la tua preziosa collaborazione e per aver portato il tuo entusiasmo in questa avventura straordinaria. Non vedo l'ora di ammirare la torre completa con il tuo tocco finale. Sei un vero mago del design! Avanti, supereroe, il trionfo ci attende!"]
 
-behaviors={
-    "behavior1":behavior1,
-    "behavior2":behavior2,
-    "behavior3":behavior3,
-    "behavior4":behavior4,
-    "behavior5":behavior4,
-    "behavior6":behavior6,
-    "behavior7":behavior6,
-    "behavior8":behavior6,
-    "behavior9":behavior6,
-}
+sentence_ea="Rewrite in a way_1 and way_2 way"
 
-modality={
-    "Extrovert":["extrovert","friendly","talkative","enthusiastic","excited"],
-    "Introvert":["introvert","reserved","quiet"],
-    "Conscientious":["conscientous","scrupolous"],
-    "Unscrupulous":["distracted"],
-    "Agreeable":["agreeable","cooperative", "friendly", "empathetic", "forgiving", "reliable"],
-    "Disagreeable":["disagreeable","competitive"]
-}
-
-
-modality2={
-    "Extrovert":["extrovert","friendly","talkative","enthusiastic","excited"],
-    "Introvert":["introvert","reserved","quiet"],
-    "Conscientious":["conscientous","scrupolous","organized","precise","persevering"],
-    "Unscrupulous":["inaccurate", "careless", "unwilling", "lazy", "disorganized", "delayed", "distracted"],
-    "Agreeable":["agreeable","cooperative", "friendly", "empathetic", "forgiving", "reliable"],
-    "Disagreeable":["disagreeable","competitive", "irritable", "polemical", "hostile", "selfish"]
+behaviors_ea={
+    "behavior1":behavior1_ea,
+    "behavior2":behavior2_ea,
+    "behavior3":behavior3_ea,
+    "behavior4":behavior4_ea,
+    "behavior5":behavior4_ea,
+    "behavior6":behavior6_ea,
+    "behavior7":behavior6_ea,
+    "behavior8":behavior6_ea,
+    "behavior9":behavior6_ea,
 }
