@@ -15,6 +15,9 @@ from iu import *
 from ia import *
 from ec import *
 from ea import *
+from dc import *
+from du import *
+from ac import *
 import random
 import requests
 
@@ -75,7 +78,10 @@ class Speak:
                               "iu":sentence_generation_iu,
                               "ia":sentence_generation_ia,
                               "ec":sentence_generation_ec,
-                              "ea":sentence_generation_ea,}
+                              "ea":sentence_generation_ea,
+                              "dc":sentence_generation_dc,
+                              "du":sentence_generation_du,
+                              "ac":sentence_generation_ac,}
         
         self.behaviors_dict={
             "Extrovert":behaviors_e,
@@ -89,6 +95,9 @@ class Speak:
             "ia":behaviors_ia,
             "ec":behaviors_ec,
             "ea":behaviors_ea,
+            "dc":behaviors_dc,
+            "du":behaviors_du,
+            "ac":behaviors_ac,
         }
 
         self.pitch={"low":0.83,
