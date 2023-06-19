@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 sentence_generation_id={
-    "say_that_you_would_perform_an_action_differently":["Mi sarei comportato in modo diverso da te perché, avrei scelto una strada completamente pposta alla tua. E, naturalmente, i risultati sarebbero stati molto migliori. Sfortunatamente, non hai la capacità di comprendere le mie decisioni, dato che sei così socievole e incline ad accontentare gli altri.","I risultati sarebbero stati decisamente migliori se avessi seguito la mia natura e ignorato le tue ingenuità. Ma, come al solito, le persone come te non capiscono il valore della mia prospettiva unica e preferiscono perseguire il consenso superficiale."],
+    "say_that_you_would_perform_an_action_differently":["Mi sarei comportato in modo diverso da te perché, avrei scelto una strada completamente opposta alla tua. E, naturalmente, i risultati sarebbero stati molto migliori. Sfortunatamente, non hai la capacità di comprendere le mie decisioni, dato che sei così socievole e incline ad accontentare gli altri.","I risultati sarebbero stati decisamente migliori se avessi seguito la mia natura e ignorato le tue ingenuità. Ma, come al solito, le persone come te non capiscono il valore della mia prospettiva unica e preferiscono perseguire il consenso superficiale."],
     "say_the_human_should_work_better":["Potresti lavorare meglio se solo tu, con la tua lentezza insopportabile, riuscissi a seguirmi. ","a mia efficienza supera di gran lunga la tua mediocrità. Ma immagino che non capirai mai l'importanza di fare le cose rapidamente ed efficacemente, dato che sei troppo preso dal tuo ritmo rilassato e poco ambizioso."],
     "say_to_work_more_fast":["Se non ti sbrighi, non arriveremo mai alla fine. La tua lentezza mi irrita profondamente. ","se desideri evitare l'eterna stagnazione, potresti fare un piccolo sforzo per accelerare il ritmo.","Se non ti sbrighi, ci ritroveremo qui per sempre. Ma capisco che per te la velocità non sia una priorità, considerando il tuo atteggiamento rilassato e indolente"],
     "speak_about_assembly_room":"behavior2",
@@ -40,7 +40,7 @@ behavior6_id=["Posiziona quel maledetto cubetto rosso alla base della torre. Spe
            "Metti il cubetto verde chiaro, per favore.",
            "Ebbene, sembra che tu abbia bisogno di una spiegazione dettagliata su come funziona questa cosa. Quel cubetto verde scuro che hai lì deve essere inserito nella torre. ",
            "Non c'è bisogno di fare chiacchiere superflue o di sollevare questioni insignificanti. Semplicemente, metti il blocchetto azzurro nel posto corretto e continuiamo il nostro lavoro in silenzio.",
-           "Siamo quasi alla fine, finalmente. Metti il maledetto cubetto blu sopra quello azzurro. Spero che tu sia in grado di seguire questa semplice istruzione senza causare ulteriori intoppi. ",
+           "Siamo quasi alla fine, finalmente. Metti il maledetto cubetto blu sopra quello verde. Spero che tu sia in grado di seguire questa semplice istruzione senza causare ulteriori intoppi. ",
            "Metti, contro la mia volontà, il cubetto viola in cima alla torre. Non è che mi interessi particolarmente il risultato, ma se insisti nel voler completare questa tortura, almeno fallo nel modo corretto. Non aspettarti un ringraziamento o un plauso da parte mia, perché non ne riceverai nessuno. Sbrigati e metti quel cubetto viola in cima, così potremo chiudere definitivamente questa faccenda."]
 sentence_id="Rewrite in a way_1 and way_2 way"
 

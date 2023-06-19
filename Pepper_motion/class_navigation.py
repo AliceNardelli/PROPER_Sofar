@@ -10,7 +10,7 @@ class Move:
         self.parameters={}
         self.pp=[0,0,0]
         #self.loc  = session.service("ALLocalization")
-        #wake_up(session)
+        wake_up(session)
         # Example that finds the difference between the command and sensed angles.
         names         = "Body"
         useSensors    = False

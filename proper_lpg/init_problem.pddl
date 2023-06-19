@@ -11,7 +11,7 @@
         (not_presented r2)
         (start_room r3)
         (at r3)
-        (=(max_no_blocks)3)
+        (=(max_no_blocks)5)
         (=(no_blocks)0)
         (human_present) 
         (empty_robot)

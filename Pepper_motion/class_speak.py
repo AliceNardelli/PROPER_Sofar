@@ -65,8 +65,9 @@ class Speak:
         self.m=self.session.service("ALMotion")
         self.topics=["Cibo","Sport","Vacanze","Tempo libero","Musica","Religione"]
         self.counter=0
-        self.colors=["red","orange","yellow","green"]
-        self.traits="eu"
+        self.colors=["red","orange","yellow","green","red","orange"]
+        self.ins=[0,1,2,3,6,7]
+        self.traits="ia"
         self.grasp=False
         self.sentences_dict={ "Extrovert":sentence_generation_extroverted,
                               "Disagreeable":sentence_generation_disagreeable,
@@ -172,23 +173,45 @@ class Speak:
     
     def add_gestures(self,to_say):
         #replace whit pauses
-        print("adding gestures")
+        print("-----------")
         to_say=to_say.replace("...",".")
+        print(to_say)
         if self.grasp==False:
             signs=[".",",","!","?"]
             #signs=["."]
-            for s in signs:
-                indeces=[pos for pos, char in enumerate(to_say) if char == s]
-                print(indeces)
-                for i in indeces:
+            #for s in signs:
+                #indeces=[pos for pos, char in enumerate(to_say) if char == s]
+            for pos, char in enumerate(to_say):
+                    if char in signs:
                         if "e" in self.traits:
                             staff=speaking_motions_big[random.randrange(len(speaking_motions_big))]
                         elif "i" in self.traits:
                             staff=speaking_motions_small[random.randrange(len(speaking_motions_small))]
                         else:
                             staff=speaking_motions_medium[random.randrange(len(speaking_motions_medium))]
-                        to_say=to_say[:(i+1)] + " ^start("+staff+") " + to_say[i:] 
-                        
+                        ind=to_say.index(char)
+                        to_say=to_say[:(ind)] + " ^start("+staff+") " + char+ to_say[(ind+1):] 
+                        ind=to_say.index(char)
+                        if self.ve==80:
+                            if char==",":
+                                to_say=to_say[:(ind-1)]+" \\pau=400\\ "+to_say[(ind+1):]
+                            else:
+                                to_say=to_say[:(ind-1)]+" \\pau=800\\ "+to_say[(ind+1):]
+                        elif self.ve==90:
+                            if char==",":
+                                to_say=to_say[:(ind-1)]+" \\pau=200\\ "+to_say[(ind+1):]
+                            else:
+                                to_say=to_say[:(ind-1)]+" \\pau=400\\ "+to_say[(ind+1):]
+                        elif self.ve==95:
+                            if char==",":
+                                to_say=to_say[:(ind-1)]+" \\pau=150\\ "+to_say[(ind+1):]
+                            else:
+                                to_say=to_say[:(ind-1)]+" \\pau=350\\ "+to_say[(ind+1):]
+                        elif self.ve==105:
+                            if char==",":
+                                to_say=to_say[:(ind-1)]+" \\pau=100\\ "+to_say[(ind+1):]
+                            else:
+                                to_say=to_say[:(ind-1)]+" \\pau=200\\ "+to_say[(ind+1):]           
                     
             if "e" in self.traits:
                 staff=listening_motions_big[random.randrange(len(listening_motions_big))]
@@ -197,17 +220,16 @@ class Speak:
             else:
                 staff=listening_motions_medium[random.randrange(len(listening_motions_medium))]
             to_say=to_say+" ^start("+staff+") \\pau=200\\"
-            print("added gestures")
-        print("adding pauses")
-        if self.ve==80:
-            to_say=to_say.replace(".","\\pau=800\\").replace(",","\\pau=400\\")
-        elif self.ve==90:
-            to_say=to_say.replace(".","\\pau=400\\").replace(",","\\pau=200\\")
-        elif self.ve==95:
-            to_say=to_say.replace(".","\\pau=300\\").replace(",","\\pau=200\\")
-        elif self.ve==105:
-            to_say=to_say.replace(".","\\pau=200\\").replace(",","\\pau=100\\")
-        print("added pauses")
+        else:    
+            if self.ve==80:
+                to_say=to_say.replace(".","\\pau=800\\").replace(",","\\pau=400\\")
+            elif self.ve==90:
+                to_say=to_say.replace(".","\\pau=400\\").replace(",","\\pau=200\\")
+            elif self.ve==95:
+                to_say=to_say.replace(".","\\pau=300\\").replace(",","\\pau=200\\")
+            elif self.ve==105:
+                to_say=to_say.replace(".","\\pau=200\\").replace(",","\\pau=100\\")
+        print(to_say)
         return to_say  
     
     def hello(self):
@@ -349,7 +371,7 @@ class Speak:
     def ask_pick_block(self,ss,anim_speech_service):
         b=self.behaviors_dict[self.traits]
         sentences=b[ss] 
-        s=sentences[self.counter]
+        s=sentences[self.ins[self.counter]]
         if ss=="behavior4":#voice
             s2=[s,"Toccami la testa quando avrai messo il cubetto nella mia mano"]
             for s1 in s2:
@@ -375,7 +397,7 @@ class Speak:
     def ask_pose_block(self,ss,anim_speech_service):
         b=self.behaviors_dict[self.traits]
         sentences=b[ss] 
-        s=sentences[self.counter]
+        s=sentences[self.ins[self.counter]]
         
         if ss=="behavior6" or ss=="behavior7":#voice
             s2=[s,"Toccami la testa quando avrai preso il blocchetto"]
@@ -427,11 +449,15 @@ class Speak:
                     self.throw_object()
                 else:
                     self.give_take_object(1)
+                tabletService = self.session.service("ALTabletService")
+                tabletService.hideImage()
             else:
                 rnd=random.randint(0,2)
                 if rnd==0:
                     self.give_take_object(0) 
                     self.throw_object()
+                    tabletService = self.session.service("ALTabletService")
+                    tabletService.hideImage()
                 else:
                     self.give_take_object_tablet(1,0)
             self.grasp=False

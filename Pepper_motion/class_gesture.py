@@ -55,6 +55,8 @@ class Gesture:
         to_say="^start("+app+")\\pau=2000\\"
         print(to_say)
         anim_speech_service.say(to_say) 
+        posture_service = self.session.service("ALRobotPosture")    
+        posture_service.goToPosture("Stand", 0.1)
         
 
 
