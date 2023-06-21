@@ -9,15 +9,17 @@ import smach
 import smach_ros
 import random
 import numpy as np
-
+import rospy
+from std_msgs.msg import String
+import time
 
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=0
-wi=1
+we=1
+wi=0
 wc=0
-wu=0
-wa=1
+wu=1
+wa=0
 wd=0
 sum=we +wi +wc + wu + wa + wd
 weights=[we/sum,wi/sum,wc/sum,wu/sum,wa/sum,wd/sum]
@@ -88,14 +90,22 @@ class Planning(smach.State):
         smach.State.__init__(self, 
                              outcomes=['outcome2'],
                              input_keys=['command','planning_folder'])
-        
+    def callback(self, data):
+         self.start=True 
+
     def execute(self, userdata):
+        self.start=False
         rospy.loginfo('planning')
         return_code=planning(userdata.command,userdata.planning_folder)  
         print(return_code)
         while return_code!=0:
             return_code=planning(userdata.command,userdata.planning_folder)  
             print(return_code)
+        sub_init=rospy.Subscriber("start", String, self.callback) 
+        while not self.start:
+            print("waiting for msg")  
+            time.sleep(1)
+        print("start experiment")
         return 'outcome2'
         
         

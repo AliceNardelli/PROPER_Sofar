@@ -67,7 +67,7 @@ class Speak:
         self.counter=0
         self.colors=["red","orange","yellow","green","red","orange"]
         self.ins=[0,1,2,3,6,7]
-        self.traits="ia"
+        self.traits="eu"
         self.grasp=False
         self.sentences_dict={ "Extrovert":sentence_generation_extroverted,
                               "Disagreeable":sentence_generation_disagreeable,
@@ -133,6 +133,7 @@ class Speak:
         min_registered_users_number = 1
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # Try to connect to the socket that listens to the user speech
+        client_socket.settimeout(10)
         try:
             print("Attempting to connect to the socket...")
             client_socket.connect((audio_recorder_ip, 9090))
@@ -140,7 +141,7 @@ class Speak:
         except ConnectionError:
             print("Check socket connection with audio_recorder.py")
             sys.exit(1)
-
+        client_socket.settimeout(None)
         utils = Utils("it", server_ip, registration_ip, port)
         # Retrieve the states of the users
         with open("/home/alice/CAIRclient/client_multiparty/dialogue_state.json") as f:
@@ -162,12 +163,18 @@ class Speak:
                 try:
                     tree=ET.ElementTree(ET.fromstring(xml_string))
                     proceed = True
+                except UnicodeEncodeError:
+                    xml_string=str(xml_string).encode('utf-8')
+                    tree=ET.ElementTree(ET.fromstring(xml_string))
+                    proceed = True
                 except xml.etree.ElementTree.ParseError:
                     # If the xml is not complete, read again from the socket
                     print("The XML is not complete.")
                     xml_string = xml_string + client_socket.recv(1024).decode('utf-8')
-
-        sentence = str(tree.findall('profile_id')[0].text)
+        try:
+            sentence = str(tree.findall('profile_id')[0].text)
+        except:
+            sentence=str(tree.findall('profile_id')[0].text).encode('utf-8')
         print(sentence)
         return sentence
     
@@ -494,11 +501,13 @@ class Speak:
     def give_take_object_touch(self,hand,stiffness):
         m=self.session.service("ALMotion")
         frac_speed=0.5
+        angle0=[-0.1 ,0.5,-1.56,-0.0,-1.7,0]
         angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,hand]
         chain=["LShoulderPitch","LShoulderRoll","LElbowYaw","LElbowRoll","LWristYaw","LHand"]
         t=0
         stiff=len(chain)*[1]
         m.setStiffnesses(chain,stiff)
+        m.angleInterpolationWithSpeed(chain,angle0,frac_speed)
         self.touched=False
         touch = self.tts2.subscriber("MiddleTactilTouched") #questo permette la callback
         connection = touch.signal.connect(self.touch_detected) #segnale della sottoscrizione
@@ -517,6 +526,7 @@ class Speak:
     def give_take_object_tablet(self,hand,stiffness):
             m=self.session.service("ALMotion")
             frac_speed=0.5
+            angle0=[-0.1 ,0.5,-1.56,-0.0,-1.7,0]
             angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,hand]
             chain=["LShoulderPitch","LShoulderRoll","LElbowYaw","LElbowRoll","LWristYaw","LHand"]
             t=0
@@ -525,6 +535,7 @@ class Speak:
             self.touched=False
             tabletService = self.session.service("ALTabletService")
             signalID = tabletService.onTouchDown.connect(self.callback)
+            m.angleInterpolationWithSpeed(chain,angle0,frac_speed) 
             while self.touched==False:
                 m.angleInterpolationWithSpeed(chain,angle,frac_speed) 
                 time.sleep(1)

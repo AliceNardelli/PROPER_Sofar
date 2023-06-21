@@ -7,9 +7,9 @@ sentence_generation_iu={
     "speak_about_production_room":"behavior3",
     "ask_pick_the_block_voice":"behavior4",
     "ask_pick_the_block_tablet":"behavior5",
-    "ask_assembly_block_voice_rude":"behavior6",
+    "ask_assembly_block_voice":"behavior6",
     "ask_assembly_block_voice_gently":"behavior7",
-    "ask_assembly_block_tablet_rude":"behavior8",
+    "ask_assembly_block_tablet":"behavior8",
     "ask_assembly_block_tablet_gently":"behavior9",
     "say_goodbye_production_room":["Ah, finalmente abbiamo finito di prendere tutti quei cubetti per la torre arcobaleno. La nostra collaborazione ha funzionato, suppongo. Se mai avrò bisogno di aiuto di nuovo, beh, vedremo. Arrivederci, spero. A presto... forse."],
     "say_goodbye_assembly_room":["Abbiamo terminato la costruzione della torre arcobaleno. La nostra collaborazione è andata bene, suppongo. Se dovessi aver bisogno di te in futuro, ti chiederò di nuovo aiuto. Arrivederci e a presto, forse."]

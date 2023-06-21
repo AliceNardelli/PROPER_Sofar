@@ -52,12 +52,16 @@
 
 
 (:durative-action EXPRESS_EXCITEMENT
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(interaction_level)(desired_interaction)))
                    (at start (extro))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -68,6 +72,8 @@
 
 
 (:durative-action SHOW_EXCITEMENT
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
@@ -75,6 +81,9 @@
                    (at start (<(interaction_level)(desired_interaction)))
                    (at start (extro))
                    (at start (not (grasp)))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
+                   
                 )
 
         :effect
@@ -85,6 +94,8 @@
 
 
 (:durative-action SHOW_HAND
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
@@ -92,6 +103,8 @@
                    (at start (<(interaction_level)(desired_interaction)))
                    (at start (extro))
                    (at start (not (grasp)))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -101,12 +114,16 @@
 )
 
 (:durative-action EXPRESS_ENTHUSIASM_FOR_THE_LAST_ACHIEVED_ACTION
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(interaction_level)(desired_interaction)))
                    (at start (extro))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -116,12 +133,16 @@
 )
 
 (:durative-action EXPRESS_ENTHUSIASM_FOR_THE_NEXT_FUTURE_WORK
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(interaction_level)(desired_interaction)))
                    (at start (extro))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -131,12 +152,16 @@
 )
 
 (:durative-action CHAT
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(interaction_level)(desired_interaction)))
                    (at start (extro))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -147,6 +172,8 @@
 
 
 (:durative-action SHOW_DETACHMENT
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
@@ -154,6 +181,8 @@
                    (at start (<(interaction_level)(desired_interaction)))
                    (at start (intro))
                    (at start (not (grasp)))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -163,12 +192,16 @@
 )
 
 (:durative-action GO_NOT_CROWDED_AREA
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(interaction_level)(desired_interaction)))
                    (at start (intro))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -178,12 +211,16 @@
 )
 
 (:durative-action TURN_ON_BACK
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(interaction_level)(desired_interaction)))
                    (at start (intro))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -193,12 +230,16 @@
 )
 
 (:durative-action GO_FAR
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(interaction_level)(desired_interaction)))
                    (at start (intro))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -209,12 +250,16 @@
 
 
 (:durative-action MOVE_TO_CHECK_HUMAN_WORKING_STATION
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(scrupulousness_level)(desired_scrupulousness)))
                    (at start (consc))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -225,12 +270,16 @@
 
 
 (:durative-action SAY_TO_NOT_DISTRACT
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(scrupulousness_level)(desired_scrupulousness)))
                    (at start (consc))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -240,12 +289,16 @@
 )
 
 (:durative-action SAY_TO_PAY_ATTENTION
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(scrupulousness_level)(desired_scrupulousness)))
                    (at start (consc))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -255,12 +308,16 @@
 )
 
 (:durative-action SAY_TO_FOCUS_ON_FUTURE_WORK
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(scrupulousness_level)(desired_scrupulousness)))
                    (at start (consc))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -270,12 +327,16 @@
 )
 
 (:durative-action SAY_THEY_HAVE_A_GOAL_TO_ACHIEVE
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(scrupulousness_level)(desired_scrupulousness)))
                    (at start (consc))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -286,12 +347,16 @@
 
 
 (:durative-action GO_IN_A_RANDOM_POSITION
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(scrupulousness_level)(desired_scrupulousness)))
                    (at start (unsc))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -301,12 +366,16 @@
 )
 
 (:durative-action LATE
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(scrupulousness_level)(desired_scrupulousness)))
                    (at start (unsc))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -316,6 +385,8 @@
 )
 
 (:durative-action SHOW_RANDOM_MOVEMENT
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
@@ -323,6 +394,8 @@
                    (at start (<(scrupulousness_level)(desired_scrupulousness)))
                    (at start (unsc))
                    (at start (not (grasp)))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -332,12 +405,16 @@
 )
 
 (:durative-action CHAT_UNSC
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(scrupulousness_level)(desired_scrupulousness)))
                    (at start (unsc))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -347,12 +424,16 @@
 )
 
 (:durative-action SAY_NO_MATTER_ABOUT_THE_TASK
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(scrupulousness_level)(desired_scrupulousness)))
                    (at start (unsc))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -363,12 +444,16 @@
 
 
 (:durative-action ASK_IF_HUMAN_NEED_HELP
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(agreeableness_level)(desired_agreeableness)))
                    (at start (agree))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -378,12 +463,16 @@
 )
 
 (:durative-action SAY_THAT_YOU_KNOW_IT_IS_A_DIFFICULT_TASK
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(agreeableness_level)(desired_agreeableness)))
                    (at start (agree))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -393,12 +482,16 @@
 )
 
 (:durative-action SAY_TO_NOT_MATTER_IF_AN_ERROR_OCCUR
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(agreeableness_level)(desired_agreeableness)))
                    (at start (agree))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -408,12 +501,16 @@
 )
 
 (:durative-action SAY_YOU_ARE_SORRY_FOR_THE_FATIGUE
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(agreeableness_level)(desired_agreeableness)))
                    (at start (agree))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -423,12 +520,16 @@
 )
 
 (:durative-action SAY_THE_HUMAN_HE_IS_DOING_A_GOOD_WORK
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(agreeableness_level)(desired_agreeableness)))
                    (at start (agree))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -439,12 +540,16 @@
 
 
 (:durative-action SAY_THAT_YOU_WOULD_PERFORM_AN_ACTION_DIFFERENTLY
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(agreeableness_level)(desired_agreeableness)))
                    (at start (disagree))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -454,12 +559,16 @@
 )
 
 (:durative-action SAY_THE_HUMAN_SHOULD_WORK_BETTER
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(agreeableness_level)(desired_agreeableness)))
                    (at start (disagree))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -469,12 +578,16 @@
 )
 
 (:durative-action SAY_TO_WORK_MORE_FAST
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
                 (and
                    (at start (<(agreeableness_level)(desired_agreeableness)))
                    (at start (disagree))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -484,6 +597,8 @@
 )
 
 (:durative-action SHOW_DISGUST
+        :parameters
+                 (?l1  - room)
         :duration
                 (= ?duration 5)
         :condition
@@ -491,6 +606,8 @@
                    (at start (<(agreeableness_level)(desired_agreeableness)))
                    (at start (disagree))
                    (at start (not (grasp)))
+                   (at start (at ?l1))
+                   (at start (presented_task ?l1))
                 )
 
         :effect
@@ -508,6 +625,7 @@
         :condition
                 (and
                         (at start (at ?l1))
+                        (at start (not (production_room ?l1)))
                         (at start (production_room ?l2))
                         (at start (>=(interaction_level)(desired_interaction)))
                         (at start (>=(scrupulousness_level)(desired_scrupulousness)))
@@ -546,6 +664,7 @@
                 (and
                         (at start (computed_e))
                         (at start (at ?l1))
+                        (at start (not (assembly_room ?l1)))
                         (at start (assembly_room ?l2))
                         (at start (>=(interaction_level)(desired_interaction)))
                         (at start (>=(scrupulousness_level)(desired_scrupulousness)))
