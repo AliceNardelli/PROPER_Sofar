@@ -141,7 +141,7 @@ class Speak:
         except ConnectionError:
             print("Check socket connection with audio_recorder.py")
             sys.exit(1)
-        client_socket.settimeout(None)
+        client_socket.settimeout(20)
         utils = Utils("it", server_ip, registration_ip, port)
         # Retrieve the states of the users
         with open("/home/alice/CAIRclient/client_multiparty/dialogue_state.json") as f:
@@ -151,7 +151,11 @@ class Speak:
         # Tell the audio recorder that the client is ready to receive the user reply
         client_socket.send(dialogue_state.sentence_type.encode('utf-8'))
         print("sent")
-        xml_string = client_socket.recv(1024).decode('utf-8')
+        try:
+            xml_string = client_socket.recv(1024).decode('utf-8')
+        except socket.timeout:
+            print("timeout expired")
+            return ""
         print("received")
         if xml_string == "":
                 print("Socket error")
@@ -229,13 +233,13 @@ class Speak:
             to_say=to_say+" ^start("+staff+") \\pau=200\\"
         else:    
             if self.ve==80:
-                to_say=to_say.replace(".","\\pau=800\\").replace(",","\\pau=400\\")
+                to_say=to_say.replace("."," \\pau=800\\ ").replace(","," \\pau=400\\ ")
             elif self.ve==90:
-                to_say=to_say.replace(".","\\pau=400\\").replace(",","\\pau=200\\")
+                to_say=to_say.replace("."," \\pau=400\\ ").replace(","," \\pau=200\\ ")
             elif self.ve==95:
-                to_say=to_say.replace(".","\\pau=300\\").replace(",","\\pau=200\\")
+                to_say=to_say.replace("."," \\pau=300\\ ").replace(","," \\pau=200\\ ")
             elif self.ve==105:
-                to_say=to_say.replace(".","\\pau=200\\").replace(",","\\pau=100\\")
+                to_say=to_say.replace("."," \\pau=200\\ ").replace(","," \\pau=100\\ ")
         print(to_say)
         return to_say  
     
