@@ -17,13 +17,13 @@ traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disa
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
 wi=1
-wc=1
-wu=0
+wc=0
+wu=1
 wa=0
 wd=0
 sum=we +wi +wc + wu + wa + wd
 weights=[we/sum,wi/sum,wc/sum,wu/sum,wa/sum,wd/sum]
-gamma=0.5
+gamma=0.3
 
 # define state Foo
 class State_Init(smach.State):

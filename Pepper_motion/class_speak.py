@@ -37,36 +37,9 @@ import json
 import xml
 from flask import Flask, request, jsonify
 
-#Socket initialization
-#Location of the server
-cineca = "131.175.205.146"
-local = "130.251.13.120"
-#local="127.0.0.1"
-server_ip = cineca
-audio_recorder_ip = local
-registration_ip = local
-port = "5000"
-BASE = "http://" + cineca + ":" + port + "/CAIR_hub"
-min_registered_users_number = 1
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# Try to connect to the socket that listens to the user speech
-connection_ok=True
-client_socket.settimeout(10)
-try:
-    print("Attempting to connect to the socket...")
-    client_socket.connect((audio_recorder_ip, 9090))
-    print("socket connected")
-    client_socket.settimeout(20)
-    utils = Utils("it", server_ip, registration_ip, port)
-    # Retrieve the states of the users
-    with open("/home/alice/CAIRclient/client_multiparty/dialogue_state.json") as f:
-        dialogue_state = DialogueState(d=json.load(f))
-        print("dialoge state opened") 
-except:
-    print("Check socket connection with audio_recorder.py")
-    connection_ok=False
-       
 
+
+       
 url='http://127.0.0.1:5009/'
 headers= {'Content-Type':'application/json'}
 
@@ -96,7 +69,7 @@ class Speak:
         self.counter=0
         self.colors=["red","orange","yellow","green","blu","purple"]
         self.ins=[0,1,2,3,6,7]
-        self.traits="ic"
+        self.traits="iu"
         self.grasp=False
         self.sentences_dict={ "Extrovert":sentence_generation_extroverted,
                               "Disagreeable":sentence_generation_disagreeable,
@@ -149,7 +122,37 @@ class Speak:
         self.gaze(False,False)
 
 
-    def dialogue(self):    
+    def dialogue(self):  
+        #Socket initialization
+        #Location of the server
+        cineca = "131.175.205.146"
+        local = "130.251.13.120"
+        #local="127.0.0.1"
+        server_ip = cineca
+        audio_recorder_ip = local
+        registration_ip = local
+        port = "5000"
+        BASE = "http://" + cineca + ":" + port + "/CAIR_hub"
+        min_registered_users_number = 1
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # Try to connect to the socket that listens to the user speech
+        
+        client_socket.settimeout(10) 
+        try:
+            print("Attempting to connect to the socket...")
+            client_socket.connect((audio_recorder_ip, 9090))
+            print("socket connected")
+            client_socket.settimeout(20)
+            utils = Utils("it", server_ip, registration_ip, port)
+            # Retrieve the states of the users
+            with open("/home/alice/CAIRclient/client_multiparty/dialogue_state.json") as f:
+                dialogue_state = DialogueState(d=json.load(f))
+                print("dialoge state opened") 
+        except:
+            print("Check socket connection with audio_recorder.py")
+            connection_ok=False 
+            client_socket.close()
+            return ""
         try:
             client_socket.send(dialogue_state.sentence_type.encode('utf-8'))
             print("sent")
@@ -158,10 +161,12 @@ class Speak:
                 xml_string = client_socket.recv(1024).decode('utf-8')
             except socket.timeout:
                 print("timeout expired")
+                client_socket.close()
                 return ""
             print("received")
             if xml_string == "":
                     print("Socket error")
+                    client_socket.close()
                     return ""
 
             # Do not proceed until the xml string is complete and all tags are closed
@@ -185,6 +190,7 @@ class Speak:
             print(sentence)
             return sentence
         except:
+            client_socket.close()
             return ""
     
     def add_gestures(self,to_say):
@@ -347,25 +353,24 @@ class Speak:
         to_say=self.add_gestures(to_say)
         anim_speech_service.say(to_say)
         thread.join()
-        if connection_ok==True:
-            for i in range(2):
-                print("before getting audio")
-                reply=self.dialogue()
-                way_1=ways[random.randint(0,len(ways)-1)]
-                way_2=ways[random.randint(0,len(ways)-1)]
-                print("after getting audio")
-                print(reply)
-                if reply=="":
-                    break
-                s2=sentences[1].replace("+",topic).replace("*",reply).replace("way_1",way_1).replace("way_2",way_2)
-                data["sentence"]=s2
-                resp=requests.put(url+'sentence_generation', json=data, headers=headers)
-                to_say=eval(resp.text)["response"]
-                thread = threading.Thread(target=self.task)
-                thread.start()
-                to_say=self.add_gestures(to_say)
-                anim_speech_service.say(to_say)
-                thread.join()
+        for i in range(2):
+            print("before getting audio")
+            reply=self.dialogue()
+            way_1=ways[random.randint(0,len(ways)-1)]
+            way_2=ways[random.randint(0,len(ways)-1)]
+            print("after getting audio")
+            print(reply)
+            if reply=="":
+                break
+            s2=sentences[1].replace("+",topic).replace("*",reply).replace("way_1",way_1).replace("way_2",way_2)
+            data["sentence"]=s2
+            resp=requests.put(url+'sentence_generation', json=data, headers=headers)
+            to_say=eval(resp.text)["response"]
+            thread = threading.Thread(target=self.task)
+            thread.start()
+            to_say=self.add_gestures(to_say)
+            anim_speech_service.say(to_say)
+            thread.join()
         thread = threading.Thread(target=self.task)
         thread.start()
         time.sleep(3)

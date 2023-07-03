@@ -64,9 +64,10 @@ class Move:
             "late":[0,0,0,s_r]
         }
         self.actual_location=coordinate[self.action]
-        if self.actual_location!=self.prev_location:
-             nav(self.session,0,0,3.14,vel,distance)
-        self.prev_location=self.actual_location
+        if self.actual_location=="r1" or self.actual_location=="r2":
+           if self.actual_location!=self.prev_location:
+               nav(self.session,0,0,3.14,vel,distance)
+           self.prev_location=self.actual_location
         if coordinate[self.action]=="r1":
             start_motion(self.session, "r1",vel,distance)
         elif coordinate[self.action]=="r2":
