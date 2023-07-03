@@ -65,6 +65,7 @@ def nav(session,x,y,yaw,vel,prox):
         print("Command:",result0[2]+yaw-result1[2])
         #desired pos - displacement done 
         res=mv.moveTo(0,0,result0[2]+yaw-result1[2],[["MaxVelXY",vel]])
+        print(res)
         time.sleep(1)
     mv.setOrthogonalSecurityDistance(0.05)#0.3
     mv.setTangentialSecurityDistance(0.05)
@@ -138,12 +139,15 @@ def start_motion(session, final_location, vel ,prox):
        nav(session,0,0,3.14, vel ,prox)
        success,x_a_p,y_a_p,yaw_a_p,id=localize(session)
        print(success,x_a_p,y_a_p,yaw_a_p,id)
+   """
    if y_a_p>1:
        nav(session,x_a_p-prox,0.2,0, vel ,prox)
    elif y_a_p<-1:
        nav(session,x_a_p-prox,-0.2,0, vel ,prox)
    else:
        nav(session,x_a_p-prox,0,0, vel,prox)
+   """
+   nav(session,x_a_p-prox,0.4,0, vel,prox)
    if id==24:
        cmd_yaw=yaw_a_p 
    else:

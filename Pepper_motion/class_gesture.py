@@ -41,7 +41,7 @@ class Gesture:
                         "Stand/Gestures/IDontKnow_1",]
         
     def gesture(self, action,params):
-        self.action=action
+        self.action=action.split(" ")[0]
         self.parameters=params
         anim_speech_service = self.session.service("ALAnimatedSpeech") 
         animations={

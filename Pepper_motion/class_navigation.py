@@ -15,6 +15,8 @@ class Move:
         names         = "Body"
         useSensors    = False
         self.prox=0
+        self.actual_location="r1"
+        self.prev_location="r1"
         laser=session.service("ALLaser")
         laser.laserOFF() # set the security distance to zero
         #self.loc.learnHome()
@@ -61,7 +63,10 @@ class Move:
             "go_in_a_random_position":[x_r,y_r,3.14,s_r],
             "late":[0,0,0,s_r]
         }
-
+        self.actual_location=coordinate[self.action]
+        if self.actual_location!=self.prev_location:
+             nav(self.session,0,0,3.14,vel,distance)
+        self.prev_location=self.actual_location
         if coordinate[self.action]=="r1":
             start_motion(self.session, "r1",vel,distance)
         elif coordinate[self.action]=="r2":
