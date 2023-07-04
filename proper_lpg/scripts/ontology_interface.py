@@ -15,15 +15,15 @@ import time
 
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=0
-wi=1
+we=1
+wi=0
 wc=0
-wu=1
-wa=0
+wu=0
+wa=1
 wd=0
 sum=we +wi +wc + wu + wa + wd
 weights=[we/sum,wi/sum,wc/sum,wu/sum,wa/sum,wd/sum]
-gamma=0.3
+gamma=0.5
 
 # define state Foo
 class State_Init(smach.State):
