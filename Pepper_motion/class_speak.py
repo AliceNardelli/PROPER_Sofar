@@ -40,7 +40,7 @@ from flask import Flask, request, jsonify
 #Socket initialization
 #Location of the server
 cineca = "131.175.205.146"
-local = "130.251.13.120"
+local = "130.251.13.145"
 #local="127.0.0.1"
 server_ip = cineca
 audio_recorder_ip = local
@@ -56,7 +56,7 @@ try:
     print("Attempting to connect to the socket...")
     client_socket.connect((audio_recorder_ip, 9090))
     print("socket connected")
-    client_socket.settimeout(10)
+    client_socket.settimeout(15)
     utils = Utils("it", server_ip, registration_ip, port)
     # Retrieve the states of the users
     with open("/home/alice/CAIRclient/client_multiparty/dialogue_state.json") as f:
@@ -98,7 +98,7 @@ class Speak:
         self.counter=0
         self.colors=["red","orange","yellow","green","blu","purple"]
         self.ins=[0,1,2,3,6,7]
-        self.traits="ea"
+        self.traits="id"
         self.grasp=False
         self.sentences_dict={ "Extrovert":sentence_generation_extroverted,
                               "Disagreeable":sentence_generation_disagreeable,
@@ -151,39 +151,7 @@ class Speak:
         self.gaze(False,False)
 
 
-    def dialogue(self): 
-        """ 
-        #Socket initialization
-        #Location of the server
-        cineca = "131.175.205.146"
-        local = "130.251.13.120"
-        #local="127.0.0.1"
-        server_ip = cineca
-        audio_recorder_ip = local
-        registration_ip = local
-        port = "5000"
-        BASE = "http://" + cineca + ":" + port + "/CAIR_hub"
-        min_registered_users_number = 1
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # Try to connect to the socket that listens to the user speech
-        
-        client_socket.settimeout(10) 
-        try:
-            print("Attempting to connect to the socket...")
-            client_socket.connect((audio_recorder_ip, 9090))
-            print("socket connected")
-            client_socket.settimeout(20)
-            utils = Utils("it", server_ip, registration_ip, port)
-            # Retrieve the states of the users
-            with open("/home/alice/CAIRclient/client_multiparty/dialogue_state.json") as f:
-                dialogue_state = DialogueState(d=json.load(f))
-                print("dialoge state opened") 
-        except:
-            print("Check socket connection with audio_recorder.py")
-            connection_ok=False 
-            client_socket.close()
-            return ""
-        """
+    def dialogue(self):   
         try:
             client_socket.send(dialogue_state.sentence_type.encode('utf-8'))
             print("sent")
@@ -203,17 +171,18 @@ class Speak:
             # Do not proceed until the xml string is complete and all tags are closed
             proceed = False
             while not proceed:
-                    try:
-                        tree=ET.ElementTree(ET.fromstring(xml_string))
-                        proceed = True
-                    except UnicodeEncodeError:
-                        xml_string=str(xml_string).encode('utf-8')
-                        tree=ET.ElementTree(ET.fromstring(xml_string))
-                        proceed = True
-                    except xml.etree.ElementTree.ParseError:
-                        # If the xml is not complete, read again from the socket
-                        print("The XML is not complete.")
-                        xml_string = xml_string + client_socket.recv(1024).decode('utf-8')
+                try:
+                    tree=ET.ElementTree(ET.fromstring(xml_string))
+                    sentence = str(tree.findall('profile_id')[0].text)
+                    proceed = True
+                except UnicodeEncodeError:
+                    sentence=xml_string.split(">")[2].replace("<speaking_time","")
+                    sentence=str(sentence.encode("utf-8"))
+                    proceed = True
+                except xml.etree.ElementTree.ParseError:
+                    # If the xml is not complete, read again from the socket
+                    print("The XML is not complete.")
+                    xml_string = xml_string + client_socket.recv(1024).decode('utf-8')
             try:
                 sentence = str(tree.findall('profile_id')[0].text)
             except:
@@ -632,12 +601,13 @@ class Speak:
         #set all the autonomous capability to disabled
         self.gaze(False,False)
         #If the gaze is mutual enable tracking
+        """
         if self.parameters["gaze"]=="mutual":
             tracker=self.session.service("ALTracker")
             tracker.track("Face")
         else:
             print("no tracking")
-
+        """
         tts = self.session.service("ALTextToSpeech")
         speak_move_service = self.session.service("ALSpeakingMovement")
         tts.setLanguage("Italian") 
@@ -658,9 +628,10 @@ class Speak:
         #executing the behavior
         self.executing(anim_speech_service)
         #stop tracking
+        """
         if self.parameters["gaze"]=="mutual":
             tracker.stopTracker()
-
+        """
     def speak(self,action,personality,params):  
         print(action,personality)        
         self.action=action.split(" ")[0]
