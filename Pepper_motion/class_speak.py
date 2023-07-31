@@ -18,6 +18,8 @@ from ea import *
 from dc import *
 from du import *
 from ac import *
+from ed_v import *
+from ia_v import *
 import random
 import requests
 
@@ -103,12 +105,14 @@ class Speak:
         self.sentences_dict={ "Extrovert":sentence_generation_extroverted,
                               "Disagreeable":sentence_generation_disagreeable,
                               "ed":sentence_generation_ed,
+                              "ed_v":sentence_generation_ed_v,
                               "ic":sentence_generation_ic,
                               "au":sentence_generation_au,
                               "id":sentence_generation_id,
                               "eu":sentence_generation_eu,
                               "iu":sentence_generation_iu,
                               "ia":sentence_generation_ia,
+                              "ia_v":sentence_generation_ia_v,
                               "ec":sentence_generation_ec,
                               "ea":sentence_generation_ea,
                               "dc":sentence_generation_dc,
@@ -119,12 +123,14 @@ class Speak:
             "Extrovert":behaviors_e,
             "Disagreeable":behaviors_d,
             "ed":behaviors_ed,
+            "ed_v":behaviors_ed_v,
             "ic":behaviors_ic,
             "au":behaviors_au,
             "id":behaviors_id,
             "eu":behaviors_eu,
             "iu":behaviors_iu,
             "ia":behaviors_ia,
+            "ia_v":behaviors_ia_v,
             "ec":behaviors_ec,
             "ea":behaviors_ea,
             "dc":behaviors_dc,
