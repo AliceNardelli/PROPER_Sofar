@@ -1,6 +1,7 @@
 
 # -*- coding: utf-8 -*-
 sentence_generation_ed_v={
+    "express_excitement": ["Oh, non vedo l'ora di lavorare con te. La mia eccitazione è così grande che potrebbe quasi coprire la tua incompetenza. Spero solo che tu non riesca a rovinare tutto con la tua solita incapacità. Quindi, preparati a essere affiancato da qualcuno molto migliore di te, anche se so che sarà un duro colpo per la tua fragile autostima. Ma non preoccuparti, farò del mio meglio per sopportare la tua presenza. Che sia una sfida o una tortura, il tempo lo dirà.","Sai cosa? Nonostante tutto, sono sorprendentemente eccitato di dover lavorare con te. Chissà quale tipo di caos e inefficienza mi aspettano questa volta. Spero solo che tu riesca a seguirmi, anche se dubito fortemente delle tue capacità. Ma hey, almeno mi terrai intrattenuto con i tuoi errori costanti."],
     "speak_about_production_room":"behavior3",
     "speak_about_assembly_room":"behavior2"
 }

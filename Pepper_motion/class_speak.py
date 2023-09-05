@@ -97,10 +97,10 @@ class Speak:
         self.touched=False
         self.m=self.session.service("ALMotion")
         self.topics=["Cibo","Sport","Vacanze","Tempo libero","Musica","Religione"]
-        self.counter=0
+        self.counter=0 #change0
         self.colors=["red","orange","yellow","green","blu","purple"]
         self.ins=[0,1,2,3,6,7]
-        self.traits="id"
+        self.traits="du"
         self.grasp=False
         self.sentences_dict={ "Extrovert":sentence_generation_extroverted,
                               "Disagreeable":sentence_generation_disagreeable,
@@ -445,11 +445,17 @@ class Speak:
                 self.give_take_object_touch(1,0) 
             elif "d" in self.traits:#rude
                 rnd=random.randint(0,2)
+                
+                #self.give_take_object(0) 
+                #self.throw_object()
+                #chang1
+               
                 if rnd==0:
                     self.give_take_object(0) 
                     self.throw_object()
                 else:
                     self.give_take_object(1)
+                
             else:
                 rnd=random.randint(0,2)
                 if rnd==0:
@@ -473,12 +479,17 @@ class Speak:
             if "a" in self.traits: #gently
                 self.give_take_object_tablet(1,0) 
             elif "d" in self.traits:#rude
+                #self.give_take_object(0) 
+                #self.throw_object()
+                #change2
+                
                 rnd=random.randint(0,2)
                 if rnd==0:
                     self.give_take_object(0) 
                     self.throw_object()
                 else:
                     self.give_take_object(1)
+                
                 tabletService = self.session.service("ALTabletService")
                 tabletService.hideImage()
             else:

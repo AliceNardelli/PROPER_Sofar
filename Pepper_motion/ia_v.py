@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 sentence_generation_ia_v={
     "speak_about_production_room":"behavior3",
-    "speak_about_assembly_room":"behavior2"
+    "speak_about_assembly_room":"behavior2",
+    "say_to_not_matter_if_an_error_occur":["Non preoccuparti se commetti degli errori, succede ogni tanto. Sono qui per aiutarti e capisco completamente. Non esitare a chiedere ulteriori informazioni o chiarimenti."]
 }
 
 behavior3_ia_v=["Ciao, con grande infelicità mi presento come Pepper.",
