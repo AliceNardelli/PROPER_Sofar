@@ -19,7 +19,7 @@ def ss(data):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default="130.251.13.149",
+    parser.add_argument("--ip", type=str, default="130.251.13.139",
                         help="Robot IP address. On robot or Local Naoqi: use '127.0.0.1'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")
@@ -62,7 +62,6 @@ if __name__ == '__main__':
         "params":mmap
     }
     gg(data)
-
     
     # IA 
     actions=["speak_about_assembly_room","say_to_not_matter_if_an_error_occur","go_not_crowded_area"]
