@@ -4,22 +4,6 @@ from head_movement import *
 import time 
 import threading
 from animations import *
-from extrovert import *
-from disagreeable import *
-from ed import *
-from ic import *
-from au import *
-from id import *
-from eu import *
-from iu import *
-from ia import *
-from ec import *
-from ea import *
-from dc import *
-from du import *
-from ac import *
-from ed_v import *
-from ia_v import *
 import random
 import requests
 
