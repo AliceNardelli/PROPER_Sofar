@@ -1,0 +1,15 @@
+
+; Version LPG-td-1.4
+; Seed 72795906
+; Command line: ./lpg++ -o domain_prova.pddl -f init_problem.pddl -n 1 -force_neighbour_insertion -inst_with_contraddicting_objects 
+; Problem init_problem.pddl
+; Time 0.00
+; Search time 0.00
+; Parsing time 0.00
+; Mutex time 0.00
+; MetricValue 2.00
+
+0.0002:   (AVOID_TOUCH) [5.0000]
+5.0007:   (FEELINGS) [5.0000]
+
+

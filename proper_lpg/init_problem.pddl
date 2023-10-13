@@ -1,40 +1,33 @@
 (define (problem p) (:domain PROPER_navigation)
 (:objects
-	r1 - room
-	r2 - room
-    r3 - room
+
 )
 (:init
-        (assembly_room r1)
-        (not_presented r1) 
-        (production_room r2)
-        (not_presented r2)
-        (start_room r3)
-        (at r3)
-        (=(max_no_blocks)5)
-        (=(no_blocks)0)
         (human_present) 
-        (empty_robot)
-        (=(baseline)5)
         (=(dur)0)
         (=(extroversion_coefficient) 0.0)
         (=(desired_interaction) 5)
         (=(interaction_level) 10) 
+        (intro)
         (computed_e)  
-        (=(conscientious_coefficient)0.0)
+        (=(conscientious_coefficient)0.1)
         (=(desired_scrupulousness)5)
         (=(scrupulousness_level)10)
+        (consc)
         (computed_c)  
-        (=(agreeableness_coefficient)0.0)
+        (=(agreeableness_coefficient)0.1)
         (=(desired_agreeableness)5)
         (=(agreeableness_level)10)
-        (computed_a) 
-        (can_move)    
+        (disagree)
+        (computed_a)  
+        (greetings) 
+        (touched)
 )
 
 (:goal  
     (and 
-       (finished)
+       (feelings)
+       (touch_reacted)
     )
 )
 
