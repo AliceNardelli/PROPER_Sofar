@@ -6,7 +6,7 @@
 )
 
 (:functions
-	(dur)
+	    (dur)
         (extroversion_coefficient)
         (desired_interaction)
         (interaction_level)
@@ -16,15 +16,13 @@
         (agreeableness_coefficient)
         (desired_agreeableness)
         (agreeableness_level) 
-        (react)
-
 )
 
 (:predicates 
-	(human_present)
-	(greetings)
-	(feelings)
-	(extro)
+	    (human_present)
+	    (greetings)
+	    (feelings)
+	    (extro)
         (intro)
         (computed_e)
         (consc)
@@ -109,84 +107,7 @@
 )
 
 
-(:event NO_REACT_SAD_EMOTION
-        :precondition
-                (and
-                   (sad_emotion)
-                   (or (>(extroversion_coefficient)0)(>(conscientious_coefficient)0)(and (disagree)(>(agreeableness_coefficient)0)))
-                   (or (not(agree))(<=(agreeableness_coefficient)0))
-                )
-
-        :effect
-                (and    
-		   (sad_emotion_r)
-                  
-                )
-)
-
-(:event REACT_SAD_EMOTION_NEG
-        :precondition
-                (and
-                   (sad_emotion)
-                   (agree)
-                   (>(agreeableness_coefficient)0)
-                )
-
-        :effect
-                (and    
-		   (sad_emotion_r)	
-                   (decrease (agreeableness_level)(*(agreeableness_coefficient)(react)))
-                )
-)
-
-(:event NO_REACT_ANGER_EMOTION
-        :precondition
-                (and
-                   (anger_emotion)
-                   (or (>(extroversion_coefficient)0)(and (unsc)(>(conscientious_coefficient)0)))
-                   (or (not(agree))(<=(agreeableness_coefficient)0))
-                   (or (not(disagree))(<=(agreeableness_coefficient)0))
-                   (or (not(consc))(<=(conscientious_coefficient)0))
-                )
-
-        :effect
-                (and    
-		   (anger_emotion_r)	
-                )
-)
-
-(:event REACT_ANGER_EMOTION_POS
-        :precondition
-                (and
-                   (anger_emotion)
-                   (disagree)
-                   (>(agreeableness_coefficient)0)
-                )
-
-        :effect
-                (and    
-		   (anger_emotion_r)	
-                   (increase (agreeableness_level)(*(agreeableness_coefficient)(react)))
-                )
-)
-
-(:event REACT_ANGER_EMOTION_NEG
-        :precondition
-                (and
-                   (anger_emotion)
-                   (or  (and (consc) (>(conscientious_coefficient)0)) (and (agree)(>(agreeableness_coefficient)0)))
-                )
-
-        :effect
-                (and    
-		   (anger_emotion_r)	
-                   (decrease (agreeableness_level)(*(agreeableness_coefficient)(react)))
-                   (decrease (scrupulousness_level)(*(conscientious_coefficient)(react)))
-                )
-)
-
-
-(:event NO_REACT_HAPPY_EMOTION
+(:action NO_REACT_HAPPY_EMOTION
         :precondition
                 (and
                    (happy_emotion)
@@ -197,12 +118,12 @@
                 )
 
         :effect
-                (and    
-		   (at start (happy_emotion_r))	
+                (and   
+		            (happy_emotion_r)
                 )
 )
 
-(:event REACT_HAPPY_EMOTION_NEG
+(:action REACT_HAPPY_EMOTION_NEG
         :precondition
                 (and
                    (happy_emotion)
@@ -212,14 +133,15 @@
 
         :effect
                 (and    
-		   (happy_emotion_r)	
+		           (happy_emotion_r)	
                    (decrease (agreeableness_level)(*(agreeableness_coefficient)(react)))
+                   (when (extro)(increase (interaction_level)(*(extroversion_coefficient)(react))))
                 )
 )
 
 
 
-(:event REACT_HAPPY_EMOTION_AGREE
+(:action REACT_HAPPY_EMOTION_AGREE
         :precondition
                 (and
                    (happy_emotion)
@@ -229,13 +151,13 @@
 
         :effect
                 (and    
-		   (happy_emotion_r)	
+		           (happy_emotion_r)	
                    (increase (agreeableness_level)(*(agreeableness_coefficient)(react)))
                 )
 )
 
 
-(:event REACT_HAPPY_EMOTION_EXTRO
+(:action REACT_HAPPY_EMOTION_EXTRO
         :precondition
                 (and
                    (happy_emotion)
@@ -247,101 +169,6 @@
                 (and    
 		   (happy_emotion_r)	
                    (increase (interaction_level)(*(extroversion_coefficient)(react)))
-                )
-)
-
-
-
-(:event NO_REACT_NEUTRAL_EMOTION
-        :precondition
-                (and
-                   (neutral_emotion)
-                   (<=(extroversion_coefficient)0)
-                )
-
-        :effect
-                (and    
-		   (neutral_emotion_r)	
-                )
-)
-
-(:event REACT_NEUTRAL_EMOTION_POS
-        :precondition
-                (and
-                   (neutral_emotion)
-                   (intro)
-                   (>(extroversion_coefficient)0)
-                )
-
-        :effect
-                (and                    	
-			(increase (interaction_level)3)
-		        (neutral_emotion_r)	
-                )
-)
-
-(:event REACT_NEUTRAL_EMOTION_NEG
-        :precondition
-                (and
-                   (neutral_emotion)
-                   (extro)
-                   (>(extroversion_coefficient)0)
-                   
-                )
-
-        :effect
-                (and                
-			(decrease (interaction_level)3)
-		        (neutral_emotion_r)	
-                )
-)
-
-(:event action NO_REACT_TOUCH
-        :precondition
-                (and
-                   (touched)
-                   (>(conscientious_coefficient)0)
-                   (<=(extroversion_coefficient)0)
-                   (<=(agreeableness_coefficient)0)
-                )
-
-        :effect
-                (and    
-			(touch_reacted)	
-                )
-)
-
-(:event APPROACH_TOUCH
-        :precondition
-                (and
-                   (touched)
-                   (or  (and (extro) (>(extroversion_coefficient)0)) (and (agree)(>(agreeableness_coefficient)0)))
-                )
-
-        :effect
-                (and   
-                	
-			(increase (interaction_level)(*(extroversion_coefficient)(react)))
-			(increase (agreeableness_level)(*(agreeableness_coefficient)(react)))
-			(touch_reacted)
-                )
-)
-
-
-(:event AVOID_TOUCH
-        :precondition
-                (and
-                   (touched)
-                   (or  (and (intro)(>(extroversion_coefficient)0)) (and (disagree)(>(agreeableness_coefficient)0)))
-                )
-
-        :effect
-                (and    
-                	
-			(at end (decrease (interaction_level)(*(extroversion_coefficient)(react))))
-			(at end (decrease (agreeableness_level)(*(agreeableness_coefficient)(react))))
-			(at end (touch_reacted))
-			
                 )
 )
 
