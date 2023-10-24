@@ -135,7 +135,7 @@
                 (and    
 		           (happy_emotion_r)	
                    (decrease (agreeableness_level)(*(agreeableness_coefficient)(react)))
-                   (when (extro)(increase (interaction_level)(*(extroversion_coefficient)(react))))
+                   (if (extro)(increase (interaction_level)(*(extroversion_coefficient)(react))))
                 )
 )
 

@@ -109,7 +109,7 @@
 )
 
 
-(:event NO_REACT_SAD_EMOTION
+(:action NO_REACT_SAD_EMOTION
         :precondition
                 (and
                    (sad_emotion)
@@ -124,7 +124,7 @@
                 )
 )
 
-(:event REACT_SAD_EMOTION_NEG
+(:action REACT_SAD_EMOTION_NEG
         :precondition
                 (and
                    (sad_emotion)
@@ -139,7 +139,7 @@
                 )
 )
 
-(:event NO_REACT_ANGER_EMOTION
+(:action NO_REACT_ANGER_EMOTION
         :precondition
                 (and
                    (anger_emotion)
@@ -155,7 +155,7 @@
                 )
 )
 
-(:event REACT_ANGER_EMOTION_POS
+(:action REACT_ANGER_EMOTION_POS
         :precondition
                 (and
                    (anger_emotion)
@@ -170,7 +170,7 @@
                 )
 )
 
-(:event REACT_ANGER_EMOTION_NEG
+(:action REACT_ANGER_EMOTION_NEG
         :precondition
                 (and
                    (anger_emotion)
@@ -186,7 +186,7 @@
 )
 
 
-(:event NO_REACT_HAPPY_EMOTION
+(:action NO_REACT_HAPPY_EMOTION
         :precondition
                 (and
                    (happy_emotion)
@@ -198,11 +198,11 @@
 
         :effect
                 (and    
-		   (at start (happy_emotion_r))	
+		   (happy_emotion_r)	
                 )
 )
 
-(:event REACT_HAPPY_EMOTION_NEG
+(:action REACT_HAPPY_EMOTION_NEG
         :precondition
                 (and
                    (happy_emotion)
@@ -219,7 +219,7 @@
 
 
 
-(:event REACT_HAPPY_EMOTION_AGREE
+(:action REACT_HAPPY_EMOTION_AGREE
         :precondition
                 (and
                    (happy_emotion)
@@ -235,7 +235,7 @@
 )
 
 
-(:event REACT_HAPPY_EMOTION_EXTRO
+(:action REACT_HAPPY_EMOTION_EXTRO
         :precondition
                 (and
                    (happy_emotion)
@@ -252,7 +252,7 @@
 
 
 
-(:event NO_REACT_NEUTRAL_EMOTION
+(:action NO_REACT_NEUTRAL_EMOTION
         :precondition
                 (and
                    (neutral_emotion)
@@ -265,7 +265,7 @@
                 )
 )
 
-(:event REACT_NEUTRAL_EMOTION_POS
+(:action REACT_NEUTRAL_EMOTION_POS
         :precondition
                 (and
                    (neutral_emotion)
@@ -280,7 +280,7 @@
                 )
 )
 
-(:event REACT_NEUTRAL_EMOTION_NEG
+(:action REACT_NEUTRAL_EMOTION_NEG
         :precondition
                 (and
                    (neutral_emotion)
@@ -296,7 +296,7 @@
                 )
 )
 
-(:event action NO_REACT_TOUCH
+(:action NO_REACT_TOUCH
         :precondition
                 (and
                    (touched)
@@ -311,7 +311,7 @@
                 )
 )
 
-(:event APPROACH_TOUCH
+(:action APPROACH_TOUCH
         :precondition
                 (and
                    (touched)
@@ -328,7 +328,7 @@
 )
 
 
-(:event AVOID_TOUCH
+(:action AVOID_TOUCH
         :precondition
                 (and
                    (touched)
@@ -338,9 +338,9 @@
         :effect
                 (and    
                 	
-			(at end (decrease (interaction_level)(*(extroversion_coefficient)(react))))
-			(at end (decrease (agreeableness_level)(*(agreeableness_coefficient)(react))))
-			(at end (touch_reacted))
+			(decrease (interaction_level)(*(extroversion_coefficient)(react)))
+			(decrease (agreeableness_level)(*(agreeableness_coefficient)(react)))
+			(touch_reacted)
 			
                 )
 )

@@ -17,7 +17,12 @@ with onto:
         pass
     class Parameters(Thing):
         pass
-    AllDisjoint([Predicates,Functions,Actions,Types,Objects,Parameters])
+    class Goals(Thing):
+        pass
+
+    AllDisjoint([Predicates,Functions,Actions,Types,Objects,Parameters,Goals])
+
+
     class has_effect_predicates(ObjectProperty):
         domain    = [Actions]
         range     = [Predicates]
@@ -105,6 +110,16 @@ parameters_objects={}
 objects_objects={}
 new_params=[]
 objects=[]
+goals=[]
+goals_objects={}
+
+def add_predicate(new_pred):
+    predicates.append(new_pred)
+    predicates_objects[new_pred].is_grounded=True
+
+def add_goal(g):
+    goals.append(g)
+    goals_objects[g]=Goals(g)
 
 def populate_ontology(domain):     
     if os.path.isfile(domain):
@@ -310,8 +325,27 @@ def read_the_problem(problem_path):
             if (":init" in p):
                 t=True
 
+
+    #initialize goals
+    t=False
+    for p in raw_problem:
+            if t==True:
+                o_t=p.replace("\n","").replace(")","").replace("\t","").replace(" ","").replace("(","").split("-")
+                print(o_t)
+                if o_t[0] != "":
+                    goals.append(o_t[0])
+            if (":goal" in p):
+                t=True
+    #add objects and associated types
+    c=0
+    for t in goals:
+        goals_objects[t]=Goals(t)
+        c+=1
+
 def saving():
     onto.save()
+
+
 #run the planner
 def planning(command,domain_path):
     #plan the first time and get the list of action
@@ -326,7 +360,7 @@ def planning(command,domain_path):
     except:
         print("exrrorrr")
     
-    
+   
 def read_plan(output_path):
     if os.path.isfile(output_path):
         with open(output_path, "r") as plan_file:
@@ -452,7 +486,7 @@ def update_problem(plan_path):
     c_end_2=c
     domain_file.close()
     start_file=raw_problem_copy[c_init_1:c_init_2]
-    end_file=raw_problem_copy[c_end_1:c_end_2]
+    end_file=[]
     init_file=[]
 
     for i in Predicates.instances():
@@ -474,6 +508,14 @@ def update_problem(plan_path):
         new_line="      (=("+key+")"+str(i.has_value)+")\n"
         init_file.append(new_line)
 
+    end_file.append(")\n")
+    end_file.append("(:goal (and\n")
+    for i in Goals.instances():
+        key = list(filter(lambda x: predicates_objects[x] == i, predicates_objects))[0]
+        new_line="      (" +key+")\n"
+        end_file.append(new_line)
+
+    end_file.append(")))") 
     new_pb=start_file+init_file+end_file
     output_path=plan_path
     with open(output_path, "w") as pb_file:
