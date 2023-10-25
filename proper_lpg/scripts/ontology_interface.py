@@ -157,6 +157,7 @@ class ExAction(smach.State):
                 aa,rew=choose_action(pi)
                 rospy.loginfo('Action executed: '+ac+ " action chosen: "+ aa)
                 #exec
+                time.sleep(10)
                 #take the new perception
                 pn=perception #to understand if needed to check new perception
                 #update weights
@@ -164,7 +165,7 @@ class ExAction(smach.State):
                 change_raward("reward_a",rr)
             else:
                 rospy.loginfo('Action executed: '+ac)
-            
+                time.sleep(10)
             ac=userdata.executing_actions.pop(0)
             userdata.action=ac
             userdata.updated_actions=userdata.executing_actions
@@ -184,16 +185,20 @@ class CheckPerc(smach.State):
             print("No new perception")
             if userdata.state=="exec":
                 print("action fail, need replanning")
+                time.sleep(5)
                 return "outcome9"
             else:
                 if userdata.exec_actions==[]:
                     print("task finished")
+                    time.sleep(5)
                     return "outcome8"
                 else:
                     print("executing next action")
+                    time.sleep(5)
                     return "outcome7"
         else:
-            print("new perception")
+            print("new perception  ", perception)
+            time.sleep(5)
             touched=perception_predicate_map[perception]["touch"]
             emotion=perception_predicate_map[perception]["emotion"]
             goals=perception_predicate_map[perception]["goals"]
@@ -249,7 +254,7 @@ class Finish(smach.State):
 def main():
     rospy.init_node('smach_example_state_machine')
     # Create a SMACH state machine
-    rospy.Subscriber("chatter", String, callback)
+    rospy.Subscriber("perception", String, callback)
     try:
         sm = smach.StateMachine(outcomes=['outcome12'])
         sm.userdata.path_domain='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/domain_prova.pddl'
