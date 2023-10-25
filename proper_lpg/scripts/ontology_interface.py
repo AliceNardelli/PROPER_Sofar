@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from proper_lpg.load_ontology import *
+from proper_lpg.extract_agree import *
 from proper_lpg.srv import ExecAction, ExecActionRequest
 import roslib
 import rospy
@@ -13,16 +14,17 @@ import rospy
 from std_msgs.msg import String
 import time
 
+#define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=1
+wi=0
 wc=0
 wu=0
-wa=0
-wd=1
-sum=we +wi +wc + wu + wa + wd
-weights=[we/sum,wi/sum,wc/sum,wu/sum,wa/sum,wd/sum]
+wa=1
+wd=0
+sum_weights=we +wi +wc + wu + wa + wd
+weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
 gamma=0.3
 
 # define state Foo
@@ -41,34 +43,34 @@ class State_Init(smach.State):
             
                 if "extroversion_coefficient" in line:
                     if we!=0:
-                        l="        (= (extroversion_coefficient) "+str(gamma*(we/sum)) +")\n"
+                        l="        (= (extroversion_coefficient) "+str(gamma*(we/sum_weights)) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[0]+"\n"
                         secondfile.write(p)
                     else:
-                        l="        (= (extroversion_coefficient) "+str(gamma*(wi/sum)) +")\n"
+                        l="        (= (extroversion_coefficient) "+str(gamma*(wi/sum_weights)) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[1]+"\n"
                         secondfile.write(p)
                 elif "conscientious_coefficient" in line:
                     if wc!=0:
-                        l="        (= (conscientious_coefficient) "+str(gamma*(wc/sum)) +")\n"
+                        l="        (= (conscientious_coefficient) "+str(gamma*(wc/sum_weights)) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[2]+"\n"
                         secondfile.write(p)
                     else:
-                        l="        (= (conscientious_coefficient) "+str(gamma*(wu/sum)) +")\n"
+                        l="        (= (conscientious_coefficient) "+str(gamma*(wu/sum_weights)) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[3]+"\n"
                         secondfile.write(p)
                 elif "agreeableness_coefficient" in line:
                     if wa!=0:
-                        l="        (= (agreeableness_coefficient) "+str(gamma*(wa/sum)) +")\n"
+                        l="        (= (agreeableness_coefficient) "+str(gamma*(wa/sum_weights)) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[4]+"\n"
                         secondfile.write(p)
                     else:
-                        l="        (= (agreeableness_coefficient) "+str(gamma*(wd/sum)) +")\n"
+                        l="        (= (agreeableness_coefficient) "+str(gamma*(wd/sum_weights)) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[5]+"\n"
                         secondfile.write(p)
@@ -101,14 +103,9 @@ class Planning(smach.State):
         while return_code!=0:
             return_code=planning(userdata.command,userdata.planning_folder)  
             print(return_code)
-        sub_init=rospy.Subscriber("start", String, self.callback) 
-        while not self.start:
-            print("waiting for msg")  
-            time.sleep(1)
         print("start experiment")
         return 'outcome2'
-        
-        
+    
 
 class GetActions(smach.State):
     def __init__(self):
@@ -136,25 +133,41 @@ class ExAction(smach.State):
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
         print(ac +"--------------"+personality)
-        rospy.wait_for_service('action_dispatcher_srv')
-        try:
-            action_dispatcher_srv = rospy.ServiceProxy('action_dispatcher_srv', ExecAction)
-            msg=ExecActionRequest()
-            msg.action=ac.lower()
-            msg.personality=personality
-            resp = action_dispatcher_srv(msg)
-            if resp.success==False:
-              rospy.loginfo('Action Failed')
-              return "outcome4"
+        success=random.randint(0,10)
+        if success==0:
+            print("action fail")
+            return "outcome4"
+        else:
+            if "ACTION" in ac:
+                #take the perception
+                pi="NT_N"
+                #extract the action
+                aa,rew=choose_action(pi)
+                rospy.loginfo('Action executed: '+ac+ " action chosen: "+ aa)
+                #exec
+                #take the new perception
+                pn="NT_H"
+                #update weights
+                rr=update_weights(aa,pi,pn) #qui in ogni caso avrò una new perception
+                change_raward("reward_a",rr)
             else:
-                ac=userdata.executing_actions.pop(0)
                 rospy.loginfo('Action executed: '+ac)
-                userdata.action=ac
-                userdata.updated_actions=userdata.executing_actions
-                return 'outcome5'
-        except rospy.ServiceException as e:
-            print("Service call failed: %s"%e)
-
+            
+            ac=userdata.executing_actions.pop(0)
+            userdata.action=ac
+            userdata.updated_actions=userdata.executing_actions
+            return "outcome5"
+        
+class CheckPerc(smach.State):
+    def __init__(self):
+        smach.State.__init__(self, 
+                             outcomes=['outcome7'],
+                             input_keys=[],)
+        
+    def execute(self, userdata):
+        rospy.loginfo('check perception')
+        
+        return 'outcome7'
         
 class WriteProblem(smach.State):
     def __init__(self):
@@ -170,17 +183,15 @@ class WriteProblem(smach.State):
 class UpdateOntology(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome6','outcome7'],
-                             input_keys=['action','executing_actions'],)
+                             outcomes=['outcome6'],
+                             input_keys=['action'],)
         
     def execute(self, userdata):
         rospy.loginfo('Update_ontology')
         print(userdata.action)
         update_ontology(userdata.action)
-        if userdata.executing_actions==[]:
-                rospy.loginfo('All action executed')
-                return "outcome6"
-        return 'outcome7'
+        initialize_reward()
+        return 'outcome6'
 
 class Finish(smach.State):
     def __init__(self):
@@ -198,10 +209,10 @@ def main():
     # Create a SMACH state machine
     try:
         sm = smach.StateMachine(outcomes=['outcome8'])
-        sm.userdata.path_domain='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/pepper_domain4.pddl'
+        sm.userdata.path_domain='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/domain_prova.pddl'
         sm.userdata.path_problem='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/prova_problem.pddl'
         sm.userdata.path_init_problem='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/init_problem.pddl'
-        sm.userdata.command_start='./lpg++ -o pepper_domain4.pddl -f prova_problem.pddl -n 1 -force_neighbour_insertion -inst_with_contraddicting_objects'
+        sm.userdata.command_start='./lpg++ -o domain_prova.pddl -f prova_problem.pddl -n 1 -force_neighbour_insertion -inst_with_contraddicting_objects'
         sm.userdata.folder ='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/'
         sm.userdata.path_plan ='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/plan_prova_problem.pddl_1.SOL'
         sm.userdata.actions =[]
@@ -227,12 +238,20 @@ def main():
                                             })
             
             smach.StateMachine.add('EXEC', ExAction(), 
-                                transitions={'outcome4':'WRITE_PLAN',
+                                transitions={'outcome4':'CHECK_PERC',
                                             'outcome5':'UPDATE_ONTOLOGY',
                                             },
                                 remapping={'executing_actions':'actions',
                                         'updated_actions':'actions',
                                         'action':"a" 
+                                        })
+            
+            smach.StateMachine.add('CHECK_PERC', CheckPerc(), 
+                                transitions={'outcome7':'EXEC',
+                                            'outcome8':'FINISH',
+                                            'outcome9':'WRITE_PLAN',
+                                            },
+                                remapping={
                                         })
             
             smach.StateMachine.add('WRITE_PLAN', WriteProblem(), 
@@ -241,12 +260,11 @@ def main():
                                             })
             
             smach.StateMachine.add('UPDATE_ONTOLOGY', UpdateOntology(), 
-                        transitions={'outcome7':'EXEC',
-                                    'outcome6': 'FINISH'},
+                        transitions={'outcome6':'CHECK_PERC',
+                                    },
                         remapping={'action':'a',
-                                    'executing_actions':'actions'
                                 })
-            
+
             smach.StateMachine.add('FINISH', Finish(), 
                         transitions={'outcome7':'outcome8'},
                         )

@@ -17,10 +17,8 @@ with onto:
         pass
     class Parameters(Thing):
         pass
-    class Goals(Thing):
-        pass
 
-    AllDisjoint([Predicates,Functions,Actions,Types,Objects,Parameters,Goals])
+    AllDisjoint([Predicates,Functions,Actions,Types,Objects,Parameters])
 
 
     class has_effect_predicates(ObjectProperty):
@@ -85,6 +83,10 @@ with onto:
         domain =[Predicates]
         range = [bool]
 
+    class is_goal(DataProperty, FunctionalProperty): #functional means that each one has a single value
+        domain =[Predicates]
+        range = [bool]
+
     class has_operator(DataProperty): #is not a functional, each predicate can have more than one operator
         #domain =[Predicates]
         range = [str]
@@ -111,15 +113,26 @@ objects_objects={}
 new_params=[]
 objects=[]
 goals=[]
-goals_objects={}
+
+def change_raward(func,r):
+    function_objects[func].has_value=r
+
+def initialize_reward():
+    function_objects["reward_a"].has_value=5
+    function_objects["reward_e"].has_value=5
+    function_objects["reward_c"].has_value=5
 
 def add_predicate(new_pred):
-    predicates.append(new_pred)
+    #mi serve per aggiungere delle percezioni
     predicates_objects[new_pred].is_grounded=True
 
+def remove_predicate(new_pred):
+    #mi serve per rimuovere i goal e le percezioni
+    predicates_objects[new_pred].is_grounded=False
+
 def add_goal(g):
-    goals.append(g)
-    goals_objects[g]=Goals(g)
+    predicates_objects[g].is_goal=True
+
 
 def populate_ontology(domain):     
     if os.path.isfile(domain):
@@ -339,7 +352,7 @@ def read_the_problem(problem_path):
     #add objects and associated types
     c=0
     for t in goals:
-        goals_objects[t]=Goals(t)
+        predicates_objects[t].is_goal=True
         c+=1
 
 def saving():
@@ -428,6 +441,7 @@ def update_ontology(a):
             ops=f.has_operator
             key = list(filter(lambda x: function_objects[x] == f, function_objects))[0]
             #per ogni predicato prendo tutte le operazioni di quel predicato
+            print(ops)
             for o in ops:
                 o=o.replace("\n","").replace("\t","").split(" ")
                 while 1:
@@ -447,7 +461,10 @@ def update_ontology(a):
                             v2=function_objects[o[5]].has_value
                             f.has_value=actual_value + v1*v2
                         else:
-                            f.has_value=actual_value + int(o[3])
+                            try:
+                                f.has_value=actual_value + float(o[3])
+                            except:
+                                f.has_value=actual_value + function_objects[o[3]].has_value
                     elif o[1]=="decrease":
                         actual_value=f.has_value
                         if o[3]=="*":
@@ -460,10 +477,14 @@ def update_ontology(a):
                                 v2=function_objects[o[5]].has_value
                                 f.has_value=actual_value - v1*v2
                         else:
-                            f.has_value=actual_value - int(o[3])
+                            try:
+                                f.has_value=actual_value - float(o[3])
+                            except:
+                                f.has_value=actual_value - function_objects[o[3]].has_value
                     else:
                         print("NO OPERATION FOUND")
                     print(f,ac,f.has_value)
+
 
 def update_problem(plan_path):
     if os.path.isfile(plan_path):
@@ -510,10 +531,11 @@ def update_problem(plan_path):
 
     end_file.append(")\n")
     end_file.append("(:goal (and\n")
-    for i in Goals.instances():
-        key = list(filter(lambda x: predicates_objects[x] == i, predicates_objects))[0]
-        new_line="      (" +key+")\n"
-        end_file.append(new_line)
+    for i in Predicates.instances():
+        if i.is_goal==True and i.is_grounded==False:
+            key = list(filter(lambda x: predicates_objects[x] == i, predicates_objects))[0]
+            new_line="      (" +key+")\n"
+            end_file.append(new_line)
 
     end_file.append(")))") 
     new_pb=start_file+init_file+end_file

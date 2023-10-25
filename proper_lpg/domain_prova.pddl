@@ -17,7 +17,9 @@
         (desired_agreeableness)
         (agreeableness_level) 
         (react)
-
+        (reward_e)
+        (reward_a)
+        (reward_c)      
 )
 
 (:predicates 
@@ -43,71 +45,106 @@
         (anger_emotion_r)
         (sad_emotion)
         (sad_emotion_r)
+
         
 )
 
+(:durative-action EXTRO_ACTION
+        :parameters
+               ()
+        :duration
+               (= ?duration 5)
 
-(:action EXTRO_ACTION
-    :precondition (and 
-        (extro)
-    )
-    :effect 
-        (and
-    	(increase (interaction_level)5)
-        )
+        :condition
+               (and 
+               	(at start (extro))
+                )
+        :effect
+                (and
+                        (at start (increase (interaction_level)(reward_e)))
+                        (at end (assign(reward_e)5))
+                )
 )
 
-(:action INTRO_ACTION
-    :precondition (and 
-        (intro)
-    )
-    :effect 
-        (and
-    	(increase (interaction_level)5)
-        )
+(:durative-action INTRO_ACTION
+        :parameters
+               ()
+        :duration
+               (= ?duration 5)
+
+        :condition
+               (and 
+               	(at start (intro))
+                )
+        :effect
+                (and
+                        (at start (increase (interaction_level)(reward_e)))
+                        (at end (assign(reward_e)5))                 
+                )
 )
 
-(:action CONSC_ACTION
-    :precondition (and 
-        (consc)
-    )
-    :effect 
-        (and
-    	(increase (scrupulousness_level)5)
-        )
+(:durative-action CONSC_ACTION
+        :parameters
+               ()
+        :duration
+               (= ?duration 5)
+
+        :condition
+               (and 
+               	(at start (consc))
+                )
+        :effect
+                (and
+                        (at start (increase (scrupulousness_level)(reward_c)))
+                        (at end (assign(reward_c)5))                 
+                )
 )
 
-(:action UNSC_ACTION
-    :precondition (and 
-        (consc)
-    )
-    :effect 
-        (and
-    	(increase (scrupulousness_level)5)
-        )
+
+(:durative-action UNSC_ACTION
+        :parameters
+               ()
+        :duration
+               (= ?duration 5)
+
+        :condition
+               (and 
+               	(at start (unsc))
+                )
+        :effect
+                (and
+                        (at start (increase (scrupulousness_level)(reward_c)))
+                        (at end (assign(reward_c)5))                 
+                )
 )
 
 (:action AGREE_ACTION
-    :precondition (and 
-        (agree)
-    )
-    :effect 
-        (and
-    	(increase (agreeableness_level)5)
-        )
+        :precondition
+               (and 
+               	(agree)
+                )
+        :effect
+                (and
+                        (increase (agreeableness_level)(reward_a))                                   
+                )
 )
 
+(:durative-action DISAGREE_ACTION
+        :parameters
+               ()
+        :duration
+               (= ?duration 5)
 
-(:action DISAGREE_ACTION
-    :precondition (and 
-        (disagree)
-    )
-    :effect 
-        (and
-    	(increase (agreeableness_level)5)
-        )
+        :condition
+               (and 
+               	(at start (disagree))
+                )
+        :effect
+                (and
+                        (at start (increase (agreeableness_level)(reward_a)))
+                        (at end (assign(reward_a)5))                 
+                )
 )
-
 
 (:action NO_REACT_SAD_EMOTION
         :precondition
