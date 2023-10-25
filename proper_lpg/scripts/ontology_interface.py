@@ -3,6 +3,7 @@
 
 from proper_lpg.load_ontology import *
 from proper_lpg.extract_agree import *
+from proper_lpg.perception_predicate import *
 from proper_lpg.srv import ExecAction, ExecActionRequest
 import roslib
 import rospy
@@ -13,7 +14,7 @@ import numpy as np
 import rospy
 from std_msgs.msg import String
 import time
-
+from std_msgs.msg import String
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
@@ -26,6 +27,15 @@ wd=0
 sum_weights=we +wi +wc + wu + wa + wd
 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
 gamma=0.3
+perception=""
+new_perception=False
+
+def callback(data):
+    global perception
+    global new_perception
+    perception=data.data
+    new_perception=True
+
 
 # define state Foo
 class State_Init(smach.State):
@@ -126,8 +136,9 @@ class ExAction(smach.State):
         smach.State.__init__(self, 
                              outcomes=['outcome4','outcome5'],
                              input_keys=['executing_actions'],
-                             output_keys=['updated_actions','action']) 
+                             output_keys=['updated_actions','action','state']) 
     def execute(self, userdata):
+        global perception,  new_perception
         rospy.loginfo('Executing actions')
         #num =random.randint(0, 9)
         personality=np.random.choice(traits,p=weights)
@@ -136,17 +147,18 @@ class ExAction(smach.State):
         success=random.randint(0,10)
         if success==0:
             print("action fail")
+            userdata.state="exec"
             return "outcome4"
         else:
             if "ACTION" in ac:
                 #take the perception
-                pi="NT_N"
+                pi=perception
                 #extract the action
                 aa,rew=choose_action(pi)
                 rospy.loginfo('Action executed: '+ac+ " action chosen: "+ aa)
                 #exec
                 #take the new perception
-                pn="NT_H"
+                pn=perception #to understand if needed to check new perception
                 #update weights
                 rr=update_weights(aa,pi,pn) #qui in ogni caso avrò una new perception
                 change_raward("reward_a",rr)
@@ -156,18 +168,46 @@ class ExAction(smach.State):
             ac=userdata.executing_actions.pop(0)
             userdata.action=ac
             userdata.updated_actions=userdata.executing_actions
+            userdata.state="exec"
             return "outcome5"
         
 class CheckPerc(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome7'],
-                             input_keys=[],)
+                             outcomes=['outcome7',"outcome8","outcome9"],
+                             input_keys=["state","exec_actions"])
         
     def execute(self, userdata):
+        global perception, new_perception
         rospy.loginfo('check perception')
-        
-        return 'outcome7'
+        if new_perception==False:
+            print("No new perception")
+            if userdata.state=="exec":
+                print("action fail, need replanning")
+                return "outcome9"
+            else:
+                if userdata.exec_actions==[]:
+                    print("task finished")
+                    return "outcome8"
+                else:
+                    print("executing next action")
+                    return "outcome7"
+        else:
+            print("new perception")
+            touched=perception_predicate_map[perception]["touch"]
+            emotion=perception_predicate_map[perception]["emotion"]
+            goals=perception_predicate_map[perception]["goals"]
+            if touched!="":
+                add_predicate(touched)
+            if emotion!="":
+                add_predicate(emotion)
+
+            for g in goals:
+                add_goal(g)#state that that predicate is a goal
+                remove_predicate(g) #now the goal predicate is not grounded
+            new_perception=False
+            return "outcome9"
+
         
 class WriteProblem(smach.State):
     def __init__(self):
@@ -178,18 +218,20 @@ class WriteProblem(smach.State):
     def execute(self, userdata):
         rospy.loginfo('Writing a new plan')
         update_problem(userdata.pb_path)
-        return 'outcome7'
+        return 'outcome10'
     
 class UpdateOntology(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
                              outcomes=['outcome6'],
-                             input_keys=['action'],)
+                             input_keys=['action'],
+                             output_keys=['state'])
         
     def execute(self, userdata):
         rospy.loginfo('Update_ontology')
         print(userdata.action)
         update_ontology(userdata.action)
+        userdata.state="update"
         initialize_reward()
         return 'outcome6'
 
@@ -201,14 +243,15 @@ class Finish(smach.State):
         
     def execute(self,userdata):
         rospy.loginfo('Finishhh')
-        return 'outcome7'
+        return 'outcome11'
 
 
 def main():
     rospy.init_node('smach_example_state_machine')
     # Create a SMACH state machine
+    rospy.Subscriber("chatter", String, callback)
     try:
-        sm = smach.StateMachine(outcomes=['outcome8'])
+        sm = smach.StateMachine(outcomes=['outcome12'])
         sm.userdata.path_domain='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/domain_prova.pddl'
         sm.userdata.path_problem='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/prova_problem.pddl'
         sm.userdata.path_init_problem='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/init_problem.pddl'
@@ -217,6 +260,7 @@ def main():
         sm.userdata.path_plan ='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/plan_prova_problem.pddl_1.SOL'
         sm.userdata.actions =[]
         sm.userdata.a="a"
+        sm.userdata.previous_state=""
         # Open the container
         with sm:
             # Add states to the container
@@ -243,7 +287,8 @@ def main():
                                             },
                                 remapping={'executing_actions':'actions',
                                         'updated_actions':'actions',
-                                        'action':"a" 
+                                        'action':"a" ,
+                                        "previous_state":"state"
                                         })
             
             smach.StateMachine.add('CHECK_PERC', CheckPerc(), 
@@ -252,10 +297,12 @@ def main():
                                             'outcome9':'WRITE_PLAN',
                                             },
                                 remapping={
+                                    "state":"previous_state",
+                                    "exec_actions":"actions"
                                         })
             
             smach.StateMachine.add('WRITE_PLAN', WriteProblem(), 
-                        transitions={'outcome7':'PLAN'},
+                        transitions={'outcome10':'PLAN'},
                         remapping={'pb_path':'path_problem'
                                             })
             
@@ -263,10 +310,11 @@ def main():
                         transitions={'outcome6':'CHECK_PERC',
                                     },
                         remapping={'action':'a',
+                                   "previous_state":"state"
                                 })
 
             smach.StateMachine.add('FINISH', Finish(), 
-                        transitions={'outcome7':'outcome8'},
+                        transitions={'outcome11':'outcome12'},
                         )
     
         # Create and start the introspection server for visualization

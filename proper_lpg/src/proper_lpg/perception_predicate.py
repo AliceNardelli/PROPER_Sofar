@@ -1,0 +1,10 @@
+perception_predicate_map={
+    "NT_N":{"touch":"","emotion":"neutral_emotion","goals":["neutral_emotion_r"]},
+    "NT_S":{"touch":"","emotion":"sad_emotion","goals":["sad_emotion_r"]},
+    "NT_A":{"touch":"","emotion":"angry_emotion","goals":["angry_emotion_r"]},
+    "NT_H":{"touch":"","emotion":"happy_emotion","goals":["happy_emotion_r"]},
+    "T_N":{"touch":"touched","emotion":"neutral_emotion","goals":["touched_r","neutral_emotion_r"]},
+    "T_S":{"touch":"touched","emotion":"sad_emotion","goals":["touched_r","sad_emotion_r"]},
+    "T_A":{"touch":"touched","emotion":"angry_emotion","goals":["touched_r","angry_emotion_r"]},
+    "T_H":{"touch":"touched","emotion":"happy_emotion","goals":["touched_r","happy_emotion_r"]},
+}
