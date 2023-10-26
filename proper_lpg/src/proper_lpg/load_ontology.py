@@ -344,7 +344,7 @@ def read_the_problem(problem_path):
     for p in raw_problem:
             if t==True:
                 o_t=p.replace("\n","").replace(")","").replace("\t","").replace(" ","").replace("(","").split("-")
-                print(o_t)
+                
                 if o_t[0] != "":
                     goals.append(o_t[0])
             if (":goal" in p):
@@ -368,7 +368,7 @@ def planning(command,domain_path):
     try:
         (out, err) = fd_process.communicate()
         fd_exit = fd_process.returncode
-        print(fd_exit)
+        #print(fd_exit)
         return fd_exit
     except:
         print("exrrorrr")
@@ -435,13 +435,13 @@ def update_ontology(a):
 
 
     funcs=actions_objects[ac].has_effect_function
-    print(funcs)
+    #print(funcs)
     if funcs!=[]:
         for f in funcs:
             ops=f.has_operator
             key = list(filter(lambda x: function_objects[x] == f, function_objects))[0]
             #per ogni predicato prendo tutte le operazioni di quel predicato
-            print(ops)
+            #print(ops)
             for o in ops:
                 o=o.replace("\n","").replace("\t","").split(" ")
                 while 1:
@@ -450,8 +450,8 @@ def update_ontology(a):
                     except:
                         break
                 if o[0]==ac:
-                    print(o)
-                    print(f,ac,f.has_value)
+                    #print(o)
+                    #print(f,ac,f.has_value)
                     if o[1]=="assign":
                        f.has_value=int(o[3])
                     elif o[1]=="increase":
@@ -483,7 +483,7 @@ def update_ontology(a):
                                 f.has_value=actual_value - function_objects[o[3]].has_value
                     else:
                         print("NO OPERATION FOUND")
-                    print(f,ac,f.has_value)
+                    #print(f,ac,f.has_value)
 
 
 def update_problem(plan_path):

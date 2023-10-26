@@ -49,72 +49,51 @@
         
 )
 
-(:durative-action EXTRO_ACTION
-        :parameters
-               ()
-        :duration
-               (= ?duration 5)
-
-        :condition
+(:action EXTRO_ACTION
+        :precondition
                (and 
-               	(at start (extro))
+               	(extro)
                 )
         :effect
                 (and
-                        (at start (increase (interaction_level)(reward_e)))
-                        (at end (assign(reward_e)5))
+                (increase (interaction_level)(reward_e))
                 )
 )
 
-(:durative-action INTRO_ACTION
-        :parameters
-               ()
-        :duration
-               (= ?duration 5)
+(:action INTRO_ACTION
 
-        :condition
+        :precondition
                (and 
-               	(at start (intro))
-                )
+               (intro)
+               )
         :effect
                 (and
-                        (at start (increase (interaction_level)(reward_e)))
-                        (at end (assign(reward_e)5))                 
+                     (increase (interaction_level)(reward_e))                 
                 )
 )
 
-(:durative-action CONSC_ACTION
-        :parameters
-               ()
-        :duration
-               (= ?duration 5)
-
-        :condition
+(:action CONSC_ACTION
+        :precondition
                (and 
-               	(at start (consc))
+               	(consc)
                 )
         :effect
                 (and
-                        (at start (increase (scrupulousness_level)(reward_c)))
-                        (at end (assign(reward_c)5))                 
+                       (increase (scrupulousness_level)(reward_c))
+                                        
                 )
 )
 
 
-(:durative-action UNSC_ACTION
-        :parameters
-               ()
-        :duration
-               (= ?duration 5)
-
-        :condition
+(:action UNSC_ACTION
+        :precondition
                (and 
-               	(at start (unsc))
+               	(unsc)
                 )
         :effect
                 (and
-                        (at start (increase (scrupulousness_level)(reward_c)))
-                        (at end (assign(reward_c)5))                 
+                        (increase (scrupulousness_level)(reward_c))
+                                       
                 )
 )
 
@@ -129,20 +108,15 @@
                 )
 )
 
-(:durative-action DISAGREE_ACTION
-        :parameters
-               ()
-        :duration
-               (= ?duration 5)
-
-        :condition
+(:action DISAGREE_ACTION
+        :precondition
                (and 
-               	(at start (disagree))
+               	(disagree)
                 )
         :effect
                 (and
-                        (at start (increase (agreeableness_level)(reward_a)))
-                        (at end (assign(reward_a)5))                 
+                        (increase (agreeableness_level)(reward_a))
+                                      
                 )
 )
 

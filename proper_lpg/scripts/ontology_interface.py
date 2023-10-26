@@ -129,6 +129,7 @@ class GetActions(smach.State):
         rospy.loginfo('Reading Actions to execute')
         print(userdata.plan_path)   
         userdata.executing_actions_out=read_plan(userdata.plan_path)
+        #print(userdata.executing_actions_out)
         return 'outcome3'
     
 class ExAction(smach.State):
@@ -150,9 +151,10 @@ class ExAction(smach.State):
             userdata.state="exec"
             return "outcome4"
         else:
-            if "ACTION" in ac:
+            if "AGREE_ACTION" in ac:
                 #take the perception
                 pi=perception
+                print("action", ac, "perception: ",pi)
                 #extract the action
                 aa,rew=choose_action(pi)
                 rospy.loginfo('Action executed: '+ac+ " action chosen: "+ aa)
@@ -217,7 +219,7 @@ class CheckPerc(smach.State):
 class WriteProblem(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome7'],
+                             outcomes=['outcome10'],
                              input_keys=['pb_path'],)
         
     def execute(self, userdata):
@@ -243,7 +245,7 @@ class UpdateOntology(smach.State):
 class Finish(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome7'],
+                             outcomes=['outcome11'],
                              )
         
     def execute(self,userdata):
