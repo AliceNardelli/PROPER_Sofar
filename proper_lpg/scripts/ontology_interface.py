@@ -3,6 +3,7 @@
 
 from proper_lpg.load_ontology import *
 from proper_lpg.extract_agree import *
+from proper_lpg.extract_intro import *
 from proper_lpg.perception_predicate import *
 from proper_lpg.srv import ExecAction, ExecActionRequest
 import roslib
@@ -19,14 +20,14 @@ from std_msgs.msg import String
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=0
+wi=0.5
 wc=0
 wu=0
-wa=1
+wa=0.5
 wd=0
 sum_weights=we +wi +wc + wu + wa + wd
 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
-gamma=0.3
+gamma=1
 perception=""
 new_perception=False
 
@@ -127,9 +128,10 @@ class GetActions(smach.State):
         
     def execute(self, userdata):
         rospy.loginfo('Reading Actions to execute')
-        print(userdata.plan_path)   
-        userdata.executing_actions_out=read_plan(userdata.plan_path)
-        #print(userdata.executing_actions_out)
+          
+        out_a=read_plan(userdata.plan_path)
+        userdata.executing_actions_out=out_a
+        print("out_a")
         return 'outcome3'
     
 class ExAction(smach.State):
@@ -156,15 +158,30 @@ class ExAction(smach.State):
                 pi=perception
                 print("action", ac, "perception: ",pi)
                 #extract the action
-                aa,rew=choose_action(pi)
+                aa,rew=choose_action_a(pi)
                 rospy.loginfo('Action executed: '+ac+ " action chosen: "+ aa)
                 #exec
                 time.sleep(10)
                 #take the new perception
                 pn=perception #to understand if needed to check new perception
                 #update weights
-                rr=update_weights(aa,pi,pn) #qui in ogni caso avrò una new perception
+                rr=update_weights_a(aa,pi,pn) #qui in ogni caso avrò una new perception
                 change_raward("reward_a",rr)
+
+            elif "INTRO_ACTION" in ac:
+                #take the perception
+                pi=perception
+                print("action", ac, "perception: ",pi)
+                #extract the action
+                aa,rew=choose_action_i(pi)
+                rospy.loginfo('Action executed: '+ac+ " action chosen: "+ aa)
+                #exec
+                time.sleep(10)
+                #take the new perception
+                pn=perception #to understand if needed to check new perception
+                #update weights
+                rr=update_weights_i(aa,pi,pn) #qui in ogni caso avrò una new perception
+                change_raward("reward_e",rr)
             else:
                 rospy.loginfo('Action executed: '+ac)
                 time.sleep(10)

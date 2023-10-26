@@ -73,7 +73,7 @@ agreeableness_dict={
 
 
 
-def choose_action(perception):
+def choose_action_a(perception):
     global agree_actions, agreeableness_dict
     w=[]
     for a in agree_actions:
@@ -90,7 +90,7 @@ def choose_action(perception):
 
 
 
-def update_weights(action, p_prev, p_after):
+def update_weights_a(action, p_prev, p_after):
     list_real=agreeableness_dict[p_after]["num"]
     list_expected=agreeableness_dict[p_prev]["weights"][action]["expected_outcome"]
     error=0
