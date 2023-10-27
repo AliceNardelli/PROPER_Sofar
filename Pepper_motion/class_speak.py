@@ -6,14 +6,6 @@ import threading
 from animations import *
 import random
 import requests
-"""
-from cairlib.DialogueStatistics import DialogueStatistics
-from cairlib.DialogueState import DialogueState
-from cairlib.DialogueTurn import DialogueTurn
-from cairlib.CAIRclient_utils import Utils
-import xml.etree.ElementTree as ET
-"""
-import requests
 import argparse
 import socket
 import os
@@ -23,39 +15,8 @@ import sys
 import json
 import xml
 from flask import Flask, request, jsonify
-import sentences
-"""
-#Socket initialization
-#Location of the server
-cineca = "131.175.205.146"
-local = "130.251.13.145"
-#local="127.0.0.1"
-server_ip = cineca
-audio_recorder_ip = local
-registration_ip = local
-port = "5000"
-BASE = "http://" + cineca + ":" + port + "/CAIR_hub"
-min_registered_users_number = 1
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# Try to connect to the socket that listens to the user speech
+from sentences_festival import festival_dict
 
-client_socket.settimeout(10) 
-try:
-    print("Attempting to connect to the socket...")
-    client_socket.connect((audio_recorder_ip, 9090))
-    print("socket connected")
-    client_socket.settimeout(15)
-    utils = Utils("it", server_ip, registration_ip, port)
-    # Retrieve the states of the users
-    with open("/home/alice/CAIRclient/client_multiparty/dialogue_state.json") as f:
-        dialogue_state = DialogueState(d=json.load(f))
-        print("dialoge state opened") 
-except:
-    print("Check socket connection with audio_recorder.py")
-    connection_ok=False 
-    client_socket.close()
-           
-"""
        
 url='http://127.0.0.1:5009/'
 headers= {'Content-Type':'application/json'}
@@ -88,7 +49,7 @@ class Speak:
         self.ins=[0,1,2,3,6,7]
         self.traits=""
         self.grasp=False
-        self.sentences_dict={ "s":sentence_generation,
+        self.sentences_dict={ "s":festival_dict,
                               }
         
      
@@ -230,7 +191,10 @@ class Speak:
                 to_say=" ^start("+h+") \\pau=2000\\"
                 print(to_say)
                 anim_speech_service.say(to_say) 
-                
+
+        if self.action=="s6" :
+            img="pick_yellow.png"
+            self.tablet(img)        
 
         if  type(ss)==list:
             #ask to chatgpt the sentence to say
@@ -243,29 +207,22 @@ class Speak:
             # wait for the thread to finish
             print('Waiting for the thread...')
             thread.join()
-        if ss=="s6" :
-            img="pick_yellow.png"
-            self.tablet(img)
-        if ss=="s4" or ss=="s5" or ss=="s6" or ss=="s7" or ss=="s8" or ss=="s9" or ss=="s10":
+
+        if self.action=="s4" or self.action=="s5" or self.action=="s6" or self.action=="s7" or self.action=="s8" or self.action=="s9" or self.action=="s10":
             self.give_take_object_touch(1,1)
             self.grasp_object()
-            time.sleep(5)
+            time.sleep(3)
             self.ask_pose_block(ss,anim_speech_service) 
         #TABLET IMMAGINI
 
 
-    def ask_pose_block(self,ss,anim_speech_service):
-            if "a" in self.traits: #gently
-                self.give_take_object_touch(1,0) 
-            elif "d" in self.traits:#rude
+    def ask_pose_block(self,ss,anim_speech_service): 
+            if "d" in self.traits:#rude
                 self.give_take_object(0) 
                 self.throw_object()   
             else:
-                rnd=random.randint(0,2)
-                if rnd==0:
-                    self.give_take_object(1) 
-                else:
-                    self.give_take_object_touch(1,0) 
+                self.give_take_object(1) 
+                 
 
    
     def tablet(self,im):
@@ -277,7 +234,7 @@ class Speak:
         tablet_image = image_dir + TABLET_IMG_DEFAULT
         print(tablet_image)
         sTablet.showImage(tablet_image)
-        time.sleep(10)
+        raw_input("Press Enter to continue...")
         sTablet.hideImage()
 
     def grasp_object(self):
@@ -358,13 +315,9 @@ class Speak:
         #set all the autonomous capability to disabled
         self.gaze(False,False)
         #If the gaze is mutual enable tracking
-        """
-        if self.parameters["gaze"]=="mutual":
-            tracker=self.session.service("ALTracker")
-            tracker.track("Face")
-        else:
-            print("no tracking")
-        """
+        name_led="FaceLeds"
+        leds=self.session.service("ALLeds")
+        leds.reset(name_led)
         tts = self.session.service("ALTextToSpeech")
         speak_move_service = self.session.service("ALSpeakingMovement")
         tts.setLanguage("Italian") 

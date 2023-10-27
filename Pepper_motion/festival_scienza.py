@@ -20,7 +20,7 @@ def ss(data):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default="130.251.13.139",
+    parser.add_argument("--ip", type=str, default="130.251.13.101",
                         help="Robot IP address. On robot or Local Naoqi: use '127.0.0.1'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")
@@ -51,7 +51,19 @@ if __name__ == '__main__':
     }
     s.traits="u"
     ss(data)
-
+    actions=["show_random_movement"]
+    params=[0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0,0, 0, 0, 0]
+    personality="Unscrupolous"
+    mmap =get_map(params)
+    data={
+        "action":actions[0],
+        "params":mmap,
+        "personality":personality
+    }
+    s.traits="u"
+    gg(data)
+    s.tablet("uc.png")
+    s.tablet("u.png")
     raw_input("Press Enter to continue...")
     # E
     actions=["s2"]
@@ -65,7 +77,18 @@ if __name__ == '__main__':
     }
     s.traits="e"
     ss(data)
-
+    actions=["show_excitement"]
+    params=[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1,0, 0, 0, 0]
+    personality="Extrovert"
+    mmap =get_map(params)
+    data={
+        "action":actions[0],
+        "params":mmap,
+        "personality":personality
+    }
+    gg(data)
+    s.tablet("ie.png")
+    s.tablet("e.png")
     raw_input("Press Enter to continue...")
     # C
     actions=["s3"]
@@ -79,7 +102,8 @@ if __name__ == '__main__':
     }
     s.traits="c"
     ss(data)
-
+    s.tablet("uc.png")
+    s.tablet("c.png")
     raw_input("Press Enter to continue...")
 
     #D
@@ -95,7 +119,19 @@ if __name__ == '__main__':
     }
     s.traits="d"
     ss(data)
-
+    actions=["show_disgust"]
+    params=[1., 0., 0., 1., 1., 0., 1., 1., 0., 0., 1., 0., 0., 1., 0., 1., 1.,0., 0., 0., 0.]
+    personality="Disagreeable"
+    mmap =get_map(params)
+    data={
+        "action":actions[0],
+        "params":mmap,
+        "personality":personality
+    }
+    
+    gg(data)
+    s.tablet("da.png")
+    s.tablet("d.png")
     raw_input("Press Enter to continue...")
 
     #A
@@ -111,7 +147,8 @@ if __name__ == '__main__':
     }
     s.traits="a"
     ss(data)
-
+    s.tablet("da.png")
+    s.tablet("a.png")
     raw_input("Press Enter to continue...")
 
 
@@ -127,7 +164,19 @@ if __name__ == '__main__':
     }
     s.traits="i"
     ss(data)
-
+    actions=["show_detachment"]
+    params=[1., 0., 0., 1., 0., 0., 1., 0., 0., 1., 1., 0., 0., 0., 1., 0., 1., 0., 0., 0., 0.]
+    personality="Introvert"
+    mmap =get_map(params)
+    data={
+        "action":actions[0],
+        "params":mmap,
+        "personality":personality
+    }
+    s.traits="i"
+    gg(data)
+    s.tablet("ie.png")
+    s.tablet("i.png")
     raw_input("Press Enter to continue...")
     #U
     actions=["s7"]
@@ -141,7 +190,19 @@ if __name__ == '__main__':
     }
     s.traits="u"
     ss(data)
-
+    actions=["show_random_movement"]
+    params=[0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0,0, 0, 0, 0]
+    personality="Unscrupolous"
+    mmap =get_map(params)
+    data={
+        "action":actions[0],
+        "params":mmap,
+        "personality":personality
+    }
+    s.traits="u"
+    gg(data)
+    s.tablet("uc.png")
+    s.tablet("u.png")
     raw_input("Press Enter to continue...")
     #c
     actions=["s8"]
@@ -155,7 +216,8 @@ if __name__ == '__main__':
     }
     s.traits="c"
     ss(data)
-
+    s.tablet("uc.png")
+    s.tablet("c.png")
     raw_input("Press Enter to continue...")
 
     #A
@@ -171,7 +233,8 @@ if __name__ == '__main__':
     }
     s.traits="a"
     ss(data)
-
+    s.tablet("da.png")
+    s.tablet("a.png")
     raw_input("Press Enter to continue...")
     #I
     actions=["s10"]
@@ -185,7 +248,19 @@ if __name__ == '__main__':
     }
     s.traits="i"
     ss(data)
-
+    actions=["show_detachment"]
+    params=[1., 0., 0., 1., 0., 0., 1., 0., 0., 1., 1., 0., 0., 0., 1., 0., 1., 0., 0., 0., 0.]
+    personality="Introvert"
+    mmap =get_map(params)
+    data={
+        "action":actions[0],
+        "params":mmap,
+        "personality":personality
+    }
+    s.traits="i"
+    gg(data)
+    s.tablet("ie.png")
+    s.tablet("i.png")
     raw_input("Press Enter to continue...")
     #D
 
@@ -200,7 +275,19 @@ if __name__ == '__main__':
     }
     s.traits="d"
     ss(data)
-
+    actions=["show_disgust"]
+    params=[1., 0., 0., 1., 1., 0., 1., 1., 0., 0., 1., 0., 0., 1., 0., 1., 1.,0., 0., 0., 0.]
+    personality="Disagreeable"
+    mmap =get_map(params)
+    data={
+        "action":actions[0],
+        "params":mmap,
+        "personality":personality
+    }
+    
+    gg(data)
+    s.tablet("da.png")
+    s.tablet("d.png")
     raw_input("Press Enter to continue...")
 
     # E
@@ -215,7 +302,18 @@ if __name__ == '__main__':
     }
     s.traits="e"
     ss(data)
-
+    actions=["show_excitement"]
+    params=[1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1,0, 0, 0, 0]
+    personality="Extrovert"
+    mmap =get_map(params)
+    data={
+        "action":actions[0],
+        "params":mmap,
+        "personality":personality
+    }
+    gg(data)
+    s.tablet("ie.png")
+    s.tablet("e.png")
     raw_input("Press Enter to continue...")
 
 
