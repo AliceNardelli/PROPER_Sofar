@@ -16,11 +16,12 @@ import rospy
 from std_msgs.msg import String
 import time
 from std_msgs.msg import String
+import logging
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=0.5
+wi=0
 wc=0
 wu=0
 wa=0.5
@@ -30,6 +31,19 @@ weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weig
 gamma=1
 perception=""
 new_perception=False
+
+ 
+# Create and configure logger
+logging.basicConfig(filename="newlogfile.log",
+                    format='%(asctime)s %(message)s',
+                    filemode='w')
+ 
+# Creating an object
+logger = logging.getLogger()
+ 
+# Setting the threshold of logger to DEBUG
+logger.setLevel(logging.DEBUG)
+
 
 def callback(data):
     global perception
@@ -147,6 +161,7 @@ class ExAction(smach.State):
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
         print(ac +"--------------"+personality)
+        logger.info(ac +"--------------"+personality)
         success=random.randint(0,10)
         if success==0:
             print("action fail")
@@ -161,7 +176,7 @@ class ExAction(smach.State):
                 aa,rew=choose_action_a(pi)
                 rospy.loginfo('Action executed: '+ac+ " action chosen: "+ aa)
                 #exec
-                time.sleep(10)
+                #time.sleep(10)
                 #take the new perception
                 pn=perception #to understand if needed to check new perception
                 #update weights
@@ -184,7 +199,7 @@ class ExAction(smach.State):
                 change_raward("reward_e",rr)
             else:
                 rospy.loginfo('Action executed: '+ac)
-                time.sleep(10)
+                #time.sleep(10)
             ac=userdata.executing_actions.pop(0)
             userdata.action=ac
             userdata.updated_actions=userdata.executing_actions

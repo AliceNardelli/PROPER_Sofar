@@ -15,7 +15,7 @@ import sys
 import json
 import xml
 from flask import Flask, request, jsonify
-from sentences_festival import festival_dict
+from sentences_festival import festival_dict_halloween
 
        
 url='http://127.0.0.1:5009/'
@@ -49,7 +49,7 @@ class Speak:
         self.ins=[0,1,2,3,6,7]
         self.traits=""
         self.grasp=False
-        self.sentences_dict={ "s":festival_dict,
+        self.sentences_dict={ "s":festival_dict_halloween,
                               }
         
      
@@ -191,11 +191,11 @@ class Speak:
                 to_say=" ^start("+h+") \\pau=2000\\"
                 print(to_say)
                 anim_speech_service.say(to_say) 
-
+        
         if self.action=="s6" :
-            img="pick_yellow.png"
+            img="sweet.png"
             self.tablet(img)        
-
+        
         if  type(ss)==list:
             #ask to chatgpt the sentence to say
             to_say=ss[random.randrange(len(ss))]

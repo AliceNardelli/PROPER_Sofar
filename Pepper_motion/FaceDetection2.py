@@ -150,8 +150,5 @@ def detect_emotions(image):
 
 
 if __name__ == "__main__":
-    #rospy.init_node('face_detector')
-    #s = rospy.Service('action_dispatcher_srv', ExecAction, dispatch_action)
-    print("Ready to add two ints.")
-    #rospy.spin()
+    print("Ready to add two ints.")   
     app.run(host='0.0.0.0', port=5009, debug=True)
