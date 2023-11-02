@@ -9,55 +9,55 @@ from proper_lpg.load_ontology import *
 import random
 import numpy as np
 
-agree_actions=["a1","a2","a3","a4"]
+agree_actions=["get_closer","express_happyness","express_empathy","make_peace"]
 
 
-zzz_a={"a1":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "a2":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "a3":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "a4":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
+zzz_a={"get_closer":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "express_happyness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "make_peace":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
      }
 
-zzo_a={"a1":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "a2":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "a3":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "a4":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
+zzo_a={"get_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "express_happyness":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "make_peace":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
      }
 
-zoz_a={"a1":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "a2":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "a3":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
-     "a4":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+zoz_a={"get_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "express_happyness":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
+     "make_peace":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      }
 
-zoo_a={"a1":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "a2":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "a3":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
-     "a4":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
+zoo_a={"get_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "express_happyness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
+     "make_peace":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
      }
 
-ozz_a={"a1":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
-     "a2":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "a3":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "a4":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
+ozz_a={"get_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "express_happyness":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "make_peace":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
      }
 
-ozo_a={"a1":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
-     "a2":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
-     "a3":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "a4":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
+ozo_a={"get_closer":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "express_happyness":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "make_peace":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
      }
 
-ooz_a={"a1":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "a2":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
-     "a3":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
-     "a4":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+ooz_a={"get_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "express_happyness":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
+     "make_peace":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      }
 
-ooo_a={"a1":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
-     "a2":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "a3":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "a4":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+ooo_a={"get_closer":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "express_happyness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "make_peace":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
      }
 
 agreeableness_dict={

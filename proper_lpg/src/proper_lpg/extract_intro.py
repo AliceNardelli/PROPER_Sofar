@@ -9,55 +9,55 @@ from proper_lpg.load_ontology import *
 import random
 import numpy as np
 
-intro_actions=["a1","a2","a3","a4"]
+intro_actions=["get_away","avoid_gaze","turn_on_back","not_react"]
 
 
-zzz_i={"a1":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "a2":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "a3":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "a4":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+zzz_i={"get_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "turn_on_back":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "not_react":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
-zzo_i={"a1":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "a2":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "a3":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "a4":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+zzo_i={"get_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "turn_on_back":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "not_react":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-zoz_i={"a1":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "a2":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "a3":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "a4":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+zoz_i={"get_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "turn_on_back":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "not_react":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-zoo_i={"a1":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "a2":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "a3":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
-     "a4":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
+zoo_i={"get_away":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "turn_on_back":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
+     "not_react":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
      }
 
-ozz_i={"a1":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "a2":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "a3":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "a4":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+ozz_i={"get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "avoid_gaze":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "turn_on_back":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "not_react":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      }
 
-ozo_i={"a1":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "a2":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "a3":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "a4":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
+ozo_i={"get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "turn_on_back":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "not_react":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
      }
 
-ooz_i={"a1":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "a2":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
-     "a3":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "a4":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+ooz_i={"get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "avoid_gaze":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
+     "turn_on_back":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "not_react":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-ooo_i={"a1":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "a2":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "a3":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "a4":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+ooo_i={"get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "turn_on_back":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "not_react":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      }
 
 introversion_dict={
@@ -114,3 +114,6 @@ def update_weights_i(action, p_prev, p_after):
            introversion_dict[p_prev]["weights"][action]["w2"]=np.abs(prev-0.1)
            print("AFTER", np.abs(prev-0.1))
            return prev - 0.1
+        
+
+        

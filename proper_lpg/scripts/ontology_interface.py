@@ -24,7 +24,7 @@ we=0
 wi=0
 wc=0
 wu=0
-wa=0.5
+wa=1
 wd=0
 sum_weights=we +wi +wc + wu + wa + wd
 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
@@ -135,7 +135,9 @@ class GetActions(smach.State):
           
         out_a=read_plan(userdata.plan_path)
         userdata.executing_actions_out=out_a
-        print("out_a")
+        f.write("----------------------\n")
+        f.write(out_a+ " \n")
+        f.write("----------------------\n")
         return 'outcome3'
     
 class ExAction(smach.State):
@@ -151,7 +153,7 @@ class ExAction(smach.State):
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
         print(ac +"--------------"+personality)
-        f.write(ac +"--------------"+personality+ "\n")
+        
         success=random.randint(0,10)
         if success==0:
             print("action fail")
@@ -166,12 +168,18 @@ class ExAction(smach.State):
                 aa,rew=choose_action_a(pi)
                 rospy.loginfo('Action executed: '+ac+ " action chosen: "+ aa)
                 #exec
-                #time.sleep(10)
+                time.sleep(5)
+                f.write("----------------------\n")
+                f.write("before PERCEPTION: " + pi+ "\n")
+                f.write("AGREE ACTION: " + aa +"--------------"+personality+ "\n")
                 #take the new perception
                 pn=perception #to understand if needed to check new perception
                 #update weights
                 rr=update_weights_a(aa,pi,pn) #qui in ogni caso avrò una new perception
+                f.write("after PERCEPTION: " + pn+ " reward "+ rr+ "\n")
+                f.write("before agree level: " + function_objects["agreebleness_level"]+ "\n")
                 change_raward("reward_a",rr)
+                
 
             elif "INTRO_ACTION" in ac:
                 #take the perception
@@ -179,16 +187,28 @@ class ExAction(smach.State):
                 print("action", ac, "perception: ",pi)
                 #extract the action
                 aa,rew=choose_action_i(pi)
+                time.sleep(5)
+                f.write("----------------------\n")
+                f.write("before PERCEPTION: " + pi+ "\n")
+                f.write("INTRO ACTION: " + aa +"--------------"+personality+ "\n")
                 rospy.loginfo('Action executed: '+ac+ " action chosen: "+ aa)
                 #exec
-                time.sleep(10)
+                #time.sleep(10)
                 #take the new perception
                 pn=perception #to understand if needed to check new perception
                 #update weights
                 rr=update_weights_i(aa,pi,pn) #qui in ogni caso avrò una new perception
+                f.write("after PERCEPTION: " + pn+ " reward "+ rr+ "\n")
+                f.write("before extro level: " + function_objects["interaction_level"]+ "\n")
                 change_raward("reward_e",rr)
+
             else:
+                f.write("----------------------\n")
+                f.write("STANDARD ACTION:" + ac +"--------------"+personality+ "\n")
+                f.write("before agree level: " + function_objects["agreebleness_level"]+ "\n")
+                f.write("before extro level: " + function_objects["interaction_level"]+ "\n")
                 rospy.loginfo('Action executed: '+ac)
+                time.sleep(5)
                 #time.sleep(10)
             ac=userdata.executing_actions.pop(0)
             userdata.action=ac
@@ -222,7 +242,10 @@ class CheckPerc(smach.State):
                     return "outcome7"
         else:
             print("new perception  ", perception)
-            time.sleep(5)
+            f.write("----------------------\n")
+            f.write("new perception  "+ perception +"\n")
+            f.write("----------------------\n")
+            
             touched=perception_predicate_map[perception]["touch"]
             emotion=perception_predicate_map[perception]["emotion"]
             goals=perception_predicate_map[perception]["goals"]
@@ -262,6 +285,9 @@ class UpdateOntology(smach.State):
         update_ontology(userdata.action)
         userdata.state="update"
         initialize_reward()
+        f.write("after agree level: " + function_objects["agreebleness_level"]+ "\n")
+        f.write("after extro level: " + function_objects["interaction_level"]+ "\n")
+        f.write("STANDARD ACTION:" + ac +"--------------"+personality+ "\n")
         return 'outcome6'
 
 class Finish(smach.State):
