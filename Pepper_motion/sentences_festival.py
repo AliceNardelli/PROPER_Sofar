@@ -22,7 +22,7 @@ festival_dict_halloween={
     "s3":["I miei programmatori hanno messo in disordine tutte le mie caramelle! Stasera alle otto e dieci devo essere puntuale per fare dolcetto o scherzetto. Vi chiederò di passarmene una alla volta."],
     "s4":["Passami immediatamente una caramella alla frutta, e sbrigati. Più sei veloce prima posso mangiarle tutte. Toccami la testa quando la caramella sarà nella mia mano, e poi allontanati in fretta. "],
     "s5":["Potresti gentilmente passarmi un'altra caramella? Grazie moltissimo del tuo aiuto. Per favore, toccami la testa quando avrai messo la caramella nella mia mano. "],
-    "s6":["Grazie. Toccami la testa quando hai messo la caramella nella mia mano."],
+    "s6":["passami una caramella, Grazie. Toccami la testa quando hai messo la caramella nella mia mano."],
     "s7":["Mi passeresti quel torroncino? Sono Pigro di natura e non mi piace muovermi. Ops, volevo dire caramella, ho solo caramelle. Toccami il braccio quando hai finisto, no era la testa"],
     "s8":["Prendi una caramella alla frutta, fai attenzione a prenderne una alla frutta. Toccami scrupolosamente la testa quando la caramella è posizionata nella mia mano."],
     "s9":["Spero che tu ti stia divertendo a giocare, per favore passami la caramella che ti piace di più. Mi piacerebbe se mi toccassi la testa quando avrai finito."],

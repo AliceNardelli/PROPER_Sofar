@@ -1,6 +1,6 @@
 
 ; Version LPG-td-1.4
-; Seed 99337475
+; Seed 50821592
 ; Command line: ./lpg++ -o domain_prova.pddl -f prova_problem.pddl -n 1 -force_neighbour_insertion -inst_with_contraddicting_objects 
 ; Problem prova_problem.pddl
 ; Time 0.00
@@ -9,10 +9,10 @@
 ; Mutex time 0.00
 ; MetricValue 5.00
 
-0.0002:   (GREETINGS) [5.0000]
-5.0005:   (COMPUTE_METRIC_AGREE) [0.0000]
-5.0005:   (COMPUTE_METRIC_INTRO) [0.0000]
-5.0005:   (COMPUTE_METRIC_UNSC) [0.0000]
-5.0007:   (FEELINGS) [5.0000]
+0.0003:   (APPROACH_TOUCH) [0.0000]
+0.0003:   (NO_REACT_NEUTRAL_EMOTION) [0.0000]
+0.0003:   (COMPUTE_METRIC_AGREE) [0.0000]
+0.0003:   (COMPUTE_METRIC_UNSC) [0.0000]
+0.0005:   (FEELINGS) [5.0000]
 
 

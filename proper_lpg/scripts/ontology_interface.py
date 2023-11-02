@@ -16,7 +16,7 @@ import rospy
 from std_msgs.msg import String
 import time
 from std_msgs.msg import String
-import logging
+
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
@@ -33,17 +33,7 @@ perception=""
 new_perception=False
 
  
-# Create and configure logger
-logging.basicConfig(filename="newlogfile.log",
-                    format='%(asctime)s %(message)s',
-                    filemode='w')
- 
-# Creating an object
-logger = logging.getLogger()
- 
-# Setting the threshold of logger to DEBUG
-logger.setLevel(logging.DEBUG)
-
+f = open("/home/alice/logging.txt", "a")
 
 def callback(data):
     global perception
@@ -161,7 +151,7 @@ class ExAction(smach.State):
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
         print(ac +"--------------"+personality)
-        logger.info(ac +"--------------"+personality)
+        f.write(ac +"--------------"+personality+ "\n")
         success=random.randint(0,10)
         if success==0:
             print("action fail")
@@ -281,6 +271,7 @@ class Finish(smach.State):
                              )
         
     def execute(self,userdata):
+        f.close()
         rospy.loginfo('Finishhh')
         return 'outcome11'
 

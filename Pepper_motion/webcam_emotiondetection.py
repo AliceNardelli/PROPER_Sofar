@@ -31,14 +31,8 @@ import subprocess
 import cvlib as cv
 import os
 import rospy
-from flask import Flask, request, jsonify
-from std_msgs.msg import String
+import time
 
-app = Flask(__name__)
-
-data={
-    "image":"",
-}
 folder="/home/alice/images/"
 focal_length = 1584  # Set the focal length based on your camera specifications
 avg_face_width = 14  # Set the average width of a face in centimeters
@@ -53,46 +47,6 @@ model = AutoModelForImageClassification.from_pretrained(
     #"RickyIG/emotion_face_image_classification"
 )
 
-@app.route ('/face_detector', methods = ['PUT'] )   
-def face_detector():
-    global pub
-    updated_data = request.get_json()
-    data.update(updated_data)
-    image=cv2.imread(folder+data["image"])
-    #h, w, _ = image.shape
-    #width=1000
-    #height = int(width*(h/w))
-    #image = cv2.resize(image, (width, height), interpolation=cv2.INTER_CUBIC)
-        
-    image, em, distance=detect_emotions(image)
-    if image!="":
-            # text 
-            text = "Emotion: "+ em + " Distance: "+ str(distance)
-            
-            # font 
-            font = cv2.FONT_HERSHEY_SIMPLEX 
-            
-            # org 
-            org = (00, 185) 
-            
-            # fontScale 
-            fontScale = 1
-            
-            # Red color in BGR 
-            color = (0, 0, 255) 
-            
-            # Line thickness of 2 px 
-            thickness = 2
-            
-            # Using cv2.putText() method 
-            image = cv2.putText(image, text, org, font, fontScale,  color, thickness, cv2.LINE_AA, False) 
-            cv2.imshow("Image", image)
-            pub.publish(em)
-        
-    else:
-            cv2.imshow("Image", image)
-    data["image"]="ok"
-    return jsonify(data)
 
 def measure_distance(face_width_pixels):
     return (avg_face_width * focal_length) / face_width_pixels
@@ -119,7 +73,7 @@ def detect_emotions(image):
             #cv2.putText(image, f"{distance:.2f} cm", (startX+5, startY ), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             #image = cv2.putText(image,"Distance: "+str(distance), (startX+5, startY ), cv2.FONT_HERSHEY_SIMPLEX , 1,  (0, 255, 0), 2, cv2.LINE_AA)
             print("Distance: "+str(distance))
-            #image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             inputs = extractor(images=image, return_tensors="pt")
 
             # Pass the pre-processed face through the model to
@@ -142,29 +96,62 @@ def detect_emotions(image):
             max_em=max(probabilities)
             ind=probabilities.index(max_em)
             em=id2label[ind]
-            return image, em, distance
 
+
+
+            cv2.imshow("hey", image)
+            cv2.waitKey(0)
+
+            """
+            # Map class labels to their probabilities
+            class_probabilities = {id2label[i]: prob for i,
+                                prob in enumerate(probabilities)}
+            # Define colors for each emotion
+            colors = {
+                "angry": "red",
+                #"anger": "red",
+                #"contempt":"red",
+                "disgust": "green",
+                "fear": "gray",
+                "happy": "yellow",
+                "neutral": "purple",
+                "sad": "blue",
+                "surprise": "orange"
+            }
+            palette = [colors[label] for label in class_probabilities.keys()]
+
+            # Prepare a figure with 2 subplots: one for the face image,
+            # one for the bar plot
+            fig, axs = plt.subplots(1, 2, figsize=(15, 6))
+
+            # Display the cropped face in the left subplot
+            axs[0].imshow(np.array(image))
+            axs[0].axis('off')
+
+            # Create a horizontal bar plot of the emotion probabilities in
+            # the right subplot
+            sns.barplot(ax=axs[1],
+                        y=list(class_probabilities.keys()),
+                        x=[prob * 100 for prob in class_probabilities.values()],
+                        palette=palette,
+                        orient='h')
+            axs[1].set_xlabel('Probability (%)')
+            axs[1].set_title('Emotion Probabilities')
+            axs[1].set_xlim([0, 100])  # Set x-axis limits to show percentages
+            # Show the plot
+            plt.show()
+            """
     except:
-        return "", "", 0
+        print("face not detecteds")
 
-
-
-"""
-def shutdown_server():
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
-
-
-@app.route('/shutdown', methods=['POST'])
-def shutdown():
-    shutdown_server()
-    return 'Server shutting down...'
-"""
 
 if __name__ == "__main__":
-    global pub
-    rospy.init_node('webcam_emotion_detection')
-    pub = rospy.Publisher('/emotion', String, queue_size=10)
-    app.run(host='0.0.0.0', port=5009, debug=True)
+    print("Ready to add two ints.")   
+    video = cv2.VideoCapture(2)
+    time.sleep(2.0)
+    while True:
+        ret, frame = video.read()
+        detect_emotions(frame)
+        time.sleep(3)
+    cv2.destroyAllWindows()
+    video.release()

@@ -191,11 +191,11 @@ class Speak:
                 to_say=" ^start("+h+") \\pau=2000\\"
                 print(to_say)
                 anim_speech_service.say(to_say) 
-        
+        """
         if self.action=="s6" :
             img="sweet.png"
             self.tablet(img)        
-        
+        """
         if  type(ss)==list:
             #ask to chatgpt the sentence to say
             to_say=ss[random.randrange(len(ss))]
@@ -217,11 +217,11 @@ class Speak:
 
 
     def ask_pose_block(self,ss,anim_speech_service): 
-            if "d" in self.traits:#rude
+            #if "d" in self.traits:#rude
                 self.give_take_object(0) 
                 self.throw_object()   
-            else:
-                self.give_take_object(1) 
+            #else:
+                #self.give_take_object(1) 
                  
 
    
