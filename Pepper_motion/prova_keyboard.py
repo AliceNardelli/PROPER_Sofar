@@ -108,11 +108,11 @@ def detect_emotions(image):
 if __name__ == "__main__":
     rospy.init_node('webcam_emotion_detection')
     pub = rospy.Publisher('/emotion', String, queue_size=10)
-    video = cv2.VideoCapture(0) #webcam
-    #video = cv2.VideoCapture(2) #external webcam
+    #video = cv2.VideoCapture(0) #webcam
+    video = cv2.VideoCapture(2) #external webcam
     time.sleep(2.0)
-        
-
+    window_emotion=[] 
+    size_window=5
 
     while not rospy.is_shutdown():
         ret, frame = video.read()
@@ -150,7 +150,12 @@ if __name__ == "__main__":
             # Using cv2.putText() method 
             image = cv2.putText(image, text, org, font, fontScale,  color, thickness, cv2.LINE_AA, False) 
             cv2.imshow("Image", image)
-            pub.publish(em)
+            window_emotion.append(em)
+            if len(window_emotion)>size_window:
+               last=window_emotion.pop(0)
+            e=max(set(window_emotion), key=window_emotion.count)
+            print(window_emotion,e)
+            pub.publish(e)
         else:
             cv2.imshow("Image", frame)
         

@@ -24,17 +24,15 @@
 
 (:predicates 
 	(human_present)
+        (finished)
 	(greetings)
 	(feelings)
 	(extro)
         (intro)
-        (computed_e)
         (consc)
         (unsc)
-        (computed_c)
         (agree)
         (disagree)
-        (computed_a)
         (touched)
         (touch_reacted)
         (neutral_emotion)
@@ -366,9 +364,6 @@
         :condition
                (and 
                	 (at start (human_present))
-                        (at start (computed_e))
-                        (at start (computed_c))
-                        (at start (computed_a))
                         (at start (>=(interaction_level)(desired_interaction)))
                         (at start (>=(scrupulousness_level)(desired_scrupulousness)))
                         (at start (>=(agreeableness_level)(desired_agreeableness)))
@@ -377,10 +372,10 @@
                 )
         :effect
                 (and
-                        (at end (not (computed_e)))
-                        (at end (not (computed_c)))
-                        (at end (not (computed_a)))
-                        (at end (assign (dur) 5))
+                        (at start (assign (dur) 5))
+                        (at end (decrease (interaction_level)(*(extroversion_coefficient)(dur))))
+                        (at end (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                        (at end (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur))))
                         (at end (greetings))                 
                 )
 )
@@ -395,9 +390,6 @@
         :condition
                (and 
                	 (at start (human_present))
-                        (at start (computed_e))
-                        (at start (computed_c))
-                        (at start (computed_a))
                         (at start (>=(interaction_level)(desired_interaction)))
                         (at start (>=(scrupulousness_level)(desired_scrupulousness)))
                         (at start (>=(agreeableness_level)(desired_agreeableness)))
@@ -407,90 +399,29 @@
                 )
         :effect
                 (and
-                        (at end (not (computed_e)))
-                        (at end (not (computed_c)))
-                        (at end (not (computed_a)))
-                        (at end (assign (dur) 5))
+                        (at start(assign (dur) 5))
+                        (at end (decrease (interaction_level)(*(extroversion_coefficient)(dur))))
+                        (at end (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                        (at end (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur))))
                         (at end (feelings))                 
                 )
 )
 
 
+(:action CHECK_FINISH
+        :precondition
+                (and
+                        (>=(interaction_level)(desired_interaction))
+                        (>=(scrupulousness_level)(desired_scrupulousness))
+                        (>=(agreeableness_level)(desired_agreeableness))
+                        (feelings)
+                )
 
-(:action COMPUTE_METRIC_INTRO
-    :precondition (and 
-        (not (computed_e))  
-        (intro) 
-    )
-    :effect (and
-    	(computed_e)
-        (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)10)))
-        )
+        :effect
+                (and    
+			(finished)
+			
+                )
 )
-
-
-
-(:action COMPUTE_METRIC_EXTRO
-    :precondition (and 
-        (not (computed_e))  
-        (extro)
-    )
-    :effect 
-    (and
-    	(computed_e)
-        (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
-    )
-)
-
-
-(:action COMPUTE_METRIC_UNSC
-    :precondition (and 
-         (not (computed_c))  
-         (unsc) 
-    )
-    :effect 
-           (and
-    	   (computed_c)
-           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
-           )
-)
-
-(:action COMPUTE_METRIC_CONSC
-    :precondition (and 
-        (not (computed_c))  
-        (consc) 
-    )
-    :effect 
-        (and
-    	(computed_c)
-        (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
-        )
-)
-
-
-(:action COMPUTE_METRIC_DISAGREE
-    :precondition (and 
-        (not (computed_a))  
-        (disagree)
-    )
-    :effect 
-          (and
-    	   (computed_a)
-           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-           )
-)
-
-(:action COMPUTE_METRIC_AGREE
-    :precondition (and 
-        (not (computed_a))  
-        (agree)
-    )
-    :effect 
-       (and
-    	(computed_a)
-        (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-        )
-)
-
 
 )
