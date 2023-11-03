@@ -3,7 +3,7 @@
 )
 (:init
         (human_present) 
-        (=(dur)0)
+        (=(dur)5)
         (=(react)3)
         (=(reward_e)5)
         (=(reward_a)5)
@@ -17,7 +17,8 @@
         (=(agreeableness_coefficient) 0) 
         (=(desired_agreeableness)5)
         (=(agreeableness_level)7)
-          
+        (emotion_r) 
+        (touch_reacted)  
 )
 
 (:goal (and 

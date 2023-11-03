@@ -103,14 +103,14 @@ def update_weights_a(action, p_prev, p_after):
     prev=agreeableness_dict[p_prev]["weights"][action]["w2"]
     print("PREV", prev)
     if error==0:
-        agreeableness_dict[p_prev]["weights"][action]["w2"]=np.abs(prev+0.1)
-        print("AFTER", np.abs(prev+0.1))
-        return prev + 0.1
+        agreeableness_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev+0.1),2)
+        print("AFTER", round(np.abs(prev+0.1),2))
+        return round(np.abs(prev + 0.1),2)
     else:
         if prev<0.1:
             print("AFTER", prev)
             return  prev
         else:
-           agreeableness_dict[p_prev]["weights"][action]["w2"]=np.abs(prev-0.1)
-           print("AFTER", np.abs(prev-0.1))
-           return prev - 0.1
+           agreeableness_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev - 0.1),2)
+           print("AFTER",round(np.abs(prev - 0.1),2))
+           return round(np.abs(prev - 0.1),2)

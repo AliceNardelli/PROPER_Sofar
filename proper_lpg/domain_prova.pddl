@@ -43,9 +43,15 @@
         (anger_emotion_r)
         (sad_emotion)
         (sad_emotion_r)
-
+        (emotion_r)
         
 )
+
+
+
+ 
+
+
 
 (:action EXTRO_ACTION
         :precondition
@@ -124,12 +130,14 @@
                    (sad_emotion)
                    (or (>(extroversion_coefficient)0)(>(conscientious_coefficient)0)(and (disagree)(>(agreeableness_coefficient)0)))
                    (or (not(agree))(<=(agreeableness_coefficient)0))
+                   (not (emotion_r))
+                   (not (sad_emotion_r))
                 )
 
         :effect
                 (and    
 		   (sad_emotion_r)
-                  
+                   (emotion_r)
                 )
 )
 
@@ -139,12 +147,16 @@
                    (sad_emotion)
                    (agree)
                    (>(agreeableness_coefficient)0)
+                   (not (emotion_r))
+                   (not (sad_emotion_r))
+                   
                 )
 
         :effect
                 (and    
 		   (sad_emotion_r)	
                    (decrease (agreeableness_level)(*(agreeableness_coefficient)(react)))
+                   (emotion_r)
                 )
 )
 
@@ -156,11 +168,14 @@
                    (or (not(agree))(<=(agreeableness_coefficient)0))
                    (or (not(disagree))(<=(agreeableness_coefficient)0))
                    (or (not(consc))(<=(conscientious_coefficient)0))
+                   (not (emotion_r))
+                   (not (anger_emotion_r))
                 )
 
         :effect
                 (and    
-		   (anger_emotion_r)	
+		   (anger_emotion_r)
+                   (emotion_r)	
                 )
 )
 
@@ -170,12 +185,15 @@
                    (anger_emotion)
                    (disagree)
                    (>(agreeableness_coefficient)0)
+                   (not (emotion_r))
+                   (not (anger_emotion_r))
                 )
 
         :effect
                 (and    
 		   (anger_emotion_r)	
                    (increase (agreeableness_level)(*(agreeableness_coefficient)(react)))
+                   (emotion_r)
                 )
 )
 
@@ -184,6 +202,8 @@
                 (and
                    (anger_emotion)
                    (or  (and (consc) (>(conscientious_coefficient)0)) (and (agree)(>(agreeableness_coefficient)0)))
+                   (not (emotion_r))
+                   (not (anger_emotion_r))
                 )
 
         :effect
@@ -191,6 +211,7 @@
 		   (anger_emotion_r)	
                    (decrease (agreeableness_level)(*(agreeableness_coefficient)(react)))
                    (decrease (scrupulousness_level)(*(conscientious_coefficient)(react)))
+                   (emotion_r)
                 )
 )
 
@@ -203,11 +224,14 @@
                    (or (not(agree))(<=(agreeableness_coefficient)0))
                    (or (not(disagree))(<=(agreeableness_coefficient)0))
                    (or (not(extro))(<=(extroversion_coefficient)0))
+                   (not (emotion_r))
+                   (not (happy_emotion_r))
                 )
 
         :effect
                 (and    
-		   (happy_emotion_r)	
+		   (happy_emotion_r)
+                   (emotion_r)	
                 )
 )
 
@@ -217,12 +241,15 @@
                    (happy_emotion)
                    (disagree)
                    (>(agreeableness_coefficient)0)
+                   (not (emotion_r))
+                   (not (happy_emotion_r))
                 )
 
         :effect
                 (and    
 		   (happy_emotion_r)	
                    (decrease (agreeableness_level)(*(agreeableness_coefficient)(react)))
+                   (emotion_r)
                 )
 )
 
@@ -234,12 +261,15 @@
                    (happy_emotion)
                    (agree)
                    (>(agreeableness_coefficient)0)
+                   (not (emotion_r))
+                   (not (happy_emotion_r))
                 )
 
         :effect
                 (and    
 		   (happy_emotion_r)	
                    (increase (agreeableness_level)(*(agreeableness_coefficient)(react)))
+                   (emotion_r)
                 )
 )
 
@@ -250,12 +280,15 @@
                    (happy_emotion)
                    (>(extroversion_coefficient)0)
                    (extro)
+                   (not (emotion_r))
+                   (not (happy_emotion_r))
                 )
 
         :effect
                 (and    
 		   (happy_emotion_r)	
                    (increase (interaction_level)(*(extroversion_coefficient)(react)))
+                   (emotion_r)
                 )
 )
 
@@ -266,11 +299,14 @@
                 (and
                    (neutral_emotion)
                    (<=(extroversion_coefficient)0)
+                   (not (emotion_r))
+                   (not (neutral_emotion_r))
                 )
 
         :effect
                 (and    
-		   (neutral_emotion_r)	
+		   (neutral_emotion_r)
+                   (emotion_r)	
                 )
 )
 
@@ -280,12 +316,15 @@
                    (neutral_emotion)
                    (intro)
                    (>(extroversion_coefficient)0)
+                   (not (emotion_r))
+                   (not (neutral_emotion_r))
                 )
 
         :effect
                 (and                    	
 			(increase (interaction_level)3)
-		        (neutral_emotion_r)	
+		        (neutral_emotion_r)
+                        (emotion_r)	
                 )
 )
 
@@ -295,19 +334,22 @@
                    (neutral_emotion)
                    (extro)
                    (>(extroversion_coefficient)0)
-                   
+                   (not (emotion_r))
+                   (not (neutral_emotion_r))
                 )
 
         :effect
                 (and                
 			(decrease (interaction_level)3)
-		        (neutral_emotion_r)	
+		        (neutral_emotion_r)
+                        (emotion_r)	
                 )
 )
 
 (:action NO_REACT_TOUCH
         :precondition
                 (and
+                   (not (touch_reacted))
                    (touched)
                    (>(conscientious_coefficient)0)
                    (<=(extroversion_coefficient)0)
@@ -320,34 +362,65 @@
                 )
 )
 
-(:action APPROACH_TOUCH
+(:action APPROACH_TOUCH_AGREE
         :precondition
                 (and
+                   (not (touch_reacted))
                    (touched)
-                   (or  (and (extro) (>(extroversion_coefficient)0)) (and (agree)(>(agreeableness_coefficient)0)))
+                   (and (agree)(>(agreeableness_coefficient)0))
+                )
+
+        :effect
+                (and   
+			(increase (agreeableness_level)(*(agreeableness_coefficient)(react)))
+			(touch_reacted)
+                )
+)
+
+(:action APPROACH_TOUCH_EXTRO
+        :precondition
+                (and
+                   (not (touch_reacted))
+                   (touched)
+                   (and (extro) (>(extroversion_coefficient)0)) 
                 )
 
         :effect
                 (and   
                 	
 			(increase (interaction_level)(*(extroversion_coefficient)(react)))
-			(increase (agreeableness_level)(*(agreeableness_coefficient)(react)))
 			(touch_reacted)
                 )
 )
 
-
-(:action AVOID_TOUCH
+(:action AVOID_TOUCH_INTRO
         :precondition
                 (and
+                   (not (touch_reacted))
                    (touched)
-                   (or  (and (intro)(>(extroversion_coefficient)0)) (and (disagree)(>(agreeableness_coefficient)0)))
+                   (and (intro)(>(extroversion_coefficient)0)) 
                 )
 
         :effect
                 (and    
                 	
 			(decrease (interaction_level)(*(extroversion_coefficient)(react)))
+			(touch_reacted)
+			
+                )
+)
+
+
+(:action AVOID_TOUCH_DISAGREE
+        :precondition
+                (and
+                   (not (touch_reacted))
+                   (touched)
+                   (and (disagree)(>(agreeableness_coefficient)0))
+                )
+
+        :effect
+                (and    
 			(decrease (agreeableness_level)(*(agreeableness_coefficient)(react)))
 			(touch_reacted)
 			
@@ -363,7 +436,9 @@
 
         :condition
                (and 
-               	 (at start (human_present))
+                        (at start (touch_reacted))
+                        (at start (emotion_r))
+               	        (at start (human_present))
                         (at start (>=(interaction_level)(desired_interaction)))
                         (at start (>=(scrupulousness_level)(desired_scrupulousness)))
                         (at start (>=(agreeableness_level)(desired_agreeableness)))
@@ -389,7 +464,9 @@
 
         :condition
                (and 
-               	 (at start (human_present))
+                        (at start (touch_reacted))
+                        (at start (emotion_r))
+               	        (at start (human_present))
                         (at start (>=(interaction_level)(desired_interaction)))
                         (at start (>=(scrupulousness_level)(desired_scrupulousness)))
                         (at start (>=(agreeableness_level)(desired_agreeableness)))
@@ -411,6 +488,8 @@
 (:action CHECK_FINISH
         :precondition
                 (and
+                        (touch_reacted)
+                        (emotion_r)
                         (>=(interaction_level)(desired_interaction))
                         (>=(scrupulousness_level)(desired_scrupulousness))
                         (>=(agreeableness_level)(desired_agreeableness))

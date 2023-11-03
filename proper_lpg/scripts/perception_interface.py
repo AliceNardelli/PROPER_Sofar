@@ -40,8 +40,9 @@ def publish_perception():
         new_emotion=False
     else:
         if t=="T_":
-            tot=t+"N"
+            tot=t
             perc_pub.publish(tot)
+        
         
    
 

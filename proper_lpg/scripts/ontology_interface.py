@@ -15,16 +15,16 @@ import numpy as np
 import rospy
 from std_msgs.msg import String
 import time
-from std_msgs.msg import String
+
 
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=0
+wi=0.5
 wc=0
 wu=0
-wa=1
+wa=0.5
 wd=0
 sum_weights=we +wi +wc + wu + wa + wd
 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
@@ -38,11 +38,12 @@ f = open("/home/alice/logging.txt", "a")
 def callback(data):
     global perception
     global new_perception
-    perception=data.data
-    new_perception=True
+    if perception!=data.data:
+        perception=data.data
+        new_perception=True
 
 
-# define state Foo
+# define state Fooprev_
 class State_Init(smach.State):
    def __init__(self):
       smach.State.__init__(self, 
@@ -162,13 +163,16 @@ class ExAction(smach.State):
             return "outcome4"
         else:
             if "AGREE_ACTION" in ac:
-                #take the perception
-                pi=perception
+                #take the perception,
+                if perception=="T_":
+                    pi="T_N"
+                else:
+                   pi=perception
                 print("action", ac, "perception: ",pi)
                 #extract the action
                 aa,rew=choose_action_a(pi)
-                rospy.loginfo('Action executed: '+ac+ " action chosen: "+ aa)
-                #exec
+                rospy.loginfo(" action chosen: "+ aa)
+                
                 time.sleep(5)
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
@@ -176,19 +180,26 @@ class ExAction(smach.State):
                 string_log="AGREE ACTION: " + aa +"--------------"+personality+ "\n"
                 f.write(string_log)
                 #take the new perception
-                pn=perception #to understand if needed to check new perception
+                if perception=="T_":
+                    pn="T_N"
+                else:
+                   pn=perception #to understand if needed to check new perception
                 #update weights
                 rr=update_weights_a(aa,pi,pn) #qui in ogni caso avrò una new perception
-                string_log="after PERCEPTION: " + pn+ " reward "+ rr+ "\n"
+                string_log="after PERCEPTION: " + pn+ " reward "+ str(rr)+ "\n"
                 f.write(string_log)
                 string_log="before agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
                 f.write(string_log)
-                change_raward("reward_a",rr)
+                print(rr)
+                change_raward("reward_a",float(rr))
                 
 
             elif "INTRO_ACTION" in ac:
                 #take the perception
-                pi=perception
+                if perception=="T_":
+                    pi="T_N"
+                else:
+                   pi=perception
                 print("action", ac, "perception: ",pi)
                 #extract the action
                 aa,rew=choose_action_i(pi)
@@ -198,18 +209,21 @@ class ExAction(smach.State):
                 f.write(string_log)
                 string_log="INTRO ACTION: " + aa +"--------------"+personality+ "\n"
                 f.write(string_log)
-                rospy.loginfo('Action executed: '+ac+ " action chosen: "+ aa)
+                rospy.loginfo(" action chosen: "+ aa)
                 #exec
                 #time.sleep(10)
                 #take the new perception
-                pn=perception #to understand if needed to check new perception
+                if perception=="T_":
+                    pn="T_N"
+                else:
+                   pn=perception #to understand if needed to check new perception
                 #update weights
                 rr=update_weights_i(aa,pi,pn) #qui in ogni caso avrò una new perception
-                string_log="after PERCEPTION: " + pn+ " reward "+ rr+ "\n"
+                string_log="after PERCEPTION: " + pn+ " reward "+ str(rr) + "\n"
                 f.write(string_log)
                 string_log="before extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
                 f.write(string_log)
-                change_raward("reward_e",rr)
+                change_raward("reward_e",float(rr))
 
             else:
                 f.write("----------------------\n")
@@ -232,24 +246,27 @@ class CheckPerc(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
                              outcomes=['outcome7',"outcome8","outcome9"],
-                             input_keys=["state","exec_actions"])
+                             input_keys=["state","exec_actions","action"])
         
     def execute(self, userdata):
         global perception, new_perception
         rospy.loginfo('check perception')
+
+        if "ACTION" in userdata.action:
+            return "outcome9" #if I have done a trait specific action I need to replan
+
         if new_perception==False:
             print("No new perception")
             if userdata.state=="exec":
-                print("action fail, need replanning")
-                time.sleep(5)
+                f.write("Action fail need replanning\n")
                 return "outcome9"
             else:
                 if userdata.exec_actions==[]:
-                    print("task finished")
-                    time.sleep(5)
+                    f.write("task finished \n")
+                    
                     return "outcome8"
                 else:
-                    print("executing next action")
+                    f.write("executing next action \n")
                     time.sleep(5)
                     return "outcome7"
         else:
@@ -264,6 +281,7 @@ class CheckPerc(smach.State):
             goals=perception_predicate_map[perception]["goals"]
             if touched!="":
                 add_predicate(touched)
+
             if emotion!="":
                 add_predicate(emotion)
 
@@ -290,11 +308,11 @@ class UpdateOntology(smach.State):
         smach.State.__init__(self, 
                              outcomes=['outcome6'],
                              input_keys=['action'],
-                             output_keys=['state'])
+                             output_keys=['state',"out_action"])
         
     def execute(self, userdata):
         rospy.loginfo('Update_ontology')
-        print(userdata.action)
+        acc=userdata.action
         update_ontology(userdata.action)
         userdata.state="update"
         initialize_reward()
@@ -302,7 +320,7 @@ class UpdateOntology(smach.State):
         f.write(string_log)
         string_log="after extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
         f.write(string_log)
-        
+        userdata.out_action=acc
         return 'outcome6'
 
 class Finish(smach.State):
@@ -368,6 +386,7 @@ def main():
                                             'outcome9':'WRITE_PLAN',
                                             },
                                 remapping={
+                                    "action":"a",
                                     "state":"previous_state",
                                     "exec_actions":"actions"
                                         })
@@ -381,7 +400,8 @@ def main():
                         transitions={'outcome6':'CHECK_PERC',
                                     },
                         remapping={'action':'a',
-                                   "previous_state":"state"
+                                   "previous_state":"state",
+                                   "a":"out_action"
                                 })
 
             smach.StateMachine.add('FINISH', Finish(), 
