@@ -4,6 +4,10 @@
 from proper_lpg.load_ontology import *
 from proper_lpg.extract_agree import *
 from proper_lpg.extract_intro import *
+from proper_lpg.extract_disagree import *
+from proper_lpg.extract_extro import *
+from proper_lpg.extract_consc import *
+from proper_lpg.extract_unscr import *
 from proper_lpg.perception_predicate import *
 from proper_lpg.srv import ExecAction, ExecActionRequest
 import roslib
@@ -192,6 +196,37 @@ class ExAction(smach.State):
                 f.write(string_log)
                 print(rr)
                 change_raward("reward_a",float(rr))
+            
+            if "DISAGREE_ACTION" in ac:
+                #take the perception,
+                if perception=="T_":
+                    pi="T_N"
+                else:
+                   pi=perception
+                print("action", ac, "perception: ",pi)
+                #extract the action
+                aa,rew=choose_action_d(pi)
+                rospy.loginfo(" action chosen: "+ aa)
+                
+                time.sleep(5)
+                f.write("----------------------\n")
+                string_log="before PERCEPTION: " + pi+ "\n"
+                f.write(string_log)
+                string_log="AGREE ACTION: " + aa +"--------------"+personality+ "\n"
+                f.write(string_log)
+                #take the new perception
+                if perception=="T_":
+                    pn="T_N"
+                else:
+                   pn=perception #to understand if needed to check new perception
+                #update weights
+                rr=update_weights_d(aa,pi,pn) #qui in ogni caso avrò una new perception
+                string_log="after PERCEPTION: " + pn+ " reward "+ str(rr)+ "\n"
+                f.write(string_log)
+                string_log="before agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
+                f.write(string_log)
+                print(rr)
+                change_raward("reward_a",float(rr))
                 
 
             elif "INTRO_ACTION" in ac:
@@ -224,6 +259,80 @@ class ExAction(smach.State):
                 string_log="before extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
                 f.write(string_log)
                 change_raward("reward_e",float(rr))
+
+            elif "EXTRO_ACTION" in ac:
+                #take the perception
+                if perception=="T_":
+                    pi="T_N"
+                else:
+                   pi=perception
+                print("action", ac, "perception: ",pi)
+                #extract the action
+                aa,rew=choose_action_e(pi)
+                time.sleep(5)
+                f.write("----------------------\n")
+                string_log="before PERCEPTION: " + pi+ "\n"
+                f.write(string_log)
+                string_log="INTRO ACTION: " + aa +"--------------"+personality+ "\n"
+                f.write(string_log)
+                rospy.loginfo(" action chosen: "+ aa)
+                #exec
+                #time.sleep(10)
+                #take the new perception
+                if perception=="T_":
+                    pn="T_N"
+                else:
+                   pn=perception #to understand if needed to check new perception
+                #update weights
+                rr=update_weights_e(aa,pi,pn) #qui in ogni caso avrò una new perception
+                string_log="after PERCEPTION: " + pn+ " reward "+ str(rr) + "\n"
+                f.write(string_log)
+                string_log="before extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
+                f.write(string_log)
+                change_raward("reward_e",float(rr))
+
+            elif "CONSC_ACTION" in ac:
+                #take the perception
+                if perception=="T_":
+                    pi="T_N"
+                else:
+                   pi=perception
+                print("action", ac, "perception: ",pi)
+                #extract the action
+                aa,rew=choose_action_c(pi)
+                time.sleep(5)
+                f.write("----------------------\n")
+                string_log="before PERCEPTION: " + pi+ "\n"
+                f.write(string_log)
+                string_log="INTRO ACTION: " + aa +"--------------"+personality+ "\n"
+                f.write(string_log)
+                rospy.loginfo(" action chosen: "+ aa)
+                #exec
+            
+                string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
+                f.write(string_log)
+                change_raward("reward_c",float(rew))
+
+            elif "UNSC_ACTION" in ac:
+                #take the perception
+                if perception=="T_":
+                    pi="T_N"
+                else:
+                   pi=perception
+                print("action", ac, "perception: ",pi)
+                #extract the action
+                aa,rew=choose_action_u(pi)
+                time.sleep(5)
+                f.write("----------------------\n")
+                string_log="before PERCEPTION: " + pi+ "\n"
+                f.write(string_log)
+                string_log="INTRO ACTION: " + aa +"--------------"+personality+ "\n"
+                f.write(string_log)
+                rospy.loginfo(" action chosen: "+ aa)
+                #exec
+                string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
+                f.write(string_log)
+                change_raward("reward_c",float(rew))
 
             else:
                 f.write("----------------------\n")
@@ -319,6 +428,8 @@ class UpdateOntology(smach.State):
         string_log="after agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
         f.write(string_log)
         string_log="after extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
+        f.write(string_log)
+        string_log="after extro level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
         f.write(string_log)
         userdata.out_action=acc
         return 'outcome6'
