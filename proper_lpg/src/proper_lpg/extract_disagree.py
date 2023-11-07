@@ -69,40 +69,33 @@ def choose_action_d(perception):
     global disagree_actions, disagreeableness_dict
     w=[]
     for a in disagree_actions:
-        print(a)
+        
         weight=disagreeableness_dict[perception]["weights"][a]["w1"]+disagreeableness_dict[perception]["weights"][a]["w2"]
         w.append(float(weight))
-
-    print(w[0])
-    #print(w, sum(w),type(sum(w)))
     norm = [i/sum(w) for i in w]
-    print(norm)
     to_execute=np.random.choice(disagree_actions,p=norm) #trovare il modo di normalizzare i pesi
     return to_execute, disagreeableness_dict[perception]["weights"][to_execute]["w1"]+disagreeableness_dict[perception]["weights"][to_execute]["w2"]
 
 
 
-def update_weights_a(action, p_prev, p_after):
+def update_weights_d(action, p_prev, p_after):
     list_real=disagreeableness_dict[p_after]["num"]
     list_expected=disagreeableness_dict[p_prev]["weights"][action]["expected_outcome"]
     error=0
-    #accumulate the error between the perception and the expected one
+    
     for i in range(0,len(list_real)):
         error+=(np.abs(list_real[i]-list_expected[i]))
     #normalize the error
     error=error/len(list_real)
     #update the weights
     prev=disagreeableness_dict[p_prev]["weights"][action]["w2"]
-    print("PREV", prev)
+    
     if error==0:
-        disagreeableness_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev+0.1),2)
-        print("AFTER", round(np.abs(prev+0.1),2))
-        return round(np.abs(prev + 0.1),2)
+        disagreeableness_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev+0.5),2)
+        return round(np.abs(prev + 0.5),2)+disagreeableness_dict[p_prev]["weights"][action]["w1"]
     else:
         if prev<0.1:
-            print("AFTER", prev)
-            return  prev
+            return  prev +disagreeableness_dict[p_prev]["weights"][action]["w1"]
         else:
-           disagreeableness_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev - 0.1),2)
-           print("AFTER",round(np.abs(prev - 0.1),2))
-           return round(np.abs(prev - 0.1),2)
+           disagreeableness_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev - 0.5),2)
+           return round(np.abs(prev - 0.5),2)+disagreeableness_dict[p_prev]["weights"][action]["w1"]

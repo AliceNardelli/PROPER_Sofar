@@ -77,14 +77,12 @@ def choose_action_i(perception):
     global intro_actions, introversion_dict
     w=[]
     for a in intro_actions:
-        print(a)
+
         weight=introversion_dict[perception]["weights"][a]["w1"]+introversion_dict[perception]["weights"][a]["w2"]
         w.append(float(weight))
 
-    print(w[0])
-    #print(w, sum(w),type(sum(w)))
+   
     norm = [i/sum(w) for i in w]
-    print(norm)
     to_execute=np.random.choice(intro_actions,p=norm) #trovare il modo di normalizzare i pesi
     return to_execute, introversion_dict[perception]["weights"][to_execute]["w1"]+introversion_dict[perception]["weights"][to_execute]["w2"]
 
@@ -101,19 +99,18 @@ def update_weights_i(action, p_prev, p_after):
     error=error/len(list_real)
     #update the weights
     prev=introversion_dict[p_prev]["weights"][action]["w2"]
-    print("PREV", prev)
+   
     if error==0:
-        introversion_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev + 0.1),2)
-        print("AFTER", round(np.abs(prev + 0.1),2))
-        return round(np.abs(prev + 0.1),2)
+        introversion_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev + 0.5),2)
+        return round(np.abs(prev + 0.5),2)+introversion_dict[p_prev]["weights"][action]["w1"]
     else:
         if prev<0.1:
-            print("AFTER", prev)
-            return  prev
+           
+            return  prev+introversion_dict[p_prev]["weights"][action]["w1"]
         else:
-           introversion_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev - 0.1),2)
-           print("AFTER", round(np.abs(prev - 0.1),2))
-           return round(np.abs(prev - 0.1),2)
+           introversion_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev - 0.5),2)
+           
+           return round(np.abs(prev - 0.5),2)+introversion_dict[p_prev]["weights"][action]["w1"]
         
 
         

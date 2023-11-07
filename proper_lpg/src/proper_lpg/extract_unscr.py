@@ -69,14 +69,12 @@ def choose_action_u(perception):
     global unsc_actions, unsc_dict
     w=[]
     for a in unsc_actions:
-        print(a)
+        
         weight=unsc_dict[perception]["weights"][a]["w1"]+unsc_dict[perception]["weights"][a]["w2"]
         w.append(float(weight))
 
-    print(w[0])
-    #print(w, sum(w),type(sum(w)))
+    
     norm = [i/sum(w) for i in w]
-    print(norm)
     to_execute=np.random.choice(unsc_actions,p=norm) #trovare il modo di normalizzare i pesi
     return to_execute, unsc_dict[perception]["weights"][to_execute]["w1"]+unsc_dict[perception]["weights"][to_execute]["w2"]
 

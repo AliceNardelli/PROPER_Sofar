@@ -77,14 +77,14 @@ def choose_action_a(perception):
     global agree_actions, agreeableness_dict
     w=[]
     for a in agree_actions:
-        print(a)
+        
         weight=agreeableness_dict[perception]["weights"][a]["w1"]+agreeableness_dict[perception]["weights"][a]["w2"]
         w.append(float(weight))
 
-    print(w[0])
+
     #print(w, sum(w),type(sum(w)))
     norm = [i/sum(w) for i in w]
-    print(norm)
+   
     to_execute=np.random.choice(agree_actions,p=norm) #trovare il modo di normalizzare i pesi
     return to_execute, agreeableness_dict[perception]["weights"][to_execute]["w1"]+agreeableness_dict[perception]["weights"][to_execute]["w2"]
 
@@ -101,16 +101,13 @@ def update_weights_a(action, p_prev, p_after):
     error=error/len(list_real)
     #update the weights
     prev=agreeableness_dict[p_prev]["weights"][action]["w2"]
-    print("PREV", prev)
+    
     if error==0:
-        agreeableness_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev+0.1),2)
-        print("AFTER", round(np.abs(prev+0.1),2))
-        return round(np.abs(prev + 0.1),2)
+        agreeableness_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev+0.5),2)
+        return agreeableness_dict[p_prev]["weights"][action]["w1"]+round(np.abs(prev + 0.5),2)
     else:
         if prev<0.1:
-            print("AFTER", prev)
-            return  prev
+            return  prev+agreeableness_dict[p_prev]["weights"][action]["w1"]
         else:
-           agreeableness_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev - 0.1),2)
-           print("AFTER",round(np.abs(prev - 0.1),2))
-           return round(np.abs(prev - 0.1),2)
+           agreeableness_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev - 0.5),2)
+           return round(np.abs(prev - 0.5),2)+agreeableness_dict[p_prev]["weights"][action]["w1"]

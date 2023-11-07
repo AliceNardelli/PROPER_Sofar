@@ -25,9 +25,9 @@ import time
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=0.5
+wi=0
 wc=0
-wu=0
+wu=0.5
 wa=0.5
 wd=0
 sum_weights=we +wi +wc + wu + wa + wd
@@ -163,10 +163,11 @@ class ExAction(smach.State):
         success=random.randint(0,10)
         if success==0:
             print("action fail")
+            f.write("ACTION FAIL\n")
             userdata.state="exec"
             return "outcome4"
         else:
-            if "AGREE_ACTION" in ac:
+            if ac=="AGREE_ACTION":
                 #take the perception,
                 if perception=="T_":
                     pi="T_N"
@@ -181,7 +182,7 @@ class ExAction(smach.State):
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
                 f.write(string_log)
-                string_log="AGREE ACTION: " + aa +"--------------"+personality+ "\n"
+                string_log="AGREE ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+ "\n"
                 f.write(string_log)
                 #take the new perception
                 if perception=="T_":
@@ -197,7 +198,7 @@ class ExAction(smach.State):
                 print(rr)
                 change_raward("reward_a",float(rr))
             
-            if "DISAGREE_ACTION" in ac:
+            if ac=="DISAGREE_ACTION":
                 #take the perception,
                 if perception=="T_":
                     pi="T_N"
@@ -212,7 +213,7 @@ class ExAction(smach.State):
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
                 f.write(string_log)
-                string_log="AGREE ACTION: " + aa +"--------------"+personality+ "\n"
+                string_log="DISAGREE ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+ "\n"
                 f.write(string_log)
                 #take the new perception
                 if perception=="T_":
@@ -229,7 +230,7 @@ class ExAction(smach.State):
                 change_raward("reward_a",float(rr))
                 
 
-            elif "INTRO_ACTION" in ac:
+            elif ac=="INTRO_ACTION":
                 #take the perception
                 if perception=="T_":
                     pi="T_N"
@@ -242,7 +243,7 @@ class ExAction(smach.State):
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
                 f.write(string_log)
-                string_log="INTRO ACTION: " + aa +"--------------"+personality+ "\n"
+                string_log="INTRO ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+"\n"
                 f.write(string_log)
                 rospy.loginfo(" action chosen: "+ aa)
                 #exec
@@ -260,7 +261,7 @@ class ExAction(smach.State):
                 f.write(string_log)
                 change_raward("reward_e",float(rr))
 
-            elif "EXTRO_ACTION" in ac:
+            elif ac=="EXTRO_ACTION":
                 #take the perception
                 if perception=="T_":
                     pi="T_N"
@@ -273,7 +274,7 @@ class ExAction(smach.State):
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
                 f.write(string_log)
-                string_log="INTRO ACTION: " + aa +"--------------"+personality+ "\n"
+                string_log="EXTRO ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+ "\n"
                 f.write(string_log)
                 rospy.loginfo(" action chosen: "+ aa)
                 #exec
@@ -291,7 +292,7 @@ class ExAction(smach.State):
                 f.write(string_log)
                 change_raward("reward_e",float(rr))
 
-            elif "CONSC_ACTION" in ac:
+            elif ac=="CONSC_ACTION":
                 #take the perception
                 if perception=="T_":
                     pi="T_N"
@@ -304,7 +305,7 @@ class ExAction(smach.State):
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
                 f.write(string_log)
-                string_log="INTRO ACTION: " + aa +"--------------"+personality+ "\n"
+                string_log="CONSC ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+"\n"
                 f.write(string_log)
                 rospy.loginfo(" action chosen: "+ aa)
                 #exec
@@ -313,7 +314,7 @@ class ExAction(smach.State):
                 f.write(string_log)
                 change_raward("reward_c",float(rew))
 
-            elif "UNSC_ACTION" in ac:
+            elif ac=="UNSC_ACTION":
                 #take the perception
                 if perception=="T_":
                     pi="T_N"
@@ -326,7 +327,7 @@ class ExAction(smach.State):
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
                 f.write(string_log)
-                string_log="INTRO ACTION: " + aa +"--------------"+personality+ "\n"
+                string_log="UNSC ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+ "\n"
                 f.write(string_log)
                 rospy.loginfo(" action chosen: "+ aa)
                 #exec
@@ -341,6 +342,8 @@ class ExAction(smach.State):
                 string_log="before agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
                 f.write(string_log)
                 string_log="before extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
+                f.write(string_log)
+                string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
                 f.write(string_log)
                 rospy.loginfo('Action executed: '+ac)
                 time.sleep(5)
@@ -429,7 +432,7 @@ class UpdateOntology(smach.State):
         f.write(string_log)
         string_log="after extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
         f.write(string_log)
-        string_log="after extro level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
+        string_log="after consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
         f.write(string_log)
         userdata.out_action=acc
         return 'outcome6'

@@ -74,25 +74,23 @@ extroversion_dict={
 
 
 def choose_action_e(perception):
-    global intro_actions, introversion_dict
+    global extro_actions, extroversion_dict
     w=[]
-    for a in intro_actions:
-        print(a)
-        weight=introversion_dict[perception]["weights"][a]["w1"]+introversion_dict[perception]["weights"][a]["w2"]
+    for a in extro_actions:
+        
+        weight=extroversion_dict[perception]["weights"][a]["w1"]+extroversion_dict[perception]["weights"][a]["w2"]
         w.append(float(weight))
 
-    print(w[0])
-    #print(w, sum(w),type(sum(w)))
+   
     norm = [i/sum(w) for i in w]
-    print(norm)
-    to_execute=np.random.choice(intro_actions,p=norm) #trovare il modo di normalizzare i pesi
-    return to_execute, introversion_dict[perception]["weights"][to_execute]["w1"]+introversion_dict[perception]["weights"][to_execute]["w2"]
+    to_execute=np.random.choice(extro_actions,p=norm) #trovare il modo di normalizzare i pesi
+    return to_execute, extroversion_dict[perception]["weights"][to_execute]["w1"]+extroversion_dict[perception]["weights"][to_execute]["w2"]
 
 
 
-def update_weights_i(action, p_prev, p_after):
-    list_real=introversion_dict[p_after]["num"]
-    list_expected=introversion_dict[p_prev]["weights"][action]["expected_outcome"]
+def update_weights_e(action, p_prev, p_after):
+    list_real=extroversion_dict[p_after]["num"]
+    list_expected=extroversion_dict[p_prev]["weights"][action]["expected_outcome"]
     error=0
     #accumulate the error between the perception and the expected one
     for i in range(0,len(list_real)):
@@ -100,20 +98,19 @@ def update_weights_i(action, p_prev, p_after):
     #normalize the error
     error=error/len(list_real)
     #update the weights
-    prev=introversion_dict[p_prev]["weights"][action]["w2"]
-    print("PREV", prev)
+    prev=extroversion_dict[p_prev]["weights"][action]["w2"]
+    
     if error==0:
-        introversion_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev + 0.1),2)
-        print("AFTER", round(np.abs(prev + 0.1),2))
-        return round(np.abs(prev + 0.1),2)
+        extroversion_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev + 0.5),2)
+        return round(np.abs(prev + 0.5),2)+extroversion_dict[p_prev]["weights"][action]["w1"]
     else:
         if prev<0.1:
-            print("AFTER", prev)
-            return  prev
+            
+            return  prev+extroversion_dict[p_prev]["weights"][action]["w1"]
         else:
-           introversion_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev - 0.1),2)
-           print("AFTER", round(np.abs(prev - 0.1),2))
-           return round(np.abs(prev - 0.1),2)
+           extroversion_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev - 0.5),2)
+          
+           return round(np.abs(prev - 0.5),2)+extroversion_dict[p_prev]["weights"][action]["w1"]
         
 
         

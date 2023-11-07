@@ -69,14 +69,10 @@ def choose_action_c(perception):
     global consc_actions, consc_dict
     w=[]
     for a in consc_actions:
-        print(a)
         weight=consc_dict[perception]["weights"][a]["w1"]+consc_dict[perception]["weights"][a]["w2"]
         w.append(float(weight))
 
-    print(w[0])
-    #print(w, sum(w),type(sum(w)))
     norm = [i/sum(w) for i in w]
-    print(norm)
     to_execute=np.random.choice(consc_actions,p=norm) #trovare il modo di normalizzare i pesi
     return to_execute, consc_dict[perception]["weights"][to_execute]["w1"]+consc_dict[perception]["weights"][to_execute]["w2"]
 
