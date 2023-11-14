@@ -48,11 +48,11 @@ catkin_python_setup()
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
+add_message_files(
+   FILES
+   Emotions.msg
 #   Message2.msg
-# )
+ )
 
 ## Generate services in the 'srv' folder
  add_service_files(
@@ -106,7 +106,7 @@ catkin_python_setup()
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES ProperLPG
-#  CATKIN_DEPENDS roscpp rospy std_msgs
+ #CATKIN_DEPENDS message_runtime roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
 
@@ -163,6 +163,8 @@ include_directories(
 catkin_install_python(PROGRAMS
   scripts/ontology_interface.py 
   scripts/perception_interface.py
+  scripts/prova_keyboard.py
+  scripts/emotion_estimation.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

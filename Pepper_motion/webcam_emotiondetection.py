@@ -147,7 +147,7 @@ def detect_emotions(image):
 
 if __name__ == "__main__":
     print("Ready to add two ints.")   
-    video = cv2.VideoCapture(2)
+    video = cv2.VideoCapture(0)
     time.sleep(2.0)
     while True:
         ret, frame = video.read()

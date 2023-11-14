@@ -1,6 +1,6 @@
 
 import os
-
+from proper_lpg.msg import Emotions
 # Set cache directories for XDG and Hugging Face Hub
 os.environ['XDG_CACHE_HOME'] = '/home/alice/.cache'
 os.environ['HUGGINGFACE_HUB_CACHE'] = '/home/alice/.cache'
@@ -107,12 +107,12 @@ def detect_emotions(image):
 
 if __name__ == "__main__":
     rospy.init_node('webcam_emotion_detection')
-    pub = rospy.Publisher('/emotion', String, queue_size=10)
+    pub = rospy.Publisher('/face_emotion', Emotions, queue_size=10)
     #video = cv2.VideoCapture(0) #webcam
     video = cv2.VideoCapture(2) #external webcam
     time.sleep(2.0)
     window_emotion=[] 
-    size_window=5
+    size_window=10
 
     while not rospy.is_shutdown():
         ret, frame = video.read()
@@ -154,8 +154,11 @@ if __name__ == "__main__":
             if len(window_emotion)>size_window:
                last=window_emotion.pop(0)
             e=max(set(window_emotion), key=window_emotion.count)
+            em_msg=Emotions()
+            em_msg.emotion=e
+            em_msg.w_emotions=window_emotion
             print(window_emotion,e)
-            pub.publish(e)
+            pub.publish(em_msg)
         else:
             cv2.imshow("Image", frame)
         
