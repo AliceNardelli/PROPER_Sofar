@@ -165,6 +165,7 @@ catkin_install_python(PROGRAMS
   scripts/perception_interface.py
   scripts/prova_keyboard.py
   scripts/emotion_estimation.py
+  scripts/Alice_client.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

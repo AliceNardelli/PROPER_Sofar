@@ -4,11 +4,12 @@
 ## python 3 environment
 
 start the ROS perception nodes
-> python3 prova_keyboard.py #uso webcam
+> rosrun proper_lpg prova_keyboard.py #uso webcam
 > python3 FaceDetection2.py #robot camera
 >python3 Tactile_Interface_ROS.py
 
 run the perception interface
+>rosrun proper_lpg emotion_estimation.py
 >rosrun proper_lpg perception_interface.py
 
 start the fsm and ontology iterface
