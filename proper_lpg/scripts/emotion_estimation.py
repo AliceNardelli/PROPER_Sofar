@@ -58,7 +58,7 @@ def callback_speech(data):
    global new_speech, window_speech, window_probs, emotion_dict_s
    window_speech=data.w_emotions
    window_probs=data.probs
-   for i in len(window_speech):
+   for i in range(len(window_speech)):
        emotion_dict_s[window_speech[i]]=window_probs[i]
    #remap the fear on the anger
    emotion_dict_s["anger"]=emotion_dict_s["anger"]+emotion_dict_s["fear"]
@@ -70,17 +70,19 @@ def publish_emotion():
     sum_probs=0
     if new_emotion or new_speech:
         if new_speech:
+            print(emotion_dict_s)
             final_map["anger"]["prob"]=emotion_dict_s["anger"]
             final_map["sadness"]["prob"]=emotion_dict_s["sadness"]
             final_map["joy"]["prob"]=emotion_dict_s["joy"]
             for s in emotion_dict_s:
                 sum_probs+=emotion_dict_s[s]
         if new_emotion:
+            print(emotion_dict_f)
             final_map["anger"]["prob"]=final_map["anger"]["prob"]+emotion_dict_f["anger"]
             final_map["sadness"]["prob"]=final_map["sadness"]["prob"]+emotion_dict_f["sadness"]
             final_map["joy"]["prob"]=final_map["joy"]["prob"] + emotion_dict_f["joy"]
             final_map["neutral"]["prob"]=emotion_dict_f["neutral"]
-            print(emotion_dict_f)
+            
             for s in emotion_dict_f:
                 sum_probs+=emotion_dict_f[s]
         max=0
@@ -90,7 +92,9 @@ def publish_emotion():
             if final_map[fm]["prob"]>max:
                 max=final_map[fm]["prob"]
                 em=fm
+        print(final_map)
         if max>=threshold:
+            print(final_map[em]["map"])
             em_pub.publish(final_map[em]["map"])
         
    
@@ -103,7 +107,7 @@ if __name__ == '__main__':
     threshold=0.5
     em_pub = rospy.Publisher('/emotion', String, queue_size=10)
     rospy.Subscriber("/face_emotion", Emotions, callback_face)
-    rospy.Subscriber("/speech_emotion", String, callback_speech)
+    rospy.Subscriber("/speech_emotion", Emotions, callback_speech)
     while not rospy.is_shutdown():
         time.sleep(1)
         publish_emotion()
