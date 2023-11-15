@@ -25,10 +25,10 @@ import time
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=0
+wi=0.5
 wc=0
-wu=0.5
-wa=0.5
+wu=0
+wa=0
 wd=0
 sum_weights=we +wi +wc + wu + wa + wd
 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
@@ -100,7 +100,7 @@ class State_Init(smach.State):
         populate_ontology(userdata.domain_path)
         rospy.loginfo('Initialize function and predicates in the ontology')
         initialize_functions_predicates()
-        rospy.loginfo('Read the problem and set the initial values of predicates  and functions')
+        rospy.loginfo('Read the problem and set the initial values of predicates and functions')
         read_the_problem(userdata.problem_path)      
         return 'outcome1'
       
@@ -111,17 +111,17 @@ class Planning(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
                              outcomes=['outcome2'],
-                             input_keys=['command','planning_folder'])
+                             input_keys=['command','planning_folder','plan'])
     def callback(self, data):
          self.start=True 
 
     def execute(self, userdata):
         self.start=False
         rospy.loginfo('planning')
-        return_code=planning(userdata.command,userdata.planning_folder)  
+        return_code=planning(userdata.command,userdata.planning_folder,userdata.plan)  
         print(return_code)
         while return_code!=0:
-            return_code=planning(userdata.command,userdata.planning_folder)  
+            return_code=planning(userdata.command,userdata.planning_folder,userdata.plan)  
             print(return_code)
         print("start experiment")
         return 'outcome2'
@@ -455,12 +455,12 @@ def main():
     rospy.Subscriber("perception", String, callback)
     try:
         sm = smach.StateMachine(outcomes=['outcome12'])
-        sm.userdata.path_domain='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/domain_prova.pddl'
+        sm.userdata.path_domain='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/goal1_domain.pddl'
         sm.userdata.path_problem='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/prova_problem.pddl'
         sm.userdata.path_init_problem='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/init_problem.pddl'
-        sm.userdata.command_start='./lpg++ -o domain_prova.pddl -f prova_problem.pddl -n 1 -force_neighbour_insertion -inst_with_contraddicting_objects'
+        sm.userdata.command_start='./ff -p /home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/ -o goal1_domain.pddl -f prova_problem.pddl'
         sm.userdata.folder ='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/'
-        sm.userdata.path_plan ='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/plan_prova_problem.pddl_1.SOL'
+        sm.userdata.path_plan ="/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/plan.pddl"
         sm.userdata.actions =[]
         sm.userdata.a="a"
         sm.userdata.previous_state=""
@@ -476,7 +476,8 @@ def main():
             smach.StateMachine.add('PLAN', Planning(), 
                                     transitions={'outcome2':'GET_ACTIONS'},
                                     remapping={'command':'command_start',
-                                                'planning_folder':'folder'})
+                                                'planning_folder':'folder',
+                                                'plan':'path_plan'})
             
             smach.StateMachine.add('GET_ACTIONS', GetActions(), 
                                     transitions={'outcome3':'EXEC'},

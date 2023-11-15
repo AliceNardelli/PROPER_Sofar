@@ -147,7 +147,9 @@ def populate_ontology(domain):
             elif (":action" in p):
                 last_action=p.replace(":action","").replace("( ","").replace("\n","")
             actions.append(last_action)
-    actions.pop(0)
+   
+    #actions.pop(0) #to add with durative actions
+    
     for a in actions:
         actions_objects[a]=Actions(a)
     #TYPES
@@ -360,13 +362,16 @@ def saving():
 
 
 #run the planner
-def planning(command,domain_path):
+def planning(command,domain_path,plan_file):
     #plan the first time and get the list of action
     os.chdir (domain_path)
     #run the planner
     fd_process = subprocess.Popen([command], stdout=subprocess.PIPE, shell=True)
     try:
         (out, err) = fd_process.communicate()
+        f = open(plan_file, "w")
+        f.write(out.decode())
+        f.close()
         fd_exit = fd_process.returncode
         #print(fd_exit)
         return fd_exit
@@ -379,20 +384,23 @@ def read_plan(output_path):
         with open(output_path, "r") as plan_file:
             raw_plan = plan_file.readlines()
         plan=[]
+        start=False
         for p in raw_plan:
-           if p[0] !=";":
-            plan.append(p)
-        ret=plan.remove("\n") 
-        while ret==None:  
-            try:
-              ret=plan.remove("\n")
-            except:
-              ret="alice"    
+            if "step" in p:
+                start=True
+
+            if "time spent" in p:
+                start=False
+            if start:
+                if p[0] !=":":
+                    plan.append(p)
         actions_to_execute=[]
         for i in plan:
-            actions_to_execute.append(i[i.find("(")+1:i.find(")")])
-        return actions_to_execute
-        
+            a=i[i.find(":")+1:i.find("\n")].replace(" ","")
+            if a!="":
+                actions_to_execute.append(a)   
+        return actions_to_execute 
+
     else:
             print("Plan not found")
 

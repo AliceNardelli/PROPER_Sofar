@@ -1,4 +1,4 @@
-(define (problem p) (:domain PROPER_perception)
+(define (problem p) (:domain goal1)
 (:objects
 )
 (:init

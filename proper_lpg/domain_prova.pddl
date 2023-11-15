@@ -1,6 +1,6 @@
 (define (domain PROPER_perception)
 
-(:requirements :adl :derived-predicates :strips :typing :conditional-effects :negative-preconditions :equality :fluents :durative-actions  :duration-inequalities :continuous-effects :time)
+(:requirements :adl :strips :typing :conditional-effects :negative-preconditions :equality :fluents :durative-actions :duration-inequalities :continuous-effects :time)
 
 (:types	
 )
@@ -46,11 +46,6 @@
         (emotion_r)
         
 )
-
-
-
- 
-
 
 
 (:action EXTRO_ACTION
