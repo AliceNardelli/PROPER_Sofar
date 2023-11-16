@@ -229,20 +229,29 @@ def populate_ontology(domain):
                 if pred==[]:
                     continue
                 else:
-                    check=str(pred[0])
-                    for l in predicates:
-                        if check==l:
-                            actions_objects[last_action].has_effect_predicates.append(predicates_objects[check])
-                            ops=last_action.replace(" ","")+" "+operation
-                            predicates_objects[check].has_operator.append(ops)
-                            break
-                            
-                    for l in functions:
-                        if check==l:
-                            actions_objects[last_action].has_effect_function.append(function_objects[check])
-                            ops=last_action.replace(" ","")+" "+operation
-                            function_objects[check].has_operator.append(ops)
-                            break
+                    if str(pred[0])=="when":
+                        check=str(pred[2])
+                        for l in functions:
+                            if check==l:
+                                actions_objects[last_action].has_effect_function.append(function_objects[check])
+                                ops=last_action.replace(" ","")+" "+operation
+                                function_objects[check].has_operator.append(ops)
+                                break
+                    else:
+                        check=str(pred[0])
+                        for l in predicates:
+                            if check==l:
+                                actions_objects[last_action].has_effect_predicates.append(predicates_objects[check])
+                                ops=last_action.replace(" ","")+" "+operation
+                                predicates_objects[check].has_operator.append(ops)
+                                break
+                                
+                        for l in functions:
+                            if check==l:
+                                actions_objects[last_action].has_effect_function.append(function_objects[check])
+                                ops=last_action.replace(" ","")+" "+operation
+                                function_objects[check].has_operator.append(ops)
+                                break
         if pr==True:
             params=p[p.index("(")+1:p.index(")")].replace("-","").split(" ")
             while 1:
@@ -439,9 +448,6 @@ def update_ontology(a):
                             p.has_object.append(objects_objects[params[parameters_objects[o[2]].has_order-1].lower()])
                    
 
-                
-
-
     funcs=actions_objects[ac].has_effect_function
     #print(funcs)
     if funcs!=[]:
@@ -460,38 +466,81 @@ def update_ontology(a):
                 if o[0]==ac:
                     #print(o)
                     #print(f,ac,f.has_value)
-                    if o[1]=="assign":
-                       f.has_value=int(o[3])
-                    elif o[1]=="increase":
-                        actual_value=f.has_value
-                        if o[3]=="*":
-                            v1=function_objects[o[4]].has_value
-                            v2=function_objects[o[5]].has_value
-                            f.has_value=actual_value + v1*v2
-                        else:
-                            try:
-                                f.has_value=actual_value + float(o[3])
-                            except:
-                                f.has_value=actual_value + function_objects[o[3]].has_value
-                    elif o[1]=="decrease":
-                        actual_value=f.has_value
-                        if o[3]=="*":
-                            if o[5]=="+":
-                                v1=function_objects[o[4]].has_value #coeff
-                                v2=function_objects[o[6]].has_value #dur
-                                f.has_value=actual_value - v1*(v2+int(o[7]))
-                            else:
-                                v1=function_objects[o[4]].has_value
-                                v2=function_objects[o[5]].has_value
-                                f.has_value=actual_value - v1*v2
-                        else:
-                            try:
-                                f.has_value=actual_value - float(o[3])
-                            except:
-                                f.has_value=actual_value - function_objects[o[3]].has_value
+                    if o[1]=="when":
+                        
+                        if predicates_objects[o[2]].is_grounded:
+                            print(o)
+                            if o[3]=="assign":
+                                f.has_value=int(o[5])
+                            elif o[3]=="increase":
+                                actual_value=f.has_value
+                                if o[5]=="*":
+                                    v1=function_objects[o[6]].has_value
+                                    if o[7]=="+":
+                                        v2=function_objects[o[8]].has_value+float(o[9])
+                                    elif o[7]=="-":
+                                        v2=function_objects[o[8]].has_value-float(o[9])
+                                    else:
+                                        v2=function_objects[o[7]].has_value
+                                    f.has_value=actual_value + v1*v2
+                                else:
+                                    try:
+                                        f.has_value=actual_value + float(o[5])
+                                    except:
+                                        f.has_value=actual_value + function_objects[o[5]].has_value
+
+                            elif o[3]=="decrease":
+                                actual_value=f.has_value
+                                if o[5]=="*":
+                                    v1=function_objects[o[6]].has_value
+                                    if o[7]=="+":
+                                        v2=function_objects[o[8]].has_value+float(o[9])
+                                    elif o[7]=="-":
+                                        v2=function_objects[o[8]].has_value-float(o[9])
+                                    else:
+                                        v2=function_objects[o[7]].has_value
+                                    f.has_value=actual_value - v1*v2
+                                else:
+                                    try:
+                                        f.has_value=actual_value - float(o[5])
+                                    except:
+                                        f.has_value=actual_value - function_objects[o[5]].has_value
                     else:
-                        print("NO OPERATION FOUND")
-                    #print(f,ac,f.has_value)
+                        if o[1]=="assign":
+                            f.has_value=int(o[3])
+                        elif o[1]=="increase":
+                                actual_value=f.has_value
+                                if o[3]=="*":
+                                    v1=function_objects[o[4]].has_value
+                                    if o[5]=="+":
+                                        v2=function_objects[o[6]].has_value+float(o[7])
+                                    elif o[5]=="-":
+                                        v2=function_objects[o[6]].has_value-float(o[7])
+                                    else:
+                                        v2=function_objects[o[5]].has_value
+                                    f.has_value=actual_value + v1*v2
+                                else:
+                                    try:
+                                        f.has_value=actual_value + float(o[3])
+                                    except:
+                                        f.has_value=actual_value + function_objects[o[3]].has_value
+                        elif o[1]=="decrease":
+                            
+                                actual_value=f.has_value
+                                if o[3]=="*":
+                                    v1=function_objects[o[4]].has_value
+                                    if o[5]=="+":
+                                        v2=function_objects[o[6]].has_value+float(o[7])
+                                    elif o[5]=="-":
+                                        v2=function_objects[o[6]].has_value-float(o[7])
+                                    else:
+                                        v2=function_objects[o[5]].has_value
+                                    f.has_value=actual_value - v1*v2
+                                else:
+                                    try:
+                                        f.has_value=actual_value - float(o[3])
+                                    except:
+                                        f.has_value=actual_value - function_objects[o[3]].has_value
 
 
 def update_problem(plan_path):

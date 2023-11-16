@@ -9,46 +9,54 @@ from proper_lpg.load_ontology import *
 import random
 import numpy as np
 
-disagree_actions=["say_not_touch_me","say_you_are_right","say_to_not_smile"]
+disagree_actions=["say_not_touch_me","say_to_move_far","say_something_about_angry","say_to_not_smile"]
 
 
 zzz_d={"say_not_touch_me":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_you_are_right":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
+     "say_to_move_far":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_about_angry":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      "say_to_not_smile":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      }
 
 zzo_d={"say_not_touch_me":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_you_are_right":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
+       "say_to_move_far":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_about_angry":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      "say_to_not_smile":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      }
 
 zoz_d={"say_not_touch_me":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_you_are_right":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
+       "say_to_move_far":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_about_angry":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "say_to_not_smile":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      }
 
 zoo_d={"say_not_touch_me":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_you_are_right":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
+       "say_to_move_far":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_about_angry":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "say_to_not_smile":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      }
 
 ozz_d={"say_not_touch_me":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "say_you_are_right":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+       "say_to_move_far":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_something_about_angry":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "say_to_not_smile":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      }
 
 ozo_d={"say_not_touch_me":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
-     "say_you_are_right":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
+      "say_to_move_far":{"w1":4,"w2":2,"expected_outcome":[0,1,0]}, 
+     "say_something_about_angry":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      "say_to_not_smile":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      }
 
 ooz_d={"say_not_touch_me":{"w1":4,"w2":2,"expected_outcome":[0,0,1]},
-     "say_you_are_right":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,1]},
+       "say_to_move_far":{"w1":4,"w2":2,"expected_outcome":[0,0,1]},
+     "say_something_about_angry":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,1]},
      "say_to_not_smile":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,1]},
      }
 
 ooo_d={"say_not_touch_me":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
-     "say_you_are_right":{"w1":0,"w2":0,"expected_outcome":[0,1,0]},
+       "say_to_move_far":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
+     "say_something_about_angry":{"w1":0,"w2":0,"expected_outcome":[0,1,0]},
      "say_to_not_smile":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      }
 

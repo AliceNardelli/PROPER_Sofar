@@ -24,12 +24,12 @@ import time
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=0
-wi=0.5
+we=0.5
+wi=0
 wc=0
 wu=0
 wa=0
-wd=0
+wd=0.5
 sum_weights=we +wi +wc + wu + wa + wd
 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
 gamma=1
@@ -348,7 +348,10 @@ class ExAction(smach.State):
                 rospy.loginfo('Action executed: '+ac)
                 time.sleep(5)
                 #time.sleep(10)
+            n=userdata.executing_actions
+            print(n)
             ac=userdata.executing_actions.pop(0)
+            print(n)
             userdata.action=ac
             userdata.updated_actions=userdata.executing_actions
             userdata.state="exec"

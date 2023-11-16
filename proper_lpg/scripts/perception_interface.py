@@ -2,15 +2,7 @@
 import rospy
 from std_msgs.msg import String
 import time
-emotion_dict={
-    "happy":"H",
-    "surprise":"H",
-    "angry": "A",
-    "disgust": "S",
-    "fear": "A",
-    "neutral": "N",
-    "sad": "S"
-}
+
 
 emotion=""
 new_emotion=False
@@ -18,7 +10,7 @@ new_touch=False
 
 def callback_emotion(data):
    global emotion, emotion_dict, new_emotion
-   emotion=emotion_dict[data.data]
+   emotion=data.data
    new_emotion=True
 
 def callback_touch(data):
