@@ -1,4 +1,4 @@
-(define (problem p) (:domain goal2)
+(define (problem p) (:domain goal3)
 (:objects
 )
 (:init
