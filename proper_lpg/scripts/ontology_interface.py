@@ -508,17 +508,25 @@ def main():
     rospy.Subscriber("perception", String, callback)
     try:
         sm = smach.StateMachine(outcomes=['outcome12'])
-        sm.userdata.path_domain='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/goal1_domain.pddl'
-        sm.userdata.path_problem='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/prova_problem.pddl'
-        sm.userdata.path_init_problem='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/init_problem.pddl'
-        sm.userdata.command_start='./ff -p /home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/ -o goal1_domain.pddl -f prova_problem.pddl'
-        sm.userdata.folder ='/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/'
-        sm.userdata.path_plan ="/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/plan.pddl"
+        goals=rospy.get_param("goals")
+        sm.userdata.actual_goal=goals[0]
+        sm.userdata.path_domain=""
+        sm.userdata.path_problem=""
+        sm.userdata.path_init_problem=""
+        sm.userdata.command_start=""
+        sm.userdata.folder =""
+        sm.userdata.path_plan =""
         sm.userdata.actions =[]
         sm.userdata.a="a"
         sm.userdata.previous_state=""
         # Open the container
         with sm:
+            smach.StateMachine.add('START', State_Start(), 
+                        transitions={'outcome1':'PLAN'},
+                        remapping={'domain_path':'path_domain', 
+                                    'problem_path':'path_problem',
+                                    'init_pb':'path_init_problem'
+                                    })
             # Add states to the container
             smach.StateMachine.add('INIT', State_Init(), 
                                     transitions={'outcome1':'PLAN'},

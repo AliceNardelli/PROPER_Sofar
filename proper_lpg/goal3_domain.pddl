@@ -392,7 +392,7 @@
                (and 
                            (touch_reacted)
                            (emotion_r)
-               	           (human_present)
+               	           (hSAY_CURL_BLINKuman_present)
                            (>=(interaction_level)(desired_interaction))
                            (>=(scrupulousness_level)(desired_scrupulousness))
                            (>=(agreeableness_level)(desired_agreeableness))
