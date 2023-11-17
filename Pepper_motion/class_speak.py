@@ -14,8 +14,9 @@ import zlib
 import sys
 import json
 import xml
+import ed
 from flask import Flask, request, jsonify
-from sentences_festival import festival_dict_halloween
+
 
        
 url='http://127.0.0.1:5009/'
@@ -47,9 +48,9 @@ class Speak:
         self.counter=0 #change0
         self.colors=["red","orange","yellow","green","blu","purple"]
         self.ins=[0,1,2,3,6,7]
-        self.traits=""
+        self.traits="ed"
         self.grasp=False
-        self.sentences_dict={ "s":festival_dict_halloween,
+        self.sentences_dict={ "ed":ed_dict,
                               }
         
      
@@ -184,18 +185,12 @@ class Speak:
         time.sleep(1)
         
     def executing(self,anim_speech_service):
-        set_of_sentences=self.sentences_dict["s"]
+        set_of_sentences=self.sentences_dict[self.traits]
         ss=set_of_sentences[self.action]
-        if self.action=="s1" :
+        if self.action=="say_greetings" :
                 h=self.hello()
                 to_say=" ^start("+h+") \\pau=2000\\"
-                print(to_say)
                 anim_speech_service.say(to_say) 
-        """
-        if self.action=="s6" :
-            img="sweet.png"
-            self.tablet(img)        
-        """
         if  type(ss)==list:
             #ask to chatgpt the sentence to say
             to_say=ss[random.randrange(len(ss))]
@@ -208,21 +203,6 @@ class Speak:
             print('Waiting for the thread...')
             thread.join()
 
-        if self.action=="s4" or self.action=="s5" or self.action=="s6" or self.action=="s7" or self.action=="s8" or self.action=="s9" or self.action=="s10":
-            self.give_take_object_touch(1,1)
-            self.grasp_object()
-            time.sleep(3)
-            self.ask_pose_block(ss,anim_speech_service) 
-        #TABLET IMMAGINI
-
-
-    def ask_pose_block(self,ss,anim_speech_service): 
-            #if "d" in self.traits:#rude
-                self.give_take_object(0) 
-                self.throw_object()   
-            #else:
-                #self.give_take_object(1) 
-                 
 
    
     def tablet(self,im):
@@ -236,80 +216,6 @@ class Speak:
         sTablet.showImage(tablet_image)
         raw_input("Press Enter to continue...")
         sTablet.hideImage()
-
-    def grasp_object(self):
-        m=self.session.service("ALMotion")
-        frac_speed=0.5
-        chain=["LShoulderPitch","LShoulderRoll","LElbowYaw","LElbowRoll","LWristYaw","LHand"]
-        t=0
-        angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,0]
-        stiff=len(chain)*[1]
-        m.setStiffnesses(chain,stiff)
-        while t<3:
-            m.angleInterpolationWithSpeed(chain,angle,frac_speed) 
-            time.sleep(1)
-            t+=1
-        t=0
-        stiff=len(chain)*[0]
-        m.setStiffnesses(chain,stiff)
-
-    def give_take_object_touch(self,hand,stiffness):
-        m=self.session.service("ALMotion")
-        frac_speed=0.5
-        angle0=[-0.1 ,0.5,-1.56,-0.0,-1.7,0]
-        angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,hand]
-        chain=["LShoulderPitch","LShoulderRoll","LElbowYaw","LElbowRoll","LWristYaw","LHand"]
-        t=0
-        stiff=len(chain)*[1]
-        m.setStiffnesses(chain,stiff)
-        m.angleInterpolationWithSpeed(chain,angle0,frac_speed)
-        self.touched=False
-        touch = self.tts2.subscriber("MiddleTactilTouched") #questo permette la callback
-        connection = touch.signal.connect(self.touch_detected) #segnale della sottoscrizione
-        while self.touched==False:
-            m.angleInterpolationWithSpeed(chain,angle,frac_speed) 
-            time.sleep(1)
-            print("Hand open")
-            t+=1
-        self.touched=False
-        stiff=len(chain)*[stiffness]
-        m.setStiffnesses(chain,stiff)
-    
-    def callback(self, x, y):
-            self.touched=True
-
-    def give_take_object(self,hand):
-        print("Give take the obj")
-        m=self.session.service("ALMotion")
-        frac_speed=0.5
-        angle=[-0.1 ,0.5,-1.56,-0.0,-1.7,hand]
-        chain=["LShoulderPitch","LShoulderRoll","LElbowYaw","LElbowRoll","LWristYaw","LHand"]
-        t=0
-        stiff=len(chain)*[1]
-        m.setStiffnesses(chain,stiff)
-        while t<3:
-            m.angleInterpolationWithSpeed(chain,angle,frac_speed) 
-            time.sleep(1)
-            t+=1
-        stiff=len(chain)*[0]
-        m.setStiffnesses(chain,stiff)
-
-
-    def throw_object(self):
-        print("Throw obj")
-        m=self.session.service("ALMotion")
-        frac_speed=0.5
-        angle=[-0.1 ,0.5,-0.0,-0.0,-0.0,1]
-        chain=["LShoulderPitch","LShoulderRoll","LElbowYaw","LElbowRoll","LWristYaw","LHand"]
-        stiff=len(chain)*[1]
-        m.setStiffnesses(chain,stiff)
-        t=0
-        while t<3:
-            m.angleInterpolationWithSpeed(chain,angle,frac_speed) 
-            t+=1
-        stiff=len(chain)*[0]
-        m.setStiffnesses(chain,stiff)
-
 
     def set_params(self):
         #set all the autonomous capability to disabled
@@ -327,7 +233,7 @@ class Speak:
             self.vo=self.volume[self.parameters["volume"]]
             self.p=self.pitch[self.parameters["pitch"]]
             self.ve=self.velocity[self.parameters["velocity"]]
-            #self.set_pitch=True
+            self.set_pitch=True
         #setting parameters
         tts.setVolume(self.vo) 
         tts.setParameter("pitchShift",self.p)

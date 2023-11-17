@@ -39,7 +39,8 @@ def dispatch_action(req):
                no_action=False
                break
         if no_action:
-                print(req.action,"not to execute")
+                print(req.action,"not to execute")        
+        
         else:
             if (mmap["speed"]=="no_active" or mmap["prox"]=="no_active") and (mmap["velocity"]!="no_active" and mmap["pitch"]!="no_active"):
                     print(req.action,"action say")
@@ -59,7 +60,7 @@ def dispatch_action(req):
                     data["action"]=req.action
                     data["params"]=mmap
                     resp=requests.put(url+'gesture_server', json=data, headers=headers)
-            
+        
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
     #execute 
