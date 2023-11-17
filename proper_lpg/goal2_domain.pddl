@@ -1,4 +1,4 @@
-(define (domain goal1)
+(define (domain goal2)
 
 (:requirements :adl :strips :typing :conditional-effects :negative-preconditions :equality :fluents )
 
@@ -23,12 +23,13 @@
 )
 
 (:predicates 
-	(human_present)
+	    (human_present)
         (finished)
-	(greetings)
-	(feelings)
-        (sitting)
-	(extro)
+	    (drink)
+	    (point)
+        (through)
+        (pick)
+	    (extro)
         (intro)
         (consc)
         (unsc)
@@ -212,7 +213,7 @@
 
 
 
-(:action SAY_GREETINGS
+(:action SAY_DRINK_VOICE
         
 
         :precondition
@@ -223,7 +224,57 @@
                            (>=(interaction_level)(desired_interaction))
                            (>=(scrupulousness_level)(desired_scrupulousness))
                            (>=(agreeableness_level)(desired_agreeableness))
-                           (not(greetings))
+                           (not(drink))
+                        
+                )
+        :effect
+                (and
+                           
+                           (when (extro)(increase (interaction_level)(*(extroversion_coefficient)(dur))))
+                           (when (intro)(decrease (interaction_level)(*(extroversion_coefficient)(dur))))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (drink)                 
+                )
+)
+
+(:action SAY_DRINK_TABLET
+        
+
+        :precondition
+               (and 
+                           (touch_reacted)
+                           (emotion_r)
+               	           (human_present)
+                           (>=(interaction_level)(desired_interaction))
+                           (>=(scrupulousness_level)(desired_scrupulousness))
+                           (>=(agreeableness_level)(desired_agreeableness))
+                           (not(drink))
+                        
+                )
+        :effect
+                (and
+                           
+                           (when (extro)(decrease (interaction_level)(*(extroversion_coefficient)(dur))))
+                           (when (intro)(increase (interaction_level)(*(extroversion_coefficient)(dur))))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (drink)                 
+                )
+)
+
+
+(:action POINT_WATER
+        :precondition
+               (and 
+                           (touch_reacted)
+                           (emotion_r)
+               	           (human_present)
+                           (>=(interaction_level)(desired_interaction))
+                           (>=(scrupulousness_level)(desired_scrupulousness))
+                           (>=(agreeableness_level)(desired_agreeableness))
+                           (drink)
+                           (not(point))
                         
                 )
         :effect
@@ -232,12 +283,12 @@
                            (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-                           (greetings)                 
+                           (point)                 
                 )
 )
 
 
-(:action SAY_FEELINGS
+(:action ASK_THROUGH
         :precondition
                (and 
                            (touch_reacted)
@@ -246,22 +297,23 @@
                            (>=(interaction_level)(desired_interaction))
                            (>=(scrupulousness_level)(desired_scrupulousness))
                            (>=(agreeableness_level)(desired_agreeableness))
-                           (greetings)
-                           (not(feelings))
+                           (not(through))
+                           (point) 
                         
                 )
         :effect
                 (and
-                           (when (extro)(decrease (interaction_level)(*(extroversion_coefficient)(-(dur)2))))
-                           (when (intro)(decrease (interaction_level)(*(extroversion_coefficient)(+(dur)2))))
-                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)20)))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-                           (feelings)                 
+                           (through)                 
                 )
 )
 
 
-(:action SAY_SKIP_FEELINGS
+
+(:action ASK_THROUGH_FLOOR
         :precondition
                (and 
                            (touch_reacted)
@@ -270,22 +322,23 @@
                            (>=(interaction_level)(desired_interaction))
                            (>=(scrupulousness_level)(desired_scrupulousness))
                            (>=(agreeableness_level)(desired_agreeableness))
-                           (greetings)
-                           (not(feelings))
+                           (not(through))
+                           (point) 
                         
                 )
         :effect
                 (and
-                           (when (extro)(decrease (interaction_level)(*(extroversion_coefficient)(+(dur)2))))
-                           (when (intro)(decrease (interaction_level)(*(extroversion_coefficient)(-(dur)2))))
-                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
-                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-                           (feelings)                 
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)5)))
+                           (when (unsc)(increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (when (consc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)5)))
+                           (through)                 
                 )
 )
 
 
-(:action ASK_SITTING
+(:action ASK_THROUGH_RECYCLE
         :precondition
                (and 
                            (touch_reacted)
@@ -294,8 +347,35 @@
                            (>=(interaction_level)(desired_interaction))
                            (>=(scrupulousness_level)(desired_scrupulousness))
                            (>=(agreeableness_level)(desired_agreeableness))
-                           (not(sitting))
-                           (feelings) 
+                           (not(through))
+                           (point) 
+                        
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)5)))
+                           (when (unsc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (when (consc)(increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)5)))
+                           (through)                 
+                )
+)
+
+
+
+
+(:action SAY_EAT_SWEET
+        :precondition
+               (and 
+                           (touch_reacted)
+                           (emotion_r)
+               	           (human_present)
+                           (>=(interaction_level)(desired_interaction))
+                           (>=(scrupulousness_level)(desired_scrupulousness))
+                           (>=(agreeableness_level)(desired_agreeableness))
+                           (not(pick))
+                           (through) 
                         
                 )
         :effect
@@ -303,13 +383,14 @@
                            
                            (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
-                           (when (agree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(-(dur)2))))
-                           (when (disagree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)2))))
-                           (sitting)                 
+                           (when (agree)(increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (when (disagree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (pick)                 
                 )
 )
 
-(:action ASK_NOT_SITTING
+
+(:action SAY_BRING_ME_SWEET
         :precondition
                (and 
                            (touch_reacted)
@@ -318,8 +399,8 @@
                            (>=(interaction_level)(desired_interaction))
                            (>=(scrupulousness_level)(desired_scrupulousness))
                            (>=(agreeableness_level)(desired_agreeableness))
-                           (not(sitting))
-                           (feelings) 
+                           (not(pick))
+                           (through) 
                         
                 )
         :effect
@@ -327,9 +408,9 @@
                            
                            (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
-                           (when (agree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)2))))
-                           (when (disagree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(-(dur)2))))
-                           (sitting)                 
+                           (when (agree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (when (disagree)(increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (pick)                 
                 )
 )
 
@@ -341,7 +422,7 @@
                         (>=(interaction_level)(desired_interaction))
                         (>=(scrupulousness_level)(desired_scrupulousness))
                         (>=(agreeableness_level)(desired_agreeableness))
-                        (sitting)
+                        (pick)
                 )
 
         :effect

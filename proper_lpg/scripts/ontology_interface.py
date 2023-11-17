@@ -159,26 +159,20 @@ class ExAction(smach.State):
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
         print(ac +"--------------"+personality)
-        
-        success=random.randint(0,10)
-        if success==0:
-            print("action fail")
-            f.write("ACTION FAIL\n")
-            userdata.state="exec"
-            return "outcome4"
-        else:
-            if ac=="AGREE_ACTION":
-                #take the perception,
-                if perception=="T_":
-                    pi="T_N"
-                else:
-                   pi=perception
-                print("action", ac, "perception: ",pi)
-                #extract the action
-                aa,rew=choose_action_a(pi)
-                rospy.loginfo(" action chosen: "+ aa)
-                
-                time.sleep(5)
+        if ac=="AGREE_ACTION":
+            #take the perception,
+            if perception=="T_":
+                pi="T_N"
+            else:
+                pi=perception
+            print("action", ac, "perception: ",pi)
+            #extract the action
+            aa,rew=choose_action_a(pi)
+            rospy.loginfo(" action chosen: "+ aa)
+            
+            time.sleep(5)
+            response=self.call_action_server(aa,personality)
+            if response:
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
                 f.write(string_log)
@@ -188,7 +182,7 @@ class ExAction(smach.State):
                 if perception=="T_":
                     pn="T_N"
                 else:
-                   pn=perception #to understand if needed to check new perception
+                    pn=perception #to understand if needed to check new perception
                 #update weights
                 rr=update_weights_a(aa,pi,pn) #qui in ogni caso avrò una new perception
                 string_log="after PERCEPTION: " + pn+ " reward "+ str(rr)+ "\n"
@@ -197,19 +191,25 @@ class ExAction(smach.State):
                 f.write(string_log)
                 print(rr)
                 change_raward("reward_a",float(rr))
+                return "outcome5"
+            else:
+                return "outcome4"
+
+        
+        if ac=="DISAGREE_ACTION":
+            #take the perception,
+            if perception=="T_":
+                pi="T_N"
+            else:
+                pi=perception
+            print("action", ac, "perception: ",pi)
+            #extract the action
+            aa,rew=choose_action_d(pi)
+            rospy.loginfo(" action chosen: "+ aa)
             
-            if ac=="DISAGREE_ACTION":
-                #take the perception,
-                if perception=="T_":
-                    pi="T_N"
-                else:
-                   pi=perception
-                print("action", ac, "perception: ",pi)
-                #extract the action
-                aa,rew=choose_action_d(pi)
-                rospy.loginfo(" action chosen: "+ aa)
-                
-                time.sleep(5)
+            time.sleep(5)
+            response=self.call_action_server(aa,personality)
+            if response:
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
                 f.write(string_log)
@@ -219,7 +219,7 @@ class ExAction(smach.State):
                 if perception=="T_":
                     pn="T_N"
                 else:
-                   pn=perception #to understand if needed to check new perception
+                    pn=perception #to understand if needed to check new perception
                 #update weights
                 rr=update_weights_d(aa,pi,pn) #qui in ogni caso avrò una new perception
                 string_log="after PERCEPTION: " + pn+ " reward "+ str(rr)+ "\n"
@@ -228,18 +228,24 @@ class ExAction(smach.State):
                 f.write(string_log)
                 print(rr)
                 change_raward("reward_a",float(rr))
-                
+                return "outcome5"
+            else:
+                return "outcome4"
 
-            elif ac=="INTRO_ACTION":
-                #take the perception
-                if perception=="T_":
-                    pi="T_N"
-                else:
-                   pi=perception
-                print("action", ac, "perception: ",pi)
-                #extract the action
-                aa,rew=choose_action_i(pi)
-                time.sleep(5)
+            
+
+        elif ac=="INTRO_ACTION":
+            #take the perception
+            if perception=="T_":
+                pi="T_N"
+            else:
+                pi=perception
+            print("action", ac, "perception: ",pi)
+            #extract the action
+            aa,rew=choose_action_i(pi)
+            time.sleep(5)
+            response=self.call_action_server(aa,personality)
+            if response:
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
                 f.write(string_log)
@@ -252,7 +258,7 @@ class ExAction(smach.State):
                 if perception=="T_":
                     pn="T_N"
                 else:
-                   pn=perception #to understand if needed to check new perception
+                    pn=perception #to understand if needed to check new perception
                 #update weights
                 rr=update_weights_i(aa,pi,pn) #qui in ogni caso avrò una new perception
                 string_log="after PERCEPTION: " + pn+ " reward "+ str(rr) + "\n"
@@ -260,17 +266,23 @@ class ExAction(smach.State):
                 string_log="before extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
                 f.write(string_log)
                 change_raward("reward_e",float(rr))
+                return "outcome5"
+            else:
+                return "outcome4"
 
-            elif ac=="EXTRO_ACTION":
-                #take the perception
-                if perception=="T_":
-                    pi="T_N"
-                else:
-                   pi=perception
-                print("action", ac, "perception: ",pi)
-                #extract the action
-                aa,rew=choose_action_e(pi)
-                time.sleep(5)
+
+        elif ac=="EXTRO_ACTION":
+            #take the perception
+            if perception=="T_":
+                pi="T_N"
+            else:
+                pi=perception
+            print("action", ac, "perception: ",pi)
+            #extract the action
+            aa,rew=choose_action_e(pi)
+            time.sleep(5)
+            response=self.call_action_server(aa,personality)
+            if response:
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
                 f.write(string_log)
@@ -283,7 +295,7 @@ class ExAction(smach.State):
                 if perception=="T_":
                     pn="T_N"
                 else:
-                   pn=perception #to understand if needed to check new perception
+                    pn=perception #to understand if needed to check new perception
                 #update weights
                 rr=update_weights_e(aa,pi,pn) #qui in ogni caso avrò una new perception
                 string_log="after PERCEPTION: " + pn+ " reward "+ str(rr) + "\n"
@@ -291,17 +303,23 @@ class ExAction(smach.State):
                 string_log="before extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
                 f.write(string_log)
                 change_raward("reward_e",float(rr))
+                return "outcome5"
+            else:
+                return "outcome4"
 
-            elif ac=="CONSC_ACTION":
-                #take the perception
-                if perception=="T_":
-                    pi="T_N"
-                else:
-                   pi=perception
-                print("action", ac, "perception: ",pi)
-                #extract the action
-                aa,rew=choose_action_c(pi)
-                time.sleep(5)
+
+        elif ac=="CONSC_ACTION":
+            #take the perception
+            if perception=="T_":
+                pi="T_N"
+            else:
+                pi=perception
+            print("action", ac, "perception: ",pi)
+            #extract the action
+            aa,rew=choose_action_c(pi)
+            time.sleep(5)
+            response=self.call_action_server(aa,personality)
+            if response:
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
                 f.write(string_log)
@@ -313,17 +331,23 @@ class ExAction(smach.State):
                 string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
                 f.write(string_log)
                 change_raward("reward_c",float(rew))
+                return "outcome5"
+            else:
+                return "outcome4"
 
-            elif ac=="UNSC_ACTION":
-                #take the perception
-                if perception=="T_":
-                    pi="T_N"
-                else:
-                   pi=perception
-                print("action", ac, "perception: ",pi)
-                #extract the action
-                aa,rew=choose_action_u(pi)
-                time.sleep(5)
+
+        elif ac=="UNSC_ACTION":
+            #take the perception
+            if perception=="T_":
+                pi="T_N"
+            else:
+                pi=perception
+            print("action", ac, "perception: ",pi)
+            #extract the action
+            aa,rew=choose_action_u(pi)
+            time.sleep(5)
+            response=self.call_action_server(aa,personality)
+            if response:
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
                 f.write(string_log)
@@ -334,28 +358,54 @@ class ExAction(smach.State):
                 string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
                 f.write(string_log)
                 change_raward("reward_c",float(rew))
-
+                return "outcome5"
             else:
-                f.write("----------------------\n")
-                string_log="STANDARD ACTION:" + ac +"--------------"+personality+ "\n"
-                f.write(string_log)
-                string_log="before agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
-                f.write(string_log)
-                string_log="before extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
-                f.write(string_log)
-                string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
-                f.write(string_log)
-                rospy.loginfo('Action executed: '+ac)
-                time.sleep(5)
-                #time.sleep(10)
-            n=userdata.executing_actions
-            print(n)
-            ac=userdata.executing_actions.pop(0)
-            print(n)
-            userdata.action=ac
-            userdata.updated_actions=userdata.executing_actions
+                return "outcome4"
+
+
+        else:
+            f.write("----------------------\n")
+            string_log="STANDARD ACTION:" + ac +"--------------"+personality+ "\n"
+            f.write(string_log)
+            string_log="before agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
+            f.write(string_log)
+            string_log="before extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
+            f.write(string_log)
+            string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
+            f.write(string_log)
+            rospy.loginfo('Action executed: '+ac)
+            time.sleep(5)
+            #time.sleep(10)
+            response=self.call_action_server(ac,personality)
+            if response:
+                return "outcome5"
+            else:
+                return "outcome4"
+
+
+    def call_action_server(self, userdata,ac,personality):
             userdata.state="exec"
-            return "outcome5"
+            rospy.wait_for_service('action_dispatcher_srv')
+            try:
+                action_dispatcher_srv = rospy.ServiceProxy('action_dispatcher_srv', ExecAction)
+                msg=ExecActionRequest()
+                msg.action=ac.lower()
+                msg.personality=personality
+                resp = action_dispatcher_srv(msg)
+                if resp.success==False:
+                    rospy.loginfo('Action Failed')        
+                    f.write("ACTION FAIL\n")
+                    return False
+                else:
+                    ac=userdata.executing_actions.pop(0)
+                    rospy.loginfo('Action executed: '+ac)
+                    userdata.action=ac
+                    userdata.updated_actions=userdata.executing_actions
+                    return True
+                
+            except rospy.ServiceException as e:
+                print("Service call failed: %s"%e)
+                
         
 class CheckPerc(smach.State):
     def __init__(self):

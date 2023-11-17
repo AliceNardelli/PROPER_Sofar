@@ -9,59 +9,59 @@ from proper_lpg.load_ontology import *
 import random
 import numpy as np
 
-extro_actions=["get_closer","express_happiness","ask_a_question","tell_a_joke","say_something_about_itself"]
+extro_actions=["go_closer","express_happiness","ask_a_question","tell_a_joke","say_something_about_itself"]
 
 #no t, n
-zzz_e={"get_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
+zzz_e={"go_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
      "express_happiness":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
      "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      "tell_a_joke":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      }
 # nt, s
-zzo_e={"get_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
+zzo_e={"go_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
      "express_happiness":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[0,0,1]},
      "tell_a_joke":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      "say_something_about_itself":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      }
 #nt, a
-zoz_e={"get_closer":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},  
+zoz_e={"go_closer":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},  
      "express_happiness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      }
 #nt, h
-zoo_e={"get_closer":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
+zoo_e={"go_closer":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
      "express_happiness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      }
 #t,n
-ozz_e={"get_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
+ozz_e={"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
      "express_happiness":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
      "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      "say_something_about_itself":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
      }
 #t,s
-ozo_e={"get_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
+ozo_e={"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
      "express_happiness":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "tell_a_joke":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      "say_something_about_itself":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      }
 #t, a
-ooz_e={"get_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
+ooz_e={"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
      "express_happiness":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      "ask_a_question":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      }
 #t,h
-ooo_e={"get_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
+ooo_e={"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
      "express_happiness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
