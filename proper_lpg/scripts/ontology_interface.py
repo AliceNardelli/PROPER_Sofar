@@ -33,7 +33,7 @@ wd=0.5
 sum_weights=we +wi +wc + wu + wa + wd
 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
 gamma=1
-perception=""
+perception="NT_N"
 new_perception=False
 
  
@@ -47,7 +47,32 @@ def callback(data):
         new_perception=True
 
 
-# define state Fooprev_
+class State_Start(smach.State):
+    def __init__(self):
+        smach.State.__init__(self, 
+                             outcomes=['outcome0'],
+                             input_keys=['input_goals',],
+                             output_keys=['output_goals','domain_path','problem_path','init_pb','command','path','plan_path'])
+        
+    def execute(self, userdata):
+        
+        goals=userdata.input_goals
+        
+        actual_goal=goals.pop(0)
+        rospy.loginfo('Executing goal: '+ actual_goal)
+        dict_goal=rospy.get_param(actual_goal)
+        userdata.output_goals=goals
+        userdata.domain_path=dict_goal["domain"]
+        userdata.problem_path=dict_goal["problem"]
+        userdata.init_pb=dict_goal["init"]
+        userdata.command=dict_goal["command"]
+        userdata.path=dict_goal["folder"]
+        userdata.plan_path=dict_goal["plan"]
+        path=dict_goal["path_onto"]
+        ontology=dict_goal["ontology"]
+        #load_ontology(path, ontology)
+        return 'outcome0'
+
 class State_Init(smach.State):
    def __init__(self):
       smach.State.__init__(self, 
@@ -101,7 +126,8 @@ class State_Init(smach.State):
         rospy.loginfo('Initialize function and predicates in the ontology')
         initialize_functions_predicates()
         rospy.loginfo('Read the problem and set the initial values of predicates and functions')
-        read_the_problem(userdata.problem_path)      
+        read_the_problem(userdata.problem_path)  
+          
         return 'outcome1'
       
 
@@ -112,17 +138,15 @@ class Planning(smach.State):
         smach.State.__init__(self, 
                              outcomes=['outcome2'],
                              input_keys=['command','planning_folder','plan'])
-    def callback(self, data):
-         self.start=True 
+  
 
     def execute(self, userdata):
-        self.start=False
+        
         rospy.loginfo('planning')
         return_code=planning(userdata.command,userdata.planning_folder,userdata.plan)  
-        print(return_code)
         while return_code!=0:
             return_code=planning(userdata.command,userdata.planning_folder,userdata.plan)  
-            print(return_code)
+            
         print("start experiment")
         return 'outcome2'
     
@@ -171,7 +195,7 @@ class ExAction(smach.State):
             rospy.loginfo(" action chosen: "+ aa)
             
             time.sleep(5)
-            response=self.call_action_server(aa,personality)
+            userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
@@ -189,7 +213,6 @@ class ExAction(smach.State):
                 f.write(string_log)
                 string_log="before agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
                 f.write(string_log)
-                print(rr)
                 change_raward("reward_a",float(rr))
                 return "outcome5"
             else:
@@ -208,7 +231,7 @@ class ExAction(smach.State):
             rospy.loginfo(" action chosen: "+ aa)
             
             time.sleep(5)
-            response=self.call_action_server(aa,personality)
+            userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
@@ -226,7 +249,7 @@ class ExAction(smach.State):
                 f.write(string_log)
                 string_log="before agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
                 f.write(string_log)
-                print(rr)
+                
                 change_raward("reward_a",float(rr))
                 return "outcome5"
             else:
@@ -244,7 +267,7 @@ class ExAction(smach.State):
             #extract the action
             aa,rew=choose_action_i(pi)
             time.sleep(5)
-            response=self.call_action_server(aa,personality)
+            userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
@@ -281,7 +304,7 @@ class ExAction(smach.State):
             #extract the action
             aa,rew=choose_action_e(pi)
             time.sleep(5)
-            response=self.call_action_server(aa,personality)
+            userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
@@ -318,7 +341,7 @@ class ExAction(smach.State):
             #extract the action
             aa,rew=choose_action_c(pi)
             time.sleep(5)
-            response=self.call_action_server(aa,personality)
+            userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
@@ -346,7 +369,7 @@ class ExAction(smach.State):
             #extract the action
             aa,rew=choose_action_u(pi)
             time.sleep(5)
-            response=self.call_action_server(aa,personality)
+            userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
                 f.write("----------------------\n")
                 string_log="before PERCEPTION: " + pi+ "\n"
@@ -376,14 +399,14 @@ class ExAction(smach.State):
             rospy.loginfo('Action executed: '+ac)
             time.sleep(5)
             #time.sleep(10)
-            response=self.call_action_server(ac,personality)
+            userdata, response=self.call_action_server(userdata, ac,personality)
             if response:
                 return "outcome5"
             else:
                 return "outcome4"
 
 
-    def call_action_server(self, userdata,ac,personality):
+    def call_action_server(self, userdata, ac,personality):
             userdata.state="exec"
             rospy.wait_for_service('action_dispatcher_srv')
             try:
@@ -395,13 +418,13 @@ class ExAction(smach.State):
                 if resp.success==False:
                     rospy.loginfo('Action Failed')        
                     f.write("ACTION FAIL\n")
-                    return False
+                    return userdata, False
                 else:
                     ac=userdata.executing_actions.pop(0)
                     rospy.loginfo('Action executed: '+ac)
                     userdata.action=ac
                     userdata.updated_actions=userdata.executing_actions
-                    return True
+                    return userdata,True
                 
             except rospy.ServiceException as e:
                 print("Service call failed: %s"%e)
@@ -493,13 +516,18 @@ class UpdateOntology(smach.State):
 class Finish(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome11'],
+                             input_keys=['input_goals'],
+                             outcomes=['outcome11','outcome12'],
                              )
         
     def execute(self,userdata):
-        f.close()
-        rospy.loginfo('Finishhh')
-        return 'outcome11'
+        if userdata.input_goals!=[]:
+            rospy.loginfo('Passing to the next goal')
+            return "outcome11"
+        else:
+            f.close()
+            rospy.loginfo('Finishhh')
+            return 'outcome12'
 
 
 def main():
@@ -507,9 +535,8 @@ def main():
     # Create a SMACH state machine
     rospy.Subscriber("perception", String, callback)
     try:
-        sm = smach.StateMachine(outcomes=['outcome12'])
-        goals=rospy.get_param("goals")
-        sm.userdata.actual_goal=goals[0]
+        sm = smach.StateMachine(outcomes=['outcome13'])
+        sm.userdata.goals=rospy.get_param("goals")
         sm.userdata.path_domain=""
         sm.userdata.path_problem=""
         sm.userdata.path_init_problem=""
@@ -522,10 +549,15 @@ def main():
         # Open the container
         with sm:
             smach.StateMachine.add('START', State_Start(), 
-                        transitions={'outcome1':'PLAN'},
-                        remapping={'domain_path':'path_domain', 
+                        transitions={'outcome0':'INIT'},
+                        remapping={ 'input_goals':'goals',
+                                    'output_goals':'goals',
+                                    'domain_path':'path_domain', 
                                     'problem_path':'path_problem',
-                                    'init_pb':'path_init_problem'
+                                    'init_pb':'path_init_problem',
+                                    'command':'command_start',
+                                    'path':'folder',
+                                    'plan_path':'path_plan'
                                     })
             # Add states to the container
             smach.StateMachine.add('INIT', State_Init(), 
@@ -581,7 +613,11 @@ def main():
                                 })
 
             smach.StateMachine.add('FINISH', Finish(), 
-                        transitions={'outcome11':'outcome12'},
+                        transitions={'outcome11':"START",
+                                     'outcome12':'outcome13'},
+                        remapping={
+                            "input_goals":"goals"
+                        }
                         )
     
         # Create and start the introspection server for visualization

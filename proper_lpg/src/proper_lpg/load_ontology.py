@@ -1,9 +1,20 @@
 from owlready2 import *
+actions=[]
+actions_objects={}
+type=[]
+types_objects={}
+predicates=[]
+predicates_objects={}
+functions=[]
+function_objects={}
+parameters_objects={}
+objects_objects={}
+new_params=[]
+objects=[]
+goals=[]
 
-#load the ontology
-#define properties
 onto_path.append("/home/alice/")
-onto = get_ontology("http://www.semanticweb.org/alice/ontologies/2023/4/pp#").load()          
+onto = get_ontology("http://www.semanticweb.org/alice/ontologies/2023/10/goal1#").load()        
 with onto:
     class Predicates(Thing):
         pass
@@ -65,7 +76,7 @@ with onto:
         domain    = [Actions]
         range     = [Parameters]
         inverse_property = has_params_actions
-
+    
     class has_params_types(ObjectProperty):
         domain    = [Parameters]
         range     = [Types]
@@ -98,21 +109,6 @@ with onto:
     class has_single_object(DataProperty, FunctionalProperty): 
         domain =[Predicates]
         range = [bool]
-
-#define global variables
-actions=[]
-actions_objects={}
-type=[]
-types_objects={}
-predicates=[]
-predicates_objects={}
-functions=[]
-function_objects={}
-parameters_objects={}
-objects_objects={}
-new_params=[]
-objects=[]
-goals=[]
 
 def change_raward(func,r):
     function_objects[func].has_value=r
@@ -182,7 +178,8 @@ def populate_ontology(domain):
     
     for t in predicates:
         predicates_objects[t]=Predicates(t)
-
+        predicates_objects[t].is_grounded=False
+        predicates_objects[t].is_goal=False
 
     #FUNCTIONS
     t=False
@@ -203,6 +200,10 @@ def populate_ontology(domain):
     
     for t in functions:
         function_objects[t]=Functions(t)
+        function_objects[t].has_value=0
+
+    print("------------------------")
+    print(function_objects)
 
     #connect all the relations between actions predicates and functions
     t=False
@@ -285,6 +286,7 @@ def populate_ontology(domain):
         if len(parameters_objects[new_params[i]].has_params_types)==0:
             parameters_objects[new_params[i]].has_params_types.append(types_objects[associated_types[i]])
         parameters_objects[new_params[i]].has_order=associated_orders[i]
+
 
 def initialize_functions_predicates():
     for p in predicates:
