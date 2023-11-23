@@ -1,14 +1,16 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from action_dispatcher.get_parameters import *
 import os
 import shutil
 import subprocess
 import json
 import time
 import numpy as np
-from proper_lpg.srv import PersonalityGenerator, PersonalityGeneratorRequest
-from proper_lpg.srv import ExecAction, ExecActionResponse
+from proper_reasoning.srv import PersonalityGenerator, PersonalityGeneratorRequest
+from proper_reasoning.srv import ExecAction, ExecActionResponse
 import rospy
-from action_dispatcher.get_parameters import *
 import requests
 
 url='http://127.0.0.1:5008/'
@@ -48,7 +50,7 @@ def dispatch_action(req):
                     data["action"]=req.action
                     data["personality"]=req.personality
                     data["params"]=mmap
-                    resp=requests.put(url+'speak_server', json=data, headers=headers)
+                    #resp=requests.put(url+'speak_server', json=data, headers=headers)
                     
             if mmap["pitch"]=="no_active" and mmap["amplitude"]=="no_active" and mmap["head"]=="no_active":
                     print(req.action,"action nav")
@@ -68,7 +70,7 @@ def dispatch_action(req):
     return True
 
 if __name__ == "__main__":
-    rospy.init_node('action_dispatcher')
+    rospy.init_node('action_dispatcher_node')
     s = rospy.Service('action_dispatcher_srv', ExecAction, dispatch_action)
     print("Ready to add two ints.")
     rospy.spin()

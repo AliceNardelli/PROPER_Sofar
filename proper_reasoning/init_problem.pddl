@@ -2,7 +2,6 @@
 (:objects
 )
 (:init
-        (human_present) 
         (=(dur)5)
         (=(react)3)
         (=(reward_e)5)

@@ -11,7 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
-  proper_lpg
+  proper_reasoning
 )
 
 ## System dependencies are found with CMake's conventions
@@ -71,7 +71,7 @@ catkin_python_setup()
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
    DEPENDENCIES
-   std_msgs  proper_lpg
+   std_msgs  proper_reasoning
  )
 
 ################################################
@@ -161,7 +161,8 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-  scripts/personality_generator.py scripts/action_dispatcher.py
+  scripts/action_dispatcher_node.py
+  scripts/personality_generator.py 
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
