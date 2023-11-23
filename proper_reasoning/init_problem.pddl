@@ -18,7 +18,7 @@
         (=(desired_agreeableness)5)
         (=(agreeableness_level)7)
         (emotion_r) 
-        (touch_reacted)  
+       
 )
 
 (:goal (and 

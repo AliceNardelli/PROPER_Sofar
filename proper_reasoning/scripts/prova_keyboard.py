@@ -1,6 +1,6 @@
 
 import os
-from proper_lpg.msg import Emotions
+from proper_reasoning.msg import Emotions
 # Set cache directories for XDG and Hugging Face Hub
 os.environ['XDG_CACHE_HOME'] = '/home/alice/.cache'
 os.environ['HUGGINGFACE_HUB_CACHE'] = '/home/alice/.cache'

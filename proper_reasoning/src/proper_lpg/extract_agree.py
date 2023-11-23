@@ -5,7 +5,7 @@
 #bit 1 0:not touch 1 bouch
 #bit 2,3 00:neutral 01:sad 10:angry 11:happydict={}
 #agreeable personality
-from proper_lpg.load_ontology import *
+from proper_reasoning.load_ontology import *
 import random
 import numpy as np
 import rospy

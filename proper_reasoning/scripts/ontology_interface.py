@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from proper_lpg.load_ontology import *
-from proper_lpg.extract_agree import *
-from proper_lpg.extract_intro import *
-from proper_lpg.extract_disagree import *
-from proper_lpg.extract_extro import *
-from proper_lpg.extract_consc import *
-from proper_lpg.extract_unscr import *
-from proper_lpg.perception_predicate import *
-from proper_lpg.srv import ExecAction, ExecActionRequest
+from proper_reasoning.load_ontology import *
+from proper_reasoning.extract_agree import *
+from proper_reasoning.extract_intro import *
+from proper_reasoning.extract_disagree import *
+from proper_reasoning.extract_extro import *
+from proper_reasoning.extract_consc import *
+from proper_reasoning.extract_unscr import *
+from proper_reasoning.perception_predicate import *
+from proper_reasoning.srv import ExecAction, ExecActionRequest
 import roslib
 import rospy
 import smach
