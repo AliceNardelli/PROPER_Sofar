@@ -14,7 +14,7 @@ import zlib
 import sys
 import json
 import xml
-import ed
+from ed import *
 from flask import Flask, request, jsonify
 
 

@@ -8,7 +8,7 @@ from std_msgs.msg import String
 from multiprocessing import Process
 import time
 server=None
-
+tt=False
 app = Flask(__name__)
 
 data={
@@ -18,11 +18,15 @@ data={
 
 @app.route ('/tactile_interface', methods = ['PUT'] )   
 def face_detector():
-    global pub_touch
+    global pub_touch,tt
     updated_data = request.get_json()
     data.update(updated_data)
     if data["state"]==True:
         print("Touched")
+        tt=True
+    else:
+        tt=False
+    while tt==True:
         pub_touch.publish("True")
     data["image"]="ok"
     return jsonify(data)

@@ -61,6 +61,7 @@ class State_Start(smach.State):
         actual_goal=goals.pop(0)
         rospy.loginfo('Executing goal: '+ actual_goal)
         dict_goal=rospy.get_param(actual_goal)
+        rospy.set_param("actual_goal",actual_goal)
         userdata.output_goals=goals
         userdata.domain_path=dict_goal["domain"]
         userdata.problem_path=dict_goal["problem"]
@@ -68,9 +69,8 @@ class State_Start(smach.State):
         userdata.command=dict_goal["command"]
         userdata.path=dict_goal["folder"]
         userdata.plan_path=dict_goal["plan"]
-        path=dict_goal["path_onto"]
-        ontology=dict_goal["ontology"]
-        #load_ontology(path, ontology)
+        init_disagreeable_actions()
+        init_extro_actions()
         return 'outcome0'
 
 class State_Init(smach.State):
@@ -194,7 +194,7 @@ class ExAction(smach.State):
             aa,rew=choose_action_a(pi)
             rospy.loginfo(" action chosen: "+ aa)
             
-            time.sleep(5)
+            
             userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
                 f.write("----------------------\n")
@@ -230,7 +230,7 @@ class ExAction(smach.State):
             aa,rew=choose_action_d(pi)
             rospy.loginfo(" action chosen: "+ aa)
             
-            time.sleep(5)
+            
             userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
                 f.write("----------------------\n")
@@ -266,7 +266,7 @@ class ExAction(smach.State):
             print("action", ac, "perception: ",pi)
             #extract the action
             aa,rew=choose_action_i(pi)
-            time.sleep(5)
+            
             userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
                 f.write("----------------------\n")
@@ -303,7 +303,7 @@ class ExAction(smach.State):
             print("action", ac, "perception: ",pi)
             #extract the action
             aa,rew=choose_action_e(pi)
-            time.sleep(5)
+           
             userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
                 f.write("----------------------\n")
@@ -340,7 +340,7 @@ class ExAction(smach.State):
             print("action", ac, "perception: ",pi)
             #extract the action
             aa,rew=choose_action_c(pi)
-            time.sleep(5)
+            
             userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
                 f.write("----------------------\n")
@@ -368,7 +368,7 @@ class ExAction(smach.State):
             print("action", ac, "perception: ",pi)
             #extract the action
             aa,rew=choose_action_u(pi)
-            time.sleep(5)
+           
             userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
                 f.write("----------------------\n")
@@ -397,7 +397,7 @@ class ExAction(smach.State):
             string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
             f.write(string_log)
             rospy.loginfo('Action executed: '+ac)
-            time.sleep(5)
+            
             #time.sleep(10)
             userdata, response=self.call_action_server(userdata, ac,personality)
             if response:
@@ -455,7 +455,7 @@ class CheckPerc(smach.State):
                     return "outcome8"
                 else:
                     f.write("executing next action \n")
-                    time.sleep(5)
+                   
                     return "outcome7"
         else:
             print("new perception  ", perception)

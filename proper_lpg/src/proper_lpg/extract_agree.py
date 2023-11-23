@@ -8,6 +8,7 @@
 from proper_lpg.load_ontology import *
 import random
 import numpy as np
+import rospy
 
 agree_actions=["get_closer","express_happyness","express_empathy","make_peace"]
 

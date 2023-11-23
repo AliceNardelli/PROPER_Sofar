@@ -76,6 +76,7 @@ def publish_emotion():
             final_map["joy"]["prob"]=emotion_dict_s["joy"]
             for s in emotion_dict_s:
                 sum_probs+=emotion_dict_s[s]
+            new_speech=False
         if new_emotion:
             print(emotion_dict_f)
             final_map["anger"]["prob"]=final_map["anger"]["prob"]+emotion_dict_f["anger"]
@@ -85,6 +86,7 @@ def publish_emotion():
             
             for s in emotion_dict_f:
                 sum_probs+=emotion_dict_f[s]
+            new_emotion=False
         max=0
         em=""
         for fm in final_map:

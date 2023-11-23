@@ -8,76 +8,27 @@
 from proper_lpg.load_ontology import *
 import random
 import numpy as np
+import rospy 
 
-extro_actions=["go_closer","express_happiness","ask_a_question","tell_a_joke","say_something_about_itself"]
+extro_actions=[]
+extroversion_dict={}
 
-#no t, n
-zzz_e={"go_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
-     "express_happiness":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "tell_a_joke":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
-# nt, s
-zzo_e={"go_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
-     "express_happiness":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[0,0,1]},
-     "tell_a_joke":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_something_about_itself":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     }
-#nt, a
-zoz_e={"go_closer":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},  
-     "express_happiness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
-#nt, h
-zoo_e={"go_closer":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
-     "express_happiness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
-#t,n
-ozz_e={"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
-     "express_happiness":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
-     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
-     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
-     "say_something_about_itself":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
-     }
-#t,s
-ozo_e={"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
-     "express_happiness":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "tell_a_joke":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
-     "say_something_about_itself":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     }
-#t, a
-ooz_e={"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
-     "express_happiness":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "ask_a_question":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
-     }
-#t,h
-ooo_e={"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
-     "express_happiness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
+def init_extro_actions():
+     global extro_actions, extroversion_dict
+     extro_actions=rospy.get_param("extro_actions")[rospy.get_param("actual_goal")]
 
-extroversion_dict={
-    "NT_N":{"weights":zzz_e,"num":[0,0,0]},
-    "NT_S":{"weights":zzo_e,"num":[0,0,1]},
-    "NT_A":{"weights":zoz_e,"num":[0,1,0]},
-    "NT_H":{"weights":zoo_e,"num":[0,0,0]},
-    "T_N":{"weights":ozz_e,"num":[1,0,0]},
-    "T_S":{"weights":ozo_e,"num":[1,0,1]},
-    "T_A":{"weights":ooz_e,"num":[1,1,0]},
-    "T_H":{"weights":ooo_e,"num":[1,1,1]}
-}
+
+
+     extroversion_dict={
+     "NT_N":{"weights":rospy.get_param("zzz_e")[rospy.get_param("actual_goal")],"num":[0,0,0]},
+     "NT_S":{"weights":rospy.get_param("zzo_e")[rospy.get_param("actual_goal")],"num":[0,0,1]},
+     "NT_A":{"weights":rospy.get_param("zoz_e")[rospy.get_param("actual_goal")],"num":[0,1,0]},
+     "NT_H":{"weights":rospy.get_param("zoo_e")[rospy.get_param("actual_goal")],"num":[0,0,0]},
+     "T_N":{"weights":rospy.get_param("ozz_e")[rospy.get_param("actual_goal")],"num":[1,0,0]},
+     "T_S":{"weights":rospy.get_param("ozo_e")[rospy.get_param("actual_goal")],"num":[1,0,1]},
+     "T_A":{"weights":rospy.get_param("ooz_e")[rospy.get_param("actual_goal")],"num":[1,1,0]},
+     "T_H":{"weights":rospy.get_param("ooo_e")[rospy.get_param("actual_goal")],"num":[1,1,1]}
+     }
 
 
 

@@ -1,0 +1,107 @@
+extro_actions/goal1: ["go_closer","express_happiness","ask_a_question","tell_a_joke","say_something_about_itself"]
+extro_actions/goal2: ["ask_something_about_personal_care","say_robot_cannot_drink","say_should_eat_sweet","say_you_can_embrace_me"]
+
+
+zzz_e/goal1: {"go_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
+     "express_happiness":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "tell_a_joke":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+zzz_e/goal2: {"ask_something_about_personal_care":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
+     "say_robot_cannot_drink":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_should_eat_sweet":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_you_can_embrace_me":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+zzo_e/goal1: {"go_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
+     "express_happiness":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[0,0,1]},
+     "tell_a_joke":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_something_about_itself":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     }
+
+zzo_e/goal2: {"ask_something_about_personal_care":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
+     "say_robot_cannot_drink":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_should_eat_sweet":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_you_can_embrace_me":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+zoz_e/goal1: {"go_closer":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},  
+     "express_happiness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+zoz_e/goal2: {"ask_something_about_personal_care":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
+     "say_robot_cannot_drink":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_should_eat_sweet":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say_you_can_embrace_me":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+zoo_e/goal1: {"go_closer":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
+     "express_happiness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+zoo_e/goal2: {"ask_something_about_personal_care":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
+     "say_robot_cannot_drink":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_should_eat_sweet":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_you_can_embrace_me":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+ozz_e/goal1: {"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
+     "express_happiness":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "say_something_about_itself":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     }
+
+ozz_e/goal2: {"ask_something_about_personal_care":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
+     "say_robot_cannot_drink":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_should_eat_sweet":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_you_can_embrace_me":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+ozo_e/goal1: {"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
+     "express_happiness":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "tell_a_joke":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_something_about_itself":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     }
+
+ozo_e/goal2: {"ask_something_about_personal_care":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
+     "say_robot_cannot_drink":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_should_eat_sweet":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_you_can_embrace_me":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+ooz_e/goal1: {"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
+     "express_happiness":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "ask_a_question":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     }
+
+ooz_e/goal2: {"ask_something_about_personal_care":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
+     "say_robot_cannot_drink":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_should_eat_sweet":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_you_can_embrace_me":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+ooo_e/goal1: {"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
+     "express_happiness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+ooo_e/goal2: {"ask_something_about_personal_care":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
+     "say_robot_cannot_drink":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_should_eat_sweet":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_you_can_embrace_me":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }

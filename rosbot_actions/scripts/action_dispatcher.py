@@ -27,6 +27,7 @@ def dispatch_action(req):
         personality_generator_srv = rospy.ServiceProxy('personality_generator_srv', PersonalityGenerator)
         msg=PersonalityGeneratorRequest()
         msg.action=req.action.split("_")[0]
+        
         print("--------------")
         print(msg.action)
         print("--------------")
@@ -38,7 +39,7 @@ def dispatch_action(req):
           if y!="no_active":
                no_action=False
                break
-        if no_action:
+        if no_action or ("react" in msg.action):
                 print(req.action,"not to execute")        
         
         else:
@@ -47,7 +48,7 @@ def dispatch_action(req):
                     data["action"]=req.action
                     data["personality"]=req.personality
                     data["params"]=mmap
-                    #resp=requests.put(url+'speak_server', json=data, headers=headers)
+                    resp=requests.put(url+'speak_server', json=data, headers=headers)
                     
             if mmap["pitch"]=="no_active" and mmap["amplitude"]=="no_active" and mmap["head"]=="no_active":
                     print(req.action,"action nav")

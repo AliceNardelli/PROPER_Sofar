@@ -8,68 +8,26 @@
 from proper_lpg.load_ontology import *
 import random
 import numpy as np
+import rospy
 
-disagree_actions=["say_not_touch_me","say_to_move_far","say_something_about_angry","say_to_not_smile"]
 
+disagree_actions=[]
 
-zzz_d={"say_not_touch_me":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_to_move_far":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_about_angry":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
-     "say_to_not_smile":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
-     }
+disagreeableness_dict={}
 
-zzo_d={"say_not_touch_me":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-       "say_to_move_far":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_about_angry":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
-     "say_to_not_smile":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
-     }
-
-zoz_d={"say_not_touch_me":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-       "say_to_move_far":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_about_angry":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
-     "say_to_not_smile":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
-     }
-
-zoo_d={"say_not_touch_me":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-       "say_to_move_far":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_about_angry":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
-     "say_to_not_smile":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
-     }
-
-ozz_d={"say_not_touch_me":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-       "say_to_move_far":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "say_something_about_angry":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_to_not_smile":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     }
-
-ozo_d={"say_not_touch_me":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
-      "say_to_move_far":{"w1":4,"w2":2,"expected_outcome":[0,1,0]}, 
-     "say_something_about_angry":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
-     "say_to_not_smile":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     }
-
-ooz_d={"say_not_touch_me":{"w1":4,"w2":2,"expected_outcome":[0,0,1]},
-       "say_to_move_far":{"w1":4,"w2":2,"expected_outcome":[0,0,1]},
-     "say_something_about_angry":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,1]},
-     "say_to_not_smile":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,1]},
-     }
-
-ooo_d={"say_not_touch_me":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
-       "say_to_move_far":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
-     "say_something_about_angry":{"w1":0,"w2":0,"expected_outcome":[0,1,0]},
-     "say_to_not_smile":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
-     }
-
-disagreeableness_dict={
-    "NT_N":{"weights":zzz_d,"num":[0,0,0]},
-    "NT_S":{"weights":zzo_d,"num":[0,0,1]},
-    "NT_A":{"weights":zoz_d,"num":[0,1,0]},
-    "NT_H":{"weights":zoo_d,"num":[0,1,1]},
-    "T_N":{"weights":ozz_d,"num":[1,0,0]},
-    "T_S":{"weights":ozo_d,"num":[1,0,1]},
-    "T_A":{"weights":ooz_d,"num":[1,1,0]},
-    "T_H":{"weights":ooo_d,"num":[1,1,1]}
-}
+def init_disagreeable_actions():
+    global disagree_actions, disagreeableness_dict
+    disagree_actions=rospy.get_param("disagree_actions")[rospy.get_param("actual_goal")]
+    disagreeableness_dict={
+        "NT_N":{"weights":rospy.get_param("zzz_d")[rospy.get_param("actual_goal")],"num":[0,0,0]},
+        "NT_S":{"weights":rospy.get_param("zzo_d")[rospy.get_param("actual_goal")],"num":[0,0,1]},
+        "NT_A":{"weights":rospy.get_param("zoz_d")[rospy.get_param("actual_goal")],"num":[0,1,0]},
+        "NT_H":{"weights":rospy.get_param("zoo_d")[rospy.get_param("actual_goal")],"num":[0,1,1]},
+        "T_N":{"weights":rospy.get_param("ozz_d")[rospy.get_param("actual_goal")],"num":[1,0,0]},
+        "T_S":{"weights":rospy.get_param("ozo_d")[rospy.get_param("actual_goal")],"num":[1,0,1]},
+        "T_A":{"weights":rospy.get_param("ooz_d")[rospy.get_param("actual_goal")],"num":[1,1,0]},
+        "T_H":{"weights":rospy.get_param("ooo_d")[rospy.get_param("actual_goal")],"num":[1,1,1]}
+    }
 
 
 
