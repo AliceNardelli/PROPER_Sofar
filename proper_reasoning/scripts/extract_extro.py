@@ -1,34 +1,42 @@
-#action1 avvicinarsi
-#action2 esprimere entusiasmo
-#action3 raccontare una barzelletta
-#action4 attirare l'attenzione
-#bit 1 0:not touch 1 bouch
-#bit 2,3 00:neutral 01:sad 10:angry 11:happydict={}
-#agreeable personality
-from proper_reasoning.load_ontology import *
 import random
 import numpy as np
-import rospy 
 
-extro_actions=[]
-extroversion_dict={}
-
-def init_extro_actions():
-     global extro_actions, extroversion_dict
-     extro_actions=rospy.get_param("extro_actions")[rospy.get_param("actual_goal")]
-
+#GOAL obtain social attention
+#00 N 
+#01 SA
+#10 A, D, F
+#11 H, SU
+extro_actions=["say_an_enthusiastic_sentence","say_something_funny","ask_a_question"]
 
 
-     extroversion_dict={
-     "NT_N":{"weights":rospy.get_param("zzz_e")[rospy.get_param("actual_goal")],"num":[0,0,0]},
-     "NT_S":{"weights":rospy.get_param("zzo_e")[rospy.get_param("actual_goal")],"num":[0,0,1]},
-     "NT_A":{"weights":rospy.get_param("zoz_e")[rospy.get_param("actual_goal")],"num":[0,1,0]},
-     "NT_H":{"weights":rospy.get_param("zoo_e")[rospy.get_param("actual_goal")],"num":[0,0,0]},
-     "T_N":{"weights":rospy.get_param("ozz_e")[rospy.get_param("actual_goal")],"num":[1,0,0]},
-     "T_S":{"weights":rospy.get_param("ozo_e")[rospy.get_param("actual_goal")],"num":[1,0,1]},
-     "T_A":{"weights":rospy.get_param("ooz_e")[rospy.get_param("actual_goal")],"num":[1,1,0]},
-     "T_H":{"weights":rospy.get_param("ooo_e")[rospy.get_param("actual_goal")],"num":[1,1,1]}
+zz_e={"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[1,1]},
+     "say_something_funny":{"w1":2,"w2":1,"expected_outcome":[1,1]},
+     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[1,1]},
      }
+
+zo_e={"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[1,1]},
+     "say_something_funny":{"w1":4,"w2":2,"expected_outcome":[1,1]},
+     "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[1,1]},
+     }
+
+oz_e={"say_an_enthusiastic_sentence":{"w1":2,"w2":1,"expected_outcome":[1,1]},
+     "say_something_funny":{"w1":2,"w2":1,"expected_outcome":[1,1]},
+     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[1,1]},
+     }
+
+oo_e={"say_an_enthusiastic_sentence":{"w1":4,"w2":2,"expected_outcome":[1,1]},
+     "say_something_funny":{"w1":0,"w2":0,"expected_outcome":[1,1]},
+     "ask_a_question":{"w1":2,"w2":1,"expected_outcome":[1,1]},
+     }
+
+
+
+extroversion_dict={
+    "N":{"weights":zz_e,"num":[0,0]},
+    "S":{"weights":zo_e,"num":[0,1]},
+    "A":{"weights":oz_e,"num":[1,0]},
+    "H":{"weights":oo_e,"num":[0,0]},
+}
 
 
 

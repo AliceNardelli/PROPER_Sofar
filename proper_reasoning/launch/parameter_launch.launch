@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-
-<launch>
-
-    <rosparam file="$(find proper_reasoning)/config/ontology_interface_param.yaml" command="load" />
-    <rosparam file="$(find proper_reasoning)/config/disagree_actions.yaml" command="load" />
-    <rosparam file="$(find proper_reasoning)/config/extro_actions.yaml" command="load" />
-    
-</launch>

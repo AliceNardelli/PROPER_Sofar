@@ -1,0 +1,9 @@
+perception_predicate_map={
+    "N":{"touch":"","emotion":"neutral_emotion","goals":["neutral_emotion_r","emotion_r"]},
+    "SA":{"touch":"","emotion":"sad_emotion","goals":["sad_emotion_r","emotion_r"]},
+    "SU":{"touch":"","emotion":"surprised_emotion","goals":["surprised_emotion_r","emotion_r"]},
+    "A":{"touch":"","emotion":"anger_emotion","goals":["anger_emotion_r","emotion_r"]},
+    "H":{"touch":"","emotion":"happy_emotion","goals":["happy_emotion_r","emotion_r"]},
+    "D":{"touch":"","emotion":"disgust_emotion","goals":["disgust_emotion_r","emotion_r"]},
+    "F":{"touch":"","emotion":"fear_emotion","goals":["fear_emotion_r","emotion_r"]},
+}
