@@ -7,7 +7,6 @@ import time
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 import torch
 import numpy as np
-from proper_reasoning.srv import PersonalityGenerator, PersonalityGeneratorResponse
 import rospy
 
 model = AutoModelForSequenceClassification.from_pretrained("/home/alice/personality_generator_model_new", num_labels=21, problem_type="multi_label_classification") 
@@ -23,9 +22,9 @@ def generate_params(personality, action):
     probs = sigmoid(logits.squeeze().cpu())
     predictions = np.zeros(probs.shape)
     predictions[np.where(probs >= 0.5)] = 1
-    r=PersonalityGeneratorResponse()
-    r.params=list(predictions)
-    return r
+    params=list(predictions)
+    
+    return params
 
 
 

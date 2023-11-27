@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
 import requests
 import time
 url='http://127.0.0.1:5015/'
@@ -67,6 +68,7 @@ def update_input():
         new_sentence_input=data["new_sentence"]
         new_emotion_input=data["new_emotion"]
         emotion_input=emotion_dict_interface[data["emotion"]]
+        print("updated input",data)
         return jsonify(data)
 
 @app.route ('/get_input', methods = ['PUT'] )  
@@ -77,11 +79,11 @@ def get_input():
         data["new_sentence"]=new_sentence_input
         data["new_emotion"]=new_emotion_input
         data["emotion"]=emotion_input
+        print("get input",data)
         return jsonify(data)
 
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5020, debug=True)
 
-"""
 

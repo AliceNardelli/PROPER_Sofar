@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import requests
 from load_ontology import *
 from problem_param import *
 from perception_predicate import *
@@ -33,7 +33,15 @@ emotion=""
 new_emotion=False
 new_sentence=False
 
+url='http://127.0.0.1:5020/'
+headers= {'Content-Type':'application/json'}
 
+data={
+    "emotion":"",
+    "new_sentence":"False",
+    "new_emotion":"False"
+}
+"""
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -56,7 +64,7 @@ def update_input():
             emotion=data["emotion"]
         print("GET INPUT DATA")
         return jsonify(data)
-
+"""
 
 f = open("/home/alice/logging.txt", "a")
 
@@ -182,7 +190,7 @@ class ExAction(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
                              outcomes=['outcome8','outcome9'],
-                             input_keys=['executing0,_actions'],
+                             input_keys=['executing_actions'],
                              output_keys=['updated_actions','action','state']) 
     def execute(self, userdata):
         global new_emotion, emotion
@@ -349,7 +357,7 @@ class ExAction(smach.State):
     def call_action_server(self, userdata, ac,personality):
             userdata.state="exec"
             resp = dispatch_action(ac, personality)
-            if resp.success==False:
+            if resp==False:
                     print('Action Failed')        
                     f.write("ACTION FAIL\n")
                     return userdata, False
@@ -369,15 +377,28 @@ class CheckPerc(smach.State):
                              input_keys=["state","exec_actions","action"])
         
     def execute(self, userdata):
-        global emotion, new_emotion, new_sentence
+        global emotion, new_emotion, new_sentence, data
         print('check perception')
-        a=userdata.action
-        
-        
+        """
         while (new_emotion==False and new_sentence==False and userdata.action==""):
             time.sleep(1)
-            
-
+        """   
+        resp=requests.put(url+'get_input', json=data, headers=headers)
+        print(data)
+        if eval(resp.text)["new_emotion"]=="True":
+            new_emotion=True
+            emotion=data["emotion"]
+        if eval(resp.text)["new_sentence"]=="True":
+            new_sentence=True
+        while (new_emotion==False and new_sentence==False and userdata.action==""):
+            time.sleep(1)
+            resp=requests.put(url+'get_input', json=data, headers=headers)
+            print(data)
+            if eval(resp.text)["new_emotion"]=="True":
+                new_emotion=True
+                emotion=eval(resp.text)["emotion"]
+            if eval(resp.text)["new_sentence"]=="True":
+                new_sentence=True
         print("RECEIVED PERCEPTION OR ACTION TO EXEC")
         print(emotion)
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
@@ -408,7 +429,9 @@ class CheckPerc(smach.State):
                new_emotion=False
             if new_sentence:
                 add_goal("answered")
+                add_goal("finished")
                 remove_predicate("ansewred")
+                remove_predicate("finished")
                 add_predicate("new_sentence")
                 new_sentence=False
             return "outcome3"
@@ -445,7 +468,7 @@ class UpdateOntology(smach.State):
         string_log="after consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
         f.write(string_log)
         userdata.out_action=acc
-        return 'outcome6'
+        return 'outcome10'
     
 
 class Finish(smach.State):
@@ -464,8 +487,8 @@ class Finish(smach.State):
             print('Finishhh')
             return 'outcome12'
 
-def start_app(sm):
-   outcome = sm.execute()  
+#def start_app(sm):
+   #outcome = sm.execute()  
 
 
 def main():
@@ -560,13 +583,13 @@ def main():
         #sis.start()
 
         # Execute the state machine
+        outcome = sm.execute()
         
-        
-        thread = threading.Thread(target=start_app(sm))
-        thread.start()
-        app.run(host='0.0.0.0', port=5015, debug=True)
+        #thread = threading.Thread(target=start_app(sm))
+       # thread.start()
+        #app.run(host='0.0.0.0', port=5015, debug=True)
          
-        thread.join() 
+        #thread.join() 
 
     except:
         print("interrupt")

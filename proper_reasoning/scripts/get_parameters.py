@@ -1,16 +1,6 @@
-import requests
 from collections import OrderedDict
 import numpy as np
 
-traits=["Introvert","Extrovert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
-weights=[0.0,0.0,0.0,0.5,0.0,0.5]
-objects=["l1","l2","l3"]
-url='http://127.0.0.1:5008/'
-headers= {'Content-Type':'application/json'}
-dict = {
-    'action': "Plan",
-    "personality":"p",
-}
 pitch={"no_active":[0,0],
        "low":[0,1],
        "mid":[1,0],
@@ -93,6 +83,7 @@ bit_map=[2,3,3,2,3,2,2,2,2]
 parameters=["pitch","volume","velocity","gaze","head","amplitude","g_speed","speed", "prox"]
 
 def get_map(predictions):
+   
     c=0
     result={p:[] for p in parameters}
     
@@ -102,29 +93,9 @@ def get_map(predictions):
         bits=predictions[c:c+no_bit]
         c+=no_bit
         value=reversed[param][str(list([int(b) for b in bits]))]
-        #print(param,bits,value)
         result[param]=value
     
     return result
 
-def extract_personality():
-  return np.random.choice(traits,p=weights)
 
-def server_interface():
-    response_put= requests.put(url+'planner_launch', json=dict, headers=headers)   
-    my_plan = response_put.text
-    plan=eval(my_plan)["plan"]
-    cost=plan.pop()
-    return plan,cost
-        
-def get_params(action):
-    for o in objects:
-        action=action.replace(o,"")
-    dict["action"]=action
-    personality=extract_personality()
-    dict["personality"]=personality
-    resp=requests.put(url+'parameters', json=dict, headers=headers)
-    m=get_map(eval(resp.text)["param"])   
-    return eval(resp.text)["param"], m, personality
-    
 
