@@ -15,7 +15,7 @@ import smach
 import random
 import numpy as np
 import time
-from flask import Flask, request, jsonify
+import threading
 
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
@@ -29,28 +29,33 @@ wd=0
 sum_weights=we +wi +wc + wu + wa + wd
 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
 gamma=1
-emotion="N"
+emotion=""
 new_emotion=False
 new_sentence=False
+
+
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
 data={
     "emotion":"",
+    "new_sentence":"False",
+    "new_emotion":"False"
 }
- 
 
-@app.route ('/perception_server', methods = ['PUT'] )   
-def updating_perception():
-    global new_emotion, new_sentence, emotion
-    updated_data = request.get_json()
-    if updated_data["new_sentence"]=="True":
-        new_sentence=True
-    if updated_data["emotion"]!="":
-        new_emotion=True
-        emotion=updated_data["emotion"]
-    data.update(updated_data)
-    return jsonify(data)
+@app.route ('/update_input', methods = ['PUT'] )  
+def update_input():
+        global new_sentence, emotion, new_emotion
+        updated_data = request.get_json()
+        data.update(updated_data)
+        if data["new_sentence"]=="True":
+            new_sentence=True
+        if data["new_emotion"]=="True":
+            new_emotion=True
+            emotion=data["emotion"]
+        print("GET INPUT DATA")
+        return jsonify(data)
 
 
 f = open("/home/alice/logging.txt", "a")
@@ -366,9 +371,15 @@ class CheckPerc(smach.State):
     def execute(self, userdata):
         global emotion, new_emotion, new_sentence
         print('check perception')
+        a=userdata.action
+        
+        
         while (new_emotion==False and new_sentence==False and userdata.action==""):
-            print("waiting_a_perception")
+            time.sleep(1)
+            
 
+        print("RECEIVED PERCEPTION OR ACTION TO EXEC")
+        print(emotion)
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
         if new_emotion==False and new_sentence==False:
             if "ACTION" in userdata.action:
@@ -399,6 +410,7 @@ class CheckPerc(smach.State):
                 add_goal("answered")
                 remove_predicate("ansewred")
                 add_predicate("new_sentence")
+                new_sentence=False
             return "outcome3"
 
         
@@ -452,6 +464,9 @@ class Finish(smach.State):
             print('Finishhh')
             return 'outcome12'
 
+def start_app(sm):
+   outcome = sm.execute()  
+
 
 def main():
     try:
@@ -464,7 +479,7 @@ def main():
         sm.userdata.folder =""
         sm.userdata.path_plan =""
         sm.userdata.actions =[]
-        sm.userdata.a="a"
+        sm.userdata.a=""
         sm.userdata.previous_state=""
         # Open the container
         with sm:
@@ -545,10 +560,15 @@ def main():
         #sis.start()
 
         # Execute the state machine
-        outcome = sm.execute()
-        app.run(host='0.0.0.0', port=5008, debug=True)
-    except:
+        
+        
+        thread = threading.Thread(target=start_app(sm))
+        thread.start()
+        app.run(host='0.0.0.0', port=5015, debug=True)
+         
+        thread.join() 
 
+    except:
         print("interrupt")
 
 if __name__ == '__main__':
