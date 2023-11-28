@@ -39,7 +39,8 @@ headers= {'Content-Type':'application/json'}
 data={
     "emotion":"",
     "new_sentence":"False",
-    "new_emotion":"False"
+    "new_emotion":"False",
+    "update":"False"
 }
 
 
@@ -174,7 +175,11 @@ class ExAction(smach.State):
         global new_emotion, emotion
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
+
         if ac=="AGREE_ACTION":
+            data["update"]="False"
+            resp=requests.put(url+'get_input', json=data, headers=headers)
+            emotion=eval(resp.text)["emotion"]
             pi=map_emotion_AV_axis[emotion]
             aa,rew=choose_action_a(pi)
             userdata, response=self.call_action_server(userdata, aa, personality)
@@ -184,6 +189,9 @@ class ExAction(smach.State):
                 f.write(string_log)
                 string_log="AGREE ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+ "\n"
                 f.write(string_log)
+                data["update"]="False"
+                resp=requests.put(url+'get_input', json=data, headers=headers)
+                emotion=eval(resp.text)["emotion"]
                 rr=update_weights_a(aa,pi,map_emotion_AV_axis[emotion]) #qui in ogni caso avrò una new perception
                 string_log="after PERCEPTION: " + map_emotion_AV_axis[emotion]+ " reward "+ str(rr)+ "\n"
                 f.write(string_log)
@@ -194,6 +202,9 @@ class ExAction(smach.State):
 
         
         if ac=="DISAGREE_ACTION":
+            data["update"]="False"
+            resp=requests.put(url+'get_input', json=data, headers=headers)
+            emotion=eval(resp.text)["emotion"]
             pi=map_emotion_AV_axis[emotion]
             aa,rew=choose_action_d(map_emotion_AV_axis[emotion])
             userdata, response=self.call_action_server(userdata, aa, personality)
@@ -203,6 +214,9 @@ class ExAction(smach.State):
                 f.write(string_log)
                 string_log="DISAGREE ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+ "\n"
                 f.write(string_log)
+                data["update"]="False"
+                resp=requests.put(url+'get_input', json=data, headers=headers)
+                emotion=eval(resp.text)["emotion"]
                 rr=update_weights_d(aa,pi,map_emotion_AV_axis[emotion]) #qui in ogni caso avrò una new perception
                 string_log="after PERCEPTION: " + map_emotion_AV_axis[emotion]+ " reward "+ str(rr)+ "\n"
                 f.write(string_log)
@@ -215,6 +229,9 @@ class ExAction(smach.State):
 
             
         elif ac=="INTRO_ACTION":
+            data["update"]="False"
+            resp=requests.put(url+'get_input', json=data, headers=headers)
+            emotion=eval(resp.text)["emotion"]
             pi=map_emotion_AV_axis[emotion]
             aa,rew=choose_action_i(pi)
             userdata, response=self.call_action_server(userdata, aa, personality)
@@ -224,6 +241,9 @@ class ExAction(smach.State):
                 f.write(string_log)
                 string_log="INTRO ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+"\n"
                 f.write(string_log)
+                data["update"]="False"
+                resp=requests.put(url+'get_input', json=data, headers=headers)
+                emotion=eval(resp.text)["emotion"]
                 pn=map_emotion_AV_axis[emotion]
                 rr=update_weights_i(aa,pi,pn) #qui in ogni caso avrò una new perception
                 string_log="after PERCEPTION: " + pn+ " reward "+ str(rr) + "\n"
@@ -240,6 +260,9 @@ class ExAction(smach.State):
 
 
         elif ac=="EXTRO_ACTION":
+            data["update"]="False"
+            resp=requests.put(url+'get_input', json=data, headers=headers)
+            emotion=eval(resp.text)["emotion"]
             pi=map_emotion_AV_axis[emotion]
             aa,rew=choose_action_e(pi)
             userdata, response=self.call_action_server(userdata, aa, personality)
@@ -249,6 +272,9 @@ class ExAction(smach.State):
                 f.write(string_log)
                 string_log="EXTRO ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+"\n"
                 f.write(string_log)
+                data["update"]="False"
+                resp=requests.put(url+'get_input', json=data, headers=headers)
+                emotion=eval(resp.text)["emotion"]
                 pn=map_emotion_AV_axis[emotion]
                 rr=update_weights_e(aa,pi,pn) #qui in ogni caso avrò una new perception
                 string_log="after PERCEPTION: " + pn+ " reward "+ str(rr) + "\n"
@@ -261,9 +287,10 @@ class ExAction(smach.State):
                 return "outcome8"
 
 
-
-
         elif ac=="CONSC_ACTION":
+            data["update"]="False"
+            resp=requests.put(url+'get_input', json=data, headers=headers)
+            emotion=eval(resp.text)["emotion"]
             pi=map_emotion_AV_axis[emotion]
             aa,rew=choose_action_c(pi)
             userdata, response=self.call_action_server(userdata, aa,personality)
@@ -282,6 +309,9 @@ class ExAction(smach.State):
 
 
         elif ac=="UNSC_ACTION":
+            data["update"]="False"
+            resp=requests.put(url+'get_input', json=data, headers=headers)
+            emotion=eval(resp.text)["emotion"]
             pi=map_emotion_AV_axis[emotion]
             aa,rew=choose_action_u(pi)
            
@@ -348,6 +378,7 @@ class CheckPerc(smach.State):
     def execute(self, userdata):
         global emotion, new_emotion, new_sentence, data
         print('check perception') 
+        data["update"]="True"
         resp=requests.put(url+'get_input', json=data, headers=headers)
         print(data)
         if eval(resp.text)["new_emotion"]=="True":
@@ -357,6 +388,7 @@ class CheckPerc(smach.State):
             new_sentence=True
         while (new_emotion==False and new_sentence==False and userdata.action==""):
             time.sleep(1)
+            data["update"]="True"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             print(data)
             if eval(resp.text)["new_emotion"]=="True":
@@ -395,12 +427,13 @@ class CheckPerc(smach.State):
                
             if new_sentence:
                 add_goal("answered")
-                add_goal("finished")
                 remove_predicate("answered")
-                remove_predicate("finished")
+                
                 add_predicate("new_sentence")
                 string_long=string_long+"User say a sentence\n"
                 new_sentence=False
+            add_goal("feel_comfort")
+            remove_predicate("feel_comfort")
             f1.write(string_long)
             return "outcome3"
 
