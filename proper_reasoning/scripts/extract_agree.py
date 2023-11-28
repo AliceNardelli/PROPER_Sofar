@@ -62,14 +62,14 @@ ooo_a={"ask_if_can_it_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
      }
 
 agreeableness_dict={
-    "NS_N":{"weights":zzz_a,"num":[0,0]},
-    "NS_S":{"weights":zzo_a,"num":[0,1]},
-    "NS_A":{"weights":zoz_a,"num":[1,0]},
-    "NS_H":{"weights":zoo_a,"num":[1,1]},
-    "S_N":{"weights":ozz_a,"num":[0,0]},
-    "S_S":{"weights":ozo_a,"num":[0,1]},
-    "S_A":{"weights":ooz_a,"num":[1,0]},
-    "S_H":{"weights":ooo_a,"num":[1,1]}
+    "NS_N":{"weights":zzz_a,"num":[0,0,0]},
+    "NS_S":{"weights":zzo_a,"num":[0,0,1]},
+    "NS_A":{"weights":zoz_a,"num":[0,1,0]},
+    "NS_H":{"weights":zoo_a,"num":[0,1,1]},
+    "S_N":{"weights":ozz_a,"num":[0,0,0]},
+    "S_S":{"weights":ozo_a,"num":[0,0,1]},
+    "S_A":{"weights":ooz_a,"num":[0,1,0]},
+    "S_H":{"weights":ooo_a,"num":[0,1,1]}
 }
 
 

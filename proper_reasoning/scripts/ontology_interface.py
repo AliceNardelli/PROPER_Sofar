@@ -23,8 +23,8 @@ traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
 wi=0
 wc=0
-wu=1
-wa=0
+wu=0
+wa=1
 wd=0
 sum_weights=we +wi +wc + wu + wa + wd
 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
@@ -45,7 +45,7 @@ data={
 
 
 f = open("/home/alice/logging.txt", "a")
-f1 = open("/home/alice/logging_disagree.txt", "a")
+f1 = open("/home/alice/logging_agree2.txt", "a")
 
 
 
@@ -172,7 +172,7 @@ class ExAction(smach.State):
                              input_keys=['executing_actions'],
                              output_keys=['updated_actions','action','state']) 
     def execute(self, userdata):
-        global new_emotion, emotion
+        global new_emotion, emotion, new_sentence
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
 
@@ -180,7 +180,10 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
-            pi=map_emotion_AV_axis[emotion]
+            if new_sentence:
+                pi="S_"+map_emotion_AV_axis[emotion]
+            else:
+                pi="NS_"+map_emotion_AV_axis[emotion]
             aa,rew=choose_action_a(pi)
             userdata, response=self.call_action_server(userdata, aa, personality)
             if response:
@@ -192,7 +195,11 @@ class ExAction(smach.State):
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
-                rr=update_weights_a(aa,pi,map_emotion_AV_axis[emotion]) #qui in ogni caso avrò una new perception
+                if new_sentence:
+                    pn="S_"+map_emotion_AV_axis[emotion]
+                else:
+                    pn="NS_"+map_emotion_AV_axis[emotion]
+                rr=update_weights_a(aa,pi,pn) #qui in ogni caso avrò una new perception
                 string_log="after PERCEPTION: " + map_emotion_AV_axis[emotion]+ " reward "+ str(rr)+ "\n"
                 f.write(string_log)
                 change_raward("reward_a",float(rr))
