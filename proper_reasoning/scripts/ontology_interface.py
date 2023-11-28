@@ -41,30 +41,7 @@ data={
     "new_sentence":"False",
     "new_emotion":"False"
 }
-"""
-from flask import Flask, request, jsonify
 
-app = Flask(__name__)
-
-data={
-    "emotion":"",
-    "new_sentence":"False",
-    "new_emotion":"False"
-}
-
-@app.route ('/update_input', methods = ['PUT'] )  
-def update_input():
-        global new_sentence, emotion, new_emotion
-        updated_data = request.get_json()
-        data.update(updated_data)
-        if data["new_sentence"]=="True":
-            new_sentence=True
-        if data["new_emotion"]=="True":
-            new_emotion=True
-            emotion=data["emotion"]
-        print("GET INPUT DATA")
-        return jsonify(data)
-"""
 
 f = open("/home/alice/logging.txt", "a")
 
@@ -270,7 +247,7 @@ class ExAction(smach.State):
 
 
             pi=map_emotion_AV_axis[emotion]
-            aa,rew=choose_action_i(pi)
+            aa,rew=choose_action_e(pi)
             print("action", aa, "perception: ", emotion)
             userdata, response=self.call_action_server(userdata, aa, personality)
             if response:
@@ -378,16 +355,13 @@ class CheckPerc(smach.State):
         
     def execute(self, userdata):
         global emotion, new_emotion, new_sentence, data
-        print('check perception')
-        """
-        while (new_emotion==False and new_sentence==False and userdata.action==""):
-            time.sleep(1)
-        """   
+        print('check perception') 
+        print(emotion) 
         resp=requests.put(url+'get_input', json=data, headers=headers)
         print(data)
         if eval(resp.text)["new_emotion"]=="True":
             new_emotion=True
-            emotion=data["emotion"]
+            emotion=eval(resp.text)["emotion"]
         if eval(resp.text)["new_sentence"]=="True":
             new_sentence=True
         while (new_emotion==False and new_sentence==False and userdata.action==""):
@@ -400,7 +374,7 @@ class CheckPerc(smach.State):
             if eval(resp.text)["new_sentence"]=="True":
                 new_sentence=True
         print("RECEIVED PERCEPTION OR ACTION TO EXEC")
-        print(emotion)
+        print(new_emotion,new_sentence,emotion)
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
         if new_emotion==False and new_sentence==False:
             if "ACTION" in userdata.action:
@@ -420,17 +394,18 @@ class CheckPerc(smach.State):
         #IF NEW PERCEPTION
         else:
             if new_emotion:
-               new_emotion=perception_predicate_map[emotion]["emotion"]
+               new_emotion=False
+               emotion_pred=perception_predicate_map[emotion]["emotion"]
                goals=perception_predicate_map[emotion]["goals"]
-               add_predicate(new_emotion)
+               add_predicate(emotion_pred)
                for g in goals:
                     add_goal(g)#state that that predicate is a goal
                     remove_predicate(g) #now the goal predicate is not grounded
-               new_emotion=False
+               
             if new_sentence:
                 add_goal("answered")
                 add_goal("finished")
-                remove_predicate("ansewred")
+                remove_predicate("answered")
                 remove_predicate("finished")
                 add_predicate("new_sentence")
                 new_sentence=False
@@ -487,8 +462,7 @@ class Finish(smach.State):
             print('Finishhh')
             return 'outcome12'
 
-#def start_app(sm):
-   #outcome = sm.execute()  
+
 
 
 def main():
@@ -582,14 +556,10 @@ def main():
         #sis = smach_ros.IntrospectionServer('server_name', sm, '/SM_ROOT')
         #sis.start()
 
-        # Execute the state machine
+     
         outcome = sm.execute()
         
-        #thread = threading.Thread(target=start_app(sm))
-       # thread.start()
-        #app.run(host='0.0.0.0', port=5015, debug=True)
-         
-        #thread.join() 
+    
 
     except:
         print("interrupt")

@@ -202,9 +202,6 @@ def populate_ontology(domain):
         function_objects[t]=Functions(t)
         function_objects[t].has_value=0
 
-    print("------------------------")
-    print(function_objects)
-
     #connect all the relations between actions predicates and functions
     t=False
     pr=False
@@ -471,7 +468,7 @@ def update_ontology(a):
                     if o[1]=="when":
                         
                         if predicates_objects[o[2]].is_grounded:
-                            print(o)
+
                             if o[3]=="assign":
                                 f.has_value=int(o[5])
                             elif o[3]=="increase":

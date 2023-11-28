@@ -1,43 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-import requests
-import time
-url='http://127.0.0.1:5015/'
-headers= {'Content-Type':'application/json'}
-
-data={
-      "new_emotion":"False",
-      "new_sentence":"False",
-      "emotion":""
-}
-emotion_dict_interface={'emotion_Angry':"A", 
-                        'emotion_Disgust':"D",
-                        'emotion_Fear':"F", 
-                        'emotion_Happy':"H",
-                        'emotion_Neutral':"N",
-                        'emotion_Sad':"SA",
-                        'emotion_Surprise':"SU"}
-
-def send_request(ne,ns,em):
-    data["new_emotion"]=ne
-    data["new_sentence"]=ns
-    data["emotion"]=emotion_dict_interface[em]
-    resp=requests.put(url+'update_input', json=data, headers=headers)
-    print("sent")
-
-    
-
-if __name__ == "__main__":
-    t=0
-    while t<100:
-       t+=1
-       
-    send_request("True","True",'emotion_Disgust')
-
-
-"""
 import time
 from flask import Flask, request, jsonify
 
@@ -80,6 +43,9 @@ def get_input():
         data["new_emotion"]=new_emotion_input
         data["emotion"]=emotion_input
         print("get input",data)
+        new_sentence_input="False"
+        new_emotion_input="False"
+        emotion_input=""
         return jsonify(data)
 
 

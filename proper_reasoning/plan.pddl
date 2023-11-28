@@ -19,12 +19,12 @@ Cueing down from goal distance:    1 into depth [1]
 
 ff: found legal plan as follows
 
-step    0: REACT_HAPPY_EMOTION
+step    0: CHECK_FINISH
      
 
-time spent:    0.00 seconds instantiating 5 easy, 0 hard action templates
+time spent:    0.00 seconds instantiating 4 easy, 0 hard action templates
                0.00 seconds reachability analysis, yielding 4 facts and 4 actions
-               0.00 seconds creating final representation with 4 relevant facts, 3 relevant fluents
+               0.00 seconds creating final representation with 1 relevant facts, 3 relevant fluents
                0.00 seconds computing LNF
                0.00 seconds building connectivity graph
                0.00 seconds searching, evaluating 2 states, to a max depth of 1
