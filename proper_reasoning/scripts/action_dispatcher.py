@@ -7,12 +7,12 @@ from personality_generator import *
 
 def dispatch_action(action, personality):
         params=generate_params(personality, action)
-       
         mmap =get_map(params)
         print("otput********************")
         print(mmap,action,personality)
         print("********************")
-        return True
+        time.sleep(15)
+        return True, mmap, action, personality
         
     
 

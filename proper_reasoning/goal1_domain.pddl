@@ -266,12 +266,12 @@
         :effect
                 (and
                            
-                           (when (intro) (decrease (interaction_level)(*(extroversion_coefficient)(-(dur)2))))
-                           (when (extro) (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)2))))
-                           (when (consc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(-(dur)2))))
-                           (when (unsc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)2))))
-                           (when (agree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(-(dur)2))))
-                           (when (disagree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)2))))
+                           (when (intro) (decrease (interaction_level)(*(extroversion_coefficient)(-(dur)3))))
+                           (when (extro) (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)3))))
+                           (when (consc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(-(dur)3))))
+                           (when (unsc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)3))))
+                           (when (agree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(-(dur)3))))
+                           (when (disagree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)3))))
                            (answered)                 
                 )
 )
@@ -291,8 +291,8 @@
         :effect
                 (and
                            
-                           (when (intro) (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)2))))
-                           (when (extro) (decrease (interaction_level)(*(extroversion_coefficient)(-(dur)2))))
+                           (when (intro) (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)3))))
+                           (when (extro) (decrease (interaction_level)(*(extroversion_coefficient)(-(dur)3))))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)10)))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)10)))
                            (answered)                 
@@ -316,8 +316,8 @@
                 (and
                            
                            (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)10)))
-                           (when (disagree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(-(dur)2))))
-                           (when (agree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)2))))
+                           (when (disagree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(-(dur)3))))
+                           (when (agree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)3))))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)10)))
                            (answered)                 
                 )
@@ -339,9 +339,9 @@
                 (and
                            
                            (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)10)))
-                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)10)))
-                           (when (unsc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(-(dur)2))))
-                           (when (consc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)2))))
+                           (decrease (agreeableness_level)(*(agreeableness_level)(+(dur)10)))
+                           (when (unsc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(-(dur)3))))
+                           (when (consc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)3))))
                            (answered)                 
                 )
 )

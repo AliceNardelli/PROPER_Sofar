@@ -20,11 +20,11 @@ import threading
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=1
+we=0
 wi=0
 wc=0
 wu=0
-wa=0
+wa=1
 wd=0
 sum_weights=we +wi +wc + wu + wa + wd
 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
@@ -44,6 +44,7 @@ data={
 
 
 f = open("/home/alice/logging.txt", "a")
+f1 = open("/home/alice/logging_agree.txt", "a")
 
 
 
@@ -173,11 +174,9 @@ class ExAction(smach.State):
         global new_emotion, emotion
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
-        print(ac +"--------------"+personality)
         if ac=="AGREE_ACTION":
             pi=map_emotion_AV_axis[emotion]
             aa,rew=choose_action_a(pi)
-            print("action", aa, "perception: ", emotion)
             userdata, response=self.call_action_server(userdata, aa, personality)
             if response:
                 f.write("----------------------\n")
@@ -197,7 +196,6 @@ class ExAction(smach.State):
         if ac=="DISAGREE_ACTION":
             pi=map_emotion_AV_axis[emotion]
             aa,rew=choose_action_d(map_emotion_AV_axis[emotion])
-            print("action", aa, "perception: ", emotion)
             userdata, response=self.call_action_server(userdata, aa, personality)
             if response:
                 f.write("----------------------\n")
@@ -219,7 +217,6 @@ class ExAction(smach.State):
         elif ac=="INTRO_ACTION":
             pi=map_emotion_AV_axis[emotion]
             aa,rew=choose_action_i(pi)
-            print("action", aa, "perception: ", emotion)
             userdata, response=self.call_action_server(userdata, aa, personality)
             if response:
                 f.write("----------------------\n")
@@ -227,7 +224,6 @@ class ExAction(smach.State):
                 f.write(string_log)
                 string_log="INTRO ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+"\n"
                 f.write(string_log)
-                print(" action chosen: "+ aa)
                 pn=map_emotion_AV_axis[emotion]
                 rr=update_weights_i(aa,pi,pn) #qui in ogni caso avrò una new perception
                 string_log="after PERCEPTION: " + pn+ " reward "+ str(rr) + "\n"
@@ -244,11 +240,8 @@ class ExAction(smach.State):
 
 
         elif ac=="EXTRO_ACTION":
-
-
             pi=map_emotion_AV_axis[emotion]
             aa,rew=choose_action_e(pi)
-            print("action", aa, "perception: ", emotion)
             userdata, response=self.call_action_server(userdata, aa, personality)
             if response:
                 f.write("----------------------\n")
@@ -256,7 +249,6 @@ class ExAction(smach.State):
                 f.write(string_log)
                 string_log="EXTRO ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+"\n"
                 f.write(string_log)
-                print(" action chosen: "+ aa)
                 pn=map_emotion_AV_axis[emotion]
                 rr=update_weights_e(aa,pi,pn) #qui in ogni caso avrò una new perception
                 string_log="after PERCEPTION: " + pn+ " reward "+ str(rr) + "\n"
@@ -274,7 +266,6 @@ class ExAction(smach.State):
         elif ac=="CONSC_ACTION":
             pi=map_emotion_AV_axis[emotion]
             aa,rew=choose_action_c(pi)
-            print("action", aa, "perception: ", emotion)
             userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
                 f.write("----------------------\n")
@@ -301,7 +292,6 @@ class ExAction(smach.State):
                 f.write(string_log)
                 string_log="UNSC ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+ "\n"
                 f.write(string_log)
-                print(" action chosen: "+ aa)
                 #exec
                 string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
                 f.write(string_log)
@@ -321,7 +311,7 @@ class ExAction(smach.State):
             f.write(string_log)
             string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
             f.write(string_log)
-            print('Action executed: '+ac)
+            
             
             #time.sleep(10)
             userdata, response=self.call_action_server(userdata, ac,personality)
@@ -333,7 +323,9 @@ class ExAction(smach.State):
 
     def call_action_server(self, userdata, ac,personality):
             userdata.state="exec"
-            resp = dispatch_action(ac, personality)
+            resp, mmap, to_exec_action, exec_personality = dispatch_action(ac, personality)
+            string_long="********************EXECUTING ACTION\n"+str(mmap)+"\n"+to_exec_action+"\n"+exec_personality+"\n"
+            f1.write(string_long)
             if resp==False:
                     print('Action Failed')        
                     f.write("ACTION FAIL\n")
@@ -356,7 +348,6 @@ class CheckPerc(smach.State):
     def execute(self, userdata):
         global emotion, new_emotion, new_sentence, data
         print('check perception') 
-        print(emotion) 
         resp=requests.put(url+'get_input', json=data, headers=headers)
         print(data)
         if eval(resp.text)["new_emotion"]=="True":
@@ -373,8 +364,6 @@ class CheckPerc(smach.State):
                 emotion=eval(resp.text)["emotion"]
             if eval(resp.text)["new_sentence"]=="True":
                 new_sentence=True
-        print("RECEIVED PERCEPTION OR ACTION TO EXEC")
-        print(new_emotion,new_sentence,emotion)
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
         if new_emotion==False and new_sentence==False:
             if "ACTION" in userdata.action:
@@ -393,11 +382,13 @@ class CheckPerc(smach.State):
                     return "outcome2"
         #IF NEW PERCEPTION
         else:
+            string_long="********************NEW PERCEPTION\n"
             if new_emotion:
                new_emotion=False
                emotion_pred=perception_predicate_map[emotion]["emotion"]
                goals=perception_predicate_map[emotion]["goals"]
                add_predicate(emotion_pred)
+               string_long=string_long+"perceived emotion: "+emotion+"\n"
                for g in goals:
                     add_goal(g)#state that that predicate is a goal
                     remove_predicate(g) #now the goal predicate is not grounded
@@ -408,7 +399,9 @@ class CheckPerc(smach.State):
                 remove_predicate("answered")
                 remove_predicate("finished")
                 add_predicate("new_sentence")
+                string_long=string_long+"User say a sentence\n"
                 new_sentence=False
+            f1.write(string_long)
             return "outcome3"
 
         
@@ -459,6 +452,7 @@ class Finish(smach.State):
             return "outcome11"
         else:
             f.close()
+            f1.close()
             print('Finishhh')
             return 'outcome12'
 

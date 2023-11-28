@@ -4,7 +4,7 @@
 import random
 import numpy as np
 
-agree_actions=["ask_if_can_it_be_useful_again","express_happyness_for_helping_the_user","express_empathy","affirm_to_mantain_the_calm_and_ask_if_can_be_useful"]
+agree_actions=["ask_if_can_it_be_useful","express_happyness_for_helping_the_user","express_empathy","affirm_to_mantain_the_calm_and_ask_if_can_be_useful"]
 
 #GOAL make the user happy
 #00 N 
@@ -12,25 +12,25 @@ agree_actions=["ask_if_can_it_be_useful_again","express_happyness_for_helping_th
 #10 A, D, F
 #11 H, SU
 
-zz_a={"ask_if_can_it_be_useful_again":{"w1":4,"w2":2,"expected_outcome":[1,1]},
+zz_a={"ask_if_can_it_be_useful":{"w1":4,"w2":2,"expected_outcome":[1,1]},
      "express_happyness_for_helping_the_user":{"w1":2,"w2":1,"expected_outcome":[1,1]},
      "express_empathy":{"w1":0,"w2":0,"expected_outcome":[1,1]},
      "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0]},
      }
 
-zo_a={"ask_if_can_it_be_useful_again":{"w1":2,"w2":1,"expected_outcome":[1,1]},
+zo_a={"ask_if_can_it_be_useful":{"w1":2,"w2":1,"expected_outcome":[1,1]},
      "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[1,1]},
      "express_empathy":{"w1":4,"w2":2,"expected_outcome":[1,1]},
      "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0]},
      }
 
-oz_a={"ask_if_can_it_be_useful_again":{"w1":0,"w2":0,"expected_outcome":[1,1]},
+oz_a={"ask_if_can_it_be_useful":{"w1":0,"w2":0,"expected_outcome":[1,1]},
      "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[1,1]},
      "express_empathy":{"w1":2,"w2":1,"expected_outcome":[1,1]},
      "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[1,1]},
      }
 
-oo_a={"ask_if_can_it_be_useful_again":{"w1":2,"w2":1,"expected_outcome":[1,1]},
+oo_a={"ask_if_can_it_be_useful":{"w1":2,"w2":1,"expected_outcome":[1,1]},
      "express_happyness_for_helping_the_user":{"w1":4,"w2":2,"expected_outcome":[1,1]},
      "express_empathy":{"w1":0.0,"w2":0.0,"expected_outcome":[1,1]},
      "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[1,1]},

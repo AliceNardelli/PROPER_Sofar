@@ -231,7 +231,8 @@ def populate_ontology(domain):
                         check=str(pred[2])
                         for l in functions:
                             if check==l:
-                                actions_objects[last_action].has_effect_function.append(function_objects[check])
+                                if function_objects[check] not in actions_objects[last_action].has_effect_function:
+                                    actions_objects[last_action].has_effect_function.append(function_objects[check])
                                 ops=last_action.replace(" ","")+" "+operation
                                 function_objects[check].has_operator.append(ops)
                                 break
@@ -246,7 +247,8 @@ def populate_ontology(domain):
                                 
                         for l in functions:
                             if check==l:
-                                actions_objects[last_action].has_effect_function.append(function_objects[check])
+                                if function_objects[check] not in actions_objects[last_action].has_effect_function:
+                                    actions_objects[last_action].has_effect_function.append(function_objects[check])
                                 ops=last_action.replace(" ","")+" "+operation
                                 function_objects[check].has_operator.append(ops)
                                 break
@@ -448,7 +450,7 @@ def update_ontology(a):
                    
 
     funcs=actions_objects[ac].has_effect_function
-    #print(funcs)
+    print(funcs)
     if funcs!=[]:
         for f in funcs:
             ops=f.has_operator
@@ -466,7 +468,7 @@ def update_ontology(a):
                     #print(o)
                     #print(f,ac,f.has_value)
                     if o[1]=="when":
-                        
+                        print(o)
                         if predicates_objects[o[2]].is_grounded:
 
                             if o[3]=="assign":
