@@ -23,8 +23,8 @@ traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
 wi=0
 wc=0
-wu=0
-wa=1
+wu=1
+wa=0
 wd=0
 sum_weights=we +wi +wc + wu + wa + wd
 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
@@ -45,7 +45,7 @@ data={
 
 
 f = open("/home/alice/logging.txt", "a")
-f1 = open("/home/alice/logging_agree.txt", "a")
+f1 = open("/home/alice/logging_disagree.txt", "a")
 
 
 
@@ -427,8 +427,9 @@ class CheckPerc(smach.State):
                
             if new_sentence:
                 add_goal("answered")
+                add_goal("finished")
                 remove_predicate("answered")
-                
+                remove_predicate("finished")
                 add_predicate("new_sentence")
                 string_long=string_long+"User say a sentence\n"
                 new_sentence=False

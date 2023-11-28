@@ -23,8 +23,8 @@
 )
 
 (:predicates 
-        (feel_comfort)
         (finished)
+        (feel_comfort)
 	(answered)
         (new_sentence)
 	(extro)
@@ -347,23 +347,6 @@
                 )
 )
 
-(:action CHECK_FINISH
-        :precondition
-                (and
-                        
-                        (emotion_r)
-                        (>=(interaction_level)(desired_interaction))
-                        (>=(scrupulousness_level)(desired_scrupulousness))
-                        (>=(agreeableness_level)(desired_agreeableness))
-                        (answered)
-                )
-
-        :effect
-                (and    
-			(finished)
-			
-                )
-)
 
 (:action COMPUTE_HEDONIC_FEELINGS
         :precondition
@@ -378,6 +361,24 @@
         :effect
                 (and    
 			(feel_comfort)
+			
+                )
+)
+
+(:action CHECK_FINISH
+        :precondition
+                (and
+                        
+                        (emotion_r)
+                        (answered)
+                        (>=(interaction_level)(desired_interaction))
+                        (>=(scrupulousness_level)(desired_scrupulousness))
+                        (>=(agreeableness_level)(desired_agreeableness))
+                )
+
+        :effect
+                (and    
+			(finished)
 			
                 )
 )

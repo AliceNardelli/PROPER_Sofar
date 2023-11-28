@@ -7,43 +7,70 @@ import numpy as np
 agree_actions=["ask_if_can_it_be_useful","express_happyness_for_helping_the_user","express_empathy","affirm_to_mantain_the_calm_and_ask_if_can_be_useful"]
 
 #GOAL make the user happy
+# the fisrt bit depend on the fact that the user has spoken
 #00 N 
 #01 SA
 #10 A, D, F
 #11 H, SU
 
-zz_a={"ask_if_can_it_be_useful":{"w1":4,"w2":2,"expected_outcome":[1,1]},
-     "express_happyness_for_helping_the_user":{"w1":2,"w2":1,"expected_outcome":[1,1]},
-     "express_empathy":{"w1":0,"w2":0,"expected_outcome":[1,1]},
-     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0]},
+zzz_a={"ask_if_can_it_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
      }
 
-zo_a={"ask_if_can_it_be_useful":{"w1":2,"w2":1,"expected_outcome":[1,1]},
-     "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[1,1]},
-     "express_empathy":{"w1":4,"w2":2,"expected_outcome":[1,1]},
-     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0]},
+zzo_a={"ask_if_can_it_be_useful":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
      }
 
-oz_a={"ask_if_can_it_be_useful":{"w1":0,"w2":0,"expected_outcome":[1,1]},
-     "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[1,1]},
-     "express_empathy":{"w1":2,"w2":1,"expected_outcome":[1,1]},
-     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[1,1]},
+zoz_a={"ask_if_can_it_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      }
 
-oo_a={"ask_if_can_it_be_useful":{"w1":2,"w2":1,"expected_outcome":[1,1]},
-     "express_happyness_for_helping_the_user":{"w1":4,"w2":2,"expected_outcome":[1,1]},
-     "express_empathy":{"w1":0.0,"w2":0.0,"expected_outcome":[1,1]},
-     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[1,1]},
+zoo_a={"ask_if_can_it_be_useful":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
      }
 
+ozz_a={"ask_if_can_it_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
+     }
+
+ozo_a={"ask_if_can_it_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
+     }
+
+ooz_a={"ask_if_can_it_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+ooo_a={"ask_if_can_it_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "express_empathy":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
+     }
 
 agreeableness_dict={
-    "N":{"weights":zz_a,"num":[0,0]},
-    "S":{"weights":zo_a,"num":[0,1]},
-    "A":{"weights":oz_a,"num":[1,0]},
-    "H":{"weights":oo_a,"num":[1,1]}
+    "NS_N":{"weights":zzz_a,"num":[0,0]},
+    "NS_S":{"weights":zzo_a,"num":[0,1]},
+    "NS_A":{"weights":zoz_a,"num":[1,0]},
+    "NS_H":{"weights":zoo_a,"num":[1,1]},
+    "S_N":{"weights":ozz_a,"num":[0,0]},
+    "S_S":{"weights":ozo_a,"num":[0,1]},
+    "S_A":{"weights":ooz_a,"num":[1,0]},
+    "S_H":{"weights":ooo_a,"num":[1,1]}
 }
-
 
 
 def choose_action_a(perception):
