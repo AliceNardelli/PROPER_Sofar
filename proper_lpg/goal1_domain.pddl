@@ -23,6 +23,7 @@
 )
 
 (:predicates 
+        (approach)
 	(human_present)
         (finished)
 	(greetings)
@@ -210,7 +211,29 @@
 )
 
 
-
+(:action GO_NEAR_HUMAN
+        
+        :precondition
+               (and 
+                           (touch_reacted)
+                           (emotion_r)
+               	           (human_present)
+                           (>=(interaction_level)(desired_interaction))
+                           (>=(scrupulousness_level)(desired_scrupulousness))
+                           (>=(agreeableness_level)(desired_agreeableness))
+                           (not(approach))
+                           
+                        
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (approach)                
+                )
+)
 
 (:action SAY_GREETINGS
         
@@ -224,6 +247,7 @@
                            (>=(scrupulousness_level)(desired_scrupulousness))
                            (>=(agreeableness_level)(desired_agreeableness))
                            (not(greetings))
+                           (approach)
                         
                 )
         :effect
@@ -237,7 +261,7 @@
 )
 
 
-(:action SAY_FEELINGS
+(:action ASK_FEELINGS
         :precondition
                (and 
                            (touch_reacted)
@@ -285,7 +309,7 @@
 )
 
 
-(:action ASK_SITTING
+(:action SAY_SITTING
         :precondition
                (and 
                            (touch_reacted)
@@ -309,7 +333,7 @@
                 )
 )
 
-(:action ASK_NOT_SITTING
+(:action SAY_NOT_SITTING
         :precondition
                (and 
                            (touch_reacted)

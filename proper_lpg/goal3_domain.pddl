@@ -23,14 +23,13 @@
 )
 
 (:predicates 
-	    (human_present)
+	(human_present)
         (finished)
-	    (say)
+	(say)
         (breathe)
-	    (curl)
-        (box)
+	(curl)
         (yoga)
-	    (extro)
+	(extro)
         (intro)
         (consc)
         (unsc)
@@ -213,7 +212,7 @@
 
 
 
-(:action SAY_DONT_TRAINING
+(:action SAY_DO_NOT_TRAINING
         :precondition
                (and 
                            (touch_reacted)
@@ -335,57 +334,6 @@
                 )
 )
 
-(:action SAY_BOX_BLINK
-        :precondition
-               (and 
-                           (touch_reacted)
-                           (emotion_r)
-               	           (human_present)
-                           (>=(interaction_level)(desired_interaction))
-                           (>=(scrupulousness_level)(desired_scrupulousness))
-                           (>=(agreeableness_level)(desired_agreeableness))
-                           (not(box))
-                           (curl)
-                            
-                        
-                )
-        :effect
-                (and
-                           
-                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
-                           (when (unsc)(increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
-                           (when (consc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(dur))))
-                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-                           (box)                 
-                )
-)
-
-
-(:action SAY_BOX_MOVEMENT
-        :precondition
-               (and 
-                           (touch_reacted)
-                           (emotion_r)
-               	           (human_present)
-                           (>=(interaction_level)(desired_interaction))
-                           (>=(scrupulousness_level)(desired_scrupulousness))
-                           (>=(agreeableness_level)(desired_agreeableness))
-                           (not(box))
-                           (curl)
-                )
-        :effect
-                (and
-                           
-                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
-                           (when (unsc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(dur))))
-                           (when (consc)(increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
-                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-                           (box)                 
-                )
-)
-
-
-
 
 (:action SAY_YOGA
         :precondition
@@ -397,7 +345,7 @@
                            (>=(scrupulousness_level)(desired_scrupulousness))
                            (>=(agreeableness_level)(desired_agreeableness))
                            (not(yoga))
-                           (box)
+                           (curl)
                 )
         :effect
                 (and

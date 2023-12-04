@@ -288,7 +288,7 @@
 )
 
 
-(:action ASK_THROUGH
+(:action SAY_THROUGH
         :precondition
                (and 
                            (touch_reacted)
@@ -313,7 +313,7 @@
 
 
 
-(:action ASK_THROUGH_FLOOR
+(:action SAY_THROUGH_FLOOR
         :precondition
                (and 
                            (touch_reacted)
@@ -338,7 +338,7 @@
 )
 
 
-(:action ASK_THROUGH_RECYCLE
+(:action SAY_THROUGH_RECYCLE
         :precondition
                (and 
                            (touch_reacted)

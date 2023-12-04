@@ -14,7 +14,7 @@ import zlib
 import sys
 import json
 import xml
-from ed import *
+from map_sentences import *
 from flask import Flask, request, jsonify
 
 
@@ -44,16 +44,7 @@ class Speak:
         self.tts4=self.session.service("ALSpeechRecognition")  
         self.touched=False
         self.m=self.session.service("ALMotion")
-        self.topics=["Cibo","Sport","Vacanze","Tempo libero","Musica","Religione"]
-        self.counter=0 #change0
-        self.colors=["red","orange","yellow","green","blu","purple"]
-        self.ins=[0,1,2,3,6,7]
-        self.traits="ed"
-        self.grasp=False
-        self.sentences_dict={ "ed":ed_dict,
-                              }
-        
-     
+        self.traits="ac"
 
         self.pitch={"low":0.83,
                     "mid":0.95,
@@ -185,23 +176,26 @@ class Speak:
         time.sleep(1)
         
     def executing(self,anim_speech_service):
-        set_of_sentences=self.sentences_dict[self.traits]
-        ss=set_of_sentences[self.action]
+        try:
+           sentence_action=mmap_action_sentences[self.action][0]
+           behavior=mmap_action_sentences[self.action][1]
+           #call the service to ask the question
+        except:
+           sentence_action=self.action 
+           behavior=""
+           #call the service to ask the question 
         if self.action=="say_greetings" :
                 h=self.hello()
                 to_say=" ^start("+h+") \\pau=2000\\"
                 anim_speech_service.say(to_say) 
-        if  type(ss)==list:
-            #ask to chatgpt the sentence to say
-            to_say=ss[random.randrange(len(ss))]
-            thread = threading.Thread(target=self.task)
-            # run the thread
-            thread.start()
-            to_say=self.add_gestures(to_say)
-            anim_speech_service.say(to_say) 
-            # wait for the thread to finish
-            print('Waiting for the thread...')
-            thread.join()
+        to_say=sentence_action
+        thread = threading.Thread(target=self.task)
+        thread.start()
+        to_say=self.add_gestures(to_say)
+        anim_speech_service.say(to_say) 
+        thread.join()
+        if behavior!="":
+             print("Executing behavior ",behavior)
 
 
    
