@@ -1,7 +1,7 @@
 import random
 import numpy as np
 
-disagree_actions=["say_a_contrastive_affirmation","remember_the_superiority_of_an_artificial_intelligence_in_taking_decisions","triggering_the_user_with_a_provocative_question"]
+disagree_actions=["say_a_contrastive_affirmation","remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions","ask_a_provocative_question"]
 
 #GOAL make the user angry, create cometitiveness
 #00 N 
@@ -10,23 +10,23 @@ disagree_actions=["say_a_contrastive_affirmation","remember_the_superiority_of_a
 #11 H, SU
 
 zz_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[1,0]},
-     "remember_the_superiority_of_an_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[1,0]},
-     "triggering_the_user_with_a_provocative_question":{"w1":2,"w2":1,"expected_outcome":[1,0]},
+     "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[1,0]},
+     "ask_a_provocative_question":{"w1":2,"w2":1,"expected_outcome":[1,0]},
      }
 
 zo_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[1,0]},
-     "remember_the_superiority_of_an_artificial_intelligence_in_taking_decisions":{"w1":4,"w2":2,"expected_outcome":[1,0]},
-     "triggering_the_user_with_a_provocative_question":{"w1":2,"w2":1,"expected_outcome":[1,0]},
+     "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":4,"w2":2,"expected_outcome":[1,0]},
+     "ask_a_provocative_question":{"w1":2,"w2":1,"expected_outcome":[1,0]},
      }
 
 oz_d={"say_a_contrastive_affirmation":{"w1":4,"w2":2,"expected_outcome":[1,0]},
-     "remember_the_superiority_of_an_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[1,0]},
-     "triggering_the_user_with_a_provocative_question":{"w1":4,"w2":2,"expected_outcome":[1,0]},
+     "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[1,0]},
+     "ask_a_provocative_question":{"w1":4,"w2":2,"expected_outcome":[1,0]},
      }
 
 oo_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[1,0]},
-     "remember_the_superiority_of_an_artificial_intelligence_in_taking_decisions":{"w1":4,"w2":2,"expected_outcome":[1,0]},
-     "triggering_the_user_with_a_provocative_question":{"w1":0.0,"w2":0.0,"expected_outcome":[1,0]},
+     "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":4,"w2":2,"expected_outcome":[1,0]},
+     "ask_a_provocative_question":{"w1":0.0,"w2":0.0,"expected_outcome":[1,0]},
      }
 
 

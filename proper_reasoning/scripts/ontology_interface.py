@@ -24,8 +24,8 @@ we=0
 wi=0
 wc=0
 wu=0
-wa=1
-wd=0
+wa=0
+wd=1
 sum_weights=we +wi +wc + wu + wa + wd
 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
 gamma=1
@@ -45,7 +45,7 @@ data={
 
 
 f = open("/home/alice/logging.txt", "a")
-f1 = open("/home/alice/logging_agree2.txt", "a")
+f1 = open("/home/alice/logging_disagree.txt", "a")
 
 
 
