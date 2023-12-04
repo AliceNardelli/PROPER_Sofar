@@ -3,6 +3,7 @@ disagree_actions/goal2: ["say_to_think_to_drink_the_water_and_not_to_touch_me","
 disagree_actions/goal3: ["say_to_not_move_so_slow","say_to_not_smile_because_sport_is_fatigue","say_you_are_the_best_in_all_the_sports","say_to_not_dare_to_touch_me_with_your_dirty_sweat"]
 disagree_actions/goal4: ["say_that_the_robotic_hands_draw_better_than_painters","ask_if_the_human_can_paint","say_that_the_human_is_allowed_to_see_the_picture_but_not_to_stay_closer"]         
 
+
 zzz_d/goal1: {"say_not_touch_me":{"w1":0,"w2":0,"expected_outcome":[0,1,0]},
      "say_to_move_far":{"w1":0,"w2":0,"expected_outcome":[0,1,0]},
      "say_something_about_angry":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
