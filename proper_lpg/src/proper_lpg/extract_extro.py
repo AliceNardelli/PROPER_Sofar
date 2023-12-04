@@ -23,7 +23,7 @@ def init_extro_actions():
      "NT_N":{"weights":rospy.get_param("zzz_e")[rospy.get_param("actual_goal")],"num":[0,0,0]},
      "NT_S":{"weights":rospy.get_param("zzo_e")[rospy.get_param("actual_goal")],"num":[0,0,1]},
      "NT_A":{"weights":rospy.get_param("zoz_e")[rospy.get_param("actual_goal")],"num":[0,1,0]},
-     "NT_H":{"weights":rospy.get_param("zoo_e")[rospy.get_param("actual_goal")],"num":[0,0,0]},
+     "NT_H":{"weights":rospy.get_param("zoo_e")[rospy.get_param("actual_goal")],"num":[0,1,1]},
      "T_N":{"weights":rospy.get_param("ozz_e")[rospy.get_param("actual_goal")],"num":[1,0,0]},
      "T_S":{"weights":rospy.get_param("ozo_e")[rospy.get_param("actual_goal")],"num":[1,0,1]},
      "T_A":{"weights":rospy.get_param("ooz_e")[rospy.get_param("actual_goal")],"num":[1,1,0]},

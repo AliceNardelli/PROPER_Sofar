@@ -10,68 +10,24 @@ import random
 import numpy as np
 import rospy
 
-agree_actions=["get_closer","express_happyness","express_empathy","make_peace"]
 
+agree_actions=[]
 
-zzz_a={"get_closer":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "express_happyness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "make_peace":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
-     }
+agreeableness_dict={}
 
-zzo_a={"get_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_happyness":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "make_peace":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
-     }
-
-zoz_a={"get_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_happyness":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
-     "make_peace":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
-
-zoo_a={"get_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_happyness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
-     "make_peace":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
-     }
-
-ozz_a={"get_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
-     "express_happyness":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "make_peace":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
-     }
-
-ozo_a={"get_closer":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
-     "express_happyness":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "make_peace":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
-     }
-
-ooz_a={"get_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_happyness":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
-     "make_peace":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
-
-ooo_a={"get_closer":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
-     "express_happyness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "make_peace":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     }
-
-agreeableness_dict={
-    "NT_N":{"weights":zzz_a,"num":[0,0,0]},
-    "NT_S":{"weights":zzo_a,"num":[0,0,1]},
-    "NT_A":{"weights":zoz_a,"num":[0,1,0]},
-    "NT_H":{"weights":zoo_a,"num":[0,1,1]},
-    "T_N":{"weights":ozz_a,"num":[1,0,0]},
-    "T_S":{"weights":ozo_a,"num":[1,0,1]},
-    "T_A":{"weights":ooz_a,"num":[1,1,0]},
-    "T_H":{"weights":ooo_a,"num":[1,1,1]}
-}
-
+def init_agreeable_actions():
+    global agree_actions, agreeableness_dict
+    agree_actions=rospy.get_param("agree_actions")[rospy.get_param("actual_goal")]
+    agreeableness_dict={
+        "NT_N":{"weights":rospy.get_param("zzz_a")[rospy.get_param("actual_goal")],"num":[0,0,0]},
+        "NT_S":{"weights":rospy.get_param("zzo_a")[rospy.get_param("actual_goal")],"num":[0,0,1]},
+        "NT_A":{"weights":rospy.get_param("zoz_a")[rospy.get_param("actual_goal")],"num":[0,1,0]},
+        "NT_H":{"weights":rospy.get_param("zoo_a")[rospy.get_param("actual_goal")],"num":[0,1,1]},
+        "T_N":{"weights":rospy.get_param("ozz_a")[rospy.get_param("actual_goal")],"num":[1,0,0]},
+        "T_S":{"weights":rospy.get_param("ozo_a")[rospy.get_param("actual_goal")],"num":[1,0,1]},
+        "T_A":{"weights":rospy.get_param("ooz_a")[rospy.get_param("actual_goal")],"num":[1,1,0]},
+        "T_H":{"weights":rospy.get_param("ooo_a")[rospy.get_param("actual_goal")],"num":[1,1,1]}
+    }
 
 
 def choose_action_a(perception):

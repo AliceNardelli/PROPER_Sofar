@@ -1,0 +1,24 @@
+unsc_actions/goal1: ["say_something_to_loose_time","tell_a_story_to_distract_someone","say_that_you_are_lazy_and_you_like_procrastinate_things"]
+unsc_actions/goal2: ["say_something_about_water_to_distract_the_user","say_something_about_candy_to_distract_the_user","say_you_are_lazy_to_clean_the_environment"]
+unsc_actions/goal3: ["say_that_you_are_lazy_during_sport", "ask_a_thoughtless_thing_about_sport","say_you_always_forget_the_exercizes_to_execute_during_sport"]
+unsc_actions/goal4: ["affirm that art makes you fall asleep","ask if the human do not like to be focused too","make a thougthless consideration about art"]
+
+zzz_u/goal1: {"say_something_to_loose_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "tell_a_story_to_distract_someone":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "say_that_you_are_lazy_and_you_like_procrastinate_things":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     }
+
+zzz_u/goal2: {"say_something_about_water_to_distract_the_user":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_about_candy_to_distract_the_user":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "say_you_are_lazy_to_clean_the_environment":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     }
+
+zzz_u/goal3: {"say_that_you_are_lazy_during_sport":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+      "ask_a_thoughtless_thing_about_sport":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "say_you_always_forget_the_exercizes_to_execute_during_sport":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     }
+
+zzz_u/goal4: {"affirm that art makes you fall asleep":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "ask if the human do not like to be focused too":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "make a thougthless consideration about art":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     }

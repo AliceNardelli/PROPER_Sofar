@@ -70,7 +70,11 @@ class State_Start(smach.State):
         userdata.path=dict_goal["folder"]
         userdata.plan_path=dict_goal["plan"]
         init_disagreeable_actions()
+        init_agreeable_actions()
         init_extro_actions()
+        init_intro_actions()
+        init_consc_actions()
+        init_unsc_actions()
         return 'outcome0'
 
 class State_Init(smach.State):

@@ -8,68 +8,27 @@
 from proper_lpg.load_ontology import *
 import random
 import numpy as np
+import rospy 
 
-intro_actions=["get_away","avoid_gaze","turn_on_back","not_react"]
+intro_actions=[]
+introversion_dict={}
+
+def init_intro_actions():
+     global intro_actions, introversion_dict
+     intro_actions=rospy.get_param("intro_actions")[rospy.get_param("actual_goal")]
 
 
-zzz_i={"get_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "turn_on_back":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "not_react":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+
+     introversion_dict={
+     "NT_N":{"weights":rospy.get_param("zzz_i")[rospy.get_param("actual_goal")],"num":[0,0,0]},
+     "NT_S":{"weights":rospy.get_param("zzo_i")[rospy.get_param("actual_goal")],"num":[0,0,1]},
+     "NT_A":{"weights":rospy.get_param("zoz_i")[rospy.get_param("actual_goal")],"num":[0,1,0]},
+     "NT_H":{"weights":rospy.get_param("zoo_i")[rospy.get_param("actual_goal")],"num":[0,1,1]},
+     "T_N":{"weights":rospy.get_param("ozz_i")[rospy.get_param("actual_goal")],"num":[1,0,0]},
+     "T_S":{"weights":rospy.get_param("ozo_i")[rospy.get_param("actual_goal")],"num":[1,0,1]},
+     "T_A":{"weights":rospy.get_param("ooz_i")[rospy.get_param("actual_goal")],"num":[1,1,0]},
+     "T_H":{"weights":rospy.get_param("ooo_i")[rospy.get_param("actual_goal")],"num":[1,1,1]}
      }
-
-zzo_i={"get_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "turn_on_back":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "not_react":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     }
-
-zoz_i={"get_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "turn_on_back":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "not_react":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     }
-
-zoo_i={"get_away":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "turn_on_back":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
-     "not_react":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
-     }
-
-ozz_i={"get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "avoid_gaze":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "turn_on_back":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "not_react":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     }
-
-ozo_i={"get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "turn_on_back":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "not_react":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
-     }
-
-ooz_i={"get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "avoid_gaze":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
-     "turn_on_back":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "not_react":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     }
-
-ooo_i={"get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "turn_on_back":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "not_react":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     }
-
-introversion_dict={
-    "NT_N":{"weights":zzz_i,"num":[0,0,0]},
-    "NT_S":{"weights":zzo_i,"num":[0,0,1]},
-    "NT_A":{"weights":zoz_i,"num":[0,1,0]},
-    "NT_H":{"weights":zoo_i,"num":[0,0,0]},
-    "T_N":{"weights":ozz_i,"num":[1,0,0]},
-    "T_S":{"weights":ozo_i,"num":[1,0,1]},
-    "T_A":{"weights":ooz_i,"num":[1,1,0]},
-    "T_H":{"weights":ooo_i,"num":[1,1,1]}
-}
 
 
 

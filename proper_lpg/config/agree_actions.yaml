@@ -1,0 +1,253 @@
+agree_actions/goal1: ["express_happiness_because_the_person_is_happy","say_to_be_happy_for_having_a_person_close","expess_empathy_to_a_sad_person","make_the_peace_with_an_angry_person"]
+agree_actions/goal2: ["say_you_are_happy_if_the_person_take_care_of_himself","say_to_drink_a_sip_of_water_and_calm_yourself","say_if_it_can_do_the_person_smile_saying_him_to_pick_a_candy","say_it_is_wonderful_to_be_one_near_the_other"]
+agree_actions/goal3: ["say_you_like_do_sport_with_the_human","ask_the_preferred_sport","ask_if_the_human_is_too_tired","say_to_keep_calm_and_think_to_train_together","say_to_embrace_me_if_it_make_you_happy"]
+agree_actions/goal4: ["ask what is the human favourite picture","say that the art make people peacefull","ask what makes the human sad","say that you like the caresses"]
+
+
+
+zzz_a/goal1: {"express_happiness_because_the_person_is_happy":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say_to_be_happy_for_having_a_person_close":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "expess_empathy_to_a_sad_person":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "make_the_peace_with_an_angry_person":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+zzz_a/goal2: {"say_you_are_happy_if_the_person_take_care_of_himself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_it_is_wonderful_to_be_one_near_the_other":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say_if_it_can_do_the_person_smile_saying_him_to_pick_a_candy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_drink_a_sip_of_water_and_calm_yourself":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+zzz_a/goal3: {"say_you_like_do_sport_with_the_human":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "ask_the_preferred_sport":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "ask_if_the_human_is_too_tired":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say_to_keep_calm_and_think_to_train_together":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_embrace_me_if_it_make_you_happy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+zzz_a/goal4: {"ask what is the human favourite picture":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say that the art make people peacefull":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask what makes the human sad":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say that you like the caresses":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+}
+
+
+
+
+
+
+
+
+
+
+zzo_a/goal1: {"express_happiness_because_the_person_is_happy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+                "say_to_be_happy_for_having_a_person_close":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+                "expess_empathy_to_a_sad_person":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+                "make_the_peace_with_an_angry_person":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+                }
+
+zzo_a/goal2: {"say_you_are_happy_if_the_person_take_care_of_himself":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say_it_is_wonderful_to_be_one_near_the_other":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say_if_it_can_do_the_person_smile_saying_him_to_pick_a_candy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_to_drink_a_sip_of_water_and_calm_yourself":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+zzo_a/goal3: {"say_you_like_do_sport_with_the_human":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask_the_preferred_sport":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask_if_the_human_is_too_tired":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_to_keep_calm_and_think_to_train_together":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_embrace_me_if_it_make_you_happy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+zzo_a/goal4: {"ask what is the human favourite picture":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say that the art make people peacefull":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask what makes the human sad":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say that you like the caresses":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+}
+
+
+
+
+
+
+
+
+zoz_a/goal1: {"express_happiness_because_the_person_is_happy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_be_happy_for_having_a_person_close":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "expess_empathy_to_a_sad_person":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "make_the_peace_with_an_angry_person":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+zoz_a/goal2: {"say_you_are_happy_if_the_person_take_care_of_himself":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say_it_is_wonderful_to_be_one_near_the_other":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say_if_it_can_do_the_person_smile_saying_him_to_pick_a_candy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_drink_a_sip_of_water_and_calm_yourself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+zoz_a/goal3: {"say_you_like_do_sport_with_the_human":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask_the_preferred_sport":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask_if_the_human_is_too_tired":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_keep_calm_and_think_to_train_together":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_to_embrace_me_if_it_make_you_happy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+zoz_a/goal4: {"ask what is the human favourite picture":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say that the art make people peacefull":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "ask what makes the human sad":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say that you like the caresses":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+}
+
+
+
+
+
+zoo_a/goal1: {"express_happiness_because_the_person_is_happy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+       "say_to_be_happy_for_having_a_person_close":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "expess_empathy_to_a_sad_person":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "make_the_peace_with_an_angry_person":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+zoo_a/goal2: {"say_you_are_happy_if_the_person_take_care_of_himself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_it_is_wonderful_to_be_one_near_the_other":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say_if_it_can_do_the_person_smile_saying_him_to_pick_a_candy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_drink_a_sip_of_water_and_calm_yourself":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+zoo_a/goal3: {"say_you_like_do_sport_with_the_human":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "ask_the_preferred_sport":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "ask_if_the_human_is_too_tired":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_keep_calm_and_think_to_train_together":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_embrace_me_if_it_make_you_happy":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     }
+
+zoo_a/goal4: {"ask what is the human favourite picture":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say that the art make people peacefull":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask what makes the human sad":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say that you like the caresses":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+}
+
+
+
+
+
+
+
+ozz_a/goal1: {"express_happiness_because_the_person_is_happy":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+      "say_to_be_happy_for_having_a_person_close":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "expess_empathy_to_a_sad_person":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "make_the_peace_with_an_angry_person":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+ozz_a/goal2: {"say_you_are_happy_if_the_person_take_care_of_himself":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say_it_is_wonderful_to_be_one_near_the_other":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_if_it_can_do_the_person_smile_saying_him_to_pick_a_candy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_drink_a_sip_of_water_and_calm_yourself":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+ozz_a/goal3: {"say_you_like_do_sport_with_the_human":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask_the_preferred_sport":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask_if_the_human_is_too_tired":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say_to_keep_calm_and_think_to_train_together":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_embrace_me_if_it_make_you_happy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+ozz_a/goal4: {"ask what is the human favourite picture":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say that the art make people peacefull":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "ask what makes the human sad":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say that you like the caresses":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+}
+
+
+
+
+
+
+
+
+
+
+ozo_a/goal1: {"express_happiness_because_the_person_is_happy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+      "say_to_be_happy_for_having_a_person_close":{"w1":4,"w2":2,"expected_outcome":[0,1,1]}, 
+     "expess_empathy_to_a_sad_person":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "make_the_peace_with_an_angry_person":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+ozo_a/goal2: {"say_you_are_happy_if_the_person_take_care_of_himself":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_it_is_wonderful_to_be_one_near_the_other":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_if_it_can_do_the_person_smile_saying_him_to_pick_a_candy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_to_drink_a_sip_of_water_and_calm_yourself":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+
+ozo_a/goal3: {"say_you_like_do_sport_with_the_human":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "ask_the_preferred_sport":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "ask_if_the_human_is_too_tired":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_to_keep_calm_and_think_to_train_together":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_embrace_me_if_it_make_you_happy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+ozo_a/goal4: {"ask what is the human favourite picture":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say that the art make people peacefull":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "ask what makes the human sad":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say that you like the caresses":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+}
+
+
+
+
+
+
+
+ooz_a/goal1: {"express_happiness_because_the_person_is_happy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_be_happy_for_having_a_person_close":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "expess_empathy_to_a_sad_person":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
+     "make_the_peace_with_an_angry_person":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+ooz_a/goal2: {"say_you_are_happy_if_the_person_take_care_of_himself":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_it_is_wonderful_to_be_one_near_the_other":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_if_it_can_do_the_person_smile_saying_him_to_pick_a_candy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_drink_a_sip_of_water_and_calm_yourself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+ooz_a/goal3: {"say_you_like_do_sport_with_the_human":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask_the_preferred_sport":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "ask_if_the_human_is_too_tired":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_keep_calm_and_think_to_train_together":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say_to_embrace_me_if_it_make_you_happy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+ooz_a/goal4: {"ask what is the human favourite picture":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say that the art make people peacefull":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "ask what makes the human sad":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say that you like the caresses":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+}
+
+
+
+
+
+
+
+ooo_a/goal1: {"express_happiness_because_the_person_is_happy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+       "say_to_be_happy_for_having_a_person_close":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "expess_empathy_to_a_sad_person":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "make_the_peace_with_an_angry_person":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+ooo_a/goal2: {"say_you_are_happy_if_the_person_take_care_of_himself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_it_is_wonderful_to_be_one_near_the_other":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_if_it_can_do_the_person_smile_saying_him_to_pick_a_candy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_drink_a_sip_of_water_and_calm_yourself":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+
+ooo_a/goal3: {"say_you_like_do_sport_with_the_human":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask_the_preferred_sport":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask_if_the_human_is_too_tired":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_keep_calm_and_think_to_train_together":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_to_embrace_me_if_it_make_you_happy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     }
+
+ooo_a/goal4: {"ask what is the human favourite picture":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say that the art make people peacefull":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "ask what makes the human sad":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say that you like the caresses":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+}

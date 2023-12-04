@@ -205,17 +205,7 @@ class Speak:
 
 
    
-    def tablet(self,im):
-        DEF_IMG_APP = "tablet_images"
-        TABLET_IMG_DEFAULT = im
-        #TABLET_IMG_DEFAULT = "police_logo.png"
-        sTablet = self.session.service("ALTabletService")
-        image_dir = "http://%s/apps/%s/img/" % (sTablet.robotIp(), DEF_IMG_APP)
-        tablet_image = image_dir + TABLET_IMG_DEFAULT
-        print(tablet_image)
-        sTablet.showImage(tablet_image)
-        raw_input("Press Enter to continue...")
-        sTablet.hideImage()
+
 
     def set_params(self):
         #set all the autonomous capability to disabled
