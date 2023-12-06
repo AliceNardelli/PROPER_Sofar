@@ -11,7 +11,6 @@ def dispatch_action(action, personality):
         print("otput********************")
         print(mmap,action,personality)
         print("********************")
-        time.sleep(15)
         return True, mmap, action, personality
         
     

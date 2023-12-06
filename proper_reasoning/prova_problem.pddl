@@ -18,9 +18,9 @@
       (=(desired_agreeableness)5.0)
       (=(agreeableness_level)5.0)
       (=(react)3.0)
-      (=(reward_e)5)
-      (=(reward_a)5)
-      (=(reward_c)5)
+      (=(reward_e)5.0)
+      (=(reward_a)5.0)
+      (=(reward_c)5.0)
 )
 (:goal (and
       (finished)

@@ -36,6 +36,7 @@ new_sentence=False
 url='http://127.0.0.1:5020/'
 url1='http://127.0.0.1:5019/'
 url2='http://127.0.0.1:5018/'
+url3='http://127.0.0.1:5021/'
 
 headers= {'Content-Type':'application/json'}
 
@@ -60,6 +61,18 @@ data_restart={
     "restart":"False"
 }
 
+data_action={
+        "action":"",
+        "language":"",
+        "personality":"",
+        "pitch":"",
+        "volume":"",
+        "velocity":"",
+        "new_action":"",
+        "executed":"",
+        "result":""
+
+}
 
 class State_Start(smach.State):
     def __init__(self):
@@ -335,10 +348,27 @@ class ExAction(smach.State):
 
 
     def call_action_server(self, userdata, ac,personality):
+            global data_action
             userdata.state="exec"
             resp, mmap, to_exec_action, exec_personality = dispatch_action(ac, personality)
+            resp2=True
+            if ("REACT" not in to_exec_action) and ("COMPUTE" not in to_exec_action) and ("CHECK" not in to_exec_action):
+                #set that I have executed an action
+                data_action["personality"]=exec_personality
+                data_action["action"]=to_exec_action
+                data_action["language"]=mmap["language"]
+                data_action["pitch"]=mmap["pitch"]
+                data_action["velocity"]=mmap["velocity"]
+                data_action["volume"]=mmap["volume"]
+                respac=requests.put(url3+'set_action', json=data_action, headers=headers)
+                respex=requests.put(url3+'get_exec', json=data_action, headers=headers)
+                while eval(respex.text)["executed"]=="False":
+                    respex=requests.put(url3+'get_exec', json=data_action, headers=headers)
+
+                if eval(respex.text)["result"]=="False":
+                    resp2=False
             
-            if resp==False:
+            if resp2==False:
                     print('Action Failed')        
                     return userdata, False
             else:
