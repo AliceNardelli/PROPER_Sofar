@@ -1,5 +1,19 @@
 from collections import OrderedDict
 import numpy as np
+import random
+
+
+language={"no_active":[0,0,0],
+          "verbose_excited":[0,0,1],
+          "non_verbose_neutral":[0,1,0],
+          "precise":[0,1,1],
+          "distracted":[1,0,0],
+          "polite":[1,1,0],
+          "rude":[1,0,1],
+          }
+
+rev_language={str(v) : k for k,v in language.items()}
+rev_language
 
 pitch={"no_active":[0,0],
        "low":[0,1],
@@ -69,6 +83,7 @@ speed={
 rev_speed={str(v) : k for k,v in speed.items()}
 
 reversed={
+    "language":rev_language,
     "pitch": rev_pitch,
     "volume": rev_volume,
     "velocity":rev_velocity,
@@ -79,8 +94,19 @@ reversed={
     "speed":rev_speed,
     "prox":rev_prox
 }
-bit_map=[2,3,3,2,3,2,2,2,2]
-parameters=["pitch","volume","velocity","gaze","head","amplitude","g_speed","speed", "prox"]
+
+remap_language={
+        "no_active":["no_active"],
+        "verbose_excited": ["Friendly", "Talkative", "Enthusiastic", "Excited"],
+        "non_verbose_neutral": ["Reserved", "Quiet", "Neutral"],
+        "precise": ["Scrupulous", "Precise"],
+        "distracted": ["Unscrupulous", "Thoughtless", "Distracted", "Lazy"],
+        "polite":["Cooperative", "Fiendly", "Empathic", "Forgiving", "Reliable","Polite"],
+        "rude":["Competitive", "Aggressive", "Provocative", "Selfish","Rude"]
+        }
+
+bit_map=[3,2,3,3,2,3,2,2,2,2]
+parameters=["language","pitch","volume","velocity","gaze","head","amplitude","g_speed","speed", "prox"]
 
 def get_map(predictions):
    
@@ -92,7 +118,11 @@ def get_map(predictions):
         no_bit=bit_map[i]
         bits=predictions[c:c+no_bit]
         c+=no_bit
-        value=reversed[param][str(list([int(b) for b in bits]))]
+        if param=="language":
+            a=reversed[param][str(list([int(b) for b in bits]))]
+            value=remap_language[a][random.randint(0,len(remap_language[a])-1)]
+        else:
+            value=reversed[param][str(list([int(b) for b in bits]))]
         result[param]=value
     
     return result

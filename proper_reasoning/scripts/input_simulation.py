@@ -7,11 +7,12 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 data={
-    "emotion":"",
-    "new_sentence":"False",
-    "new_emotion":"False",
-    "update":"False"
+        "emotion":"",
+        "new_sentence":"False",
+        "new_emotion":"False",
+        "update":"False",
 }
+
 new_sentence_input="False"
 new_emotion_input="False"
 emotion_input=""
@@ -23,6 +24,8 @@ emotion_dict_interface={'emotion_Angry':"A",
                         'emotion_Neutral':"N",
                         'emotion_Sad':"SA",
                         'emotion_Surprise':"SU"}
+
+
 
 @app.route ('/update_input', methods = ['PUT'] )  
 def update_input():
@@ -52,6 +55,7 @@ def get_input():
                 new_emotion_input="False"
                
         return jsonify(data)
+
 
 
 

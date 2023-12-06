@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 import os
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 import shutil
 import subprocess
 import json
@@ -9,8 +11,8 @@ import torch
 import numpy as np
 import rospy
 
-model = AutoModelForSequenceClassification.from_pretrained("/home/alice/personality_generator_model_new", num_labels=21, problem_type="multi_label_classification") 
-tokenizer=AutoTokenizer.from_pretrained("/home/alice/prams_model", problem_type="multi_label_classification")
+model = AutoModelForSequenceClassification.from_pretrained("/home/alice/Personality_Generator_Finetune", num_labels=24, problem_type="multi_label_classification") 
+tokenizer=AutoTokenizer.from_pretrained("/home/alice/Personality_Generator_Finetune", problem_type="multi_label_classification")
 
 def generate_params(personality, action):
     text = personality + tokenizer.sep_token + action

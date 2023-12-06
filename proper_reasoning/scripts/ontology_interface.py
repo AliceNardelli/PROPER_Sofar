@@ -25,15 +25,18 @@ wi=0
 wc=0
 wu=0
 wa=0
-wd=1
-sum_weights=we +wi +wc + wu + wa + wd
-weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
+wd=0
+sum_weights=0
+weights=[]
 gamma=1
 emotion=""
 new_emotion=False
 new_sentence=False
 
 url='http://127.0.0.1:5020/'
+url1='http://127.0.0.1:5019/'
+url2='http://127.0.0.1:5018/'
+
 headers= {'Content-Type':'application/json'}
 
 data={
@@ -43,10 +46,19 @@ data={
     "update":"False"
 }
 
+data_personality={
+        "new_personality":"False",
+        "Extrovert":0,
+        "Introvert":0,
+        "Agreeable":0,
+        "Disagreeable":0,
+        "Conscientious":0,
+        "Unscrupolous":0,
+}
 
-f = open("/home/alice/logging.txt", "a")
-f1 = open("/home/alice/logging_disagree.txt", "a")
-
+data_restart={
+    "restart":"False"
+}
 
 
 class State_Start(smach.State):
@@ -57,8 +69,9 @@ class State_Start(smach.State):
                              output_keys=['output_goals','domain_path','problem_path','init_pb','command','path','plan_path'])
         
     def execute(self, userdata):
+        global wa,wd,we,wi,wc,wd,sum_weights,weights, data
         goals=userdata.input_goals
-        actual_goal=goals.pop(0)
+        #actual_goal=goals.pop(0) #always goal1
         print('Executing goal: '+ actual_goal)
         dict_goal=goals_dict[actual_goal]
         userdata.output_goals=goals
@@ -68,6 +81,29 @@ class State_Start(smach.State):
         userdata.command=dict_goal["command"]
         userdata.path=dict_goal["folder"]
         userdata.plan_path=dict_goal["plan"]
+        print("setting new personality")
+        resp=requests.put(url1+'get_personality', json=data_personality, headers=headers)
+        new_personality=False
+        if  eval(resp.text)["new_personality"]=="True":
+            new_personality=True
+        while new_personality==False:
+            time.sleep(1)
+            resp=requests.put(url1+'get_personality', json=data_personality, headers=headers)
+            if  eval(resp.text)["new_personality"]=="True":
+                new_personality=True
+
+        wi=float( eval(resp.text)["Introvert"])
+        we=float( eval(resp.text)["Extrovert"])
+        wa=float( eval(resp.text)["Agreeable"])
+        wd=float( eval(resp.text)["Disagreeable"])
+        wc=float( eval(resp.text)["Conscientious"])
+        wu=float( eval(resp.text)["Unscrupolous"])
+        sum_weights=we +wi +wc + wu + wa + wd
+        try: 
+            weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
+        except:
+            weights=6*[0]
+            sum_weights=1
         return 'outcome0'
 
 class State_Init(smach.State):
@@ -159,20 +195,21 @@ class GetActions(smach.State):
           
         out_a=read_plan(userdata.plan_path)
         userdata.executing_actions_out=out_a
-        f.write("----------------------\n")
-        string_log=" ".join(out_a)+ " \n"
-        f.write(string_log)
-        f.write("----------------------\n")
         return 'outcome7'
     
 class ExAction(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome8','outcome9'],
+                             outcomes=['outcome8','outcome9','outcome13'],
                              input_keys=['executing_actions'],
                              output_keys=['updated_actions','action','state']) 
     def execute(self, userdata):
         global new_emotion, emotion, new_sentence
+        resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
+        if eval(resp.text)["restart"]=="True":
+            print("restart")
+            userdata.action=""
+            return 'outcome13'
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
 
@@ -187,11 +224,6 @@ class ExAction(smach.State):
             aa,rew=choose_action_a(pi)
             userdata, response=self.call_action_server(userdata, aa, personality)
             if response:
-                f.write("----------------------\n")
-                string_log="before PERCEPTION: " + emotion+ "\n"
-                f.write(string_log)
-                string_log="AGREE ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+ "\n"
-                f.write(string_log)
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
@@ -200,8 +232,6 @@ class ExAction(smach.State):
                 else:
                     pn="NS_"+map_emotion_AV_axis[emotion]
                 rr=update_weights_a(aa,pi,pn) #qui in ogni caso avrò una new perception
-                string_log="after PERCEPTION: " + map_emotion_AV_axis[emotion]+ " reward "+ str(rr)+ "\n"
-                f.write(string_log)
                 change_raward("reward_a",float(rr))
                 return "outcome9"
             else:
@@ -216,20 +246,11 @@ class ExAction(smach.State):
             aa,rew=choose_action_d(map_emotion_AV_axis[emotion])
             userdata, response=self.call_action_server(userdata, aa, personality)
             if response:
-                f.write("----------------------\n")
-                string_log="before PERCEPTION: " + emotion+ "\n"
-                f.write(string_log)
-                string_log="DISAGREE ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+ "\n"
-                f.write(string_log)
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
                 rr=update_weights_d(aa,pi,map_emotion_AV_axis[emotion]) #qui in ogni caso avrò una new perception
-                string_log="after PERCEPTION: " + map_emotion_AV_axis[emotion]+ " reward "+ str(rr)+ "\n"
-                f.write(string_log)
                 change_raward("reward_a",float(rr))
-                string_log="before agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
-                f.write(string_log)
                 return "outcome9"
             else:
                 return "outcome8"
@@ -243,20 +264,11 @@ class ExAction(smach.State):
             aa,rew=choose_action_i(pi)
             userdata, response=self.call_action_server(userdata, aa, personality)
             if response:
-                f.write("----------------------\n")
-                string_log="before PERCEPTION: " + pi+ "\n"
-                f.write(string_log)
-                string_log="INTRO ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+"\n"
-                f.write(string_log)
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
                 pn=map_emotion_AV_axis[emotion]
                 rr=update_weights_i(aa,pi,pn) #qui in ogni caso avrò una new perception
-                string_log="after PERCEPTION: " + pn+ " reward "+ str(rr) + "\n"
-                f.write(string_log)
-                string_log="before extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
-                f.write(string_log)
                 change_raward("reward_e",float(rr))
                 return "outcome9"
             else:
@@ -274,20 +286,11 @@ class ExAction(smach.State):
             aa,rew=choose_action_e(pi)
             userdata, response=self.call_action_server(userdata, aa, personality)
             if response:
-                f.write("----------------------\n")
-                string_log="before PERCEPTION: " + pi+ "\n"
-                f.write(string_log)
-                string_log="EXTRO ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+"\n"
-                f.write(string_log)
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
                 pn=map_emotion_AV_axis[emotion]
                 rr=update_weights_e(aa,pi,pn) #qui in ogni caso avrò una new perception
-                string_log="after PERCEPTION: " + pn+ " reward "+ str(rr) + "\n"
-                f.write(string_log)
-                string_log="before extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
-                f.write(string_log)
                 change_raward("reward_e",float(rr))
                 return "outcome9"
             else:
@@ -302,13 +305,6 @@ class ExAction(smach.State):
             aa,rew=choose_action_c(pi)
             userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
-                f.write("----------------------\n")
-                string_log="before PERCEPTION: " + pi+ "\n"
-                f.write(string_log)
-                string_log="CONSC ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+"\n"
-                f.write(string_log)
-                string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
-                f.write(string_log)
                 change_raward("reward_c",float(rew))
                 return "outcome9"
             else:
@@ -324,14 +320,6 @@ class ExAction(smach.State):
            
             userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
-                f.write("----------------------\n")
-                string_log="before PERCEPTION: " + pi+ "\n"
-                f.write(string_log)
-                string_log="UNSC ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+ "\n"
-                f.write(string_log)
-                #exec
-                string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
-                f.write(string_log)
                 change_raward("reward_c",float(rew))
                 return "outcome9"
             else:
@@ -339,18 +327,6 @@ class ExAction(smach.State):
 
 
         else:
-            f.write("----------------------\n")
-            string_log="STANDARD ACTION:" + ac +"--------------"+personality+ "\n"
-            f.write(string_log)
-            string_log="before agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
-            f.write(string_log)
-            string_log="before extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
-            f.write(string_log)
-            string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
-            f.write(string_log)
-            
-            
-            #time.sleep(10)
             userdata, response=self.call_action_server(userdata, ac,personality)
             if response:
                 return "outcome9"
@@ -361,11 +337,9 @@ class ExAction(smach.State):
     def call_action_server(self, userdata, ac,personality):
             userdata.state="exec"
             resp, mmap, to_exec_action, exec_personality = dispatch_action(ac, personality)
-            string_long="********************EXECUTING ACTION\n"+str(mmap)+"\n"+to_exec_action+"\n"+exec_personality+"\n"
-            f1.write(string_long)
+            
             if resp==False:
                     print('Action Failed')        
-                    f.write("ACTION FAIL\n")
                     return userdata, False
             else:
                     ac=userdata.executing_actions.pop(0)
@@ -387,7 +361,8 @@ class CheckPerc(smach.State):
         print('check perception') 
         data["update"]="True"
         resp=requests.put(url+'get_input', json=data, headers=headers)
-        print(data)
+        a=userdata.action
+        print("action",a)
         if eval(resp.text)["new_emotion"]=="True":
             new_emotion=True
             emotion=eval(resp.text)["emotion"]
@@ -397,7 +372,6 @@ class CheckPerc(smach.State):
             time.sleep(1)
             data["update"]="True"
             resp=requests.put(url+'get_input', json=data, headers=headers)
-            print(data)
             if eval(resp.text)["new_emotion"]=="True":
                 new_emotion=True
                 emotion=eval(resp.text)["emotion"]
@@ -409,25 +383,24 @@ class CheckPerc(smach.State):
                 return "outcome3" #if I have done a trait specific action I need to replan
             
             if userdata.state=="exec":
-                f.write("Action fail need replanning\n")
+                
                 return "outcome3"
             
             else:
                 if userdata.exec_actions==[]:
-                    f.write("task finished \n")
+                   
                     return "outcome4"
                 else:
-                    f.write("executing next action \n")
                     return "outcome2"
         #IF NEW PERCEPTION
         else:
-            string_long="********************NEW PERCEPTION\n"
+            
             if new_emotion:
                new_emotion=False
                emotion_pred=perception_predicate_map[emotion]["emotion"]
                goals=perception_predicate_map[emotion]["goals"]
                add_predicate(emotion_pred)
-               string_long=string_long+"perceived emotion: "+emotion+"\n"
+              
                for g in goals:
                     add_goal(g)#state that that predicate is a goal
                     remove_predicate(g) #now the goal predicate is not grounded
@@ -438,11 +411,10 @@ class CheckPerc(smach.State):
                 remove_predicate("answered")
                 remove_predicate("finished")
                 add_predicate("new_sentence")
-                string_long=string_long+"User say a sentence\n"
+                
                 new_sentence=False
             add_goal("feel_comfort")
             remove_predicate("feel_comfort")
-            f1.write(string_long)
             return "outcome3"
 
         
@@ -470,12 +442,6 @@ class UpdateOntology(smach.State):
         update_ontology(userdata.action)
         userdata.state="update"
         initialize_reward()
-        string_log="after agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
-        f.write(string_log)
-        string_log="after extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
-        f.write(string_log)
-        string_log="after consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
-        f.write(string_log)
         userdata.out_action=acc
         return 'outcome10'
     
@@ -484,16 +450,16 @@ class Finish(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
                              input_keys=['input_goals'],
+                             output_keys=["out_action"],
                              outcomes=['outcome11','outcome12'],
                              )
         
     def execute(self,userdata):
         if userdata.input_goals!=[]:
             print('Passing to the next goal')
+            userdata.out_action=""
             return "outcome11"
         else:
-            f.close()
-            f1.close()
             print('Finishhh')
             return 'outcome12'
 
@@ -548,6 +514,7 @@ def main():
             smach.StateMachine.add('EXEC', ExAction(), 
                                 transitions={'outcome8':'CHECK_PERC',
                                             'outcome9':'UPDATE_ONTOLOGY',
+                                            'outcome13':'START'
                                             },
                                 remapping={'executing_actions':'actions',
                                         'updated_actions':'actions',
@@ -583,7 +550,8 @@ def main():
                         transitions={'outcome11':"START",
                                      'outcome12':'outcome13'},
                         remapping={
-                            "input_goals":"goals"
+                            "input_goals":"goals",
+                            "out_action":"a"
                         }
                         )
     
