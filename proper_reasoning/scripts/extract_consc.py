@@ -10,29 +10,52 @@ import numpy as np
 consc_actions=["say_the_user_to_focus_on_long_term_goals_and_not_waste_time","ask_where_it_can_be_useful"]
 
 
-zz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+zzz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "ask_where_it_can_be_useful":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-zo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
+zzo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
      "ask_where_it_can_be_useful":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-oz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+zoz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "ask_where_it_can_be_useful":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
     
      }
 
-oo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+zoo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "ask_where_it_can_be_useful":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
      }
 
+ozz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "ask_where_it_can_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     }
+
+ozo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
+     "ask_where_it_can_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     }
+
+ooz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "ask_where_it_can_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+    
+     }
+
+ooo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "ask_where_it_can_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     }
+
+
+
 
 consc_dict={
-    "N":{"weights":zz_c,"num":[0,0]},
-    "S":{"weights":zo_c,"num":[0,1]},
-    "A":{"weights":oz_c,"num":[1,0]},
-    "H":{"weights":oo_c,"num":[1,1]},
+    "NS_N":{"weights":zzz_c,"num":[0,0]},
+    "NS_S":{"weights":zzo_c,"num":[0,1]},
+    "NS_A":{"weights":zoz_c,"num":[1,0]},
+    "NS_H":{"weights":zoo_c,"num":[1,1]},
+    "S_N":{"weights":ozz_c,"num":[0,0]},
+    "S_S":{"weights":ozo_c,"num":[0,1]},
+    "S_A":{"weights":ooz_c,"num":[1,0]},
+    "S_H":{"weights":ooo_c,"num":[1,1]},
 }
 
 

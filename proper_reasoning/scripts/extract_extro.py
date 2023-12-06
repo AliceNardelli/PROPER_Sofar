@@ -9,33 +9,56 @@ import numpy as np
 extro_actions=["say_an_enthusiastic_sentence","say_something_funny","ask_a_question"]
 
 
-zz_e={"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[1,1]},
-     "say_something_funny":{"w1":2,"w2":1,"expected_outcome":[1,1]},
-     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[1,1]},
+zzz_e={"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_something_funny":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      }
 
-zo_e={"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[1,1]},
-     "say_something_funny":{"w1":4,"w2":2,"expected_outcome":[1,1]},
-     "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[1,1]},
+zzo_e={"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_something_funny":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
      }
 
-oz_e={"say_an_enthusiastic_sentence":{"w1":2,"w2":1,"expected_outcome":[1,1]},
-     "say_something_funny":{"w1":2,"w2":1,"expected_outcome":[1,1]},
-     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[1,1]},
+zoz_e={"say_an_enthusiastic_sentence":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say_something_funny":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      }
 
-oo_e={"say_an_enthusiastic_sentence":{"w1":4,"w2":2,"expected_outcome":[1,1]},
-     "say_something_funny":{"w1":0,"w2":0,"expected_outcome":[1,1]},
-     "ask_a_question":{"w1":2,"w2":1,"expected_outcome":[1,1]},
+zoo_e={"say_an_enthusiastic_sentence":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_something_funny":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "ask_a_question":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
      }
 
+ozz_e={"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_something_funny":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+ozo_e={"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "say_something_funny":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+ooz_e={"say_an_enthusiastic_sentence":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "say_something_funny":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
+     "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
+
+ooo_e={"say_an_enthusiastic_sentence":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_something_funny":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
+     }
 
 
 extroversion_dict={
-    "N":{"weights":zz_e,"num":[0,0]},
-    "S":{"weights":zo_e,"num":[0,1]},
-    "A":{"weights":oz_e,"num":[1,0]},
-    "H":{"weights":oo_e,"num":[0,0]},
+    "NS_N":{"weights":zzz_e,"num":[0,0,0]},
+    "NS_S":{"weights":zzo_e,"num":[0,0,1]},
+    "NS_A":{"weights":zoz_e,"num":[0,1,0]},
+    "NS_H":{"weights":zoo_e,"num":[0,1,1]},
+    "S_N":{"weights":ozz_e,"num":[0,0,0]},
+    "S_S":{"weights":ozo_e,"num":[0,0,1]},
+    "S_A":{"weights":ooz_e,"num":[0,1,0]},
+    "S_H":{"weights":ooo_e,"num":[0,1,1]},
 }
 
 

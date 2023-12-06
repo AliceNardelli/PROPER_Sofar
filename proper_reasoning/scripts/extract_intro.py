@@ -6,32 +6,52 @@ import numpy as np
 #01 SA
 #10 A, D, F
 #11 H, SU
-intro_actions=["say_if_can_be_useful","say_to_proceed_in_their_task_or_terminate_the_conversation"]
+intro_actions=["say_if_can_be_useful","ask_to_proceed_in_their_task_or_terminate_the_conversation"]
 
 
-zz_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0]},
-     "say_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0]},
+zzz_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
-zo_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0]},
-     "say_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0]},
+zzo_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
-oz_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0]},
-     "say_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0]},
+zoz_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
-oo_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0]},
-     "say_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0]},
+zoo_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     }
+
+ozz_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     }
+
+ozo_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     }
+
+ooz_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     }
+
+ooo_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
 
 
 introversion_dict={
-    "N":{"weights":zz_i,"num":[0,0]},
-    "S":{"weights":zo_i,"num":[0,1]},
-    "A":{"weights":oz_i,"num":[1,0]},
-    "H":{"weights":oo_i,"num":[0,0]},
+    "NS_N":{"weights":zzz_i,"num":[0,0,0]},
+    "NS_S":{"weights":zzo_i,"num":[0,0,1]},
+    "NS_A":{"weights":zoz_i,"num":[0,1,0]},
+    "NS_H":{"weights":zoo_i,"num":[0,1,1]},
+    "S_N":{"weights":ozz_i,"num":[0,0,0]},
+    "S_S":{"weights":ozo_i,"num":[0,0,1]},
+    "S_A":{"weights":ooz_i,"num":[0,1,0]},
+    "S_H":{"weights":ooo_i,"num":[0,1,1]},
 }
 
 

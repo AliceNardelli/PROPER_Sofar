@@ -230,7 +230,7 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
-            if new_sentence:
+            if predicates_objects["new_sentence"].is_grounded==True:
                 pi="S_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NS_"+map_emotion_AV_axis[emotion]
@@ -240,7 +240,7 @@ class ExAction(smach.State):
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
-                if new_sentence:
+                if predicates_objects["new_sentence"].is_grounded==True:
                     pn="S_"+map_emotion_AV_axis[emotion]
                 else:
                     pn="NS_"+map_emotion_AV_axis[emotion]
@@ -255,14 +255,21 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
-            pi=map_emotion_AV_axis[emotion]
-            aa,rew=choose_action_d(map_emotion_AV_axis[emotion])
+            if predicates_objects["new_sentence"].is_grounded==True:
+                pi="S_"+map_emotion_AV_axis[emotion]
+            else:
+                pi="NS_"+map_emotion_AV_axis[emotion]
+            aa,rew=choose_action_d(pi)
             userdata, response=self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
-                rr=update_weights_d(aa,pi,map_emotion_AV_axis[emotion]) #qui in ogni caso avrò una new perception
+                if predicates_objects["new_sentence"].is_grounded==True:
+                    pn="S_"+map_emotion_AV_axis[emotion]
+                else:
+                    pn="NS_"+map_emotion_AV_axis[emotion]
+                rr=update_weights_d(aa,pi,pn) #qui in ogni caso avrò una new perception
                 change_raward("reward_a",float(rr))
                 return "outcome9"
             else:
@@ -273,14 +280,20 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
-            pi=map_emotion_AV_axis[emotion]
+            if predicates_objects["new_sentence"].is_grounded==True:
+                pi="S_"+map_emotion_AV_axis[emotion]
+            else:
+                pi="NS_"+map_emotion_AV_axis[emotion]
             aa,rew=choose_action_i(pi)
             userdata, response=self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
-                pn=map_emotion_AV_axis[emotion]
+                if predicates_objects["new_sentence"].is_grounded==True:
+                    pn="S_"+map_emotion_AV_axis[emotion]
+                else:
+                    pn="NS_"+map_emotion_AV_axis[emotion]
                 rr=update_weights_i(aa,pi,pn) #qui in ogni caso avrò una new perception
                 change_raward("reward_e",float(rr))
                 return "outcome9"
@@ -295,14 +308,20 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
-            pi=map_emotion_AV_axis[emotion]
+            if predicates_objects["new_sentence"].is_grounded==True:
+                pi="S_"+map_emotion_AV_axis[emotion]
+            else:
+                pi="NS_"+map_emotion_AV_axis[emotion]
             aa,rew=choose_action_e(pi)
             userdata, response=self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
-                pn=map_emotion_AV_axis[emotion]
+                if predicates_objects["new_sentence"].is_grounded==True:
+                    pn="S_"+map_emotion_AV_axis[emotion]
+                else:
+                    pn="NS_"+map_emotion_AV_axis[emotion]
                 rr=update_weights_e(aa,pi,pn) #qui in ogni caso avrò una new perception
                 change_raward("reward_e",float(rr))
                 return "outcome9"
@@ -314,7 +333,10 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
-            pi=map_emotion_AV_axis[emotion]
+            if predicates_objects["new_sentence"].is_grounded==True:
+                pi="S_"+map_emotion_AV_axis[emotion]
+            else:
+                pi="NS_"+map_emotion_AV_axis[emotion]
             aa,rew=choose_action_c(pi)
             userdata, response=self.call_action_server(userdata, aa,personality)
             if response:
@@ -328,7 +350,10 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
-            pi=map_emotion_AV_axis[emotion]
+            if predicates_objects["new_sentence"].is_grounded==True:
+                pi="S_"+map_emotion_AV_axis[emotion]
+            else:
+                pi="NS_"+map_emotion_AV_axis[emotion]
             aa,rew=choose_action_u(pi)
            
             userdata, response=self.call_action_server(userdata, aa,personality)
@@ -352,7 +377,7 @@ class ExAction(smach.State):
             userdata.state="exec"
             resp, mmap, to_exec_action, exec_personality = dispatch_action(ac, personality)
             resp2=True
-            if ("REACT" not in to_exec_action) and ("COMPUTE" not in to_exec_action) and ("CHECK" not in to_exec_action):
+            if ("react" not in to_exec_action) and ("compute" not in to_exec_action) and ("check" not in to_exec_action):
                 #set that I have executed an action
                 data_action["personality"]=exec_personality
                 data_action["action"]=to_exec_action
@@ -441,7 +466,6 @@ class CheckPerc(smach.State):
                 remove_predicate("answered")
                 remove_predicate("finished")
                 add_predicate("new_sentence")
-                
                 new_sentence=False
             add_goal("feel_comfort")
             remove_predicate("feel_comfort")

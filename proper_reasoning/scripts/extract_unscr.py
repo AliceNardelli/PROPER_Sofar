@@ -10,29 +10,47 @@ import numpy as np
 unsc_actions=["distract_the_user_with_a_random_question","make_a_thoughtless_consideration"]
 
 
-zz_u={"distract_the_user_with_a_random_question":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+zzz_u={"distract_the_user_with_a_random_question":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "make_a_thoughtless_consideration":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-zo_u={"distract_the_user_with_a_random_question":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+zzo_u={"distract_the_user_with_a_random_question":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "make_a_thoughtless_consideration":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-oz_u={"distract_the_user_with_a_random_question":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+zoz_u={"distract_the_user_with_a_random_question":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "make_a_thoughtless_consideration":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-oo_u={"distract_the_user_with_a_random_question":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+zoo_u={"distract_the_user_with_a_random_question":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "make_a_thoughtless_consideration":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      }
 
+ozz_u={"distract_the_user_with_a_random_question":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "make_a_thoughtless_consideration":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     }
+
+ozo_u={"distract_the_user_with_a_random_question":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "make_a_thoughtless_consideration":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     }
+
+ooz_u={"distract_the_user_with_a_random_question":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "make_a_thoughtless_consideration":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     }
+
+ooo_u={"distract_the_user_with_a_random_question":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "make_a_thoughtless_consideration":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     }
 
 unsc_dict={
-    "N":{"weights":zz_u,"num":[0,0]},
-    "S":{"weights":zo_u,"num":[0,1]},
-    "A":{"weights":oz_u,"num":[1,0]},
-    "H":{"weights":oo_u,"num":[1,1]},
-
+    "NS_N":{"weights":zzz_u,"num":[0,0,0]},
+    "NS_S":{"weights":zzo_u,"num":[0,0,1]},
+    "NS_A":{"weights":zoz_u,"num":[0,1,0]},
+    "NS_H":{"weights":zoo_u,"num":[0,1,1]},
+    "S_N":{"weights":ozz_u,"num":[0,0,0]},
+    "S_S":{"weights":ozo_u,"num":[0,0,1]},
+    "S_A":{"weights":ooz_u,"num":[0,1,0]},
+    "S_H":{"weights":ooo_u,"num":[0,1,1]},
 }
 
 
