@@ -30,3 +30,5 @@ inside the virtualenv
 > python3 audio_recorder_multiparty.py
 
 metric-FF url: https://fai.cs.uni-saarland.de/hoffmann/metric-ff.html
+
+# openai-1.3.7 typing-extensions-4.8.0

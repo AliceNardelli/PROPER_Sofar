@@ -166,6 +166,7 @@ catkin_install_python(PROGRAMS
   scripts/prova_keyboard.py
   scripts/emotion_estimation.py
   scripts/Alice_client.py
+  scripts/tactile_interface_ros.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

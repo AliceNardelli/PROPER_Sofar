@@ -54,13 +54,13 @@ def dispatch_action(req):
                     print(req.action,"action nav")
                     data["action"]=req.action
                     data["params"]=mmap
-                   # resp=requests.put(url+'navigation_server', json=data, headers=headers)
+                    resp=requests.put(url+'navigation_server', json=data, headers=headers)
 
             if (mmap["speed"]=="no_active" or mmap["prox"]=="no_active") and (mmap["pitch"]=="no_active" or mmap["velocity"]=="no_active"):
                     print(req.action,"action  gesture")
                     data["action"]=req.action
                     data["params"]=mmap
-                    #resp=requests.put(url+'gesture_server', json=data, headers=headers)
+                    resp=requests.put(url+'gesture_server', json=data, headers=headers)
         
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)

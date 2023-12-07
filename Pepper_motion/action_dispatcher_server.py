@@ -15,7 +15,7 @@ def mm():
     global m
     updated_data = request.get_json()
     data.update(updated_data)
-    m.move(data["action"],data["params"])
+    #m.move(data["action"],data["params"])
     return jsonify(data)
 
 @app.route ('/gesture_server', methods = ['PUT'] )   
@@ -23,7 +23,7 @@ def gg():
     global g
     updated_data = request.get_json()
     data.update(updated_data)
-    g.gesture(data["action"],data["params"])
+    #g.gesture(data["action"],data["params"])
     return jsonify(data)
 
 @app.route ('/speak_server', methods = ['PUT'] )   
@@ -36,7 +36,7 @@ def ss():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default="130.251.13.166",
+    parser.add_argument("--ip", type=str, default="130.251.13.109",
                         help="Robot IP address. On robot or Local Naoqi: use '127.0.0.1'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")

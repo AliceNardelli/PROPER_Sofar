@@ -1,4 +1,4 @@
-mmap_action_sentences={"say_greetings":"Goodmorning, I am happy that you arrived. My name is Pepper, I am companion robot and I am here to assist you during your morning routine",
+mmap_action_sentences={"say_greetings":["Goodmorning, I am happy that you arrived. My name is Pepper, I am companion robot and I am here to assist you during your morning routine",""],
       "ask_feelings":["How are you today",""],
       "say_skip_feelings":["",""],
       "say_sitting":["You'll be tired, you can sit in that chair",""],

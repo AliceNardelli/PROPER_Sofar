@@ -43,7 +43,7 @@ zoz_c/goal3: {"say_it_is_important_to_take_care_of_your_body":{"w1":2,"w2":0,"ex
      "remember_to_not_forget_of_breath_during_training":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-zzz_c/goal4: {"ask_what_is_your_favourite_museum":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
+zoz_c/goal4: {"ask_what_is_your_favourite_museum":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
      "remind_that_the_art_is_food_for_the_mind":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
      "say_that_the_art_can_infer_the_calm":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      }

@@ -4,6 +4,10 @@
 
     <rosparam file="$(find proper_lpg)/config/ontology_interface_param.yaml" command="load" />
     <rosparam file="$(find proper_lpg)/config/disagree_actions.yaml" command="load" />
+    <rosparam file="$(find proper_lpg)/config/intro_actions.yaml" command="load" />
+    <rosparam file="$(find proper_lpg)/config/agree_actions.yaml" command="load" />
+    <rosparam file="$(find proper_lpg)/config/consc_actions.yaml" command="load" />
+    <rosparam file="$(find proper_lpg)/config/unsc_actions.yaml" command="load" />
     <rosparam file="$(find proper_lpg)/config/extro_actions.yaml" command="load" />
     
 </launch>

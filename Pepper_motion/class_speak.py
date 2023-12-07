@@ -45,6 +45,7 @@ class Speak:
         self.touched=False
         self.m=self.session.service("ALMotion")
         self.traits="ac"
+        self.grasp=False
 
         self.pitch={"low":0.83,
                     "mid":0.95,
@@ -181,14 +182,22 @@ class Speak:
            behavior=mmap_action_sentences[self.action][1]
            #call the service to ask the question
         except:
-           sentence_action=self.action 
+           sentence_action=self.action.replace("_"," ").lower()
            behavior=""
            #call the service to ask the question 
         if self.action=="say_greetings" :
                 h=self.hello()
                 to_say=" ^start("+h+") \\pau=2000\\"
                 anim_speech_service.say(to_say) 
-        to_say=sentence_action
+        data["language"]=self.parameters["language"]
+        data["sentence"]=sentence_action
+        print(data)
+        print("--------------------------")
+        """
+        resp=requests.put(url+'sentence_generation', json=data, headers=headers)
+        to_say=eval(resp.text)["response"]
+        print(to_say)
+        
         thread = threading.Thread(target=self.task)
         thread.start()
         to_say=self.add_gestures(to_say)
@@ -196,6 +205,7 @@ class Speak:
         thread.join()
         if behavior!="":
              print("Executing behavior ",behavior)
+        """
 
 
    

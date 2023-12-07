@@ -27,14 +27,6 @@ zzz_e/goal4: {"ask_who_is_your_favourite_painter":{"w1":4,"w2":2,"expected_outco
      "express_excitement_to_express_the_morning_routine":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      "say_you_like_physical_contact":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
      }
-
-
-
-
-
-
-
-
 zzo_e/goal1: {"go_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
      "express_happiness":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[0,0,1]},
@@ -46,7 +38,7 @@ zzo_e/goal2: {"ask_something_about_personal_care":{"w1":0,"w2":0,"expected_outco
      "say_a_robot_cannot_drink_and_you_are_a_robot":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
      "say_should_eat_sweet_to_become_happy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      "say_you_can_embrace_me":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }zzz
+     }
 
 zzo_e/goal3: {"say_you_are_excited_to_do_training_together":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
      "say_you_like_energetic_workout":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
@@ -58,15 +50,6 @@ zzo_e/goal4: {"ask_who_is_your_favourite_painter":{"w1":4,"w2":2,"expected_outco
      "express_excitement_to_express_the_morning_routine":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      "say_you_like_physical_contact":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
      }
-
-
-
-
-
-
-
-
-
 
 zoz_e/goal1: {"go_closer":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},  
      "express_happiness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
@@ -92,9 +75,6 @@ zoz_e/goal4: {"ask_who_is_your_favourite_painter":{"w1":4,"w2":2,"expected_outco
      "express_excitement_to_express_the_morning_routine":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      "say_you_like_physical_contact":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
      }
-
-
-
 
 zoo_e/goal1: {"go_closer":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
      "express_happiness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
@@ -122,9 +102,6 @@ zoo_e/goal4: {"ask_who_is_your_favourite_painter":{"w1":4,"w2":2,"expected_outco
      "say_you_like_physical_contact":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
      }
 
-
-
-
 ozz_e/goal1: {"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
      "express_happiness":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
      "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
@@ -150,10 +127,6 @@ ozz_e/goal4: {"ask_who_is_your_favourite_painter":{"w1":2,"w2":1,"expected_outco
      "express_excitement_to_express_the_morning_routine":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
      "say_you_like_physical_contact":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
      }   
-
-
-
-
 
 ozo_e/goal1: {"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
      "express_happiness":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},

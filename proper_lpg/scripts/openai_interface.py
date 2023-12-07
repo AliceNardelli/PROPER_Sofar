@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
-import unidecode
 from flask import Flask, request, jsonify
 import os
 import openai
-openai.organization = "org-SwpGa1d1G6Gna0rCvM9JRo2o"
-file=open("/home/alice/alice_key.txt", "r")
-key=file.readline().replace("\n","")
+from openai import OpenAI
+openai.organization = "org-OWePijhLCGVSJWhT7TQXBK7D"
+key=os.getenv("OPENAI_API_KEY")
 openai.api_key = key
-a=openai.Model.list()
-#model="gpt-3.5-turbo"
-model="text-davinci-003"
+model="gpt-4"
+client = OpenAI()
 
 data = {
-    "sentence": "p",
+    "language": "p",
+    "sentence": "s",
     "response":"q"
 }
 
@@ -23,49 +22,22 @@ app = Flask(__name__)
 def main():
   updated_data = request.get_json()
   data.update(updated_data)
-  print(data["sentence"])
-  #res=openai.ChatCompletion.create(
-  res=openai.Completion.create(
-  model=model,
-  #messages=[{"role": "user", 
-            #"content": pr}],
-  prompt=data["sentence"],
-  temperature=0.5,
-  max_tokens=100,
-  top_p=1,
-  frequency_penalty=2,
-  presence_penalty=2
+  sentence='generate a sentence with '+data["language"]+ ' personality in italian to achieve the following goal "'+data["sentence"]+'"'
+  response = client.chat.completions.create(
+    model=model,
+    messages=[{"role": "user", 
+              "content": sentence}],
+    temperature=1,
+    max_tokens=50,
+    top_p=1,
   )
-  print(data["sentence"])
-  print(res.choices[0].text)
+  print(sentence)
+  print(response.choices[0].message.content)
   print("----------------------")
-  data["response"]=unidecode.unidecode(str(res.choices[0].text))
+  resp=response.choices[0].message.content.replace("à","a")
+  data["response"]=resp
   return jsonify(data)
 
-"""
-res=openai.Completion.create(
-model=model,
-#messages=[{"role": "user", "content": "Translate in italian: '"+res.choices[0].message.content+"'"}],
-prompt="Translate in italian: '"+res.choices[0].text+"'", #res.choices[0].message.content
-temperature=0.5,
-max_tokens=200,
-top_p=1,
-frequency_penalty=1,
-presence_penalty=1
-)
-print(res)
-
-response = openai.Completion.create(
-model=model,
-prompt=pr,
-max_tokens=60,
-temperature=0.3,
-top_p=1,
-frequency_penalty=0,
-presence_penalty=0
-)
-print(response)
-"""
 
 
 if __name__=='__main__':
