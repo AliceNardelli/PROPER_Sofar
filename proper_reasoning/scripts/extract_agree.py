@@ -4,7 +4,7 @@
 import random
 import numpy as np
 
-agree_actions=["ask_if_can_it_be_useful","express_happyness_for_helping_the_user","express_empathy","affirm_to_mantain_the_calm_and_ask_if_can_be_useful"]
+agree_actions=["ask_if_it_can_be_useful","express_happyness_for_helping_the_user","express_empathy","affirm_to_mantain_the_calm_and_ask_if_can_be_useful","ask_if_there_is_something_that_clouds_thoughts","say_to_free_the_mind_from_thoughts","say_to_be_glad_to_see_the_user_full_of_energy"]
 
 #GOAL make the user happy
 # the fisrt bit depend on the fact that the user has spoken
@@ -12,73 +12,99 @@ agree_actions=["ask_if_can_it_be_useful","express_happyness_for_helping_the_user
 #01 SA
 #10 A, D, F
 #11 H, SU
-
-zzz_a={"ask_if_can_it_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "express_happyness_for_helping_the_user":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
+#MODIFY THE PERCEIVED OUTPUT
+zzz_a={"ask_if_it_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "express_empathy":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[1,1,1]},
+     "ask_if_there_is_something_that_clouds_thoughts":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_to_free_the_mind_from_thoughts":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_to_be_glad_to_see_the_user_full_of_energy":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      }
 
-zzo_a={"ask_if_can_it_be_useful":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
+zzo_a={"ask_if_it_can_be_useful":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "express_empathy":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[1,1,1]},
+     "ask_if_there_is_something_that_clouds_thoughts":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_to_free_the_mind_from_thoughts":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_to_be_glad_to_see_the_user_full_of_energy":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      }
 
-zoz_a={"ask_if_can_it_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+zoz_a={"ask_if_it_can_be_useful":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "express_empathy":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "ask_if_there_is_something_that_clouds_thoughts":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_to_free_the_mind_from_thoughts":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_to_be_glad_to_see_the_user_full_of_energy":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      }
 
-zoo_a={"ask_if_can_it_be_useful":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_happyness_for_helping_the_user":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
-     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
+zoo_a={"ask_if_it_can_be_useful":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "express_empathy":{"w1":0.0,"w2":0.0,"expected_outcome":[1,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[1,1,1]},
+     "ask_if_there_is_something_that_clouds_thoughts":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_to_free_the_mind_from_thoughts":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_to_be_glad_to_see_the_user_full_of_energy":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      }
 
-ozz_a={"ask_if_can_it_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "express_happyness_for_helping_the_user":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
+ozz_a={"ask_if_it_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "express_empathy":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[1,1,1]},
+     "ask_if_there_is_something_that_clouds_thoughts":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "say_to_free_the_mind_from_thoughts":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "say_to_be_glad_to_see_the_user_full_of_energy":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      }
 
-ozo_a={"ask_if_can_it_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
+ozo_a={"ask_if_it_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "express_empathy":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[1,1,1]},
+     "ask_if_there_is_something_that_clouds_thoughts":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_to_free_the_mind_from_thoughts":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_to_be_glad_to_see_the_user_full_of_energy":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      }
 
-ooz_a={"ask_if_can_it_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+ooz_a={"ask_if_it_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "express_empathy":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "ask_if_there_is_something_that_clouds_thoughts":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_to_free_the_mind_from_thoughts":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_to_be_glad_to_see_the_user_full_of_energy":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      }
 
-ooo_a={"ask_if_can_it_be_useful":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "express_happyness_for_helping_the_user":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "express_empathy":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
-     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,1]},
+ooo_a={"ask_if_it_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "express_happyness_for_helping_the_user":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "express_empathy":{"w1":0.0,"w2":0.0,"expected_outcome":[1,1,1]},
+     "affirm_to_mantain_the_calm_and_ask_if_can_be_useful":{"w1":0.0,"w2":0.0,"expected_outcome":[1,1,1]},
+     "ask_if_there_is_something_that_clouds_thoughts":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "say_to_free_the_mind_from_thoughts":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "say_to_be_glad_to_see_the_user_full_of_energy":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      }
 
 agreeableness_dict={
-    "NS_N":{"weights":zzz_a,"num":[0,0,0]},
-    "NS_S":{"weights":zzo_a,"num":[0,0,1]},
-    "NS_A":{"weights":zoz_a,"num":[0,1,0]},
-    "NS_H":{"weights":zoo_a,"num":[0,1,1]},
-    "S_N":{"weights":ozz_a,"num":[0,0,0]},
-    "S_S":{"weights":ozo_a,"num":[0,0,1]},
-    "S_A":{"weights":ooz_a,"num":[0,1,0]},
-    "S_H":{"weights":ooo_a,"num":[0,1,1]}
+    "NA_N":{"weights":zzz_a,"num":[0,0,0]},
+    "NA_S":{"weights":zzo_a,"num":[0,0,1]},
+    "NA_A":{"weights":zoz_a,"num":[0,1,0]},
+    "NA_H":{"weights":zoo_a,"num":[0,1,1]},
+    "A_N":{"weights":ozz_a,"num":[1,0,0]},
+    "A_S":{"weights":ozo_a,"num":[1,0,1]},
+    "A_A":{"weights":ooz_a,"num":[1,1,0]},
+    "A_H":{"weights":ooo_a,"num":[1,1,1]}
 }
 
 
-def choose_action_a(perception):
+def choose_action_a(perception, sentence):
     global agree_actions, agreeableness_dict
     w=[]
     for a in agree_actions:
-        
-        weight=agreeableness_dict[perception]["weights"][a]["w1"]+agreeableness_dict[perception]["weights"][a]["w2"]
+        if ("ask"in a) and (sentence==True):
+          weight=0
+        else:
+          weight=agreeableness_dict[perception]["weights"][a]["w1"]+agreeableness_dict[perception]["weights"][a]["w2"]
         w.append(float(weight))
 
 

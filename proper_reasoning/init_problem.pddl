@@ -17,6 +17,7 @@
         (=(desired_agreeableness)5)
         (=(agreeableness_level)5)
         (emotion_r) 
+        (attention_r)  
        
 )
 

@@ -1,32 +1,95 @@
-# PROPER_Sofar Pepper perception architecture
+# PROPER_Sofar base architecture for conversation
 
 
-## python 3 environment
+## How to execute it 
 
-start the ROS perception nodes
-> rosrun proper_lpg prova_keyboard.py #uso webcam
-> python3 FaceDetection2.py #robot camera
-> python3 Tactile_Interface_ROS.py
-> rosrun proper_lpg Alice_client.py #mic + emotion detection
+To run it with xterm:
+
+>./run.sh path_before_PROPER_Sofar
 
 
-run the perception interface
->rosrun proper_lpg emotion_estimation.py
->rosrun proper_lpg perception_interface.py
+To run it withouth xterm
 
-start the fsm and ontology iterface
-> rosrun proper_lpg ontology_interface.py
+>./run2.sh path_before_PROPER_Sofar
+
+To kill automatically all scripts
+
+> ./kill_python.sh
+
+## Interfaces
+
+Add the personality
+
+```ruby
+headers= {'Content-Type':'application/json'}
+data={
+       "Extrovert":0,
+       "Introvert":0,
+       "Agreeable":0,
+       "Disagreeable":1,
+       "Conscientious":0,
+       "Unscrupolous":0
+}
+url='http://127.0.0.1:5019/'
+resp=requests.put(url+'set_personality', json=data, headers=headers)
+```
+
+Add a perception (emotional state, attentive state, and if user say something)
 
 
+```ruby
+url='http://192.168.1.10:5020/'
+headers= {'Content-Type':'application/json'}
+data={
+      "emotion":'emotion_Angry',
+      "new_emotion":"True",
+      "new_sentence":"False",
+      "new_attention":"False",
+}
+resp=requests.put(url+'update_input', json=data, headers=headers)
+```
 
-## python 2 environment
-inside the virtualenv 
->export PYTHONPATH=${PYTHONPATH}:/home/alice/pynaoqi-python2.7-2.5.7.1-linux64/lib/python2.7/site-packages/
->python tactile_interface.py
->python Pepper_Image_acquisition.py #if use robot camera
+Retrieve the action to execute
 
 
-## Cairlib environment
-> python3 audio_recorder_multiparty.py
+```ruby
+data={
+        "action":"",
+        "language":"",
+        "personality":"",
+        "pitch":"",
+        "volume":"",
+        "velocity":"",
+        "new_action":"",
+        "executed":""
+}
+url1='http://127.0.0.1:5021/'
+resp=requests.put(url1+'get_action', json=data, headers=headers)
+while eval(resp.text)["new_action"]=="False":
+	resp=requests.put(url1+'get_action', json=data, headers=headers)
+	time.sleep(1)
+```
 
-metric-FF url: https://fai.cs.uni-saarland.de/hoffmann/metric-ff.html
+Affirm that the action has been executed
+
+
+```ruby
+data={
+        "result":"True",
+        "executed":"True",
+}
+url1='http://127.0.0.1:5021/'
+resp=requests.put(url1+'set_exec', json=data, headers=headers)
+```
+
+Restart when needed
+
+```ruby
+
+data={
+       "restart":"True"
+}
+url1='http://127.0.0.1:5018/'
+resp=requests.put(url1+'set_restart', json=data, headers=headers)
+
+```

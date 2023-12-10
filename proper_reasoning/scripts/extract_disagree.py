@@ -1,7 +1,7 @@
 import random
 import numpy as np
 
-disagree_actions=["say_a_contrastive_affirmation","remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions","ask_a_provocative_question"]
+disagree_actions=["say_a_contrastive_affirmation","remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions","ask_a_provocative_question","ask_if_it_can_be_useful_stressing_on_its_superiority_on_answering_questions", "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right"]
 
 #GOAL make the user angry, create cometitiveness
 #00 N 
@@ -12,63 +12,81 @@ disagree_actions=["say_a_contrastive_affirmation","remember_the_superiority_of_t
 zzz_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "ask_a_provocative_question":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
+     "ask_if_it_can_be_useful_stressing_on_its_superiority_on_answering_questions":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
+     "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      }
 
 zzo_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      "ask_a_provocative_question":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
+     "ask_if_it_can_be_useful_stressing_on_its_superiority_on_answering_questions":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
+     "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      }
 
 zoz_d={"say_a_contrastive_affirmation":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "ask_a_provocative_question":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
+     "ask_if_it_can_be_useful_stressing_on_its_superiority_on_answering_questions":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
+     "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      }
 
 zoo_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      "ask_a_provocative_question":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,0]},
+     "ask_if_it_can_be_useful_stressing_on_its_superiority_on_answering_questions":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
+     "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      }
 
-ozz_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
-     "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
-     "ask_a_provocative_question":{"w1":0,"w2":0,"expected_outcome":[0,1,0]},
+ozz_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
+     "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
+     "ask_a_provocative_question":{"w1":0,"w2":0,"expected_outcome":[1,1,0]},
+     "ask_if_it_can_be_useful_stressing_on_its_superiority_on_answering_questions":{"w1":0,"w2":0,"expected_outcome":[1,1,0]},
+     "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
      }
 
-ozo_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
-     "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
-     "ask_a_provocative_question":{"w1":0,"w2":0,"expected_outcome":[0,1,0]},
+ozo_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
+     "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":4,"w2":2,"expected_outcome":[1,1,0]},
+     "ask_a_provocative_question":{"w1":0,"w2":0,"expected_outcome":[1,1,0]},
+     "ask_if_it_can_be_useful_stressing_on_its_superiority_on_answering_questions":{"w1":4,"w2":2,"expected_outcome":[1,1,0]},
+     "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":0,"w2":0,"expected_outcome":[1,1,0]},
      }
 
-ooz_d={"say_a_contrastive_affirmation":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
-     "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
-     "ask_a_provocative_question":{"w1":0,"w2":0,"expected_outcome":[0,1,0]},
+ooz_d={"say_a_contrastive_affirmation":{"w1":4,"w2":2,"expected_outcome":[1,1,0]},
+     "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
+     "ask_a_provocative_question":{"w1":0,"w2":0,"expected_outcome":[1,1,0]},
+     "ask_if_it_can_be_useful_stressing_on_its_superiority_on_answering_questions":{"w1":0,"w2":0,"expected_outcome":[1,1,0]},
+     "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
      }
 
-ooo_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
-     "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
-     "ask_a_provocative_question":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,0]},
+ooo_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
+     "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":4,"w2":2,"expected_outcome":[1,1,0]},
+     "ask_a_provocative_question":{"w1":0.0,"w2":0.0,"expected_outcome":[1,1,0]},
+     "ask_if_it_can_be_useful_stressing_on_its_superiority_on_answering_questions":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
+     "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":0,"w2":0,"expected_outcome":[1,1,0]},
      }
 
 disagreeableness_dict={
-    "NS_N":{"weights":zzz_d,"num":[0,0,0]},
-    "NS_S":{"weights":zzo_d,"num":[0,0,1]},
-    "NS_A":{"weights":zoz_d,"num":[0,1,0]},
-    "NS_H":{"weights":zoo_d,"num":[0,1,1]},
-    "S_N":{"weights":ozz_d,"num":[0,0,0]},
-    "S_S":{"weights":ozo_d,"num":[0,0,1]},
-    "S_A":{"weights":ooz_d,"num":[0,1,0]},
-    "S_H":{"weights":ooo_d,"num":[0,1,1]}
+    "NA_N":{"weights":zzz_d,"num":[0,0,0]},
+    "NA_S":{"weights":zzo_d,"num":[0,0,1]},
+    "NA_A":{"weights":zoz_d,"num":[0,1,0]},
+    "NA_H":{"weights":zoo_d,"num":[0,1,1]},
+    "A_N":{"weights":ozz_d,"num":[1,0,0]},
+    "A_S":{"weights":ozo_d,"num":[1,0,1]},
+    "A_A":{"weights":ooz_d,"num":[1,1,0]},
+    "A_H":{"weights":ooo_d,"num":[1,1,1]}
 }
 
 
 
 
-def choose_action_d(perception):
+def choose_action_d(perception,sentence):
     global disagree_actions, disagreeableness_dict
     w=[]
     for a in disagree_actions:
-        
-        weight=disagreeableness_dict[perception]["weights"][a]["w1"]+disagreeableness_dict[perception]["weights"][a]["w2"]
+        if (sentence==True) and "ask" in a:
+            weight=0
+        else:
+            weight=disagreeableness_dict[perception]["weights"][a]["w1"]+disagreeableness_dict[perception]["weights"][a]["w2"]
         w.append(float(weight))
     norm = [i/sum(w) for i in w]
     to_execute=np.random.choice(disagree_actions,p=norm) #trovare il modo di normalizzare i pesi

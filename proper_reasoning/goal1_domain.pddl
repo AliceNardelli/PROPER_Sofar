@@ -48,7 +48,8 @@
         (disgust_emotion)
         (disgust_emotion_r)
         (emotion_r)
-        
+        (attention)
+        (attention_r)
 )
 
 
@@ -122,6 +123,25 @@
                                       
                 )
 )
+
+
+(:action REACT_ATTENTION
+        :precondition
+                (and
+                   (attention)
+                   (not (attention_r))
+                )
+
+        :effect
+                (and
+                   (when (agree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(react))))
+                   (when (consc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(react))))
+                   (when (extro)(decrease (interaction_level)(*(extroversion_coefficient)(react)))) 
+                   (when (intro)(increase (interaction_level)(*(extroversion_coefficient)(react))))      
+		   (attention_r)  
+                )
+)
+
 
 (:action REACT_SAD_EMOTION
         :precondition
@@ -259,6 +279,7 @@
                (and 
                            (new_sentence)
                            (emotion_r)
+                           (attention_r)  
                            (>=(interaction_level)(desired_interaction))
                            (>=(scrupulousness_level)(desired_scrupulousness))
                            (>=(agreeableness_level)(desired_agreeableness))
@@ -283,6 +304,7 @@
                (and 
                            (new_sentence)
                            (emotion_r)
+                           (attention_r)  
                            (>=(interaction_level)(desired_interaction))
                            (>=(scrupulousness_level)(desired_scrupulousness))
                            (>=(agreeableness_level)(desired_agreeableness))
@@ -307,6 +329,7 @@
                            
                            (emotion_r)
                            (new_sentence)
+                           (attention_r)  
                            (>=(interaction_level)(desired_interaction))
                            (>=(scrupulousness_level)(desired_scrupulousness))
                            (>=(agreeableness_level)(desired_agreeableness))
@@ -330,6 +353,7 @@
                            
                            (emotion_r)
                            (new_sentence)
+                           (attention_r)  
                            (>=(interaction_level)(desired_interaction))
                            (>=(scrupulousness_level)(desired_scrupulousness))
                            (>=(agreeableness_level)(desired_agreeableness))
@@ -353,6 +377,7 @@
                 (and
                         
                         (emotion_r)
+                        (attention_r)  
                         (>=(interaction_level)(desired_interaction))
                         (>=(scrupulousness_level)(desired_scrupulousness))
                         (>=(agreeableness_level)(desired_agreeableness))
@@ -370,6 +395,7 @@
                 (and
                         
                         (emotion_r)
+                        (attention_r)  
                         (answered)
                         (>=(interaction_level)(desired_interaction))
                         (>=(scrupulousness_level)(desired_scrupulousness))
