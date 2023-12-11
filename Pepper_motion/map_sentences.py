@@ -12,7 +12,7 @@ mmap_action_sentences={"say_greetings":["Goodmorning, I am happy that you arrive
       "say_bring_me_sweet":["Look at that candies, bring me one, you are not allowed to eat them","bring_candy"],
       "say_training":["Now, it is time to do some training together",""],
       "say_do_not_training":["Now, it is time to do some training, you will do everthing I am lazy",""],
-      "say_breathe":["Let's start to breathe","breathe"],
+      "say_breathe":["Let's start to breathe, follow my movement by breathing in and out","breathe"],
       "say_curl_movement":["On the desk there are two dumbbells, lets do some curls, you need to follow my movements","curl_movement"],
       "say_curl_blink":["On the desk there are two dumbbells, lets do some curls, you need to follow my blinks, I am too lazy to move myself","curl_blink"],
       "say_yoga":["To conclude folllow me doing yoga position","yoga"],

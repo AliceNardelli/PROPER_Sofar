@@ -15,6 +15,8 @@ import sys
 import json
 import xml
 from map_sentences import *
+from goal2_animations import *
+from goal3_animations import *
 from flask import Flask, request, jsonify
 
 
@@ -193,7 +195,7 @@ class Speak:
         data["sentence"]=sentence_action
         print(data)
         print("--------------------------")
-        """
+        
         resp=requests.put(url+'sentence_generation', json=data, headers=headers)
         to_say=eval(resp.text)["response"]
         print(to_say)
@@ -203,9 +205,28 @@ class Speak:
         to_say=self.add_gestures(to_say)
         anim_speech_service.say(to_say) 
         thread.join()
-        if behavior!="":
-             print("Executing behavior ",behavior)
-        """
+        
+        if behavior=="tablet":
+            tablet(self.session, mmap_action_sentences[self.action][2])
+
+        elif behavior=="bring_candy":
+            to_say="Toccami la testa quando la caramella sarà nella mia mano"
+            thread = threading.Thread(target=self.task)
+            thread.start()
+            to_say=self.add_gestures(to_say)
+            anim_speech_service.say(to_say) 
+            thread.join()
+            ask_pick_sweet(self.session)
+        
+        elif behavior=="breathe":
+            breath(self.session, anim_speech_service)
+
+        elif behavior=="curl_movement":
+            breath(self.session, anim_speech_service)
+
+        elif behavior=="curl_blink":
+            blink(session, 6, 1, "red")
+             
 
 
    
