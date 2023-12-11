@@ -44,24 +44,26 @@ ooo_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
 
 
 introversion_dict={
-    "NS_N":{"weights":zzz_i,"num":[0,0,0]},
-    "NS_S":{"weights":zzo_i,"num":[0,0,1]},
-    "NS_A":{"weights":zoz_i,"num":[0,1,0]},
-    "NS_H":{"weights":zoo_i,"num":[0,1,1]},
-    "S_N":{"weights":ozz_i,"num":[0,0,0]},
-    "S_S":{"weights":ozo_i,"num":[0,0,1]},
-    "S_A":{"weights":ooz_i,"num":[0,1,0]},
-    "S_H":{"weights":ooo_i,"num":[0,1,1]},
+    "NA_N":{"weights":zzz_i,"num":[0,0,0]},
+    "NA_S":{"weights":zzo_i,"num":[0,0,1]},
+    "NA_A":{"weights":zoz_i,"num":[0,1,0]},
+    "NA_H":{"weights":zoo_i,"num":[0,1,1]},
+    "A_N":{"weights":ozz_i,"num":[0,0,0]},
+    "A_S":{"weights":ozo_i,"num":[0,0,1]},
+    "A_A":{"weights":ooz_i,"num":[0,1,0]},
+    "A_H":{"weights":ooo_i,"num":[0,1,1]},
 }
 
 
 
-def choose_action_i(perception):
+def choose_action_i(perception, sentence):
     global intro_actions, introversion_dict
     w=[]
     for a in intro_actions:
-
-        weight=introversion_dict[perception]["weights"][a]["w1"]+introversion_dict[perception]["weights"][a]["w2"]
+        if (sentence==True) and ("ask" in a):
+            weight=0
+        else:
+          weight=introversion_dict[perception]["weights"][a]["w1"]+introversion_dict[perception]["weights"][a]["w2"]
         w.append(float(weight))
 
    

@@ -11,6 +11,7 @@ data={
         "new_sentence":"False",
         "new_emotion":"False",
         "new_attention":"False",
+        "attention":"negative",
         "update":"False",
 }
 
@@ -18,6 +19,7 @@ new_sentence_input="False"
 new_emotion_input="False"
 new_attention_input="False"
 emotion_input=""
+attention_input=""
 
 emotion_dict_interface={'emotion_Angry':"A", 
                         'emotion_Disgust':"D",
@@ -31,7 +33,7 @@ emotion_dict_interface={'emotion_Angry':"A",
 
 @app.route ('/update_input', methods = ['PUT'] )  
 def update_input():
-        global new_sentence_input, emotion_input, new_emotion_input, new_attention_input
+        global new_sentence_input, emotion_input, new_emotion_input, new_attention_input, attention_input
         updated_data = request.get_json()
         data.update(updated_data)
         if new_sentence_input!="True":
@@ -39,6 +41,7 @@ def update_input():
         new_emotion_input=data["new_emotion"]
         emotion_input=emotion_dict_interface[data["emotion"]]
         new_attention_input=data["new_attention"]
+        attention_input=data["attention"]
         print("updated input",data)
         return jsonify(data)
 
@@ -46,7 +49,7 @@ def update_input():
 
 @app.route ('/get_input', methods = ['PUT'] )  
 def get_input():
-        global new_sentence_input, emotion_input, new_emotion_input, new_attention_input
+        global new_sentence_input, emotion_input, new_emotion_input, new_attention_input, attention_input
         updated_data = request.get_json()
         data.update(updated_data)
         d=data["update"]
@@ -54,6 +57,7 @@ def get_input():
         data["new_emotion"]=new_emotion_input
         data["emotion"]=emotion_input
         data["new_attention"]=new_attention_input
+        data["attention"]=attention_input
         print("get input",data)
         if d=="True":
                 new_sentence_input="False"

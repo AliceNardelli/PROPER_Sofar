@@ -30,6 +30,7 @@ sum_weights=0
 weights=[]
 gamma=1
 emotion=""
+attention=""
 new_emotion=False
 new_sentence=False
 new_attention=False
@@ -40,12 +41,16 @@ url3='http://127.0.0.1:5021/'
 
 headers= {'Content-Type':'application/json'}
 
+
 data={
-    "emotion":"",
-    "new_sentence":"False",
-    "new_emotion":"False",
-    "update":"False"
+        "emotion":"",
+        "new_sentence":"False",
+        "new_emotion":"False",
+        "new_attention":"False",
+        "attention":"negative",
+        "update":"False",
 }
+
 
 data_personality={
         "new_personality":"False",
@@ -230,7 +235,7 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
-            if predicates_objects["new_attention"].is_grounded==True:
+            if  eval(resp.text)["attention"]=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
@@ -243,7 +248,7 @@ class ExAction(smach.State):
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
-                if predicates_objects["new_attention"].is_grounded==True:
+                if eval(resp.text)["attention"]=="positive":
                     pn="A_"+map_emotion_AV_axis[emotion]
                 else:
                     pn="NA_"+map_emotion_AV_axis[emotion]
@@ -258,7 +263,7 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
-            if predicates_objects["new_attention"].is_grounded==True:
+            if eval(resp.text)["attention"]=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
@@ -271,7 +276,7 @@ class ExAction(smach.State):
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
-                if predicates_objects["new_attention"].is_grounded==True:
+                if eval(resp.text)["attention"]=="positive":
                     pn="A_"+map_emotion_AV_axis[emotion]
                 else:
                     pn="NA_"+map_emotion_AV_axis[emotion]
@@ -286,7 +291,7 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
-            if predicates_objects["new_attention"].is_grounded==True:
+            if eval(resp.text)["attention"]=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
@@ -299,7 +304,7 @@ class ExAction(smach.State):
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
-                if predicates_objects["new_attention"].is_grounded==True:
+                if eval(resp.text)["attention"]=="positive":
                     pn="A_"+map_emotion_AV_axis[emotion]
                 else:
                     pn="NA_"+map_emotion_AV_axis[emotion]
@@ -317,7 +322,7 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
-            if predicates_objects["new_attention"].is_grounded==True:
+            if eval(resp.text)["attention"]=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
@@ -330,7 +335,7 @@ class ExAction(smach.State):
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
-                if predicates_objects["new_attention"].is_grounded==True:
+                if eval(resp.text)["attention"]=="positive":
                     pn="A_"+map_emotion_AV_axis[emotion]
                 else:
                     pn="NA_"+map_emotion_AV_axis[emotion]
@@ -345,7 +350,7 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
-            if predicates_objects["new_attention"].is_grounded==True:
+            if eval(resp.text)["attention"]=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
@@ -365,7 +370,7 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
-            if predicates_objects["new_attention"].is_grounded==True:
+            if eval(resp.text)["attention"]=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
@@ -383,7 +388,7 @@ class ExAction(smach.State):
 
 
         else:
-            userdata, response=self.call_action_server(userdata, ac,personality)
+            userdata, response=self.call_action_server(userdata, ac, personality)
             if response:
                 return "outcome9"
             else:
@@ -430,7 +435,7 @@ class CheckPerc(smach.State):
                              input_keys=["state","exec_actions","action"])
         
     def execute(self, userdata):
-        global emotion, new_emotion, new_sentence, data, new_attention
+        global emotion, new_emotion, new_sentence, data, new_attention, attention
         print('check perception') 
         data["update"]="True"
         resp=requests.put(url+'get_input', json=data, headers=headers)
@@ -444,6 +449,7 @@ class CheckPerc(smach.State):
 
         if eval(resp.text)["new_attention"]=="True":
             new_attention=True
+            attention=eval(resp.text)["attention"]
 
 
         while (new_emotion==False and new_sentence==False and  new_attention==False and userdata.action==""):
@@ -458,6 +464,7 @@ class CheckPerc(smach.State):
 
             if eval(resp.text)["new_attention"]=="True":
                new_attention=True
+               attention=eval(resp.text)["attention"]
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
         if new_emotion==False and new_sentence==False and new_attention==False:
             if "ACTION" in userdata.action:
@@ -486,9 +493,15 @@ class CheckPerc(smach.State):
                     add_goal(g)#state that that predicate is a goal
                     remove_predicate(g) #now the goal predicate is not grounded
             if new_attention:
-                add_predicate("attention")
-                add_goal("attention_r") 
-                remove_predicate("attention_r")  
+                new_attention=False
+                if attention=="positive":
+                    add_predicate("attention")
+                    add_goal("attention_r") 
+                    remove_predicate("attention_r")  
+                else:
+                    add_predicate("low_attention")
+                    add_goal("low_attention_r") 
+                    remove_predicate("low_attention_r")  
             if new_sentence:
                 add_goal("answered")
                 add_goal("finished")
@@ -541,8 +554,12 @@ class Finish(smach.State):
         if userdata.input_goals!=[]:
             print('Passing to the next goal')
             userdata.out_action=""
+            data_action["finished"]="True"
+            respac=requests.put(url3+'set_action', json=data_action, headers=headers)
             return "outcome11"
         else:
+            data_action["finished"]="True"
+            respac=requests.put(url3+'set_action', json=data_action, headers=headers)
             print('Finishhh')
             return 'outcome12'
 

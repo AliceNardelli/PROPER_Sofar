@@ -15,7 +15,8 @@ data={
         "velocity":"",
         "new_action":"",
         "executed":"",
-        "result":""
+        "result":"",
+        "finished":""
 
 }
 
