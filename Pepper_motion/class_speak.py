@@ -28,7 +28,8 @@ headers= {'Content-Type':'application/json'}
 
 data = {
     "sentence": "p",
-    "response":"q"
+    "response":"q",
+    "personality":""
 }
 
 data_sentence = {
@@ -199,6 +200,7 @@ class Speak:
                 anim_speech_service.say(to_say) 
         data["language"]=self.parameters["language"]
         data["sentence"]=sentence_action
+        data["personality"]=self.personality
         print(data)
         print("--------------------------")
         
@@ -253,6 +255,7 @@ class Speak:
             human_sentence=eval(resp.text)["response"]
             data["language"]=self.parameters["language"]
             data["sentence"]=human_sentence
+            data["personality"]=self.personality
             resp=requests.put(url+'sentence_response', json=data, headers=headers)
             to_say=eval(resp.text)["response"]
             print(to_say)

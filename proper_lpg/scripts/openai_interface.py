@@ -10,6 +10,7 @@ model="gpt-4"
 client = OpenAI()
 
 data = {
+    "personality":"p",
     "language": "p",
     "sentence": "s",
     "response":"q"
@@ -22,7 +23,7 @@ app = Flask(__name__)
 def main():
   updated_data = request.get_json()
   data.update(updated_data)
-  sentence='generate a sentence with '+data["language"]+ ' personality in italian to achieve the following goal "'+data["sentence"]+'"'
+  sentence='Generate a sentence with a "'+data["personality"]+'" personality with a "'+data["language"]+'" style in italian to achieve the following goal "'+data["sentence"]+'". Plese follow the style and the personality to write the sentence and not generate emoticons. Please do mot directly express the personality.  Generate the sentences within  square brackets []'
   response = client.chat.completions.create(
     model=model,
     messages=[{"role": "user", 
@@ -35,7 +36,7 @@ def main():
   print(response.choices[0].message.content)
   print("----------------------")
   resp=response.choices[0].message.content.replace("à","a")
-  data["response"]=resp
+  data["response"]=resp[resp.find("[")+1:resp.find("]")]
   return jsonify(data)
 
 
@@ -44,7 +45,7 @@ def main():
 def main2():
   updated_data = request.get_json()
   data.update(updated_data)
-  sentence='generate a response with '+data["language"]+ ' personality in italian to the following sentence "'+data["sentence"]+'"'
+  sentence='generate a response with a "'+data["personality"]+'" personality with a "'+data["language"]+'" style in italian to the following sentence "'+data["sentence"]+'". Plese follow the style and the personality to write the sentence and not generate emoticons. Please do mot directly express the personality.  Generate the sentences within  square brackets []' 
   response = client.chat.completions.create(
     model=model,
     messages=[{"role": "user", 
@@ -57,7 +58,7 @@ def main2():
   print(response.choices[0].message.content)
   print("----------------------")
   resp=response.choices[0].message.content.replace("à","a")
-  data["response"]=resp
+  data["response"]=resp[resp.find("[")+1:resp.find("]")]
   return jsonify(data)
 
 
