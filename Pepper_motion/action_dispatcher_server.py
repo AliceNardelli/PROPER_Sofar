@@ -15,7 +15,7 @@ def mm():
     global m
     updated_data = request.get_json()
     data.update(updated_data)
-    #m.move(data["action"],data["params"])
+    m.move(data["action"],data["params"])
     return jsonify(data)
 
 @app.route ('/gesture_server', methods = ['PUT'] )   
@@ -23,7 +23,7 @@ def gg():
     global g
     updated_data = request.get_json()
     data.update(updated_data)
-    #g.gesture(data["action"],data["params"])
+    g.gesture(data["action"],data["params"])
     return jsonify(data)
 
 @app.route ('/speak_server', methods = ['PUT'] )   
@@ -45,8 +45,6 @@ if __name__ == '__main__':
     session = qi.Session()
     try:
         session.connect("tcp://" + args.ip + ":" + str(args.port))        
-        #app = qi.Application(["TabletModule", "--qi-url=" + "tcp://" + args.ip + ":" + str(args.port)])
-        #app.start()
     except RuntimeError:
         print ("Can't connect to Naoqi at ip \"" + args.ip + "\" on port " + str(args.port) +".\n"
                "Please check your script arguments. Run with -h option for help.")

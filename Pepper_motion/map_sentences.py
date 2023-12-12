@@ -19,5 +19,8 @@ mmap_action_sentences={"say_greetings":["Goodmorning, I am happy that you arrive
       "say_show_a_picture":["Now it is time to think about the mind and the culture, I will make you see a picture","tablet","picture"],
       "say_goodbye":["Now your day routine is finished, have a nice day",""],
       "say_to_not_touch_me":["say to not touch me","get_away"],
-      "say_to_move_far":["say to move far","get_away"]
+      "say_to_move_far":["say to move far","get_away"],
+      "say_you_can_embrace_me":["say you can embrace me","embrace"],#
+      "say_you_can_embrace_me_if_it_make_you_happy":["say you can embrace me if it make you happy","embrace"],#
+      "say_to_high_five":["say to high five","high_five"]#
       }

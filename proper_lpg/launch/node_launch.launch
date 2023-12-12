@@ -4,7 +4,7 @@
 <node pkg="proper_lpg" type="prova_keyboard.py" name="face_emotion"/> 
 <node pkg="proper_lpg" type="emotion_estimation.py" name="emotion_estimation"/>  
 <node pkg="proper_lpg" type="perception_interface.py" name="perception_interface"/>    
-<node pkg="proper_lpg" type="tactile_interface_ros.py" name="tactile_interface"/>  
+<!--<node pkg="proper_lpg" type="tactile_interface_ros.py" name="tactile_interface"/>  -->
 <node pkg="rosbot_actions" type="action_dispatcher.py" name="action_dispatcher"/>         
 <node pkg="rosbot_actions" type="personality_generator.py" name="personality_generator"/>     
 </launch>

@@ -39,6 +39,8 @@ def point_an_object(session, params):
     m.openHand('LHand')
     time.sleep(2)
 
+
+
 def ask_pick_sweet(session):
     give_take_object_touch(session,1,1,True)
     time.sleep(2)
@@ -90,12 +92,6 @@ def touch_detected(value): #esempio di callback
     touched=True
     print("touched")
     
-def blink(session, reps, secs, color):
-    blink_service=session.service("ALLeds")
-    name = 'FaceLeds'
-    for i in range(reps):
-        blink_service.fadeRGB(name,color,secs)    
-        blink_service.off(name)
 
 
 if __name__ == '__main__':

@@ -249,7 +249,7 @@
                            (>=(scrupulousness_level)(desired_scrupulousness))
                            (>=(agreeableness_level)(desired_agreeableness))
                            (not(goodbye))
-                           (say)
+                           (show)
                         
                 )
         :effect

@@ -418,6 +418,8 @@ class ExAction(smach.State):
                 msg=ExecActionRequest()
                 msg.action=ac.lower()
                 msg.personality=personality
+                print("executing", msg.action)
+                time.sleep(10)
                 resp = action_dispatcher_srv(msg)
                 if resp.success==False:
                     rospy.loginfo('Action Failed')        

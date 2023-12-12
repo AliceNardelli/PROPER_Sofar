@@ -251,6 +251,16 @@ class Speak:
             data_sentence["activated"]="True"
             resp=requests.put(url1+'listener', json=data_sentence, headers=headers)
             human_sentence=eval(resp.text)["response"]
+            data["language"]=self.parameters["language"]
+            data["sentence"]=human_sentence
+            resp=requests.put(url+'sentence_response', json=data, headers=headers)
+            to_say=eval(resp.text)["response"]
+            print(to_say)
+            thread = threading.Thread(target=self.task)
+            thread.start()
+            to_say=self.add_gestures(to_say)
+            anim_speech_service.say(to_say) 
+            thread.join()
              
 
     def set_params(self):
