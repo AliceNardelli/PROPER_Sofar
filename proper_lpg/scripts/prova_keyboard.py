@@ -129,7 +129,7 @@ if __name__ == "__main__":
         
         image, em, distance=detect_emotions(frame)
         if image!="":
-            """
+            
             # text 
             text = "Emotion: "+ em + " Distance: "+ str(distance)
             
@@ -151,7 +151,7 @@ if __name__ == "__main__":
             # Using cv2.putText() method 
             image = cv2.putText(image, text, org, font, fontScale,  color, thickness, cv2.LINE_AA, False) 
             cv2.imshow("Image", image)
-            """
+            
             window_emotion.append(em)
             if len(window_emotion)>size_window:
                last=window_emotion.pop(0)
@@ -161,10 +161,10 @@ if __name__ == "__main__":
             em_msg.w_emotions=window_emotion
             print(window_emotion,e)
             pub.publish(em_msg)
-        """
+        
         else:
             cv2.imshow("Image", frame)
-        """
+        
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
             break

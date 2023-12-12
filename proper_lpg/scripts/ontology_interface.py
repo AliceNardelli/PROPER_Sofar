@@ -24,12 +24,12 @@ import time
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=0.5
-wi=0
+we=0
+wi=0.5
 wc=0
 wu=0
-wa=0
-wd=0.5
+wa=0.5
+wd=0
 sum_weights=we +wi +wc + wu + wa + wd
 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
 gamma=1
