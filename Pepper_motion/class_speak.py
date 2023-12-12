@@ -23,10 +23,16 @@ from flask import Flask, request, jsonify
 
        
 url='http://127.0.0.1:5009/'
+url1='http://127.0.0.1:5011/'
 headers= {'Content-Type':'application/json'}
 
 data = {
     "sentence": "p",
+    "response":"q"
+}
+
+data_sentence = {
+    "activated": "p",
     "response":"q"
 }
 
@@ -234,9 +240,17 @@ class Speak:
         elif behavior=="get_away":
             #nav(session,x,y,yaw,vel,prox):
             nav(self.session,-0.5,0,0,0.2,0.05)
-            
+
         elif behavior=="embrace":
              embrace(self.session)
+        
+        elif behavior=="high_five":
+            high_five(session)
+
+        if "ask" in to_say:
+            data_sentence["activated"]="True"
+            resp=requests.put(url1+'listener', json=data_sentence, headers=headers)
+            human_sentence=eval(resp.text)["response"]
              
 
     def set_params(self):

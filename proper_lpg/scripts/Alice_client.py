@@ -17,6 +17,8 @@ from std_msgs.msg import String
 from proper_lpg.msg import Emotions
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from transformers import pipeline
+from flask import Flask, request, jsonify
+
 
 tokenizer = AutoTokenizer.from_pretrained('MilaNLProc/feel-it-italian-emotion')
 model = AutoModelForSequenceClassification.from_pretrained('MilaNLProc/feel-it-italian-emotion')
@@ -47,10 +49,29 @@ except ConnectionError:
     sys.exit(1)
 
 
+activated=True
+
 
 sentence =""
 
+data = {
+    "activated": "p",
+    "response": "s",
+}
 
+
+app = Flask(__name__)
+
+@app.route ('/listener', methods = ['PUT'] )
+def listener():
+    updated_data = request.get_json()
+    data.update(updated_data)
+    if data["activated"]=="True":
+        res=get_sentence()
+        data["response"]=res
+        return jsonify(data)
+
+     
 
 
 def get_sentence():
@@ -89,10 +110,12 @@ def get_sentence():
             em_msg.w_emotions=we
             em_msg.probs=pp
             speech_pub.publish(em_msg)
-            print(out)
+            return input_sentence
 
     except socket.timeout:
             print("timeout")
+
+            
 
 if __name__ == '__main__':
     global speech_pub
@@ -113,6 +136,4 @@ if __name__ == '__main__':
         print("The language has been set to", language)
    
     rospy.init_node('sentence_emotion_detection')
-    while not rospy.is_shutdown():
-        get_sentence()
-    #app.run(host='0.0.0.0', port=5011, debug=True)
+    app.run(host='0.0.0.0', port=5011, debug=True)

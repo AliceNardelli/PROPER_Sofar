@@ -40,5 +40,27 @@ def main():
 
 
 
+@app.route ('/sentence_response', methods = ['PUT'] )
+def main2():
+  updated_data = request.get_json()
+  data.update(updated_data)
+  sentence='generate a response with '+data["language"]+ ' personality in italian to the following sentence "'+data["sentence"]+'"'
+  response = client.chat.completions.create(
+    model=model,
+    messages=[{"role": "user", 
+              "content": sentence}],
+    temperature=1,
+    max_tokens=50,
+    top_p=1,
+  )
+  print(sentence)
+  print(response.choices[0].message.content)
+  print("----------------------")
+  resp=response.choices[0].message.content.replace("à","a")
+  data["response"]=resp
+  return jsonify(data)
+
+
+
 if __name__=='__main__':
     app.run(host='0.0.0.0', port=5009, debug=True)
