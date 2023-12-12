@@ -1,16 +1,16 @@
-intro_actions/goal1: ["avoid_gaze","get_away","turn_on_back","say_you_like_take_time_for_yourself"]
-intro_actions/goal2: ["avoid_gaze","get_away","say_you_like_quiet_activities","say_you_like_take_care_of_yourself"]
+intro_actions/goal1: ["move_head_to_avoid_gaze","move_away","turn_on_back","say_you_like_take_time_for_yourself"]
+intro_actions/goal2: ["move_head_to_avoid_gaze","move_away","say_you_like_quiet_activities","say_you_like_take_care_of_yourself"]
 intro_actions/goal3: ["say_you_like_individual_sports","say_you_do_not_appreciate_physical_contact"]
 intro_actions/goal4: ["say_that_the_art_make_reflect","make_that_you_appreciate_see_picture_alone","move_away"]
 
-zzz_i/goal1: {"avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "get_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+zzz_i/goal1: {"move_head_to_avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "move_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "turn_on_back":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "say_you_like_take_time_for_yourself":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
-zzz_i/goal2: {"avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "get_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+zzz_i/goal2: {"move_head_to_avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "move_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "say_you_like_quiet_activities":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      "say_you_like_take_care_of_yourself":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
@@ -31,14 +31,14 @@ zzz_i/goal4: {"say_that_the_art_make_reflect":{"w1":4,"w2":2,"expected_outcome":
 
 
 
-zzo_i/goal1: {"avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-                "get_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+zzo_i/goal1: {"move_head_to_avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+                "move_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
                 "turn_on_back":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
                 "say_you_like_take_time_for_yourself":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
                 }
 
-zzo_i/goal2: {"avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "get_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+zzo_i/goal2: {"move_head_to_avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "move_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "say_you_like_quiet_activities":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      "say_you_like_take_care_of_yourself":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
@@ -54,14 +54,14 @@ zzo_i/goal4: {"say_that_the_art_make_reflect":{"w1":4,"w2":2,"expected_outcome":
 
 
 
-zoz_i/goal1: {"avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "get_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+zoz_i/goal1: {"move_head_to_avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "move_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "turn_on_back":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      "say_you_like_take_time_for_yourself":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      }
 
-zoz_i/goal2: {"avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "get_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+zoz_i/goal2: {"move_head_to_avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "move_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "say_you_like_quiet_activities":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      "say_you_like_take_care_of_yourself":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      }
@@ -81,14 +81,14 @@ zoz_i/goal4: {"say_that_the_art_make_reflect":{"w1":4,"w2":2,"expected_outcome":
 
 
 
-zoo_i/goal1: {"avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-       "get_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+zoo_i/goal1: {"move_head_to_avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+       "move_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "turn_on_back":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      "say_you_like_take_time_for_yourself":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
-zoo_i/goal2: {"avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "get_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+zoo_i/goal2: {"move_head_to_avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "move_away":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "say_you_like_quiet_activities":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      "say_you_like_take_care_of_yourself":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
@@ -104,14 +104,14 @@ zoo_i/goal4: {"say_that_the_art_make_reflect":{"w1":4,"w2":2,"expected_outcome":
 
 
 
-ozz_i/goal1: {"avoid_gaze":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-      "get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+ozz_i/goal1: {"move_head_to_avoid_gaze":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+      "move_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      "turn_on_back":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      "say_you_like_take_time_for_yourself":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-ozz_i/goal2: {"avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+ozz_i/goal2: {"move_head_to_avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "move_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      "say_you_like_quiet_activities":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      "say_you_like_take_care_of_yourself":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      }
@@ -130,14 +130,14 @@ ozz_i/goal4: {"say_that_the_art_make_reflect":{"w1":2,"w2":1,"expected_outcome":
 
 
 
-ozo_i/goal1: {"avoid_gaze":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-      "get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]}, 
+ozo_i/goal1: {"move_head_to_avoid_gaze":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+      "move_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]}, 
      "turn_on_back":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      "say_you_like_take_time_for_yourself":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-ozo_i/goal2: {"avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+ozo_i/goal2: {"move_head_to_avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "move_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      "say_you_like_quiet_activities":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      "say_you_like_take_care_of_yourself":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      }
@@ -154,14 +154,14 @@ ozo_i/goal4: {"say_that_the_art_make_reflect":{"w1":2,"w2":1,"expected_outcome":
 
 
 
-ooz_i/goal1: {"avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-       "get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+ooz_i/goal1: {"move_head_to_avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+       "move_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      "turn_on_back":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
      "say_you_like_take_time_for_yourself":{"w1":0.0,"w2":0.0,"expected_outcome":[0,0,0]},
      }
 
-ooz_i/goal2: {"avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+ooz_i/goal2: {"move_head_to_avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "move_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      "say_you_like_quiet_activities":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "say_you_like_take_care_of_yourself":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      }
@@ -180,14 +180,14 @@ ooz_i/goal4: {"say_that_the_art_make_reflect":{"w1":2,"w2":1,"expected_outcome":
 
 
 
-ooo_i/goal1: {"avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+ooo_i/goal1: {"move_head_to_avoid_gaze":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "move_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      "turn_on_back":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "say_you_like_take_time_for_yourself":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      }
 
-ooo_i/goal2: {"avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "get_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+ooo_i/goal2: {"move_head_to_avoid_gaze":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
+     "move_away":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      "say_you_like_quiet_activities":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      "say_you_like_take_care_of_yourself":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
      }

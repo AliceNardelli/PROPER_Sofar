@@ -17,6 +17,7 @@ import xml
 from map_sentences import *
 from goal2_animations import *
 from goal3_animations import *
+from loc_functions import *
 from flask import Flask, request, jsonify
 
 
@@ -69,7 +70,6 @@ class Speak:
 
 
 
-    
     def add_gestures(self,to_say):
         #replace whit pauses
         print("-----------")
@@ -206,6 +206,7 @@ class Speak:
         anim_speech_service.say(to_say) 
         thread.join()
         
+        print("Executing behavior ", behavior)
         if behavior=="tablet":
             tablet(self.session, mmap_action_sentences[self.action][2])
 
@@ -225,12 +226,18 @@ class Speak:
             breath(self.session, anim_speech_service)
 
         elif behavior=="curl_blink":
-            blink(session, 6, 1, "red")
+            blink(self.session, 6, 1, "red")
+
+        elif behavior=="yoga":
+            yoga(self.session)
+
+        elif behavior=="get_away":
+            #nav(session,x,y,yaw,vel,prox):
+            nav(self.session,-0.5,0,0,0.2,0.05)
+            
+        elif behavior=="embrace":
+             embrace(self.session)
              
-
-
-   
-
 
     def set_params(self):
         #set all the autonomous capability to disabled

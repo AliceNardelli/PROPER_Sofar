@@ -18,6 +18,6 @@ mmap_action_sentences={"say_greetings":["Goodmorning, I am happy that you arrive
       "say_yoga":["To conclude folllow me doing yoga position","yoga"],
       "say_show_a_picture":["Now it is time to think about the mind and the culture, I will make you see a picture","tablet","picture"],
       "say_goodbye":["Now your day routine is finished, have a nice day",""],
-      "say_to_not_touch_me":["say to not touch me","get away"],
-      "say_to_move_far":["say to move far","get away"]
+      "say_to_not_touch_me":["say to not touch me","get_away"],
+      "say_to_move_far":["say to move far","get_away"]
       }
