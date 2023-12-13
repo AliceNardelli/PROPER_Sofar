@@ -7,7 +7,7 @@ import time
 openai.organization = "org-OWePijhLCGVSJWhT7TQXBK7D"
 key=os.getenv("OPENAI_API_KEY")
 openai.api_key = key
-model="gpt-4-1106-preview"
+model="gpt-3.5-turbo"
 start=time.time()
 data={"personality":"Not Conscientous",
       "language":"Lazy",
@@ -24,8 +24,11 @@ response = client.chat.completions.create(
   temperature=1,
   top_p=1,
   max_tokens=100,
+  streaming=True
 )
 
+for chunk in response:
+    print(chunk)
 print(response.choices[0].message.content)
 print("----------------------")
 
