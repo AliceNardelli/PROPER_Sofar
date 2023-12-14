@@ -16,6 +16,7 @@ data={
         "Unscrupolous":0,
 }
 
+
 new_personality="False"
 
 @app.route ('/set_personality', methods = ['PUT'] )  

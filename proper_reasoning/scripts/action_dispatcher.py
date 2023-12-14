@@ -7,7 +7,7 @@ from personality_generator import *
 
 def dispatch_action(action, personality):
         params=generate_params(personality, action)
-        mmap =get_map(params)
+        mmap =get_map(params,personality)
         action=action.replace("_"," ").lower()
         print("otput********************")
         print(mmap,action,personality)

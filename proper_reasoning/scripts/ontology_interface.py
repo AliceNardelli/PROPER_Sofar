@@ -244,11 +244,7 @@ class ExAction(smach.State):
             start=True
             return 'outcome13'
         resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
-        if eval(resp.text)["restart"]=="True":
-            print("restart")
-            userdata.action=""
-            start=True
-            return 'outcome13'
+      
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
 
@@ -451,6 +447,7 @@ class ExAction(smach.State):
                 data_action["pitch"]=mmap["pitch"]
                 data_action["velocity"]=mmap["velocity"]
                 data_action["volume"]=mmap["volume"]
+                data_action["new_action"]="True"
                 respac=requests.put(url3+'set_action', json=data_action, headers=headers)
                 respex=requests.put(url3+'get_exec', json=data_action, headers=headers)
                 while eval(respex.text)["executed"]=="False":
@@ -601,10 +598,12 @@ class Finish(smach.State):
             print('Passing to the next goal')
             userdata.out_action=""
             data_action["finished"]="True"
+            data_action["new_action"]="False"
             respac=requests.put(url3+'set_action', json=data_action, headers=headers)
             return "outcome11"
         else:
             data_action["finished"]="True"
+            data_action["new_action"]="False"
             respac=requests.put(url3+'set_action', json=data_action, headers=headers)
             print('Finishhh')
             return 'outcome12'

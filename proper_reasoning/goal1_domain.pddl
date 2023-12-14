@@ -58,6 +58,7 @@
 (:action EXTRO_ACTION
         :precondition
                (and 
+                (answered)
                	(extro)
                 )
         :effect
@@ -71,6 +72,7 @@
         :precondition
                (and 
                (intro)
+               (answered)
                )
         :effect
                 (and
@@ -82,6 +84,7 @@
         :precondition
                (and 
                	(consc)
+                (answered)
                 )
         :effect
                 (and
@@ -95,6 +98,7 @@
         :precondition
                (and 
                	(unsc)
+                (answered)
                 )
         :effect
                 (and
@@ -107,6 +111,7 @@
         :precondition
                (and 
                	(agree)
+                (answered)
                 )
         :effect
                 (and
@@ -118,6 +123,7 @@
         :precondition
                (and 
                	(disagree)
+                (answered)
                 )
         :effect
                 (and
@@ -308,10 +314,7 @@
                            (new_sentence)
                            (emotion_r)
                            (attention_r) 
-                           (low_attention_r)   
-                           (>=(interaction_level)(desired_interaction))
-                           (>=(scrupulousness_level)(desired_scrupulousness))
-                           (>=(agreeableness_level)(desired_agreeableness))
+                           (low_attention_r)
                            (not (answered))
                 )
         :effect
@@ -334,10 +337,7 @@
                            (new_sentence)
                            (emotion_r)
                            (attention_r)  
-                           (low_attention_r)  
-                           (>=(interaction_level)(desired_interaction))
-                           (>=(scrupulousness_level)(desired_scrupulousness))
-                           (>=(agreeableness_level)(desired_agreeableness))
+                           (low_attention_r)
                            (not (answered))
                         
                 )
@@ -360,10 +360,7 @@
                            (emotion_r)
                            (new_sentence)
                            (attention_r)  
-                           (low_attention_r)  
-                           (>=(interaction_level)(desired_interaction))
-                           (>=(scrupulousness_level)(desired_scrupulousness))
-                           (>=(agreeableness_level)(desired_agreeableness))
+                           (low_attention_r)
                            (not (answered))
                         
                 )
@@ -385,10 +382,7 @@
                            (emotion_r)
                            (new_sentence)
                            (attention_r)  
-                           (low_attention_r)  
-                           (>=(interaction_level)(desired_interaction))
-                           (>=(scrupulousness_level)(desired_scrupulousness))
-                           (>=(agreeableness_level)(desired_agreeableness))
+                           (low_attention_r)
                            (not (answered))
                         
                 )

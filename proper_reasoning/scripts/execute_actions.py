@@ -29,7 +29,8 @@ def set_action():
         global new_action
         updated_data = request.get_json()
         data.update(updated_data)
-        new_action="True"
+        if data["new_action"]=="True":
+            new_action="True"
         return jsonify(data)
 
 
@@ -52,6 +53,8 @@ def set_exec():
         updated_data = request.get_json()
         data["result"]=updated_data["result"]
         executed="True"
+        data["new_action"]="False"
+        
         return jsonify(data)
 
 
@@ -64,6 +67,7 @@ def get_exec():
             executed="False" 
         else:
             data["executed"]="False" 
+        data["new_action"]="False"
         return jsonify(data)
 
 
