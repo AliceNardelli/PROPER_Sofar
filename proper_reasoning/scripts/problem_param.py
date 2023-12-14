@@ -21,3 +21,5 @@ map_emotion_AV_axis={
    "N":"N",
    
 }
+
+list_of_emotions=["SA","SU","H","A","D","F","N"]

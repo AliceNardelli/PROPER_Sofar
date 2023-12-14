@@ -7,11 +7,11 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 data={
-        "emotion":"",
+        "emotion":"N",
         "new_sentence":"False",
         "new_emotion":"False",
         "new_attention":"False",
-        "attention":"negative",
+        "attention":"",
         "update":"False",
 }
 

@@ -243,6 +243,12 @@ class ExAction(smach.State):
             userdata.action=""
             start=True
             return 'outcome13'
+        resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
+        if eval(resp.text)["restart"]=="True":
+            print("restart")
+            userdata.action=""
+            start=True
+            return 'outcome13'
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
 
@@ -250,6 +256,8 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
             if  eval(resp.text)["attention"]=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
@@ -263,6 +271,8 @@ class ExAction(smach.State):
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
+                if emotion not in list_of_emotions:
+                    emotion="N"
                 if eval(resp.text)["attention"]=="positive":
                     pn="A_"+map_emotion_AV_axis[emotion]
                 else:
@@ -278,6 +288,8 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
             if eval(resp.text)["attention"]=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
@@ -291,6 +303,8 @@ class ExAction(smach.State):
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
+                if emotion not in list_of_emotions:
+                    emotion="N"
                 if eval(resp.text)["attention"]=="positive":
                     pn="A_"+map_emotion_AV_axis[emotion]
                 else:
@@ -306,6 +320,8 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
             if eval(resp.text)["attention"]=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
@@ -319,6 +335,8 @@ class ExAction(smach.State):
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
+                if emotion not in list_of_emotions:
+                    emotion="N"
                 if eval(resp.text)["attention"]=="positive":
                     pn="A_"+map_emotion_AV_axis[emotion]
                 else:
@@ -337,6 +355,8 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
             if eval(resp.text)["attention"]=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
@@ -349,7 +369,10 @@ class ExAction(smach.State):
             if response:
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
+                
                 emotion=eval(resp.text)["emotion"]
+                if emotion not in list_of_emotions:
+                    emotion="N"
                 if eval(resp.text)["attention"]=="positive":
                     pn="A_"+map_emotion_AV_axis[emotion]
                 else:
@@ -365,6 +388,8 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
             if eval(resp.text)["attention"]=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
@@ -385,6 +410,8 @@ class ExAction(smach.State):
             data["update"]="False"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
             if eval(resp.text)["attention"]=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:

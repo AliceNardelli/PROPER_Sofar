@@ -22,7 +22,7 @@ Cueing down from goal distance:    3 into depth [1]
 ff: found legal plan as follows
 
 step    0: REACT_SAD_EMOTION
-        1: EXTRO_ACTION
+        1: AGREE_ACTION
         2: COMPUTE_HEDONIC_FEELINGS
      
 
