@@ -18,9 +18,6 @@ data={
 
 new_personality="False"
 
-
-
-
 @app.route ('/set_personality', methods = ['PUT'] )  
 def set_personality():
         global data, new_personality

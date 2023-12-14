@@ -21,13 +21,13 @@ new_attention_input="False"
 emotion_input=""
 attention_input=""
 
-emotion_dict_interface={'emotion_Angry':"A", 
-                        'emotion_Disgust':"D",
-                        'emotion_Fear':"F", 
-                        'emotion_Happy':"H",
-                        'emotion_Neutral':"N",
-                        'emotion_Sad':"SA",
-                        'emotion_Surprise':"SU"}
+emotion_dict_interface={'Angry':"A", 
+                        'Disgust':"D",
+                        'Fear':"F", 
+                        'Happy':"H",
+                        'Neutral':"N",
+                        'Sad':"SA",
+                        'Surprise':"SU"}
 
 
 

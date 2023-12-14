@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import requests
 from load_ontology import *
-from problem_param import *
+from problem_param_vm import *
 from perception_predicate import *
 from extract_agree import *
 from extract_intro import *
@@ -402,6 +402,7 @@ class ExAction(smach.State):
             resp2=True
             if ("react" not in to_exec_action) and ("compute" not in to_exec_action) and ("check" not in to_exec_action):
                 #set that I have executed an action
+                data_action["finished"]="False"
                 data_action["personality"]=exec_personality
                 data_action["action"]=to_exec_action
                 data_action["language"]=mmap["language"]
