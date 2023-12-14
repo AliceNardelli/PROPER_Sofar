@@ -6,13 +6,13 @@ import time
 from collections import Counter
 
 emotion_dict={
-    "happy":"joy",
-    "surprise":"joy",
-    "angry": "anger",
-    "disgust": "sadness",
-    "fear": "anger",
-    "neutral": "neutral",
-    "sad": "sadness"
+    "H":"joy",
+    "SU":"joy",
+    "A": "anger",
+    "D": "sadness",
+    "F": "anger",
+    "N": "neutral",
+    "SA": "sadness"
 }
 
 

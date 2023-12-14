@@ -18,7 +18,7 @@ from proper_lpg.msg import Emotions
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from transformers import pipeline
 from flask import Flask, request, jsonify
-
+import threading
 
 tokenizer = AutoTokenizer.from_pretrained('MilaNLProc/feel-it-italian-emotion')
 model = AutoModelForSequenceClassification.from_pretrained('MilaNLProc/feel-it-italian-emotion')
@@ -135,5 +135,7 @@ if __name__ == '__main__':
         language = args.language
         print("The language has been set to", language)
    
-    rospy.init_node('sentence_emotion_detection')
+    
+    
+    threading.Thread(target=lambda: rospy.init_node('sentence_emotion_detection', disable_signals=True)).start()
     app.run(host='0.0.0.0', port=5011, debug=True)

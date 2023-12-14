@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 
 <launch>
-<node pkg="proper_lpg" type="prova_keyboard.py" name="face_emotion"/> 
+<!--<node pkg="proper_lpg" type="prova_keyboard.py" name="face_emotion"/> -->
+<node pkg="proper_lpg" type="face_emotion_input.py" name="face_emotion"/>
 <node pkg="proper_lpg" type="emotion_estimation.py" name="emotion_estimation"/>  
 <node pkg="proper_lpg" type="perception_interface.py" name="perception_interface"/>    
 <!--<node pkg="proper_lpg" type="tactile_interface_ros.py" name="tactile_interface"/>  -->
