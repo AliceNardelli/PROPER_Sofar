@@ -15,12 +15,13 @@ data={
         "update":"False",
 }
 
+window=[]
+window_size=10
 new_sentence_input="False"
 new_emotion_input="False"
 new_attention_input="False"
 emotion_input=""
 attention_input=""
-
 emotion_dict_interface={'Angry':"A", 
                         'Disgust':"D",
                         'Fear':"F", 
@@ -36,13 +37,35 @@ def update_input():
         global new_sentence_input, emotion_input, new_emotion_input, new_attention_input, attention_input
         updated_data = request.get_json()
         data.update(updated_data)
-        if new_sentence_input!="True":
-                new_sentence_input=data["new_sentence"]
-        new_emotion_input=data["new_emotion"]
-        emotion_input=emotion_dict_interface[data["emotion"]]
-        new_attention_input=data["new_attention"]
-        attention_input=data["attention"]
-        print("updated input",data)
+        if data["new_sentence"]=="False":  
+                if new_sentence_input!="True":
+                       new_sentence_input=data["new_sentence"]
+        else:
+            new_sentence_input=data["new_sentence"]
+        if data["new_emotion"]=="False":
+                if (new_emotion_input!="True"):
+                       new_emotion_input=data["new_emotion"]
+                       emotion_input=emotion_dict_interface[data["emotion"]]
+             
+        else:
+               new_emotion_input=data["new_emotion"]
+               emotion_input=emotion_dict_interface[data["emotion"]]
+               
+        if data["new_attention"]=="False":  
+                if new_attention_input!="True":
+                       new_attention_input=data["new_attention"]
+                       attention_input=data["attention"]
+        else:
+                       new_attention_input=data["new_attention"]
+                       attention_input=data["attention"]
+        
+        """
+        print("new emotion", new_emotion_input)
+        print("emotion", emotion_input)
+        print("new attention", new_attention_input)
+        print("attention", attention_input)
+        print("new sentence", new_sentence_input)
+        """
         return jsonify(data)
 
 

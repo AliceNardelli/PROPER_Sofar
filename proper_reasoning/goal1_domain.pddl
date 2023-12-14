@@ -177,6 +177,7 @@
                    (when (agree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(react))))    
 		   (sad_emotion_r)
                    (emotion_r)
+                   (not(sad_emotion))
                 )
 )
 
@@ -196,6 +197,7 @@
                    (when (consc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(react)))) 
 		   (anger_emotion_r)
                    (emotion_r)	
+                   (not (anger_emotion))
                 )
 )
 
@@ -215,6 +217,7 @@
                    (when (consc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(react)))) 
 		   (disgust_emotion_r)
                    (emotion_r)	
+                   (not (disgust_emotion))
                 )
 )
 
@@ -234,6 +237,7 @@
                    (when (consc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(react)))) 
 		   (fear_emotion_r)
                    (emotion_r)	
+                   (not (fear_emotion))
                 )
 )
 
@@ -252,6 +256,7 @@
                    (when (extro)(increase (interaction_level)(*(extroversion_coefficient)(react))))    
 		   (happy_emotion_r)
                    (emotion_r)	
+                   (not (happy_emotion))
                 )
 )
 
@@ -269,7 +274,8 @@
                    (when (agree)(increase (agreeableness_level)(*(agreeableness_coefficient)(react))))
                    (when (extro)(increase (interaction_level)(*(extroversion_coefficient)(react))))    
 		   (surprise_emotion_r)
-                   (emotion_r)	
+                   (emotion_r)
+                   (not (surprise_emotion))	
                 )
 )
 
@@ -287,6 +293,7 @@
                 (and    
 		   (neutral_emotion_r)
                    (emotion_r)
+                   (not (neutral_emotion))
                    (when (extro)(decrease (interaction_level)(*(extroversion_coefficient)(react))))
                    (when (intro)(increase (interaction_level)(*(extroversion_coefficient)(react))))	
                 )

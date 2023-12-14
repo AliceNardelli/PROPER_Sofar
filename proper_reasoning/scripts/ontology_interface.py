@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import requests
 from load_ontology import *
-from problem_param_vm import *
+from problem_param import *
 from perception_predicate import *
 from extract_agree import *
 from extract_intro import *
@@ -31,6 +31,7 @@ weights=[]
 gamma=1
 emotion=""
 attention=""
+start=True
 new_emotion=False
 new_sentence=False
 new_attention=False
@@ -87,7 +88,7 @@ class State_Start(smach.State):
                              output_keys=['output_goals','domain_path','problem_path','init_pb','command','path','plan_path'])
         
     def execute(self, userdata):
-        global wa,wd,we,wi,wc,wd,sum_weights,weights, data
+        global wa,wd,we,wi,wc,wd,sum_weights,weights, data, start
         goals=userdata.input_goals
         #actual_goal=goals.pop(0) #always goal1
         print('Executing goal: '+ actual_goal)
@@ -100,28 +101,41 @@ class State_Start(smach.State):
         userdata.path=dict_goal["folder"]
         userdata.plan_path=dict_goal["plan"]
         print("setting new personality")
-        resp=requests.put(url1+'get_personality', json=data_personality, headers=headers)
-        new_personality=False
-        if  eval(resp.text)["new_personality"]=="True":
-            new_personality=True
-        while new_personality==False:
-            time.sleep(1)
+        if start==True:
             resp=requests.put(url1+'get_personality', json=data_personality, headers=headers)
+            new_personality=False
             if  eval(resp.text)["new_personality"]=="True":
                 new_personality=True
+            while new_personality==False:
+                time.sleep(1)
+                resp=requests.put(url1+'get_personality', json=data_personality, headers=headers)
+                if  eval(resp.text)["new_personality"]=="True":
+                    new_personality=True
+            start=False
+            reset=True
+        
+        else:
+            time.sleep(3)
+            resp=requests.put(url1+'get_personality', json=data_personality, headers=headers)
+            if  eval(resp.text)["new_personality"]=="True":
+                reset=True
+            else: 
+                reset=False
 
-        wi=float( eval(resp.text)["Introvert"])
-        we=float( eval(resp.text)["Extrovert"])
-        wa=float( eval(resp.text)["Agreeable"])
-        wd=float( eval(resp.text)["Disagreeable"])
-        wc=float( eval(resp.text)["Conscientious"])
-        wu=float( eval(resp.text)["Unscrupolous"])
-        sum_weights=we +wi +wc + wu + wa + wd
-        try: 
-            weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
-        except:
-            weights=6*[0]
-            sum_weights=1
+        if reset==True:
+            wi=float( eval(resp.text)["Introvert"])
+            we=float( eval(resp.text)["Extrovert"])
+            wa=float( eval(resp.text)["Agreeable"])
+            wd=float( eval(resp.text)["Disagreeable"])
+            wc=float( eval(resp.text)["Conscientious"])
+            wu=float( eval(resp.text)["Unscrupolous"])
+            sum_weights=we +wi +wc + wu + wa + wd
+            try: 
+                weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
+            except:
+                weights=6*[0]
+                sum_weights=1
+
         return 'outcome0'
 
 class State_Init(smach.State):
@@ -222,11 +236,12 @@ class ExAction(smach.State):
                              input_keys=['executing_actions'],
                              output_keys=['updated_actions','action','state']) 
     def execute(self, userdata):
-        global new_emotion, emotion, new_sentence
+        global new_emotion, emotion, new_sentence, start
         resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
         if eval(resp.text)["restart"]=="True":
             print("restart")
             userdata.action=""
+            start=True
             return 'outcome13'
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
@@ -460,6 +475,7 @@ class CheckPerc(smach.State):
             if eval(resp.text)["new_emotion"]=="True":
                 new_emotion=True
                 emotion=eval(resp.text)["emotion"]
+                print(emotion)
             if eval(resp.text)["new_sentence"]=="True":
                 new_sentence=True
 
@@ -486,6 +502,8 @@ class CheckPerc(smach.State):
             
             if new_emotion:
                new_emotion=False
+               print(emotion)
+               print(perception_predicate_map)
                emotion_pred=perception_predicate_map[emotion]["emotion"]
                goals=perception_predicate_map[emotion]["goals"]
                add_predicate(emotion_pred)

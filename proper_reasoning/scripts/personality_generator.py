@@ -11,8 +11,8 @@ import torch
 import numpy as np
 
 
-model = AutoModelForSequenceClassification.from_pretrained("/home/alice/PROPER_Sofar/Personality_Generator_Finetune_New", num_labels=24, problem_type="multi_label_classification") 
-tokenizer=AutoTokenizer.from_pretrained("/home/alice/PROPER_Sofar/Personality_Generator_Finetune_New", problem_type="multi_label_classification")
+model = AutoModelForSequenceClassification.from_pretrained("/home/alice/catkin_ws/src/PROPER_Sofar/Personality_Generator_Finetune_New", num_labels=24, problem_type="multi_label_classification") 
+tokenizer=AutoTokenizer.from_pretrained("/home/alice/catkin_ws/src/PROPER_Sofar/Personality_Generator_Finetune_New", problem_type="multi_label_classification")
 
 def generate_params(personality, action):
     text = personality + tokenizer.sep_token + action
