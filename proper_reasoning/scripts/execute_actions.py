@@ -4,6 +4,10 @@
 import time
 from flask import Flask, request, jsonify
 
+
+f = open("/home/alice/logsss.txt","w")
+
+
 app = Flask(__name__)
 
 data={
@@ -40,10 +44,14 @@ def get_action():
         global new_action
         print(data)
         if new_action=="True":
-            data["new_action"]="True"  
+            data["new_action"]="True" 
+            new_action="False"  
         else:
             data["new_action"]="False" 
-        print(data)
+        stringa=str(data)
+        f.write("GET ACTION \n")
+        f.write(stringa)
+        f.write("\n")
         return jsonify(data)
 
 
@@ -54,7 +62,12 @@ def set_exec():
         data["result"]=updated_data["result"]
         executed="True"
         data["new_action"]="False"
-        new_action="False" 
+        #new_action="False" 
+
+        stringa=str(data)
+        f.write("SET EXEC \n")
+        f.write(stringa)
+        f.write("\n")
         return jsonify(data)
 
 
@@ -69,7 +82,6 @@ def get_exec():
             data["executed"]="False" 
         data["new_action"]="False"
         return jsonify(data)
-
 
 
 

@@ -7,23 +7,29 @@ import numpy as np
 #10 A, D, F
 #11 H, SU
 
-consc_actions=["say_the_user_to_focus_on_long_term_goals_and_not_waste_time","ask_where_it_can_be_useful","say_to_be_focused","remind_to_not_distract"]
+consc_actions=["say_the_user_to_focus_on_long_term_goals_and_not_waste_time","ask_where_it_can_be_useful","say_to_be_focused","remind_to_not_distract","say_something_to_promote_ethical_behavior","ask_the_user_if_it_can_offer_guidance"]
 
 
 zzz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "ask_where_it_can_be_useful":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "say_to_be_focused":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "remind_to_not_distract":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      }
 
 zzo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
      "ask_where_it_can_be_useful":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "say_to_be_focused":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "remind_to_not_distract":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      }
 
 zoz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "ask_where_it_can_be_useful":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "say_to_be_focused":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "remind_to_not_distract":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
     
@@ -31,24 +37,32 @@ zoz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2
 
 zoo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "ask_where_it_can_be_useful":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "say_to_be_focused":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "remind_to_not_distract":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      }
 
 ozz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "ask_where_it_can_be_useful":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "say_to_be_focused":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      "remind_to_not_distract":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
      }
 
 ozo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
      "ask_where_it_can_be_useful":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "say_to_be_focused":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
      "remind_to_not_distract":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
      }
 
 ooz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "ask_where_it_can_be_useful":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "say_to_be_focused":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
      "remind_to_not_distract":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
     
@@ -56,6 +70,8 @@ ooz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2
 
 ooo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "ask_where_it_can_be_useful":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "say_to_be_focused":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
      "remind_to_not_distract":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
      }

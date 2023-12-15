@@ -6,54 +6,75 @@ import numpy as np
 #01 SA
 #10 A, D, F
 #11 H, SU
-extro_actions=["say_an_enthusiastic_sentence","say_something_funny","ask_a_question","say_something_to_capture_the_attention"]
+extro_actions=["say_an_enthusiastic_sentence",
+               "say_something_funny",
+               "ask_a_question",
+               "say_something_to_capture_the_attention",
+               "say_something_to_init_a_conversation",
+               "tell_a_personal_story"]
 
 
 zzz_e={"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      "say_something_funny":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
      "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_something_to_init_a_conversation":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "tell_a_personal_story":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      "say_something_to_capture_the_attention":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      }
 
 zzo_e={"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      "say_something_funny":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "say_something_to_init_a_conversation":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "tell_a_personal_story":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
      "say_something_to_capture_the_attention":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      }
 
 zoz_e={"say_an_enthusiastic_sentence":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
      "say_something_funny":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
      "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_something_to_init_a_conversation":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "tell_a_personal_story":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
       "say_something_to_capture_the_attention":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      }
 
 zoo_e={"say_an_enthusiastic_sentence":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      "say_something_funny":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      "ask_a_question":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "say_something_to_init_a_conversation":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "tell_a_personal_story":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
       "say_something_to_capture_the_attention":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      }
 
 ozz_e={"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      "say_something_funny":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
-     "ask_a_question":{"w1":4,"w2":0,"expected_outcome":[1,1,1]},
+     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_something_to_init_a_conversation":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "tell_a_personal_story":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      "say_something_to_capture_the_attention":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      }
 
 ozo_e={"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      "say_something_funny":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "say_something_to_init_a_conversation":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "tell_a_personal_story":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
       "say_something_to_capture_the_attention":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      }
 
 ooz_e={"say_an_enthusiastic_sentence":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
      "say_something_funny":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
-     "ask_a_question":{"w1":4,"w2":0,"expected_outcome":[1,1,1]},
+     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_something_to_init_a_conversation":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "tell_a_personal_story":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
       "say_something_to_capture_the_attention":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      }
 
 ooo_e={"say_an_enthusiastic_sentence":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      "say_something_funny":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
-     "ask_a_question":{"w1":2,"w2":0,"expected_outcome":[1,1,1]},
+     "ask_a_question":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "say_something_to_init_a_conversation":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "tell_a_personal_story":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
       "say_something_to_capture_the_attention":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      }
 

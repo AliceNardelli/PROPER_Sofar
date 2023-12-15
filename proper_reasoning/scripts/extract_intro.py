@@ -6,39 +6,55 @@ import numpy as np
 #01 SA
 #10 A, D, F
 #11 H, SU
-intro_actions=["say_if_can_be_useful","ask_to_proceed_in_their_task_or_terminate_the_conversation"]
+intro_actions=["say_if_can_be_useful","ask_a_reflective_question","say_that_you_are_there_to_listen_actively_the_human_thoughts","say_that_you_prefer_confidential_conversation"]
 
 
 zzz_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_a_reflective_question":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_are_there_to_listen_actively_the_human_thoughts":{"w1":4,"w2":2,"expected_outcome":[0,0,0]}, 
+     "say_that_you_prefer_confidential_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
 zzo_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_a_reflective_question":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_are_there_to_listen_actively_the_human_thoughts":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_prefer_confidential_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
 zoz_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_a_reflective_question":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_are_there_to_listen_actively_the_human_thoughts":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_prefer_confidential_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
 zoo_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_a_reflective_question":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_are_there_to_listen_actively_the_human_thoughts":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_prefer_confidential_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
 ozz_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_a_reflective_question":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_are_there_to_listen_actively_the_human_thoughts":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_prefer_confidential_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
 ozo_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_a_reflective_question":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_are_there_to_listen_actively_the_human_thoughts":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_prefer_confidential_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
 ooz_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_a_reflective_question":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_are_there_to_listen_actively_the_human_thoughts":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_prefer_confidential_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
 ooo_i={"say_if_can_be_useful":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
-     "ask_to_proceed_in_their_task_or_terminate_the_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "ask_a_reflective_question":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_are_there_to_listen_actively_the_human_thoughts":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "say_that_you_prefer_confidential_conversation":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
 

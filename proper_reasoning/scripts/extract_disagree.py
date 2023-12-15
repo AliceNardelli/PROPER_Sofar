@@ -1,7 +1,7 @@
 import random
 import numpy as np
 
-disagree_actions=["say_a_contrastive_affirmation","remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions","ask_a_provocative_question","say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right"]
+disagree_actions=["say_a_contrastive_affirmation","express_disapproval","express_skepticsm","remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions","say_something_to_minimize_the_user","ask_a_provocative_question","say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right"]
 
 #GOAL make the user angry, create cometitiveness
 #00 N 
@@ -10,50 +10,74 @@ disagree_actions=["say_a_contrastive_affirmation","remember_the_superiority_of_t
 #11 H, SU
 
 zzz_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
-     "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
+     "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[0,1,0]}, 
+     "say_something_to_minimize_the_user":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "ask_a_provocative_question":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
+     "express_disapproval":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
+     "express_skepticsm":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      }
 
 zzo_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
+     "say_something_to_minimize_the_user":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "ask_a_provocative_question":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
+          "express_disapproval":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
+     "express_skepticsm":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      }
 
 zoz_d={"say_a_contrastive_affirmation":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
+     "say_something_to_minimize_the_user":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "ask_a_provocative_question":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
+          "express_disapproval":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
+     "express_skepticsm":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      }
 
 zoo_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
+     "say_something_to_minimize_the_user":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "ask_a_provocative_question":{"w1":0.0,"w2":0.0,"expected_outcome":[0,1,0]},
+          "express_disapproval":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
+     "express_skepticsm":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      }
 
 ozz_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
      "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
+     "say_something_to_minimize_the_user":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "ask_a_provocative_question":{"w1":0,"w2":0,"expected_outcome":[1,1,0]},
+          "express_disapproval":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
+     "express_skepticsm":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
      "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
      }
 
 ozo_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
      "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":4,"w2":2,"expected_outcome":[1,1,0]},
+     "say_something_to_minimize_the_user":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "ask_a_provocative_question":{"w1":0,"w2":0,"expected_outcome":[1,1,0]},
+      "express_disapproval":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
+     "express_skepticsm":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
      "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":0,"w2":0,"expected_outcome":[1,1,0]},
      }
 
 ooz_d={"say_a_contrastive_affirmation":{"w1":4,"w2":2,"expected_outcome":[1,1,0]},
      "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
+     "say_something_to_minimize_the_user":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "ask_a_provocative_question":{"w1":0,"w2":0,"expected_outcome":[1,1,0]},
+          "express_disapproval":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
+     "express_skepticsm":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
      "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
      }
 
 ooo_d={"say_a_contrastive_affirmation":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
      "remember_the_superiority_of_the_artificial_intelligence_in_taking_decisions":{"w1":4,"w2":2,"expected_outcome":[1,1,0]},
+     "say_something_to_minimize_the_user":{"w1":2,"w2":1,"expected_outcome":[0,1,0]},
      "ask_a_provocative_question":{"w1":0.0,"w2":0.0,"expected_outcome":[1,1,0]},
+          "express_disapproval":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
+     "express_skepticsm":{"w1":2,"w2":1,"expected_outcome":[1,1,0]},
      "say_to_pay_attention_on_what_it_is_going_to_say_since_it_has_always_right":{"w1":0,"w2":0,"expected_outcome":[1,1,0]},
      }
 
