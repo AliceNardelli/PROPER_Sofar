@@ -259,7 +259,7 @@ class ExAction(smach.State):
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
             if predicates_objects["new_sentence"].is_grounded==True:
-                aa,rew=choose_action_a(pi,True)
+                aa,rew=choose_action_a(pi,False)
             else:
                 aa,rew=choose_action_a(pi,False)
             userdata, response=self.call_action_server(userdata, aa, personality)
@@ -291,7 +291,7 @@ class ExAction(smach.State):
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
             if predicates_objects["new_sentence"].is_grounded==True:
-                aa,rew=choose_action_d(pi,True)
+                aa,rew=choose_action_d(pi,False)
             else:
                 aa,rew=choose_action_d(pi,False)
             userdata, response=self.call_action_server(userdata, aa, personality)
@@ -323,7 +323,7 @@ class ExAction(smach.State):
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
             if predicates_objects["new_sentence"].is_grounded==True:
-                aa,rew=choose_action_i(pi,True)
+                aa,rew=choose_action_i(pi,False)
             else:
                 aa,rew=choose_action_i(pi,False)
             userdata, response=self.call_action_server(userdata, aa, personality)
@@ -358,7 +358,7 @@ class ExAction(smach.State):
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
             if predicates_objects["new_sentence"].is_grounded==True:
-                aa,rew=choose_action_e(pi,True)
+                aa,rew=choose_action_e(pi,False)
             else:
                 aa,rew=choose_action_e(pi,False)
             userdata, response=self.call_action_server(userdata, aa, personality)
@@ -391,7 +391,7 @@ class ExAction(smach.State):
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
             if predicates_objects["new_sentence"].is_grounded==True:
-                aa,rew=choose_action_c(pi,True)
+                aa,rew=choose_action_c(pi,False)
             else:
                 aa,rew=choose_action_c(pi,False)
             userdata, response=self.call_action_server(userdata, aa,personality)
@@ -413,7 +413,7 @@ class ExAction(smach.State):
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
             if predicates_objects["new_sentence"].is_grounded==True:
-                aa,rew=choose_action_u(pi,True)
+                aa,rew=choose_action_u(pi,False)
             else:
                 aa,rew=choose_action_u(pi,False)
            

@@ -41,20 +41,20 @@ def get_action():
         print(data)
         if new_action=="True":
             data["new_action"]="True"  
-            new_action="False" 
         else:
             data["new_action"]="False" 
+        print(data)
         return jsonify(data)
 
 
 @app.route ('/set_exec', methods = ['PUT'] )  
 def set_exec():
-        global executed
+        global executed, new_action
         updated_data = request.get_json()
         data["result"]=updated_data["result"]
         executed="True"
         data["new_action"]="False"
-        
+        new_action="False" 
         return jsonify(data)
 
 
@@ -74,4 +74,4 @@ def get_exec():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5021, debug=True)
+    app.run(host='0.0.0.0', port=5021, debug=False)
