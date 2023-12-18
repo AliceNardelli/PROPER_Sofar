@@ -114,8 +114,10 @@ pers_lang_dict={
     "Disagreeable":"rude"
 }
 
-bit_map=[3,2,3,3,2,3,2,2,2,2]
-parameters=["language","pitch","volume","velocity","gaze","head","amplitude","g_speed","speed", "prox"]
+#bit_map=[3,2,3,3,2,3,2,2,2,2]
+#parameters=["language","pitch","volume","velocity","gaze","head","amplitude","g_speed","speed", "prox"]
+bit_map=[3,2,3,3]
+parameters=["language","pitch","volume","velocity"]
 
 def get_map(predictions,personality):
    
@@ -124,12 +126,13 @@ def get_map(predictions,personality):
     
     for i in range(len(bit_map)):
         param=parameters[i]
+        print(param)
         no_bit=bit_map[i]
         bits=predictions[c:c+no_bit]
         c+=no_bit
         if param=="language":
-            #a=reversed[param][str(list([int(b) for b in bits]))]
-            a=pers_lang_dict[personality]
+            a=reversed[param][str(list([int(b) for b in bits]))]
+            #a=pers_lang_dict[personality]
             value=remap_language[a][random.randint(0,len(remap_language[a])-1)]
            
         else:
