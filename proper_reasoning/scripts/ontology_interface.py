@@ -18,7 +18,7 @@ import time
 import threading
 
 #define the actual personality
-traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
+traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
 wi=0
@@ -243,7 +243,6 @@ class ExAction(smach.State):
             userdata.action=""
             start=True
             return 'outcome13'
-        resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
       
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
@@ -262,7 +261,9 @@ class ExAction(smach.State):
                 aa,rew=choose_action_a(pi,False)
             else:
                 aa,rew=choose_action_a(pi,False)
-            userdata, response=self.call_action_server(userdata, aa, personality)
+            userdata, response, restart=self.call_action_server(userdata, aa, personality)
+            if restart:
+                return "outcome13"
             if response:
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
@@ -294,7 +295,9 @@ class ExAction(smach.State):
                 aa,rew=choose_action_d(pi,False)
             else:
                 aa,rew=choose_action_d(pi,False)
-            userdata, response=self.call_action_server(userdata, aa, personality)
+            userdata, response, restart=self.call_action_server(userdata, aa, personality)            
+            if restart:
+                return "outcome13"
             if response:
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
@@ -326,7 +329,9 @@ class ExAction(smach.State):
                 aa,rew=choose_action_i(pi,False)
             else:
                 aa,rew=choose_action_i(pi,False)
-            userdata, response=self.call_action_server(userdata, aa, personality)
+            userdata, response, restart =self.call_action_server(userdata, aa, personality)
+            if restart:
+                return "outcome13"
             if response:
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
@@ -361,7 +366,9 @@ class ExAction(smach.State):
                 aa,rew=choose_action_e(pi,False)
             else:
                 aa,rew=choose_action_e(pi,False)
-            userdata, response=self.call_action_server(userdata, aa, personality)
+            userdata, response, restart =self.call_action_server(userdata, aa, personality)
+            if restart:
+                return "outcome13"
             if response:
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
@@ -394,7 +401,9 @@ class ExAction(smach.State):
                 aa,rew=choose_action_c(pi,False)
             else:
                 aa,rew=choose_action_c(pi,False)
-            userdata, response=self.call_action_server(userdata, aa,personality)
+            userdata, response, restart =self.call_action_server(userdata, aa,personality)
+            if restart:
+                return "outcome13"
             if response:
                 change_raward("reward_c",float(rew))
                 return "outcome9"
@@ -417,7 +426,9 @@ class ExAction(smach.State):
             else:
                 aa,rew=choose_action_u(pi,False)
            
-            userdata, response=self.call_action_server(userdata, aa,personality)
+            userdata, response, restart=self.call_action_server(userdata, aa,personality)
+            if restart:
+                return "outcome13"
             if response:
                 change_raward("reward_c",float(rew))
                 return "outcome9"
@@ -426,7 +437,9 @@ class ExAction(smach.State):
 
 
         else:
-            userdata, response=self.call_action_server(userdata, ac, personality)
+            userdata, response, restart =self.call_action_server(userdata, ac, personality)
+            if restart:
+                return "outcome13"
             if response:
                 return "outcome9"
             else:
@@ -434,7 +447,7 @@ class ExAction(smach.State):
 
 
     def call_action_server(self, userdata, ac,personality):
-            global data_action
+            global data_action, start
             userdata.state="exec"
             resp, mmap, to_exec_action, exec_personality = dispatch_action(ac, personality)
             resp2=True
@@ -451,31 +464,46 @@ class ExAction(smach.State):
                 respac=requests.put(url3+'set_action', json=data_action, headers=headers)
                 respex=requests.put(url3+'get_exec', json=data_action, headers=headers)
                 while eval(respex.text)["executed"]=="False":
+                    time.sleep(1)
                     respex=requests.put(url3+'get_exec', json=data_action, headers=headers)
+                    resp_rest=requests.put(url2+'get_restart', json=data_restart, headers=headers)
+                    if eval(resp_rest.text)["restart"]=="True":
+                        print("restart")
+                        userdata.action=""
+                        start=True
+                        return userdata, False, True
 
                 if eval(respex.text)["result"]=="False":
                     resp2=False
             
             if resp2==False:
                     print('Action Failed')        
-                    return userdata, False
+                    return userdata, False, False
             else:
                     ac=userdata.executing_actions.pop(0)
                     print('Action executed: '+ac)
                     userdata.action=ac
                     userdata.updated_actions=userdata.executing_actions
-            return userdata,True
+            return userdata,True, False
 
                 
         
 class CheckPerc(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome3',"outcome4","outcome2"],
-                             input_keys=["state","exec_actions","action"])
+                             outcomes=['outcome3',"outcome4","outcome2","outcome13"],
+                             input_keys=["state","exec_actions","action"],
+                             output_keys=["out_action"])
         
     def execute(self, userdata):
-        global emotion, new_emotion, new_sentence, data, new_attention, attention
+        global emotion, new_emotion, new_sentence, data, new_attention, attention, start
+        resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
+        if eval(resp.text)["restart"]=="True":
+            print("restart")
+            userdata.out_action=""
+            start=True
+            return 'outcome13'
+        
         print('check perception') 
         data["update"]="True"
         resp=requests.put(url+'get_input', json=data, headers=headers)
@@ -494,6 +522,14 @@ class CheckPerc(smach.State):
 
         while (new_emotion==False and new_sentence==False and  new_attention==False and userdata.action==""):
             time.sleep(1)
+            resp_rest=requests.put(url2+'get_restart', json=data_restart, headers=headers)
+            if eval(resp_rest.text)["restart"]=="True":
+                print("restart")
+                userdata.out_action=""
+                start=True
+                return 'outcome13'
+            
+            
             data["update"]="True"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             if eval(resp.text)["new_emotion"]=="True":
@@ -671,11 +707,13 @@ def main():
                                 transitions={'outcome2':'EXEC',
                                             'outcome4':'FINISH',
                                             'outcome3':'WRITE_PLAN',
+                                            "outcome13":"START",
                                             },
                                 remapping={
                                     "action":"a",
                                     "state":"previous_state",
-                                    "exec_actions":"actions"
+                                    "exec_actions":"actions",
+                                    "out_action":"a"
                                         })
             
             smach.StateMachine.add('WRITE_PLAN', WriteProblem(), 

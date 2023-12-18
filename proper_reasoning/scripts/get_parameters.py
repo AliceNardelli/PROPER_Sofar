@@ -108,7 +108,7 @@ remap_language={
 pers_lang_dict={
     "Extrovert":"verbose_excited",
     "Introvert":"non_verbose_neutral",
-    "Conscientous":"precise",
+    "Conscientious":"precise",
     "Unscrupolous":"distracted",
     "Agreeable":"polite",
     "Disagreeable":"rude"

@@ -35,12 +35,11 @@ def get_personality():
         global data, new_personality
         if new_personality=="True":
                data["new_personality"]="True"
-               new_personality="False"
-               print("GET_NEW_PERSONALITY")
-               print(data)
+               print("GET_NEW_PERSONALITY") 
         else:
                data["new_personality"]="False"
-        
+               
+        new_personality="False"
         return jsonify(data)
 
 if __name__ == "__main__":
