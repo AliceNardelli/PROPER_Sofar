@@ -7,6 +7,8 @@ import sys
 import time
 touched=False
 
+
+
 def tablet(session,im):
     DEF_IMG_APP = "tablet_images"
     TABLET_IMG_DEFAULT = im
@@ -80,7 +82,7 @@ def give_take_object_touch(session, hand, stiffness, need_touch):
         connection = touch.signal.connect(touch_detected) #segnale della sottoscrizione
         while touched==False:
             m.angleInterpolationWithSpeed(chain,angle,frac_speed) 
-            time.sleep(1)
+            #time.sleep(1)
             print("Hand open")
             t+=1
         touched=False
@@ -96,7 +98,7 @@ def touch_detected(value): #esempio di callback
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", type=str, default="130.251.13.119",
+    parser.add_argument("--ip", type=str, default="130.251.13.182",
                         help="Robot IP address. On robot or Local Naoqi: use '127.0.0.1'.")
     parser.add_argument("--port", type=int, default=9559,
                         help="Naoqi port number")
@@ -111,3 +113,4 @@ if __name__ == '__main__':
         print ("Can't connect to Naoqi at ip \"" + args.ip + "\" on port " + str(args.port) +".\n"
                "Please check your script arguments. Run with -h option for help.")
         sys.exit(1)
+    

@@ -231,13 +231,28 @@ class Speak:
             breath(self.session, anim_speech_service)
 
         elif behavior=="curl_movement":
-            breath(self.session, anim_speech_service)
+            curl(self.session, anim_speech_service)
 
         elif behavior=="curl_blink":
-            blink(self.session, 6, 1, "red")
+            blink(session, 6, 1, "green")
 
         elif behavior=="yoga":
-            yoga(self.session)
+            if self.personality=="Introvert":
+                reps=3
+                velocity="low"
+            elif self.personality=="Extrovert":
+                 reps=6
+                 velocity="high"
+            elif self.personality=="Conscientous":
+                 reps=6
+                 velocity="mid"
+            elif self.personality=="Unscupolous":
+                 reps=2
+                 velocity="mid"
+            else:
+                reps=4
+                velocity="mid"
+            yoga(self.session,velocity,reps)
 
         elif behavior=="get_away":
             #nav(session,x,y,yaw,vel,prox):
@@ -247,7 +262,7 @@ class Speak:
              embrace(self.session)
         
         elif behavior=="high_five":
-            high_five(session)
+            high_five(self.session)
 
         if "ask" in to_say:
             data_sentence["activated"]="True"
