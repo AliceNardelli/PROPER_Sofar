@@ -86,6 +86,7 @@ def get_exec():
 @app.route ('/reset_timestamp', methods = ['PUT'] )  
 def time_reset():
         data["timestamp"]=str(-1)
+        print(data)
         return jsonify(data)
 
 

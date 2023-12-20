@@ -80,8 +80,7 @@ data_action={
         "new_action":"",
         "executed":"",
         "result":"",
-        "timestamp":0
-
+        "timestamp":str(-1)
 }
 
 class State_Start(smach.State):
@@ -105,7 +104,7 @@ class State_Start(smach.State):
         userdata.command=dict_goal["command"]
         userdata.path=dict_goal["folder"]
         userdata.plan_path=dict_goal["plan"]
-        print("setting new personality")
+        
         if begin==True:
             begin=False
             print("first restart")
@@ -114,10 +113,12 @@ class State_Start(smach.State):
                 resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
             
         if start==True:
+            data_action["timestamp"]=str(-1)
             reset_timestamp=requests.put(url3+'reset_timestamp', json=data_action, headers=headers)
             action_counter=0
             resp=requests.put(url1+'get_personality', json=data_personality, headers=headers)
             new_personality=False
+            print("setting new personality")
             if  eval(resp.text)["new_personality"]=="True":
                 new_personality=True
             while new_personality==False:

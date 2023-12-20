@@ -59,13 +59,13 @@ def update_input():
                        new_attention_input=data["new_attention"]
                        attention_input=data["attention"]
         
-        """
+        
         print("new emotion", new_emotion_input)
         print("emotion", emotion_input)
         print("new attention", new_attention_input)
         print("attention", attention_input)
         print("new sentence", new_sentence_input)
-        """
+        
         return jsonify(data)
 
 
