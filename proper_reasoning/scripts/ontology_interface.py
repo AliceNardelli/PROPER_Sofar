@@ -16,7 +16,7 @@ import random
 import numpy as np
 import time
 import threading
-
+import datetime
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
@@ -35,6 +35,7 @@ start=True
 new_emotion=False
 new_sentence=False
 new_attention=False
+begin=True
 url='http://127.0.0.1:5020/'
 url1='http://127.0.0.1:5019/'
 url2='http://127.0.0.1:5018/'
@@ -52,6 +53,8 @@ data={
         "update":"False",
 }
 
+
+action_counter=0
 
 data_personality={
         "new_personality":"False",
@@ -76,7 +79,8 @@ data_action={
         "velocity":"",
         "new_action":"",
         "executed":"",
-        "result":""
+        "result":"",
+        "timestamp":0
 
 }
 
@@ -88,7 +92,8 @@ class State_Start(smach.State):
                              output_keys=['output_goals','domain_path','problem_path','init_pb','command','path','plan_path'])
         
     def execute(self, userdata):
-        global wa,wd,we,wi,wc,wd,sum_weights,weights, data, start
+        global wa,wd,we,wi,wc,wd,sum_weights,weights, data, start, begin, action_counter
+        
         goals=userdata.input_goals
         #actual_goal=goals.pop(0) #always goal1
         print('Executing goal: '+ actual_goal)
@@ -101,7 +106,16 @@ class State_Start(smach.State):
         userdata.path=dict_goal["folder"]
         userdata.plan_path=dict_goal["plan"]
         print("setting new personality")
+        if begin==True:
+            begin=False
+            print("first restart")
+            resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
+            while eval(resp.text)["restart"]=="False":
+                resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
+            
         if start==True:
+            reset_timestamp=requests.put(url3+'reset_timestamp', json=data_action, headers=headers)
+            action_counter=0
             resp=requests.put(url1+'get_personality', json=data_personality, headers=headers)
             new_personality=False
             if  eval(resp.text)["new_personality"]=="True":
@@ -447,7 +461,7 @@ class ExAction(smach.State):
 
 
     def call_action_server(self, userdata, ac,personality):
-            global data_action, start
+            global data_action, start, action_counter
             userdata.state="exec"
             resp, mmap, to_exec_action, exec_personality = dispatch_action(ac, personality)
             resp2=True
@@ -461,6 +475,8 @@ class ExAction(smach.State):
                 data_action["velocity"]=mmap["velocity"]
                 data_action["volume"]=mmap["volume"]
                 data_action["new_action"]="True"
+                data_action["timestamp"]=str(action_counter)
+                action_counter+=1
                 respac=requests.put(url3+'set_action', json=data_action, headers=headers)
                 respex=requests.put(url3+'get_exec', json=data_action, headers=headers)
                 while eval(respex.text)["executed"]=="False":

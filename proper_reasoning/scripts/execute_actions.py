@@ -20,13 +20,12 @@ data={
         "new_action":"",
         "executed":"",
         "result":"",
-        "finished":""
-
+        "finished":"",
+        "timestamp":str(-1)
 }
 
 new_action="False"
 executed="False"
-
 
 @app.route ('/set_action', methods = ['PUT'] )  
 def set_action():
@@ -81,6 +80,12 @@ def get_exec():
         else:
             data["executed"]="False" 
         data["new_action"]="False"
+        return jsonify(data)
+
+
+@app.route ('/reset_timestamp', methods = ['PUT'] )  
+def time_reset():
+        data["timestamp"]=str(-1)
         return jsonify(data)
 
 
