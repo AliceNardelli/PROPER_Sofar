@@ -7,7 +7,7 @@
         (=(reward_e)5)
         (=(reward_a)5)
         (=(reward_c)5)
-        (= (extroversion_coefficient) 0.0)
+        (= (extroversion_coefficient) 1.0)
         (intro)
         (=(desired_interaction) 5)
         (=(interaction_level) 6)  
@@ -19,14 +19,13 @@
         (disagree)
         (=(desired_agreeableness) 5)
         (=(agreeableness_level) 6)
-        (sad_emotion) 
+        (emotion_r) 
         (attention_r)  
         (low_attention_r)  
         (answered)  
 )
 
 (:goal (and 
-(sad_emotion_r) 
     )
 )
 

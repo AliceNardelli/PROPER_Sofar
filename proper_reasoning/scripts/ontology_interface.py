@@ -145,10 +145,13 @@ class State_Start(smach.State):
             wd=float( eval(resp.text)["Disagreeable"])
             wc=float( eval(resp.text)["Conscientious"])
             wu=float( eval(resp.text)["Unscrupolous"])
-            sum_weights=we +wi +wc + wu + wa + wd
+            print("weights unscrupolous",wu)
+            sum_weights=float(we +wi +wc + wu + wa + wd)
             try: 
                 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
+                print(weights)
             except:
+                print(weights)
                 weights=6*[0]
                 sum_weights=1
 
@@ -162,40 +165,44 @@ class State_Init(smach.State):
                            )
 
    def execute(self, userdata):
-        print('Executing state INIT')      
+        print('Executing state INIT') 
+        global wa,wd,we,wi,wc,wd,sum_weights,weights
+        print(weights)     
         with open(userdata.init_pb,'r') as firstfile, open(userdata.problem_path,'w') as secondfile:
             for line in firstfile:
             
                 if "extroversion_coefficient" in line:
-                    if we!=0:
-                        l="        (= (extroversion_coefficient) "+str(gamma*(we/sum_weights)) +")\n"
+                    if we!=0.0:
+                        l="        (= (extroversion_coefficient) "+str(weights[0]) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[0]+"\n"
                         secondfile.write(p)
                     else:
-                        l="        (= (extroversion_coefficient) "+str(gamma*(wi/sum_weights)) +")\n"
+                        print(str(gamma*(wi/sum_weights)))
+                        l="        (= (extroversion_coefficient) "+str(weights[1]) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[1]+"\n"
                         secondfile.write(p)
                 elif "conscientious_coefficient" in line:
-                    if wc!=0:
-                        l="        (= (conscientious_coefficient) "+str(gamma*(wc/sum_weights)) +")\n"
+                    if wc!=0.0:
+                        l="        (= (conscientious_coefficient) "+str(weights[2]) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[2]+"\n"
                         secondfile.write(p)
                     else:
-                        l="        (= (conscientious_coefficient) "+str(gamma*(wu/sum_weights)) +")\n"
+                        print(gamma*(wu/sum_weights))
+                        l="        (= (conscientious_coefficient) "+str(weights[3]) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[3]+"\n"
                         secondfile.write(p)
                 elif "agreeableness_coefficient" in line:
                     if wa!=0:
-                        l="        (= (agreeableness_coefficient) "+str(gamma*(wa/sum_weights)) +")\n"
+                        l="        (= (agreeableness_coefficient) "+str(weights[4]) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[4]+"\n"
                         secondfile.write(p)
                     else:
-                        l="        (= (agreeableness_coefficient) "+str(gamma*(wd/sum_weights)) +")\n"
+                        l="        (= (agreeableness_coefficient) "+str(weights[5]) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[5]+"\n"
                         secondfile.write(p)
