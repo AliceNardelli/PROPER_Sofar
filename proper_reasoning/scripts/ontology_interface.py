@@ -113,6 +113,7 @@ class State_Start(smach.State):
                 resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
             
         if start==True:
+            
             data_action["timestamp"]=str(-1)
             reset_timestamp=requests.put(url3+'reset_timestamp', json=data_action, headers=headers)
             action_counter=0
@@ -206,7 +207,7 @@ class State_Init(smach.State):
         initialize_functions_predicates()
         print('Read the problem and set the initial values of predicates and functions')
         read_the_problem(userdata.problem_path)  
-          
+        
         return 'outcome1'
       
 
@@ -467,6 +468,7 @@ class ExAction(smach.State):
             resp, mmap, to_exec_action, exec_personality = dispatch_action(ac, personality)
             resp2=True
             if ("react" not in to_exec_action) and ("compute" not in to_exec_action) and ("check" not in to_exec_action):
+                change_raward("react",float(1))
                 #set that I have executed an action
                 data_action["finished"]="False"
                 data_action["personality"]=exec_personality
@@ -514,6 +516,7 @@ class CheckPerc(smach.State):
         
     def execute(self, userdata):
         global emotion, new_emotion, new_sentence, data, new_attention, attention, start
+        
         resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
         if eval(resp.text)["restart"]=="True":
             print("restart")
@@ -561,6 +564,7 @@ class CheckPerc(smach.State):
                attention=eval(resp.text)["attention"]
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
         if new_emotion==False and new_sentence==False and new_attention==False:
+            time.sleep(4)
             if "ACTION" in userdata.action:
                 return "outcome3" #if I have done a trait specific action I need to replan
             
@@ -576,7 +580,7 @@ class CheckPerc(smach.State):
                     return "outcome2"
         #IF NEW PERCEPTION
         else:
-            
+            time.sleep(4)
             if new_emotion:
                new_emotion=False
                print(emotion)

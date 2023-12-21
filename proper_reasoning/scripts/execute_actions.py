@@ -23,7 +23,7 @@ data={
         "finished":"",
         "timestamp":str(-1)
 }
-
+prev_timestamp=str(-1)
 new_action="False"
 executed="False"
 
@@ -56,13 +56,13 @@ def get_action():
 
 @app.route ('/set_exec', methods = ['PUT'] )  
 def set_exec():
-        global executed, new_action
+        global executed, new_action, prev_timestamp
         updated_data = request.get_json()
         data["result"]=updated_data["result"]
         executed="True"
         data["new_action"]="False"
         #new_action="False" 
-
+        prev_timestamp=data["timestamp"]
         stringa=str(data)
         f.write("SET EXEC \n")
         f.write(stringa)
@@ -71,12 +71,26 @@ def set_exec():
 
 
 
+@app.route ('/set_exec_new', methods = ['PUT'] )  
+def set_exec_new():
+        global executed, new_action, prev_timestamp
+        if new_action=="True":
+              data["result"]="True"
+              executed="True"
+              data["new_action"]="False"
+              new_action="False"
+              data["timestamp"]=prev_timestamp
+        return jsonify(data)
+
+
+
 @app.route ('/get_exec', methods = ['PUT'] )  
 def get_exec():
-        global executed
+        global executed, prev_timestamp
         if executed=="True":
             data["executed"]="True"  
             executed="False" 
+            
         else:
             data["executed"]="False" 
         data["new_action"]="False"
