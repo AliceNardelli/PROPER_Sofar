@@ -20,12 +20,12 @@ Cueing down from goal distance:    2 into depth [1]
 
 ff: found legal plan as follows
 
-step    0: REACT_SAD_EMOTION
+step    0: REACT_ANGER_EMOTION
         1: COMPUTE_HEDONIC_FEELINGS
      
 
 time spent:    0.00 seconds instantiating 6 easy, 0 hard action templates
-               0.00 seconds reachability analysis, yielding 11 facts and 6 actions
+               0.00 seconds reachability analysis, yielding 10 facts and 6 actions
                0.00 seconds creating final representation with 7 relevant facts, 3 relevant fluents
                0.00 seconds computing LNF
                0.00 seconds building connectivity graph
