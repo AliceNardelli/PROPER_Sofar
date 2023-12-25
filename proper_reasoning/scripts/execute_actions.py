@@ -5,7 +5,6 @@ import time
 from flask import Flask, request, jsonify
 
 
-f = open("/home/alice/logsss.txt","w")
 
 
 app = Flask(__name__)
@@ -47,10 +46,7 @@ def get_action():
             new_action="False"  
         else:
             data["new_action"]="False" 
-        stringa=str(data)
-        f.write("GET ACTION \n")
-        f.write(stringa)
-        f.write("\n")
+        
         return jsonify(data)
 
 
@@ -63,10 +59,7 @@ def set_exec():
         data["new_action"]="False"
         #new_action="False" 
         prev_timestamp=data["timestamp"]
-        stringa=str(data)
-        f.write("SET EXEC \n")
-        f.write(stringa)
-        f.write("\n")
+        
         return jsonify(data)
 
 
