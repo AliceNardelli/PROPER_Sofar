@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import requests
 from load_ontology import *
-from problem_param import *
+from problem_param_vm import *
 from perception_predicate import *
 from extract_agree import *
 from extract_intro import *

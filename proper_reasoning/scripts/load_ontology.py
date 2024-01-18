@@ -13,7 +13,8 @@ new_params=[]
 objects=[]
 goals=[]
 
-onto_path.append("/home/alice/")
+onto_path.append("/mnt/Data/ariel_laboratorium/PROPER_Sofar/")
+#onto_path.append("/home/alice/")
 onto = get_ontology("http://www.semanticweb.org/alice/ontologies/2023/10/goal1#").load()        
 with onto:
     class Predicates(Thing):
