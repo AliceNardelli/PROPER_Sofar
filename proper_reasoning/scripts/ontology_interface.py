@@ -3,6 +3,7 @@
 import requests
 from load_ontology import *
 from problem_param_vm import *
+#from problem_param import *
 from perception_predicate import *
 from extract_agree import *
 from extract_intro import *
@@ -77,12 +78,29 @@ data_action={
         "pitch":"",
         "volume":"",
         "velocity":"",
+        "gaze":"",
+        "head":"",
         "new_action":"",
         "executed":"",
         "result":"",
         "timestamp":str(-1)
 }
 
+starting_data={
+        "action":"",
+        "language":"",
+        "personality":"",
+        "pitch":"",
+        "volume":"",
+        "velocity":"",
+        "head":"",
+        "gaze":"",
+        "new_action":"",
+        "executed":"",
+        "result":"",
+        "finished":"",
+        "timestamp":str(-1)
+}
 class State_Start(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
@@ -111,9 +129,9 @@ class State_Start(smach.State):
             resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
             while eval(resp.text)["restart"]=="False":
                 resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
-            
+
         if start==True:
-            
+            respac=requests.put(url3+'set_action', json=starting_data, headers=headers)
             data_action["timestamp"]=str(-1)
             reset_timestamp=requests.put(url3+'reset_timestamp', json=data_action, headers=headers)
             action_counter=0
@@ -131,7 +149,7 @@ class State_Start(smach.State):
             reset=True
         
         else:
-            time.sleep(3)
+          
             resp=requests.put(url1+'get_personality', json=data_personality, headers=headers)
             if  eval(resp.text)["new_personality"]=="True":
                 reset=True
@@ -484,6 +502,8 @@ class ExAction(smach.State):
                 data_action["pitch"]=mmap["pitch"]
                 data_action["velocity"]=mmap["velocity"]
                 data_action["volume"]=mmap["volume"]
+                data_action["head"]=mmap["head"]
+                data_action["gaze"]=mmap["gaze"]
                 data_action["new_action"]="True"
                 data_action["timestamp"]=str(action_counter)
                 action_counter+=1
@@ -571,7 +591,7 @@ class CheckPerc(smach.State):
                attention=eval(resp.text)["attention"]
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
         if new_emotion==False and new_sentence==False and new_attention==False:
-            time.sleep(4)
+          
             if "ACTION" in userdata.action:
                 return "outcome3" #if I have done a trait specific action I need to replan
             
@@ -587,7 +607,7 @@ class CheckPerc(smach.State):
                     return "outcome2"
         #IF NEW PERCEPTION
         else:
-            time.sleep(4)
+          
             if new_emotion:
                new_emotion=False
                print(emotion)

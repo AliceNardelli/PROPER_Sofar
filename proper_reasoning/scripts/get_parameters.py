@@ -100,7 +100,7 @@ remap_language={
         "verbose_excited": ["Friendly", "Talkative", "Enthusiastic", "Excited"],
         "non_verbose_neutral": ["Reserved", "Quiet", "Neutral"],
         "precise": ["Scrupulous", "Precise"],
-        "distracted": ["Unscrupulous", "Thoughtless", "Distracted", "Lazy"],
+        "distracted": ["Thoughtless", "Distracted", "Lazy","Disordered"],
         "polite":["Cooperative", "Fiendly", "Empathic", "Forgiving", "Reliable","Polite"],
         "rude":["Competitive", "Aggressive", "Provocative", "Selfish","Rude"]
         }
@@ -114,10 +114,8 @@ pers_lang_dict={
     "Disagreeable":"rude"
 }
 
-#bit_map=[3,2,3,3,2,3,2,2,2,2]
-#parameters=["language","pitch","volume","velocity","gaze","head","amplitude","g_speed","speed", "prox"]
-bit_map=[3,2,3,3]
-parameters=["language","pitch","volume","velocity"]
+bit_map=[3,2,3,3,2,3,2,2,2,2]
+parameters=["language","pitch","volume","velocity","gaze","head","amplitude","g_speed","speed", "prox"]
 
 def get_map(predictions,personality):
    

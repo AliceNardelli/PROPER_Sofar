@@ -326,6 +326,25 @@
                 )
 )
 
+(:action ANSWER_WRONGLY
+        :precondition
+               (and 
+                           (new_sentence)
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (not (answered))
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)10)))
+                           (when (unsc) (increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (when (consc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)3))))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)10)))
+                           (answered)                 
+                )
+)
 
 (:action ANSWER_WITH_A_QUESTION
         :precondition
@@ -371,27 +390,7 @@
                 )
 )
 
-(:action ANSWER_RANDOMLY
-        :precondition
-               (and 
-                           
-                           (emotion_r)
-                           (new_sentence)
-                           (attention_r)  
-                           (low_attention_r)
-                           (not (answered))
-                        
-                )
-        :effect
-                (and
-                           
-                           (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)10)))
-                           (decrease (agreeableness_level)(*(agreeableness_level)(+(dur)10)))
-                           (when (unsc) (increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
-                           (when (consc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)3))))
-                           (answered)                 
-                )
-)
+
 
 
 (:action COMPUTE_HEDONIC_FEELINGS

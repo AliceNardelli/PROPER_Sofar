@@ -1,5 +1,6 @@
 problem_goals=['goal1']
 actual_goal="goal1"
+#/mnt/Data/ariel_laboratorium
 goals_dict={"goal1": {"domain":'/mnt/Data/ariel_laboratorium/PROPER_Sofar/proper_reasoning/goal1_domain.pddl', 
       "problem":'/mnt/Data/ariel_laboratorium/PROPER_Sofar/proper_reasoning/prova_problem.pddl',
       "init":'/mnt/Data/ariel_laboratorium/PROPER_Sofar/proper_reasoning/init_problem.pddl',

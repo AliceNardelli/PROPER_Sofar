@@ -16,6 +16,8 @@ data={
         "pitch":"",
         "volume":"",
         "velocity":"",
+        "head":"",
+        "gaze":"",
         "new_action":"",
         "executed":"",
         "result":"",

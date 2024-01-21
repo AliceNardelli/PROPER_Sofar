@@ -6,4 +6,3 @@ xterm -e "cd ; cd $1/PROPER_Sofar/proper_reasoning/scripts; python3 input_restar
 xterm -e "cd ; cd $1/PROPER_Sofar/proper_reasoning/scripts; python3 input_personality.py" & 
 xterm -e "cd ; cd $1/PROPER_Sofar/proper_reasoning/scripts; python3 input_simulation.py" & 
 
-
