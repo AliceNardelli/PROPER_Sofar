@@ -14,3 +14,21 @@ perception_predicate_map={
     "NA_D":{"touch":"","attention":"low_attention","emotion":"disgust_emotion","goals":["disgust_emotion_r","emotion_r","low_attention_r"]},
     "NA_F":{"touch":"","attention":"low_attention","emotion":"fear_emotion","goals":["fear_emotion_r","emotion_r","low_attention_r"]},
 }
+
+
+map_perception_AV_axis={
+   "A_SA":"A_S",
+   "NA_SA":"NA_S",
+   "NA_SU":"NA_H",
+   "A_SU":"A_H",
+   "NA_H":"NA_H",
+   "A_H":"A_H",
+   "NA_A":"NA_A",
+   "A_A":"A_A",
+   "NA_D":"NA_A",
+   "A_D":"A_A",
+   "NA_F":"NA_A",
+   "A_F":"A_A",
+   "NA_N":"NA_N",
+   "A_N":"A_N",
+}
