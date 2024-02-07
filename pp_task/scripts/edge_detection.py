@@ -227,14 +227,15 @@ def main():
             
             ss=(int(rectangles[x]["x"]),int(rectangles[x]["y"]))
             se=(int(rectangles[x]["x"])+int(rectangles[x]["w"]), int(rectangles[x]["y"])+int(rectangles[x]["h"]))
-            frame = cv2.rectangle(frame, ss,  se, (255, 0, 0), 8)
-            frame = cv2.putText(frame, str(rectangles[x]["name"]), (int(rectangles[x]["x"]),int(rectangles[x]["y"])),  cv2.FONT_HERSHEY_SIMPLEX,  1, (255, 0, 0) , 2, cv2.LINE_AA)
-         contours=red_detection(frame)
+            frame = cv2.rectangle(frame, ss,  se, (0, 255, 0), 8)
+            frame = cv2.putText(frame, str(rectangles[x]["name"]), (int(rectangles[x]["x"]),int(rectangles[x]["y"])),  cv2.FONT_HERSHEY_SIMPLEX,  1, (0, 255, 0) , 2, cv2.LINE_AA)
+         
          board_msg=Board()
          board_msg.area1=""
          board_msg.area2=""
          board_msg.area3=""
          board_msg.area4=""
+         contours=red_detection(frame)
          for pic, contour in enumerate(contours):
                   area = cv2.contourArea(contour)
                   if(area > 800):
@@ -255,9 +256,29 @@ def main():
                                              board_msg.area3="R"
                                         if str(rectangles[rect]["name"])=="A4":
                                              board_msg.area4="R"
-         board_pub.publish(board_msg)
 
-				
+         contours=blue_detection(frame)
+         for pic, contour in enumerate(contours):
+                  area = cv2.contourArea(contour)
+                  if(area > 800):
+                         x, y, w, h = cv2.boundingRect(contour)
+                         frame = cv2.rectangle(frame, (x, y),  
+										(x + w, y + h), 
+										(255, 0, 0), 8) 
+                         for rect in rectangles.keys():
+                              if (x>int(rectangles[rect]["x"])) and ((x+w)<(int(rectangles[rect]["x"])+int(rectangles[rect]["w"]))):
+                                   if (y>int(rectangles[rect]["y"])) and ((y+h)<(int(rectangles[rect]["y"])+int(rectangles[rect]["h"]))):
+                                        print("BLUE object inside "+str(rectangles[rect]["name"]))
+                                        
+                                        if str(rectangles[rect]["name"])=="A1":
+                                             board_msg.area1="B"
+                                        if str(rectangles[rect]["name"])=="A2":
+                                             board_msg.area2="B"
+                                        if str(rectangles[rect]["name"])=="A3":
+                                             board_msg.area3="B"
+                                        if str(rectangles[rect]["name"])=="A4":
+                                             board_msg.area4="B"
+         board_pub.publish(board_msg)		
          cv2.imshow("Edges", frame) 
         
          if cv2.waitKey(1) & 0xFF == ord('q'): 

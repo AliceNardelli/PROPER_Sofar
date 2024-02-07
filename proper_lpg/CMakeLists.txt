@@ -164,10 +164,7 @@ catkin_install_python(PROGRAMS
   scripts/ontology_interface.py 
   scripts/perception_interface.py
   scripts/prova_keyboard.py
-  scripts/emotion_estimation.py
   scripts/Alice_client.py
-  scripts/tactile_interface_ros.py
-  scripts/face_emotion_input.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
