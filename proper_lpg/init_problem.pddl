@@ -19,7 +19,7 @@
         (emotion_r) 
         (attention_r)  
         (low_attention_r)  
-        (obj_on_table)  
+        (new_block) 
 )
 
 (:goal (and 

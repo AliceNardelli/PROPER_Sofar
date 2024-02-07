@@ -19,16 +19,19 @@
         (react)
         (reward_e)
         (reward_a)
-        (reward_c)      
+        (reward_c)     
 )
 
 (:predicates 
+        (dominance_assigned)
         (finished)
         (feel_comfort)
-	(obj_on_table)
-        (obj_picked)
-        (instruction)
-        (handover)
+        (new_block)
+        (action1_move)
+        (action2)
+        (action1_say)
+        (human_start)
+        (robot_start)
 	(extro)
         (intro)
         (consc)
@@ -54,6 +57,22 @@
         (attention_r)
         (low_attention)
         (low_attention_r)
+
+
+)
+
+(:action ASSIGN_DOMINANCE
+        :precondition
+               (and
+                )
+        :effect
+                (and
+                (when (extro)(robot_start))
+                (when (intro)(human_start))
+                (when (disagree)(robot_start))
+                (when (agree)(human_start))
+                (dominance_assigned)
+                )
 )
 
 
@@ -300,68 +319,239 @@
 )
 
 
-(:action PICK
+
+(:action MOVE_ROBOT_TURN_PRECISE_ACTION1
         :precondition
                (and 
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
-                           (obj_on_table)
+                           (new_block)
+                           (robot_start) 
+                           (dominance_assigned)   
                 )
         :effect
                 (and
                            
                            (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
-                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (when (consc)(increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (when (unsc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)6))))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-                           (not(obj_on_table)) 
-                           (obj_picked)               
+                           (action1_move) 
+                           (not (new_block)) 
+                               
+                )
+)
+
+(:action MOVE_ROBOT_TURN_WRONG_ACTION1
+        :precondition
+               (and 
+                           (emotion_r)
+                           (dominance_assigned)
+                           (attention_r) 
+                           (low_attention_r)
+                           (new_block)
+                           (robot_start)    
+                           (unsc)
+                           (>(conscientious_coefficient)0)
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+                           (when (unsc)(increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (when (consc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)6))))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (action1_move)  
+                           (not (new_block))      
                 )
 )
 
 
-(:action SAY_INSTRUCTION
+
+(:action MOVE_ROBOT_TURN_PRECISE_ACTION2
+        :precondition
+               (and 
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r) 
+                           (action1_say)   
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+                           (when (consc)(increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (when (unsc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)6))))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (action2) 
+                           (not (action1_say))       
+                )
+)
+
+
+(:action MOVE_ROBOT_TURN_WRONG_ACTION2
         :precondition
                (and 
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
-                           (obj_picked) 
+                           (unsc)
+                           (>(conscientious_coefficient)0) 
+                           (action1_say)   
                 )
         :effect
                 (and
                            
                            (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
-                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (when (unsc)(increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (when (consc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)6))))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-                           (not(obj_picked)) 
-                           (instruction)
-
+                           (action2) 
+                           (not (action1_say))       
                 )
 )
 
 
-(:action PASS_THE_OBJ
+
+(:action SAY_HUMAN_TABLET_TURN1
         :precondition
                (and 
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
-                           (instruction) 
+                           (new_block) 
+                           (human_start)
+                           (dominance_assigned)
                 )
         :effect
                 (and
                            
-                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+                           (when (intro)(increase (interaction_level)(*(extroversion_coefficient)(dur))))
+                           (when (extro)(decrease (interaction_level)(*(extroversion_coefficient)(+(dur)4))))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
-                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-                           (not(instruction)) 
-                           (handover)
+                           (when (disagree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (when (agree)(increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (action1_say)
+                           (not (new_block)) 
+                )
+)
 
+(:action SAY_HUMAN_VOICE_TURN1
+        :precondition
+               (and 
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (new_block) 
+                           (human_start)
+                           (dominance_assigned)
+                )
+        :effect
+                (and
+                           
+                           (when (extro)(increase (interaction_level)(*(extroversion_coefficient)(dur))))
+                           (when (intro)(decrease (interaction_level)(*(extroversion_coefficient)(+(dur)4))))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (when (disagree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (when (agree)(increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (action1_say)
+                           (not (new_block)) 
                 )
 )
 
 
+(:action MOVE_REPLACE_HUMAN_TURN1
+        :precondition
+               (and 
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (new_block) 
+                           (human_start)
+                           (disagree)
+                           (>(agreeableness_coefficient)0)
+                           (dominance_assigned)
+
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)2)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)2)))
+                           (when (agree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)4))))
+                           (when (disagree)(increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (action1_say)
+                           (not (new_block)) 
+                )
+)
+
+
+
+(:action SAY_HUMAN_VOICE_TURN2
+        :precondition
+               (and 
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (action1_move)
+                )
+        :effect
+                (and
+                           
+                           (when (extro)(increase (interaction_level)(*(extroversion_coefficient)(dur))))
+                           (when (intro)(decrease (interaction_level)(*(extroversion_coefficient)(+(dur)4))))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (when (disagree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (when (agree)(increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (action2)
+                           (not(action1_move))
+                )
+)
+
+(:action SAY_HUMAN_TABLET_TURN2
+        :precondition
+               (and 
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (action1_move)
+                )
+        :effect
+                (and
+                           (when (intro)(increase (interaction_level)(*(extroversion_coefficient)(dur))))
+                           (when (extro)(decrease (interaction_level)(*(extroversion_coefficient)(+(dur)4))))
+                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (when (disagree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (when (agree)(increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (action2)
+                           (not(action1_move))
+                )
+)
+
+
+(:action MOVE_REPLACE_HUMAN_TURN2
+        :precondition
+               (and 
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (action1_move)
+                           (disagree)
+                           (>(agreeableness_coefficient)0)
+                          
+                )
+        :effect
+                (and
+                           (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)2)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)2)))
+                           (when (agree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)4))))
+                           (when (disagree)(increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (action2)
+                           (not(action1_move))
+                )
+)
 (:action COMPUTE_HEDONIC_FEELINGS
         :precondition
                 (and
@@ -369,7 +559,7 @@
                         (emotion_r)
                         (attention_r)  
                         (low_attention_r) 
-                        (handover) 
+                        (action2) 
                         (>(interaction_level)(desired_interaction))
                         (>(scrupulousness_level)(desired_scrupulousness))
                         (>(agreeableness_level)(desired_agreeableness))
