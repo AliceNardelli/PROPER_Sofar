@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import requests
+import rospy
+from std_msgs.msg import String
 from proper_lpg.load_ontology import *
 from proper_lpg.extract_agree import *
 from proper_lpg.extract_intro import *
@@ -11,33 +13,28 @@ from proper_lpg.extract_unscr import *
 from proper_lpg.perception_predicate import *
 from proper_lpg.srv import ExecAction, ExecActionRequest
 import roslib
-import rospy
 import smach
-import smach_ros
 import random
 import numpy as np
-import rospy
-from std_msgs.msg import String
 import time
-
-
+import threading
+import datetime
 #define the actual personality
-traits=["Extrovert","Introvert","Conscientious","Unscrupulous","Agreeable","Disagreeable"]
+traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
+objects=["o0","o1","o2","o3"]
 we=0
-wi=0.5
+wi=0
 wc=0
 wu=0
-wa=0.5
+wa=0
 wd=0
-sum_weights=we +wi +wc + wu + wa + wd
-weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
+sum_weights=0
+weights=[]
 gamma=1
-perception="NT_N"
+emotion=""
+attention=""
 new_perception=False
-
- 
-f = open("/home/alice/logging.txt", "a")
 
 def callback(data):
     global perception
@@ -45,7 +42,6 @@ def callback(data):
     if perception!=data.data:
         perception=data.data
         new_perception=True
-
 
 class State_Start(smach.State):
     def __init__(self):
@@ -55,9 +51,8 @@ class State_Start(smach.State):
                              output_keys=['output_goals','domain_path','problem_path','init_pb','command','path','plan_path'])
         
     def execute(self, userdata):
-        
+        global wa,wd,we,wi,wc,wd,sum_weights,weights
         goals=userdata.input_goals
-        
         actual_goal=goals.pop(0)
         rospy.loginfo('Executing goal: '+ actual_goal)
         dict_goal=rospy.get_param(actual_goal)
@@ -69,12 +64,15 @@ class State_Start(smach.State):
         userdata.command=dict_goal["command"]
         userdata.path=dict_goal["folder"]
         userdata.plan_path=dict_goal["plan"]
-        init_disagreeable_actions()
-        init_agreeable_actions()
-        init_extro_actions()
-        init_intro_actions()
-        init_consc_actions()
-        init_unsc_actions()
+        print("weights unscrupolous",wu)
+        sum_weights=float(we +wi +wc + wu + wa + wd)
+        try: 
+            weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
+            print(weights)
+        except:
+            print(weights)
+            weights=6*[0]
+            sum_weights=1
         return 'outcome0'
 
 class State_Init(smach.State):
@@ -85,41 +83,43 @@ class State_Init(smach.State):
                            )
 
    def execute(self, userdata):
-        rospy.loginfo('Executing state INIT')
-        rospy.loginfo('copy pb in the correct file')        
+        print('Executing state INIT') 
+        global wa,wd,we,wi,wc,wd,sum_weights,weights   
         with open(userdata.init_pb,'r') as firstfile, open(userdata.problem_path,'w') as secondfile:
             for line in firstfile:
             
                 if "extroversion_coefficient" in line:
-                    if we!=0:
-                        l="        (= (extroversion_coefficient) "+str(gamma*(we/sum_weights)) +")\n"
+                    if we!=0.0:
+                        l="        (= (extroversion_coefficient) "+str(weights[0]) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[0]+"\n"
                         secondfile.write(p)
                     else:
-                        l="        (= (extroversion_coefficient) "+str(gamma*(wi/sum_weights)) +")\n"
+                        print(str(gamma*(wi/sum_weights)))
+                        l="        (= (extroversion_coefficient) "+str(weights[1]) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[1]+"\n"
                         secondfile.write(p)
                 elif "conscientious_coefficient" in line:
-                    if wc!=0:
-                        l="        (= (conscientious_coefficient) "+str(gamma*(wc/sum_weights)) +")\n"
+                    if wc!=0.0:
+                        l="        (= (conscientious_coefficient) "+str(weights[2]) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[2]+"\n"
                         secondfile.write(p)
                     else:
-                        l="        (= (conscientious_coefficient) "+str(gamma*(wu/sum_weights)) +")\n"
+                        print(gamma*(wu/sum_weights))
+                        l="        (= (conscientious_coefficient) "+str(weights[3]) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[3]+"\n"
                         secondfile.write(p)
                 elif "agreeableness_coefficient" in line:
                     if wa!=0:
-                        l="        (= (agreeableness_coefficient) "+str(gamma*(wa/sum_weights)) +")\n"
+                        l="        (= (agreeableness_coefficient) "+str(weights[4]) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[4]+"\n"
                         secondfile.write(p)
                     else:
-                        l="        (= (agreeableness_coefficient) "+str(gamma*(wd/sum_weights)) +")\n"
+                        l="        (= (agreeableness_coefficient) "+str(weights[5]) +")\n"
                         secondfile.write(l)
                         p="        "+traits_preds[5]+"\n"
                         secondfile.write(p)
@@ -130,8 +130,7 @@ class State_Init(smach.State):
         rospy.loginfo('Initialize function and predicates in the ontology')
         initialize_functions_predicates()
         rospy.loginfo('Read the problem and set the initial values of predicates and functions')
-        read_the_problem(userdata.problem_path)  
-          
+        read_the_problem(userdata.problem_path) 
         return 'outcome1'
       
 
@@ -140,400 +139,416 @@ class State_Init(smach.State):
 class Planning(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome2'],
+                             outcomes=['outcome6'],
                              input_keys=['command','planning_folder','plan'])
   
 
     def execute(self, userdata):
-        
-        rospy.loginfo('planning')
+        print('planning')
         return_code=planning(userdata.command,userdata.planning_folder,userdata.plan)  
         while return_code!=0:
             return_code=planning(userdata.command,userdata.planning_folder,userdata.plan)  
             
         print("start experiment")
-        return 'outcome2'
+        return 'outcome6'
     
 
 class GetActions(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome3'],
+                             outcomes=['outcome7'],
                              input_keys=['plan_path'],
                              output_keys=['executing_actions_out'])
                              
         
     def execute(self, userdata):
-        rospy.loginfo('Reading Actions to execute')
+        print('Reading Actions to execute')
           
         out_a=read_plan(userdata.plan_path)
         userdata.executing_actions_out=out_a
-        f.write("----------------------\n")
-        string_log=" ".join(out_a)+ " \n"
-        f.write(string_log)
-        f.write("----------------------\n")
-        return 'outcome3'
+        return 'outcome7'
     
 class ExAction(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome4','outcome5'],
+                             outcomes=['outcome8','outcome9','outcome13'],
                              input_keys=['executing_actions'],
                              output_keys=['updated_actions','action','state']) 
     def execute(self, userdata):
-        global perception,  new_perception
-        rospy.loginfo('Executing actions')
-        #num =random.randint(0, 9)
+        global new_emotion, emotion, new_sentence, start
+        resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
+        if eval(resp.text)["restart"]=="True":
+            print("restart")
+            userdata.action=""
+            start=True
+            return 'outcome13'
+      
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
-        print(ac +"--------------"+personality)
+
         if ac=="AGREE_ACTION":
-            #take the perception,
-            if perception=="T_":
-                pi="T_N"
+            data["update"]="False"
+            resp=requests.put(url+'get_input', json=data, headers=headers)
+            emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
+            if  eval(resp.text)["attention"]=="positive":
+                pi="A_"+map_emotion_AV_axis[emotion]
             else:
-                pi=perception
-            print("action", ac, "perception: ",pi)
-            #extract the action
-            aa,rew=choose_action_a(pi)
-            rospy.loginfo(" action chosen: "+ aa)
-            
-            
-            userdata, response=self.call_action_server(userdata, aa,personality)
+                pi="NA_"+map_emotion_AV_axis[emotion]
+            if predicates_objects["new_sentence"].is_grounded==True:
+                aa,rew=choose_action_a(pi,False)
+            else:
+                aa,rew=choose_action_a(pi,False)
+            userdata, response, restart=self.call_action_server(userdata, aa, personality)
+            if restart:
+                return "outcome13"
             if response:
-                f.write("----------------------\n")
-                string_log="before PERCEPTION: " + pi+ "\n"
-                f.write(string_log)
-                string_log="AGREE ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+ "\n"
-                f.write(string_log)
-                #take the new perception
-                if perception=="T_":
-                    pn="T_N"
+                data["update"]="False"
+                resp=requests.put(url+'get_input', json=data, headers=headers)
+                emotion=eval(resp.text)["emotion"]
+                if emotion not in list_of_emotions:
+                    emotion="N"
+                if eval(resp.text)["attention"]=="positive":
+                    pn="A_"+map_emotion_AV_axis[emotion]
                 else:
-                    pn=perception #to understand if needed to check new perception
-                #update weights
+                    pn="NA_"+map_emotion_AV_axis[emotion]
                 rr=update_weights_a(aa,pi,pn) #qui in ogni caso avrò una new perception
-                string_log="after PERCEPTION: " + pn+ " reward "+ str(rr)+ "\n"
-                f.write(string_log)
-                string_log="before agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
-                f.write(string_log)
                 change_raward("reward_a",float(rr))
-                return "outcome5"
+                return "outcome9"
             else:
-                return "outcome4"
+                return "outcome8"
 
         
         if ac=="DISAGREE_ACTION":
-            #take the perception,
-            if perception=="T_":
-                pi="T_N"
+            data["update"]="False"
+            resp=requests.put(url+'get_input', json=data, headers=headers)
+            emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
+            if eval(resp.text)["attention"]=="positive":
+                pi="A_"+map_emotion_AV_axis[emotion]
             else:
-                pi=perception
-            print("action", ac, "perception: ",pi)
-            #extract the action
-            aa,rew=choose_action_d(pi)
-            rospy.loginfo(" action chosen: "+ aa)
-            
-            
-            userdata, response=self.call_action_server(userdata, aa,personality)
+                pi="NA_"+map_emotion_AV_axis[emotion]
+            if predicates_objects["new_sentence"].is_grounded==True:
+                aa,rew=choose_action_d(pi,False)
+            else:
+                aa,rew=choose_action_d(pi,False)
+            userdata, response, restart=self.call_action_server(userdata, aa, personality)            
+            if restart:
+                return "outcome13"
             if response:
-                f.write("----------------------\n")
-                string_log="before PERCEPTION: " + pi+ "\n"
-                f.write(string_log)
-                string_log="DISAGREE ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+ "\n"
-                f.write(string_log)
-                #take the new perception
-                if perception=="T_":
-                    pn="T_N"
+                data["update"]="False"
+                resp=requests.put(url+'get_input', json=data, headers=headers)
+                emotion=eval(resp.text)["emotion"]
+                if emotion not in list_of_emotions:
+                    emotion="N"
+                if eval(resp.text)["attention"]=="positive":
+                    pn="A_"+map_emotion_AV_axis[emotion]
                 else:
-                    pn=perception #to understand if needed to check new perception
-                #update weights
+                    pn="NA_"+map_emotion_AV_axis[emotion]
                 rr=update_weights_d(aa,pi,pn) #qui in ogni caso avrò una new perception
-                string_log="after PERCEPTION: " + pn+ " reward "+ str(rr)+ "\n"
-                f.write(string_log)
-                string_log="before agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
-                f.write(string_log)
-                
                 change_raward("reward_a",float(rr))
-                return "outcome5"
+                return "outcome9"
             else:
-                return "outcome4"
+                return "outcome8"
 
             
-
         elif ac=="INTRO_ACTION":
-            #take the perception
-            if perception=="T_":
-                pi="T_N"
+            data["update"]="False"
+            resp=requests.put(url+'get_input', json=data, headers=headers)
+            emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
+            if eval(resp.text)["attention"]=="positive":
+                pi="A_"+map_emotion_AV_axis[emotion]
             else:
-                pi=perception
-            print("action", ac, "perception: ",pi)
-            #extract the action
-            aa,rew=choose_action_i(pi)
-            
-            userdata, response=self.call_action_server(userdata, aa,personality)
+                pi="NA_"+map_emotion_AV_axis[emotion]
+            if predicates_objects["new_sentence"].is_grounded==True:
+                aa,rew=choose_action_i(pi,False)
+            else:
+                aa,rew=choose_action_i(pi,False)
+            userdata, response, restart =self.call_action_server(userdata, aa, personality)
+            if restart:
+                return "outcome13"
             if response:
-                f.write("----------------------\n")
-                string_log="before PERCEPTION: " + pi+ "\n"
-                f.write(string_log)
-                string_log="INTRO ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+"\n"
-                f.write(string_log)
-                rospy.loginfo(" action chosen: "+ aa)
-                #exec
-                #time.sleep(10)
-                #take the new perception
-                if perception=="T_":
-                    pn="T_N"
+                data["update"]="False"
+                resp=requests.put(url+'get_input', json=data, headers=headers)
+                emotion=eval(resp.text)["emotion"]
+                if emotion not in list_of_emotions:
+                    emotion="N"
+                if eval(resp.text)["attention"]=="positive":
+                    pn="A_"+map_emotion_AV_axis[emotion]
                 else:
-                    pn=perception #to understand if needed to check new perception
-                #update weights
+                    pn="NA_"+map_emotion_AV_axis[emotion]
                 rr=update_weights_i(aa,pi,pn) #qui in ogni caso avrò una new perception
-                string_log="after PERCEPTION: " + pn+ " reward "+ str(rr) + "\n"
-                f.write(string_log)
-                string_log="before extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
-                f.write(string_log)
                 change_raward("reward_e",float(rr))
-                return "outcome5"
+                return "outcome9"
             else:
-                return "outcome4"
+                return "outcome8"
+            
+
+           
 
 
         elif ac=="EXTRO_ACTION":
-            #take the perception
-            if perception=="T_":
-                pi="T_N"
+            data["update"]="False"
+            resp=requests.put(url+'get_input', json=data, headers=headers)
+            emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
+            if eval(resp.text)["attention"]=="positive":
+                pi="A_"+map_emotion_AV_axis[emotion]
             else:
-                pi=perception
-            print("action", ac, "perception: ",pi)
-            #extract the action
-            aa,rew=choose_action_e(pi)
-           
-            userdata, response=self.call_action_server(userdata, aa,personality)
+                pi="NA_"+map_emotion_AV_axis[emotion]
+            if predicates_objects["new_sentence"].is_grounded==True:
+                aa,rew=choose_action_e(pi,False)
+            else:
+                aa,rew=choose_action_e(pi,False)
+            userdata, response, restart =self.call_action_server(userdata, aa, personality)
+            if restart:
+                return "outcome13"
             if response:
-                f.write("----------------------\n")
-                string_log="before PERCEPTION: " + pi+ "\n"
-                f.write(string_log)
-                string_log="EXTRO ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+ "\n"
-                f.write(string_log)
-                rospy.loginfo(" action chosen: "+ aa)
-                #exec
-                #time.sleep(10)
-                #take the new perception
-                if perception=="T_":
-                    pn="T_N"
+                data["update"]="False"
+                resp=requests.put(url+'get_input', json=data, headers=headers)
+                
+                emotion=eval(resp.text)["emotion"]
+                if emotion not in list_of_emotions:
+                    emotion="N"
+                if eval(resp.text)["attention"]=="positive":
+                    pn="A_"+map_emotion_AV_axis[emotion]
                 else:
-                    pn=perception #to understand if needed to check new perception
-                #update weights
+                    pn="NA_"+map_emotion_AV_axis[emotion]
                 rr=update_weights_e(aa,pi,pn) #qui in ogni caso avrò una new perception
-                string_log="after PERCEPTION: " + pn+ " reward "+ str(rr) + "\n"
-                f.write(string_log)
-                string_log="before extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
-                f.write(string_log)
                 change_raward("reward_e",float(rr))
-                return "outcome5"
+                return "outcome9"
             else:
-                return "outcome4"
+                return "outcome8"
 
 
         elif ac=="CONSC_ACTION":
-            #take the perception
-            if perception=="T_":
-                pi="T_N"
+            data["update"]="False"
+            resp=requests.put(url+'get_input', json=data, headers=headers)
+            emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
+            if eval(resp.text)["attention"]=="positive":
+                pi="A_"+map_emotion_AV_axis[emotion]
             else:
-                pi=perception
-            print("action", ac, "perception: ",pi)
-            #extract the action
-            aa,rew=choose_action_c(pi)
-            
-            userdata, response=self.call_action_server(userdata, aa,personality)
+                pi="NA_"+map_emotion_AV_axis[emotion]
+            if predicates_objects["new_sentence"].is_grounded==True:
+                aa,rew=choose_action_c(pi,False)
+            else:
+                aa,rew=choose_action_c(pi,False)
+            userdata, response, restart =self.call_action_server(userdata, aa,personality)
+            if restart:
+                return "outcome13"
             if response:
-                f.write("----------------------\n")
-                string_log="before PERCEPTION: " + pi+ "\n"
-                f.write(string_log)
-                string_log="CONSC ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+"\n"
-                f.write(string_log)
-                rospy.loginfo(" action chosen: "+ aa)
-                #exec
-            
-                string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
-                f.write(string_log)
                 change_raward("reward_c",float(rew))
-                return "outcome5"
+                return "outcome9"
             else:
-                return "outcome4"
+                return "outcome8"
 
 
         elif ac=="UNSC_ACTION":
-            #take the perception
-            if perception=="T_":
-                pi="T_N"
+            data["update"]="False"
+            resp=requests.put(url+'get_input', json=data, headers=headers)
+            emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
+            if eval(resp.text)["attention"]=="positive":
+                pi="A_"+map_emotion_AV_axis[emotion]
             else:
-                pi=perception
-            print("action", ac, "perception: ",pi)
-            #extract the action
-            aa,rew=choose_action_u(pi)
+                pi="NA_"+map_emotion_AV_axis[emotion]
+            if predicates_objects["new_sentence"].is_grounded==True:
+                aa,rew=choose_action_u(pi,False)
+            else:
+                aa,rew=choose_action_u(pi,False)
            
-            userdata, response=self.call_action_server(userdata, aa,personality)
+            userdata, response, restart=self.call_action_server(userdata, aa,personality)
+            if restart:
+                return "outcome13"
             if response:
-                f.write("----------------------\n")
-                string_log="before PERCEPTION: " + pi+ "\n"
-                f.write(string_log)
-                string_log="UNSC ACTION: " + aa +"--------------"+personality+ " reward: " +str(rew)+ "\n"
-                f.write(string_log)
-                rospy.loginfo(" action chosen: "+ aa)
-                #exec
-                string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
-                f.write(string_log)
                 change_raward("reward_c",float(rew))
-                return "outcome5"
+                return "outcome9"
             else:
-                return "outcome4"
+                return "outcome8"
 
 
         else:
-            f.write("----------------------\n")
-            string_log="STANDARD ACTION:" + ac +"--------------"+personality+ "\n"
-            f.write(string_log)
-            string_log="before agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
-            f.write(string_log)
-            string_log="before extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
-            f.write(string_log)
-            string_log="before consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
-            f.write(string_log)
-            rospy.loginfo('Action executed: '+ac)
-            
-            #time.sleep(10)
-            userdata, response=self.call_action_server(userdata, ac,personality)
+            userdata, response, restart =self.call_action_server(userdata, ac, personality)
+            if restart:
+                return "outcome13"
             if response:
-                return "outcome5"
+                return "outcome9"
             else:
-                return "outcome4"
+                return "outcome8"
 
 
     def call_action_server(self, userdata, ac,personality):
+            global data_action, start, action_counter
             userdata.state="exec"
-            rospy.wait_for_service('action_dispatcher_srv')
-            try:
-                action_dispatcher_srv = rospy.ServiceProxy('action_dispatcher_srv', ExecAction)
-                msg=ExecActionRequest()
-                msg.action=ac.lower()
-                msg.personality=personality
-                print("executing", msg.action)
-                time.sleep(10)
-                resp = action_dispatcher_srv(msg)
-                if resp.success==False:
-                    rospy.loginfo('Action Failed')        
-                    f.write("ACTION FAIL\n")
-                    return userdata, False
-                else:
+            resp, mmap, to_exec_action, exec_personality = dispatch_action(ac, personality)
+            resp2=True
+            if ("react" not in to_exec_action) and ("compute" not in to_exec_action) and ("check" not in to_exec_action):
+                change_raward("react",float(1))
+                #set that I have executed an action
+                data_action["finished"]="False"
+                data_action["personality"]=exec_personality
+                data_action["action"]=to_exec_action
+                data_action["language"]=mmap["language"]
+                data_action["pitch"]=mmap["pitch"]
+                data_action["velocity"]=mmap["velocity"]
+                data_action["volume"]=mmap["volume"]
+                data_action["head"]=mmap["head"]
+                data_action["gaze"]=mmap["gaze"]
+                data_action["new_action"]="True"
+                data_action["timestamp"]=str(action_counter)
+                action_counter+=1
+                respac=requests.put(url3+'set_action', json=data_action, headers=headers)
+                respex=requests.put(url3+'get_exec', json=data_action, headers=headers)
+                while eval(respex.text)["executed"]=="False":
+                    time.sleep(1)
+                    respex=requests.put(url3+'get_exec', json=data_action, headers=headers)
+                    resp_rest=requests.put(url2+'get_restart', json=data_restart, headers=headers)
+                    if eval(resp_rest.text)["restart"]=="True":
+                        print("restart")
+                        userdata.action=""
+                        start=True
+                        return userdata, False, True
+
+                if eval(respex.text)["result"]=="False":
+                    resp2=False
+            
+            if resp2==False:
+                    print('Action Failed')        
+                    return userdata, False, False
+            else:
                     ac=userdata.executing_actions.pop(0)
-                    rospy.loginfo('Action executed: '+ac)
+                    print('Action executed: '+ac)
                     userdata.action=ac
                     userdata.updated_actions=userdata.executing_actions
-                    return userdata,True
-                
-            except rospy.ServiceException as e:
-                print("Service call failed: %s"%e)
+            return userdata,True, False
+
                 
         
 class CheckPerc(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome7',"outcome8","outcome9"],
-                             input_keys=["state","exec_actions","action"])
+                             outcomes=['outcome3',"outcome4","outcome2","outcome13"],
+                             input_keys=["state","exec_actions","action"],
+                             output_keys=["out_action"])
         
     def execute(self, userdata):
-        global perception, new_perception
-        rospy.loginfo('check perception')
-
-        if "ACTION" in userdata.action:
-            return "outcome9" #if I have done a trait specific action I need to replan
-
-        if new_perception==False:
-            print("No new perception")
-            if userdata.state=="exec":
-                f.write("Action fail need replanning\n")
-                return "outcome9"
-            else:
-                if userdata.exec_actions==[]:
-                    f.write("task finished \n")
-                    
-                    return "outcome8"
-                else:
-                    f.write("executing next action \n")
-                   
-                    return "outcome7"
+        global new_perception, perception, objects
+        #IF NEW PERCEPTION
         else:
-            print("new perception  ", perception)
-            f.write("----------------------\n")
-            string_log="new perception  "+ perception +"\n"
-            f.write(string_log)
-            f.write("----------------------\n")
+          
+            if new_emotion:
+               new_emotion=False
+               print(emotion)
+               print(perception_predicate_map)
+               emotion_pred=perception_predicate_map[emotion]["emotion"]
+               goals=perception_predicate_map[emotion]["goals"]
+               add_predicate(emotion_pred)
+              
+               for g in goals:
+                    add_goal(g)#state that that predicate is a goal
+                    remove_predicate(g) #now the goal predicate is not grounded
+            if new_attention:
+                new_attention=False
+                if attention=="positive":
+                    add_predicate("attention")
+                    add_goal("attention_r") 
+                    remove_predicate("attention_r")  
+                else:
+                    add_predicate("low_attention")
+                    add_goal("low_attention_r") 
+                    remove_predicate("low_attention_r")  
+            if new_sentence:
+                add_goal("answered")
+                add_goal("finished")
+                remove_predicate("answered")
+                remove_predicate("finished")
+                add_predicate("new_sentence")
+                new_sentence=False
+            add_goal("feel_comfort")
+            remove_predicate("feel_comfort")
+            return "outcome3"
+
+
+
+        #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
+        if new_emotion==False and new_sentence==False and new_attention==False:
+          
+            if "ACTION" in userdata.action:
+                return "outcome3" #if I have done a trait specific action I need to replan
             
-            touched=perception_predicate_map[perception]["touch"]
-            emotion=perception_predicate_map[perception]["emotion"]
-            goals=perception_predicate_map[perception]["goals"]
-            if touched!="":
-                add_predicate(touched)
+            if userdata.state=="exec": #action fail
+                
+                return "outcome3"
+            
+            else: #pass to the next action
+                if userdata.exec_actions==[]:
+                   
+                    return "outcome4"
+                else:
+                    return "outcome2"
 
-            if emotion!="":
-                add_predicate(emotion)
-
-            for g in goals:
-                add_goal(g)#state that that predicate is a goal
-                remove_predicate(g) #now the goal predicate is not grounded
-            new_perception=False
-            return "outcome9"
 
         
 class WriteProblem(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome10'],
+                             outcomes=['outcome5'],
                              input_keys=['pb_path'],)
         
     def execute(self, userdata):
-        rospy.loginfo('Writing a new plan')
+        print('Writing a new plan')
         update_problem(userdata.pb_path)
-        return 'outcome10'
+        return 'outcome5'
     
 class UpdateOntology(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome6'],
+                             outcomes=['outcome10'],
                              input_keys=['action'],
                              output_keys=['state',"out_action"])
         
     def execute(self, userdata):
-        rospy.loginfo('Update_ontology')
+        print('Update_ontology')
         acc=userdata.action
         update_ontology(userdata.action)
         userdata.state="update"
         initialize_reward()
-        string_log="after agree level: " + str(function_objects["agreeableness_level"].has_value)+ "\n"
-        f.write(string_log)
-        string_log="after extro level: " + str(function_objects["interaction_level"].has_value)+ "\n"
-        f.write(string_log)
-        string_log="after consc level: " + str(function_objects["scrupulousness_level"].has_value)+ "\n"
-        f.write(string_log)
         userdata.out_action=acc
-        return 'outcome6'
+        return 'outcome10'
+    
 
 class Finish(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
                              input_keys=['input_goals'],
+                             output_keys=["out_action"],
                              outcomes=['outcome11','outcome12'],
                              )
         
     def execute(self,userdata):
         if userdata.input_goals!=[]:
-            rospy.loginfo('Passing to the next goal')
+            print('Passing to the next goal')
+            userdata.out_action=""
+            data_action["finished"]="True"
+            data_action["new_action"]="False"
+            respac=requests.put(url3+'set_action', json=data_action, headers=headers)
             return "outcome11"
         else:
-            f.close()
-            rospy.loginfo('Finishhh')
+            data_action["finished"]="True"
+            data_action["new_action"]="False"
+            respac=requests.put(url3+'set_action', json=data_action, headers=headers)
+            print('Finishhh')
             return 'outcome12'
+
+
 
 
 def main():
@@ -550,7 +565,7 @@ def main():
         sm.userdata.folder =""
         sm.userdata.path_plan =""
         sm.userdata.actions =[]
-        sm.userdata.a="a"
+        sm.userdata.a=""
         sm.userdata.previous_state=""
         # Open the container
         with sm:
@@ -567,26 +582,27 @@ def main():
                                     })
             # Add states to the container
             smach.StateMachine.add('INIT', State_Init(), 
-                                    transitions={'outcome1':'PLAN'},
+                                    transitions={'outcome1':'CHECK_PERC'},
                                     remapping={'domain_path':'path_domain', 
                                                 'problem_path':'path_problem',
                                                 'init_pb':'path_init_problem'
                                                 })
             smach.StateMachine.add('PLAN', Planning(), 
-                                    transitions={'outcome2':'GET_ACTIONS'},
+                                    transitions={'outcome6':'GET_ACTIONS'},
                                     remapping={'command':'command_start',
                                                 'planning_folder':'folder',
                                                 'plan':'path_plan'})
             
             smach.StateMachine.add('GET_ACTIONS', GetActions(), 
-                                    transitions={'outcome3':'EXEC'},
+                                    transitions={'outcome7':'EXEC'},
                                     remapping={'plan_path':'path_plan',
                                                 'executing_actions_out':'actions',
                                             })
             
             smach.StateMachine.add('EXEC', ExAction(), 
-                                transitions={'outcome4':'CHECK_PERC',
-                                            'outcome5':'UPDATE_ONTOLOGY',
+                                transitions={'outcome8':'CHECK_PERC',
+                                            'outcome9':'UPDATE_ONTOLOGY',
+                                            'outcome13':'START'
                                             },
                                 remapping={'executing_actions':'actions',
                                         'updated_actions':'actions',
@@ -595,23 +611,25 @@ def main():
                                         })
             
             smach.StateMachine.add('CHECK_PERC', CheckPerc(), 
-                                transitions={'outcome7':'EXEC',
-                                            'outcome8':'FINISH',
-                                            'outcome9':'WRITE_PLAN',
+                                transitions={'outcome2':'EXEC',
+                                            'outcome4':'FINISH',
+                                            'outcome3':'WRITE_PLAN',
+                                            "outcome13":"START",
                                             },
                                 remapping={
                                     "action":"a",
                                     "state":"previous_state",
-                                    "exec_actions":"actions"
+                                    "exec_actions":"actions",
+                                    "out_action":"a"
                                         })
             
             smach.StateMachine.add('WRITE_PLAN', WriteProblem(), 
-                        transitions={'outcome10':'PLAN'},
+                        transitions={'outcome5':'PLAN'},
                         remapping={'pb_path':'path_problem'
                                             })
             
             smach.StateMachine.add('UPDATE_ONTOLOGY', UpdateOntology(), 
-                        transitions={'outcome6':'CHECK_PERC',
+                        transitions={'outcome10':'CHECK_PERC',
                                     },
                         remapping={'action':'a',
                                    "previous_state":"state",
@@ -622,22 +640,20 @@ def main():
                         transitions={'outcome11':"START",
                                      'outcome12':'outcome13'},
                         remapping={
-                            "input_goals":"goals"
+                            "input_goals":"goals",
+                            "out_action":"a"
                         }
                         )
     
         # Create and start the introspection server for visualization
         #sis = smach_ros.IntrospectionServer('server_name', sm, '/SM_ROOT')
         #sis.start()
-
-        # Execute the state machine
         outcome = sm.execute()
+        
+    
 
-        # Wait for ctrl-c to stop the application
-        rospy.spin()
-        #sis.stop()
-    except rospy.ROSInterruptException:
-        rospy.loginfo("interrupt")
+    except:
+        print("interrupt")
 
 if __name__ == '__main__':
       main()

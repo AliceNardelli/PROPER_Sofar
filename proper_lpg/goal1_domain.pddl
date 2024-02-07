@@ -27,7 +27,7 @@
         (feel_comfort)
 	(obj_on_table)
         (obj_picked)
-        (intruction)
+        (instruction)
         (handover)
 	(extro)
         (intro)
@@ -59,8 +59,7 @@
 
 (:action EXTRO_ACTION
         :precondition
-               (and 
-                (answered)
+               (and
                	(extro)
                 )
         :effect
@@ -74,7 +73,6 @@
         :precondition
                (and 
                (intro)
-               (answered)
                )
         :effect
                 (and
@@ -86,7 +84,6 @@
         :precondition
                (and 
                	(consc)
-                (answered)
                 )
         :effect
                 (and
@@ -100,7 +97,6 @@
         :precondition
                (and 
                	(unsc)
-                (answered)
                 )
         :effect
                 (and
@@ -113,7 +109,6 @@
         :precondition
                (and 
                	(agree)
-                (answered)
                 )
         :effect
                 (and
@@ -125,7 +120,6 @@
         :precondition
                (and 
                	(disagree)
-                (answered)
                 )
         :effect
                 (and

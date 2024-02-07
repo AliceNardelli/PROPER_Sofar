@@ -1,4 +1,4 @@
-goals: ['goal1','goal2','goal3',"goal4"]
+goals: ['goal1']
 actual_goal: "goal1"
 goal1: {"domain":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/goal1_domain.pddl', 
       "problem":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/prova_problem.pddl',
@@ -10,34 +10,5 @@ goal1: {"domain":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/goal1_domain
       "path_onto":"/home/alice/",
       }
 
-goal2: {"domain":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/goal2_domain.pddl', 
-      "problem":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/prova_problem.pddl',
-      "init":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/init2_problem.pddl',
-      "command":'./ff -p /home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/ -o goal2_domain.pddl -f prova_problem.pddl',
-      "folder":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/',
-      "plan":"/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/plan.pddl",
-      "ontology":"http://www.semanticweb.org/alice/ontologies/2023/10/goal2#",
-      "path_onto":"/home/alice/",
-      }
-
-goal3: {"domain":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/goal3_domain.pddl', 
-      "problem":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/prova_problem.pddl',
-      "init":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/init3_problem.pddl',
-      "command":'./ff -p /home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/ -o goal3_domain.pddl -f prova_problem.pddl',
-      "folder":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/',
-      "plan":"/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/plan.pddl",
-      "ontology":"http://www.semanticweb.org/alice/ontologies/2023/10/goal3#",
-      "path_onto":"/home/alice/",
-      }
-
-goal4: {"domain":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/goal4_domain.pddl', 
-      "problem":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/prova_problem.pddl',
-      "init":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/init4_problem.pddl',
-      "command":'./ff -p /home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/ -o goal4_domain.pddl -f prova_problem.pddl',
-      "folder":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/',
-      "plan":"/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/plan.pddl",
-      "ontology":"http://www.semanticweb.org/alice/ontologies/2023/10/goal4#",
-      "path_onto":"/home/alice/",
-      }
 
       
