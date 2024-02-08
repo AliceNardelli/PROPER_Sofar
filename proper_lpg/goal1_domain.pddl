@@ -23,7 +23,7 @@
 )
 
 (:predicates 
-        (dominance_assigned)
+        (to_assign_dominance) 
         (finished)
         (feel_comfort)
         (new_block)
@@ -64,6 +64,7 @@
 (:action ASSIGN_DOMINANCE
         :precondition
                (and
+               (not(to_assign_dominance))  
                 )
         :effect
                 (and
@@ -71,7 +72,7 @@
                 (when (intro)(human_start))
                 (when (disagree)(robot_start))
                 (when (agree)(human_start))
-                (dominance_assigned)
+                (to_assign_dominance) 
                 )
 )
 
@@ -320,7 +321,7 @@
 
 
 
-(:action MOVE_ROBOT_TURN_PRECISE_ACTION1
+(:action MOVE_ROBOT_PRECISE_TURN1
         :precondition
                (and 
                            (emotion_r)
@@ -328,7 +329,7 @@
                            (low_attention_r)
                            (new_block)
                            (robot_start) 
-                           (dominance_assigned)   
+                         
                 )
         :effect
                 (and
@@ -343,11 +344,10 @@
                 )
 )
 
-(:action MOVE_ROBOT_TURN_WRONG_ACTION1
+(:action MOVE_ROBOT_WRONG_TURN1
         :precondition
                (and 
                            (emotion_r)
-                           (dominance_assigned)
                            (attention_r) 
                            (low_attention_r)
                            (new_block)
@@ -369,7 +369,7 @@
 
 
 
-(:action MOVE_ROBOT_TURN_PRECISE_ACTION2
+(:action MOVE_ROBOT_PRECISE_TURN2
         :precondition
                (and 
                            (emotion_r)
@@ -385,12 +385,13 @@
                            (when (unsc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)6))))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
                            (action2) 
-                           (not (action1_say))       
+                           (not (action1_say)) 
+                           (not(to_assign_dominance))      
                 )
 )
 
 
-(:action MOVE_ROBOT_TURN_WRONG_ACTION2
+(:action MOVE_ROBOT_WRONG_TURN2
         :precondition
                (and 
                            (emotion_r)
@@ -408,7 +409,8 @@
                            (when (consc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)6))))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
                            (action2) 
-                           (not (action1_say))       
+                           (not (action1_say))  
+                           (not(to_assign_dominance))        
                 )
 )
 
@@ -422,7 +424,6 @@
                            (low_attention_r)
                            (new_block) 
                            (human_start)
-                           (dominance_assigned)
                 )
         :effect
                 (and
@@ -445,7 +446,6 @@
                            (low_attention_r)
                            (new_block) 
                            (human_start)
-                           (dominance_assigned)
                 )
         :effect
                 (and
@@ -471,7 +471,7 @@
                            (human_start)
                            (disagree)
                            (>(agreeableness_coefficient)0)
-                           (dominance_assigned)
+                        
 
                 )
         :effect
@@ -506,6 +506,7 @@
                            (when (agree)(increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
                            (action2)
                            (not(action1_move))
+                           (not(to_assign_dominance))  
                 )
 )
 
@@ -527,6 +528,7 @@
                            (when (agree)(increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
                            (action2)
                            (not(action1_move))
+                           (not(to_assign_dominance))  
                 )
 )
 
@@ -550,6 +552,7 @@
                            (when (disagree)(increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
                            (action2)
                            (not(action1_move))
+                           (not(to_assign_dominance))  
                 )
 )
 (:action COMPUTE_HEDONIC_FEELINGS

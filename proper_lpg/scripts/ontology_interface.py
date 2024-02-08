@@ -25,17 +25,18 @@ traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disa
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 
 we=0
-wi=0
+wi=1
 wc=0
 wu=0
-wa=0
+wa=1
 wd=0
 sum_weights=0
 weights=[]
 gamma=1
-emotion=""
-attention=""
 new_perception=False
+perception=""
+first_trial=True
+
 
 def callback(data):
     global perception
@@ -74,6 +75,13 @@ class State_Start(smach.State):
             print(weights)
             weights=6*[0]
             sum_weights=1
+
+        init_disagreeable_actions()
+        init_agreeable_actions()
+        init_extro_actions()
+        init_intro_actions()
+        init_consc_actions()
+        init_unsc_actions()
         return 'outcome0'
 
 class State_Init(smach.State):
@@ -176,16 +184,29 @@ class ExAction(smach.State):
                              input_keys=['executing_actions'],
                              output_keys=['updated_actions','action','state',"out_pp"]) 
     def execute(self, userdata):
-        global perception
+        global perception, first_trial
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
+        if first_trial:
+            
+            if ("TURN1" in ac):
+                first_trial=False
+                req=GameRequest()
+                req.type="init"
+                if ("HUMAN" in ac):
+                    req.firstmove="human"
+                elif ("ROBOT" in ac):
+                    req.firstmove="robot"    
+                rospy.wait_for_service('game_player_srv')
+                game_client = rospy.ServiceProxy('game_player_srv', Game)
+                resp = game_client(req)
 
         if ac=="AGREE_ACTION":
-            pi=map_emotion_AV_axis[perception]
+            pi=map_perception_AV_axis[perception]
             aa,rew=choose_action_a(pi)
             userdata, response= self.call_action_server(userdata, aa, personality)
             if response:
-                pn=map_emotion_AV_axis[perception]
+                pn=map_perception_AV_axis[perception]
                 rr=update_weights_a(aa,pi,pn) #qui in ogni caso avrò una new perception
                 change_raward("reward_a",float(rr))
                 userdata.out_pp="trait"
@@ -194,11 +215,11 @@ class ExAction(smach.State):
                 return "outcome8"
             
         if ac=="DISGREE_ACTION":
-            pi=map_emotion_AV_axis[perception]
+            pi=map_perception_AV_axis[perception]
             aa,rew=choose_action_d(pi)
             userdata, response= self.call_action_server(userdata, aa, personality)
             if response:
-                pn=map_emotion_AV_axis[perception]
+                pn=map_perception_AV_axis[perception]
                 rr=update_weights_d(aa,pi,pn) #qui in ogni caso avrò una new perception
                 change_raward("reward_a",float(rr))
                 userdata.out_pp="trait"
@@ -208,11 +229,11 @@ class ExAction(smach.State):
         
 
         if ac=="INTRO_ACTION":
-            pi=map_emotion_AV_axis[perception]
+            pi=map_perception_AV_axis[perception]
             aa,rew=choose_action_i(pi)
             userdata, response= self.call_action_server(userdata, aa, personality)
             if response:
-                pn=map_emotion_AV_axis[perception]
+                pn=map_perception_AV_axis[perception]
                 rr=update_weights_i(aa,pi,pn) #qui in ogni caso avrò una new perception
                 change_raward("reward_e",float(rr))
                 userdata.out_pp="trait"
@@ -221,11 +242,11 @@ class ExAction(smach.State):
                 return "outcome8"
             
         if ac=="EXTRO_ACTION":
-            pi=map_emotion_AV_axis[perception]
+            pi=map_perception_AV_axis[perception]
             aa,rew=choose_action_e(pi)
             userdata, response= self.call_action_server(userdata, aa, personality)
             if response:
-                pn=map_emotion_AV_axis[perception]
+                pn=map_perception_AV_axis[perception]
                 rr=update_weights_e(aa,pi,pn) #qui in ogni caso avrò una new perception
                 change_raward("reward_e",float(rr))
                 userdata.out_pp="trait"
@@ -235,11 +256,11 @@ class ExAction(smach.State):
             
         
         if ac=="CONSC_ACTION":
-            pi=map_emotion_AV_axis[perception]
+            pi=map_perception_AV_axis[perception]
             aa,rew=choose_action_c(pi)
             userdata, response= self.call_action_server(userdata, aa, personality)
             if response:
-                pn=map_emotion_AV_axis[perception]
+                pn=map_perception_AV_axis[perception]
                 rr=update_weights_c(aa,pi,pn) #qui in ogni caso avrò una new perception
                 change_raward("reward_c",float(rr))
                 userdata.out_pp="trait"
@@ -249,11 +270,11 @@ class ExAction(smach.State):
         
 
         if ac=="UNSC_ACTION":
-            pi=map_emotion_AV_axis[perception]
+            pi=map_perception_AV_axis[perception]
             aa,rew=choose_action_u(pi)
             userdata, response= self.call_action_server(userdata, aa, personality)
             if response:
-                pn=map_emotion_AV_axis[perception]
+                pn=map_perception_AV_axis[perception]
                 rr=update_weights_u(aa,pi,pn) #qui in ogni caso avrò una new perception
                 change_raward("reward_c",float(rr))
                 userdata.out_pp="trait"
@@ -306,12 +327,22 @@ class CheckPerc(smach.State):
     def execute(self, userdata):
         global new_perception, perception
         #IF NEW PERCEPTION
+        
         go_plan=False
         if new_perception: 
             new_perception=False
             emotion_pred=perception_predicate_map[perception]["emotion"]
             attention_pred=perception_predicate_map[perception]["attention"]
             goals=perception_predicate_map[perception]["goals"]
+
+            pred_add=perception_predicate_map[perception]["pred_to_ground"]
+            for p in pred_add:
+                add_predicate(p)
+
+            pred_rem=perception_predicate_map[perception]["pred_to_remove"]
+            for p in pred_rem:
+                remove_predicate(p)
+
             add_predicate(emotion_pred)
             add_predicate(attention_pred)
             for g in goals:
@@ -320,12 +351,15 @@ class CheckPerc(smach.State):
             go_plan=True
         
         # se sono al primo giro o ho finito il giro
-        if userdata.action=="" or predicates_objects["action2"].is_grounded=="True":
+        print("ho un nuovo blocco da sistemare?")
+        print(predicates_objects["action2"].is_grounded)
+        if userdata.action=="" or predicates_objects["action2"].is_grounded:
             req=GameRequest()
             req.type="new_move"
-            rospy.wait_for_service('game_player')
-            game_client = rospy.ServiceProxy('game_player', Game)
+            rospy.wait_for_service('game_player_srv')
+            game_client = rospy.ServiceProxy('game_player_srv', Game)
             resp = game_client(req)
+            print(resp)
             if resp.success==True:
                 add_goal("finished")
                 remove_predicate("action2")
@@ -393,14 +427,8 @@ class Finish(smach.State):
         if userdata.input_goals!=[]:
             print('Passing to the next goal')
             userdata.out_action=""
-            data_action["finished"]="True"
-            data_action["new_action"]="False"
-            respac=requests.put(url3+'set_action', json=data_action, headers=headers)
             return "outcome11"
         else:
-            data_action["finished"]="True"
-            data_action["new_action"]="False"
-            respac=requests.put(url3+'set_action', json=data_action, headers=headers)
             print('Finishhh')
             return 'outcome12'
 

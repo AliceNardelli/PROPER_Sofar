@@ -19,14 +19,14 @@ def init_agreeable_actions():
     global agree_actions, agreeableness_dict
     agree_actions=rospy.get_param("agree_actions")[rospy.get_param("actual_goal")]
     agreeableness_dict={
-        "NT_N":{"weights":rospy.get_param("zzz_a")[rospy.get_param("actual_goal")],"num":[0,0,0]},
-        "NT_S":{"weights":rospy.get_param("zzo_a")[rospy.get_param("actual_goal")],"num":[0,0,1]},
-        "NT_A":{"weights":rospy.get_param("zoz_a")[rospy.get_param("actual_goal")],"num":[0,1,0]},
-        "NT_H":{"weights":rospy.get_param("zoo_a")[rospy.get_param("actual_goal")],"num":[0,1,1]},
-        "T_N":{"weights":rospy.get_param("ozz_a")[rospy.get_param("actual_goal")],"num":[1,0,0]},
-        "T_S":{"weights":rospy.get_param("ozo_a")[rospy.get_param("actual_goal")],"num":[1,0,1]},
-        "T_A":{"weights":rospy.get_param("ooz_a")[rospy.get_param("actual_goal")],"num":[1,1,0]},
-        "T_H":{"weights":rospy.get_param("ooo_a")[rospy.get_param("actual_goal")],"num":[1,1,1]}
+        "NA_N":{"weights":rospy.get_param("zzz_a")[rospy.get_param("actual_goal")],"num":[0,0,0]},
+        "NA_S":{"weights":rospy.get_param("zzo_a")[rospy.get_param("actual_goal")],"num":[0,0,1]},
+        "NA_A":{"weights":rospy.get_param("zoz_a")[rospy.get_param("actual_goal")],"num":[0,1,0]},
+        "NA_H":{"weights":rospy.get_param("zoo_a")[rospy.get_param("actual_goal")],"num":[0,1,1]},
+        "A_N":{"weights":rospy.get_param("ozz_a")[rospy.get_param("actual_goal")],"num":[1,0,0]},
+        "A_S":{"weights":rospy.get_param("ozo_a")[rospy.get_param("actual_goal")],"num":[1,0,1]},
+        "A_A":{"weights":rospy.get_param("ooz_a")[rospy.get_param("actual_goal")],"num":[1,1,0]},
+        "A_H":{"weights":rospy.get_param("ooo_a")[rospy.get_param("actual_goal")],"num":[1,1,1]}
     }
 
 

@@ -20,14 +20,14 @@ def init_extro_actions():
 
 
      extroversion_dict={
-     "NT_N":{"weights":rospy.get_param("zzz_e")[rospy.get_param("actual_goal")],"num":[0,0,0]},
-     "NT_S":{"weights":rospy.get_param("zzo_e")[rospy.get_param("actual_goal")],"num":[0,0,1]},
-     "NT_A":{"weights":rospy.get_param("zoz_e")[rospy.get_param("actual_goal")],"num":[0,1,0]},
-     "NT_H":{"weights":rospy.get_param("zoo_e")[rospy.get_param("actual_goal")],"num":[0,1,1]},
-     "T_N":{"weights":rospy.get_param("ozz_e")[rospy.get_param("actual_goal")],"num":[1,0,0]},
-     "T_S":{"weights":rospy.get_param("ozo_e")[rospy.get_param("actual_goal")],"num":[1,0,1]},
-     "T_A":{"weights":rospy.get_param("ooz_e")[rospy.get_param("actual_goal")],"num":[1,1,0]},
-     "T_H":{"weights":rospy.get_param("ooo_e")[rospy.get_param("actual_goal")],"num":[1,1,1]}
+     "NA_N":{"weights":rospy.get_param("zzz_e")[rospy.get_param("actual_goal")],"num":[0,0,0]},
+     "NA_S":{"weights":rospy.get_param("zzo_e")[rospy.get_param("actual_goal")],"num":[0,0,1]},
+     "NA_A":{"weights":rospy.get_param("zoz_e")[rospy.get_param("actual_goal")],"num":[0,1,0]},
+     "NA_H":{"weights":rospy.get_param("zoo_e")[rospy.get_param("actual_goal")],"num":[0,1,1]},
+     "A_N":{"weights":rospy.get_param("ozz_e")[rospy.get_param("actual_goal")],"num":[1,0,0]},
+     "A_S":{"weights":rospy.get_param("ozo_e")[rospy.get_param("actual_goal")],"num":[1,0,1]},
+     "A_A":{"weights":rospy.get_param("ooz_e")[rospy.get_param("actual_goal")],"num":[1,1,0]},
+     "A_H":{"weights":rospy.get_param("ooo_e")[rospy.get_param("actual_goal")],"num":[1,1,1]}
      }
 
 
@@ -42,6 +42,7 @@ def choose_action_e(perception):
 
    
     norm = [i/sum(w) for i in w]
+    print(norm)
     to_execute=np.random.choice(extro_actions,p=norm) #trovare il modo di normalizzare i pesi
     return to_execute, extroversion_dict[perception]["weights"][to_execute]["w1"]+extroversion_dict[perception]["weights"][to_execute]["w2"]
 

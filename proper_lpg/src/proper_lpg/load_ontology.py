@@ -13,7 +13,7 @@ new_params=[]
 objects=[]
 goals=[]
 
-onto_path.append("/mnt/Data/ariel_laboratorium/PROPER_Sofar/")
+onto_path.append("/home/alice/")
 #onto_path.append("/home/alice/")
 onto = get_ontology("http://www.semanticweb.org/alice/ontologies/2023/10/goal1#").load()        
 with onto:
@@ -176,7 +176,7 @@ def populate_ontology(domain):
                     predicates.append(new)
             if (":predicates" in p):
                 t=True
-    
+  
     for t in predicates:
         predicates_objects[t]=Predicates(t)
         predicates_objects[t].is_grounded=False

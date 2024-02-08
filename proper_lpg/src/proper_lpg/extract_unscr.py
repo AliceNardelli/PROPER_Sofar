@@ -17,14 +17,14 @@ def init_unsc_actions():
     global unsc_actions, unsc_dict
     unsc_actions=rospy.get_param("unsc_actions")[rospy.get_param("actual_goal")]
     unsc_dict={
-        "NT_N":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[0,0,0]},
-        "NT_S":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[0,0,1]},
-        "NT_A":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[0,1,0]},
-        "NT_H":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[0,1,1]},
-        "T_N":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[1,0,0]},
-        "T_S":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[1,0,1]},
-        "T_A":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[1,1,0]},
-        "T_H":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[1,1,1]}
+        "NA_N":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[0,0,0]},
+        "NA_S":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[0,0,1]},
+        "NA_A":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[0,1,0]},
+        "NA_H":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[0,1,1]},
+        "A_N":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[1,0,0]},
+        "A_S":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[1,0,1]},
+        "A_A":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[1,1,0]},
+        "A_H":{"weights":rospy.get_param("zzz_u")[rospy.get_param("actual_goal")],"num":[1,1,1]}
     }
 
 

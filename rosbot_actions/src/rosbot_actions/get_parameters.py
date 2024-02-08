@@ -100,10 +100,19 @@ remap_language={
         "verbose_excited": ["Friendly", "Talkative", "Enthusiastic", "Excited"],
         "non_verbose_neutral": ["Reserved", "Quiet", "Neutral"],
         "precise": ["Scrupulous", "Precise"],
-        "distracted": ["Unscrupulous", "Thoughtless", "Distracted", "Lazy"],
+        "distracted": ["Thoughtless", "Distracted", "Lazy","Disordered"],
         "polite":["Cooperative", "Fiendly", "Empathic", "Forgiving", "Reliable","Polite"],
         "rude":["Competitive", "Aggressive", "Provocative", "Selfish","Rude"]
         }
+
+pers_lang_dict={
+    "Extrovert":"verbose_excited",
+    "Introvert":"non_verbose_neutral",
+    "Conscientious":"precise",
+    "Unscrupolous":"distracted",
+    "Agreeable":"polite",
+    "Disagreeable":"rude"
+}
 
 bit_map=[3,2,3,3,2,3,2,2,2,2]
 parameters=["language","pitch","volume","velocity","gaze","head","amplitude","g_speed","speed", "prox"]
@@ -120,9 +129,13 @@ def get_map(predictions):
         c+=no_bit
         if param=="language":
             a=reversed[param][str(list([int(b) for b in bits]))]
+            #a=pers_lang_dict[personality]
             value=remap_language[a][random.randint(0,len(remap_language[a])-1)]
+           
         else:
             value=reversed[param][str(list([int(b) for b in bits]))]
         result[param]=value
     
     return result
+
+

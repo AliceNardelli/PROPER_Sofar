@@ -19,7 +19,7 @@
         (emotion_r) 
         (attention_r)  
         (low_attention_r)  
-        (new_block) 
+        (new_block)
 )
 
 (:goal (and 
