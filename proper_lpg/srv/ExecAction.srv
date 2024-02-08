@@ -1,4 +1,5 @@
 string personality
 string action
+string move
 ---
 bool success

@@ -23,7 +23,6 @@ find_package(catkin REQUIRED COMPONENTS
 	cmake_modules
 	geometric_shapes
 	eigen_conversions
-  message_generation
 )
 
 find_package(Boost REQUIRED system filesystem date_time thread)
@@ -61,18 +60,18 @@ find_package(Boost REQUIRED system filesystem date_time thread)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-   FILES
-   Board.msg
-#  Message2.msg
-)
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
 
 ## Generate services in the 'srv' folder
-add_service_files(
-  FILES
-  Game.srv
+# add_service_files(
+#   FILES
+#   Service1.srv
 #   Service2.srv
-)
+# )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -134,7 +133,6 @@ catkin_package(
     roscpp 
     rospy 
     std_msgs
-    message_runtime
 )
 find_package(Eigen3 REQUIRED)
 

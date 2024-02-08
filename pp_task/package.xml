@@ -67,6 +67,7 @@
   <build_depend>eigen_conversions</build_depend>
   <build_depend>message_generation</build_depend>
   <build_depend>message_runtime</build_depend>
+  
 
   <build_export_depend>kinova_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
@@ -84,7 +85,8 @@
   <build_export_depend>kinova_driver</build_export_depend>
   <build_export_depend>eigen_conversions</build_export_depend>
   <build_export_depend>message_generation</build_export_depend>
-   <build_export_depend>message_runtime</build_export_depend>
+  <build_export_depend>message_runtime</build_export_depend>
+ 
 
 
   <exec_depend>kinova_msgs</exec_depend>

@@ -63,22 +63,22 @@ def handle_game(req):
             res.success=True
     elif req.type=="new_action":
         if final_board_state.area1!=actual_board_state.area1:
-            if (final_board_state.area1=="B" and req.type=="human") or (final_board_state.area1=="R" and req.type=="robot"):
+            if (final_board_state.area1=="B" and req.firstmove=="human") or (final_board_state.area1=="R" and req.firstmove=="robot"):
                 res.action="area1"
                 res.success=True
                 return res
         if final_board_state.area2!=actual_board_state.area2:
-            if (final_board_state.area2=="B" and req.type=="human") or (final_board_state.area2=="R" and req.type=="robot"):
+            if (final_board_state.area2=="B" and req.firstmove=="human") or (final_board_state.area2=="R" and req.firstmove=="robot"):
                 res.action="area2"
                 res.success=True
                 return res
         if final_board_state.area3!=actual_board_state.area3:
-            if (final_board_state.area3=="B" and req.type=="human") or (final_board_state.area3=="R" and req.type=="robot"):
+            if (final_board_state.area3=="B" and req.firstmove=="human") or (final_board_state.area3=="R" and req.firstmove=="robot"):
                 res.action="area1"
                 res.success=True
                 return res
         if final_board_state.area1!=actual_board_state.area1:
-            if (final_board_state.area1=="B" and req.type=="human") or (final_board_state.area1=="R" and req.type=="robot"):
+            if (final_board_state.area1=="B" and req.firstmove=="human") or (final_board_state.area1=="R" and req.firstmove=="robot"):
                 res.action="area1"
                 res.success=True
                 return res

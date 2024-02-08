@@ -321,7 +321,7 @@
 
 
 
-(:action MOVE_ROBOT_PRECISE_TURN1
+(:action PICK_PLACE_ROBOT_PRECISE_TURN1
         :precondition
                (and 
                            (emotion_r)
@@ -344,7 +344,7 @@
                 )
 )
 
-(:action MOVE_ROBOT_WRONG_TURN1
+(:action PICK_PLACE_ROBOT_WRONG_TURN1
         :precondition
                (and 
                            (emotion_r)
@@ -369,7 +369,7 @@
 
 
 
-(:action MOVE_ROBOT_PRECISE_TURN2
+(:action PICK_PLACE_ROBOT_PRECISE_TURN2
         :precondition
                (and 
                            (emotion_r)
@@ -391,7 +391,7 @@
 )
 
 
-(:action MOVE_ROBOT_WRONG_TURN2
+(:action PICK_PLACE_ROBOT_WRONG_TURN2
         :precondition
                (and 
                            (emotion_r)
@@ -461,7 +461,7 @@
 )
 
 
-(:action MOVE_REPLACE_HUMAN_TURN1
+(:action PICK_PLACE_REPLACE_HUMAN_TURN1
         :precondition
                (and 
                            (emotion_r)
@@ -533,7 +533,7 @@
 )
 
 
-(:action MOVE_REPLACE_HUMAN_TURN2
+(:action PICK_PLACE_REPLACE_HUMAN_TURN2
         :precondition
                (and 
                            (emotion_r)

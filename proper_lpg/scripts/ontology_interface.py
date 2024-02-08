@@ -294,6 +294,20 @@ class ExAction(smach.State):
 
 
     def call_action_server(self, userdata, ac,personality):
+            
+            if "PICK_PLACE" in ac:
+                req=GameRequest()
+                req.type="new_action"  
+                if "REPLACE" in ac: 
+                    req.firstmove="human" 
+                else:
+                    req.firstmove="robot"
+                rospy.wait_for_service('game_player_srv')
+                game_client = rospy.ServiceProxy('game_player_srv', Game)
+                resp = game_client(req)
+                next_action=resp.action
+            else:
+                next_action=""
             userdata.state="exec"
             rospy.wait_for_service('action_dispatcher_srv')
             try:
@@ -305,6 +319,7 @@ class ExAction(smach.State):
                     msg=ExecActionRequest()
                     msg.action=ac.lower()
                     msg.personality=personality
+                    msg.move=next_action
                     print("executing", msg.action)
                     resp = action_dispatcher_srv(msg)
                     if resp.success==False:
