@@ -27,7 +27,7 @@
 #include <moveit_msgs/DisplayRobotState.h>
 #include <moveit_msgs/ApplyPlanningScene.h>
 #include <moveit_msgs/DisplayTrajectory.h>
-
+#include <pp_task/MoveArm.h>
 namespace kinova
 {
 
@@ -67,6 +67,8 @@ namespace kinova
         ros::Subscriber sub_pose_;
         ros::Subscriber sub_joint_;
 
+        ros::ServiceServer kinova_service;
+
         //
         std::vector<std::string> joint_names_;
         std::vector<double> joint_values_;
@@ -90,9 +92,17 @@ namespace kinova
 
         // define pick_place joint value and pose
         std::vector<double> start_joint_;
-        std::vector<double> grasp_joint_;
+       
+        std::vector<double> grasp_joint_human_0;
+        std::vector<double> grasp_joint_human_1;
+        std::vector<double> grasp_joint_robot_0;
+        std::vector<double> grasp_joint_robot_1;
         std::vector<double> pregrasp_joint_;
-        std::vector<double> release_joint_;
+        
+        std::vector<double> release_joint_1;
+        std::vector<double> release_joint_2;
+        std::vector<double> release_joint_3;
+        std::vector<double> release_joint_4;
         std::vector<double> prerelease_joint_;
 
         geometry_msgs::PoseStamped start_pose_;
@@ -111,13 +121,13 @@ namespace kinova
         void add_target();
 
         void define_joint_values();
-        void define_release(int area);
+        void define_release();
         void define_cartesian_pose(float x, float y, float z);
         geometry_msgs::PoseStamped generate_gripper_align_pose(geometry_msgs::PoseStamped targetpose_msg, double dist, double azimuth, double polar, double rot_gripper_z);
         void setup_constrain(geometry_msgs::Pose target_pose, bool orientation, bool position);
         void check_constrain();
 
-        bool my_pick();
+        bool my_pick(pp_task::MoveArm::Request  &req, pp_task::MoveArm::Response &res);
         bool my_place();
 
         void get_current_state(const sensor_msgs::JointStateConstPtr &msg);

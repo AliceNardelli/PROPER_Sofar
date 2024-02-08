@@ -1,0 +1,7 @@
+int64 block
+string block_owner
+string final_pose
+string amplitude
+string speed
+----
+bool success
