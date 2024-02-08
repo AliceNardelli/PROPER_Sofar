@@ -187,19 +187,7 @@ class ExAction(smach.State):
         global perception, first_trial
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
-        if first_trial:
-            
-            if ("TURN1" in ac):
-                first_trial=False
-                req=GameRequest()
-                req.type="init"
-                if ("HUMAN" in ac):
-                    req.firstmove="human"
-                elif ("ROBOT" in ac):
-                    req.firstmove="robot"    
-                rospy.wait_for_service('game_player_srv')
-                game_client = rospy.ServiceProxy('game_player_srv', Game)
-                resp = game_client(req)
+
 
         if ac=="AGREE_ACTION":
             pi=map_perception_AV_axis[perception]
@@ -285,6 +273,19 @@ class ExAction(smach.State):
         else:
             userdata, response=self.call_action_server(userdata, ac, personality)
             if response:
+                if first_trial:            
+                    
+                    if ("TURN1" in ac):
+                        first_trial=False
+                        req=GameRequest()
+                        req.type="init"
+                        if ("HUMAN" in ac):
+                            req.firstmove="human"
+                        elif ("ROBOT" in ac):
+                            req.firstmove="robot"    
+                        rospy.wait_for_service('game_player_srv')
+                        game_client = rospy.ServiceProxy('game_player_srv', Game)
+                        resp = game_client(req)
                 userdata.out_pp="no_trait"
                 return "outcome9"
             else:
@@ -296,21 +297,25 @@ class ExAction(smach.State):
             userdata.state="exec"
             rospy.wait_for_service('action_dispatcher_srv')
             try:
-                action_dispatcher_srv = rospy.ServiceProxy('action_dispatcher_srv', ExecAction)
-                msg=ExecActionRequest()
-                msg.action=ac.lower()
-                msg.personality=personality
-                print("executing", msg.action)
-                resp = action_dispatcher_srv(msg)
-                if resp.success==False:
-                    rospy.loginfo('Action Failed')        
-                    return userdata, False
+                if ac in not_to_execute:
+                    print(str(ac)+" not to execute")
+
                 else:
-                    ac=userdata.executing_actions.pop(0)
-                    rospy.loginfo('Action executed: '+ac)
-                    userdata.action=ac
-                    userdata.updated_actions=userdata.executing_actions
-                    return userdata,True
+                    action_dispatcher_srv = rospy.ServiceProxy('action_dispatcher_srv', ExecAction)
+                    msg=ExecActionRequest()
+                    msg.action=ac.lower()
+                    msg.personality=personality
+                    print("executing", msg.action)
+                    resp = action_dispatcher_srv(msg)
+                    if resp.success==False:
+                        rospy.loginfo('Action Failed')        
+                        return userdata, False
+                    
+                ac=userdata.executing_actions.pop(0)
+                rospy.loginfo('Action executed: '+ac)
+                userdata.action=ac
+                userdata.updated_actions=userdata.executing_actions
+                return userdata,True
                 
             except rospy.ServiceException as e:
                 print("Service call failed: %s"%e)

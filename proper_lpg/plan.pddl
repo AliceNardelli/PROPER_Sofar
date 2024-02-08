@@ -23,19 +23,19 @@ Cueing down from goal distance:    5 into depth [1]
 
 ff: found legal plan as follows
 
-step    0: REACT_ANGER_EMOTION
-        1: REACT_LOW_ATTENTION
-        2: MOVE_ROBOT_PRECISE_TURN2
+step    0: REACT_NEUTRAL_EMOTION
+        1: INTRO_ACTION
+        2: REACT_LOW_ATTENTION
         3: AGREE_ACTION
         4: COMPUTE_HEDONIC_FEELINGS
         5: CHECK_FINISH
      
 
 time spent:    0.00 seconds instantiating 11 easy, 0 hard action templates
-               0.00 seconds reachability analysis, yielding 22 facts and 9 actions
-               0.00 seconds creating final representation with 15 relevant facts, 3 relevant fluents
+               0.00 seconds reachability analysis, yielding 21 facts and 8 actions
+               0.00 seconds creating final representation with 13 relevant facts, 3 relevant fluents
                0.00 seconds computing LNF
                0.00 seconds building connectivity graph
-               0.00 seconds searching, evaluating 7 states, to a max depth of 2
+               0.00 seconds searching, evaluating 8 states, to a max depth of 2
                0.00 seconds total time
 
