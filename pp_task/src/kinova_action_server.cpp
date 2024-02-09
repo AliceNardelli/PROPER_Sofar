@@ -25,13 +25,22 @@ tf::Quaternion EulerZYZ_to_Quaternion(double tz1, double ty, double tz2)
 }
 
 
-PickPlace::PickPlace(){
-    nh_=ros::NodeHandle("~"); 
+PickPlace::PickPlace(ros::NodeHandle &nh):
+    nh_(nh)
+{
+//    if(ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug))
+//    {
+//        ros::console::notifyLoggerLevelsChanged();
+//    }
+
+    ros::NodeHandle pn("~");
+    kinova_service = nh_.advertiseService("/kinova_move_srv", &PickPlace::my_pick, this);
     nh_.param<std::string>("/robot_type",robot_type_,"j2s7s300");
     nh_.param<bool>("/robot_connected",robot_connected_,true);
 
     if (robot_connected_)
     {
+        //sub_joint_ = nh_.subscribe<sensor_msgs::JointState>("/j2s7s300_driver/out/joint_state", 1, &PickPlace::get_current_state, this);
         sub_pose_ = nh_.subscribe<geometry_msgs::PoseStamped>("/" + robot_type_ +"_driver/out/tool_pose", 1, &PickPlace::get_current_pose, this);
     }
 
@@ -42,6 +51,10 @@ PickPlace::PickPlace(){
     // construct a `PlanningScene` that maintains the state of the world (including the robot).
     planning_scene_.reset(new planning_scene::PlanningScene(robot_model_));
     planning_scene_monitor_.reset(new planning_scene_monitor::PlanningSceneMonitor("robot_description"));
+
+//    //  every time need retrive current robot state, do the following.
+//    robot_state::RobotState& robot_state = planning_scene_->getCurrentStateNonConst();
+//    const robot_state::JointModelGroup *joint_model_group = robot_state.getJointModelGroup("arm");
 
     group_ = new moveit::planning_interface::MoveGroupInterface("arm");
     gripper_group_ = new moveit::planning_interface::MoveGroupInterface("gripper");
@@ -58,8 +71,6 @@ PickPlace::PickPlace(){
     pub_aco_ = nh_.advertise<moveit_msgs::AttachedCollisionObject>("/attached_collision_object", 10);
     pub_planning_scene_diff_ = nh_.advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
 
-    kinova_service = nh_.advertiseService("kinova_move_srv", &PickPlace::my_pick, this);
-    
     int arm_joint_num = robot_type_[3]-'0';
     joint_names_.resize(arm_joint_num);
     joint_values_.resize(joint_names_.size());
@@ -71,13 +82,12 @@ PickPlace::PickPlace(){
     // set pre-defined joint and pose values.
     define_cartesian_pose(0,0,0);
     define_joint_values();
-    define_release();
 
     // pick process
     result_ = false;
-    
-   
+ 
 }
+
 
 
 PickPlace::~PickPlace()
@@ -500,12 +510,12 @@ void PickPlace::define_joint_values()
 
 
     grasp_joint_robot_1.resize(joint_names_.size());
-    grasp_joint_robot_1[0] = -10 *M_PI/180.0;
-    grasp_joint_robot_1[1] = 116 *M_PI/180.0;
+    grasp_joint_robot_1[0] = 0 *M_PI/180.0;
+    grasp_joint_robot_1[1] = 132 *M_PI/180.0;
     grasp_joint_robot_1[2] = 180 *M_PI/180.0;
-    grasp_joint_robot_1[3] = 106 *M_PI/180.0;
+    grasp_joint_robot_1[3] = 87 *M_PI/180.0;
     grasp_joint_robot_1[4] = 180 *M_PI/180.0;
-    grasp_joint_robot_1[5] = 140 *M_PI/180.0;
+    grasp_joint_robot_1[5] = 145 *M_PI/180.0;
     grasp_joint_robot_1[6] = -167 *M_PI/180.0;
 
     pregrasp_joint_.resize(joint_names_.size());
@@ -803,7 +813,7 @@ bool PickPlace::my_pick(pp_task::MoveArm::Request  &req, pp_task::MoveArm::Respo
     ros::WallDuration(1.0).sleep();
     build_workscene();
     ros::WallDuration(1.0).sleep();
-
+/*
     ROS_INFO_STREAM("GOING HOME");
     group_->clearPathConstraints();
     group_->setNamedTarget("Home");
@@ -812,8 +822,8 @@ bool PickPlace::my_pick(pp_task::MoveArm::Request  &req, pp_task::MoveArm::Respo
     ros::WallDuration(1.0).sleep();
     gripper_group_->setNamedTarget("Open");
     gripper_group_->move();
-
-    add_obstacle();
+*/
+    //add_obstacle();
     clear_workscene();
     
     ROS_INFO_STREAM("GOING PREGRASP");
@@ -834,12 +844,12 @@ bool PickPlace::my_pick(pp_task::MoveArm::Request  &req, pp_task::MoveArm::Respo
     }
     else if (req.block_owner=="robot"){
     if (block==0){
-    ROS_INFO_STREAM("GRASP");
+    ROS_INFO_STREAM("GRASP ROBOT pose 0");
     group_->setJointValueTarget(grasp_joint_robot_0);
     evaluate_plan(*group_);
     }
     else if (block==1){
-    ROS_INFO_STREAM("GRASP");
+    ROS_INFO_STREAM("GRASP ROBOT pse 1");
     group_->setJointValueTarget(grasp_joint_robot_1);
     evaluate_plan(*group_);
     }
@@ -895,6 +905,7 @@ bool PickPlace::my_pick(pp_task::MoveArm::Request  &req, pp_task::MoveArm::Respo
     group_->setNamedTarget("Home");
     evaluate_plan(*group_);
 */
+    res.success=true;
     return true;  
 }
 
@@ -906,8 +917,12 @@ bool PickPlace::my_pick(pp_task::MoveArm::Request  &req, pp_task::MoveArm::Respo
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "pick_place_demo");
-    kinova::PickPlace pick_place;
+    ros::NodeHandle node;
+    //ros::AsyncSpinner spinner(1);
+    //spinner.start();
+
+    kinova::PickPlace pick_place(node);
+
     ros::spin();
     return 0;
-
 }

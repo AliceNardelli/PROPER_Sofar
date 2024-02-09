@@ -36,7 +36,7 @@ namespace kinova
     class PickPlace
     {
     public:
-        PickPlace();
+        PickPlace(ros::NodeHandle &nh);
         ~PickPlace();
 
 
@@ -128,7 +128,8 @@ namespace kinova
         void setup_constrain(geometry_msgs::Pose target_pose, bool orientation, bool position);
         void check_constrain();
 
-        bool my_pick(pp_task::MoveArm::Request &req, pp_task::MoveArm::Response &res);
+        bool my_pick();
+        bool my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Response &res);
         bool my_place();
 
         void get_current_state(const sensor_msgs::JointStateConstPtr &msg);

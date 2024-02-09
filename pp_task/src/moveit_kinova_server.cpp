@@ -37,7 +37,7 @@ PickPlace::PickPlace(ros::NodeHandle &nh):
 
     nh_.param<std::string>("/robot_type",robot_type_,"j2s7s300");
     nh_.param<bool>("/robot_connected",robot_connected_,true);
-
+    kinova_service = nh_.advertiseService("/kinova_move_srv", &PickPlace::my_pick2, this);
     if (robot_connected_)
     {
         //sub_joint_ = nh_.subscribe<sensor_msgs::JointState>("/j2s7s300_driver/out/joint_state", 1, &PickPlace::get_current_state, this);
@@ -82,10 +82,15 @@ PickPlace::PickPlace(ros::NodeHandle &nh):
     // set pre-defined joint and pose values.
     define_cartesian_pose(0,0,0);
     define_joint_values();
+    define_release();
 
     // pick process
+    
     result_ = false;
     my_pick();
+    while(true){
+        sleep(1);
+    }
 }
 
 
@@ -225,7 +230,7 @@ void PickPlace::build_workscene()
     co_.primitives[0].dimensions[shape_msgs::SolidPrimitive::BOX_Z] = 0.03;
     co_.primitive_poses[0].position.x = 0;
     co_.primitive_poses[0].position.y = 0.0;
-    co_.primitive_poses[0].position.z = -0.03/2.0;
+    co_.primitive_poses[0].position.z = -0.03;
     pub_co_.publish(co_);
     planning_scene_msg_.world.collision_objects.push_back(co_);
     planning_scene_msg_.is_diff = true;
@@ -241,7 +246,7 @@ void PickPlace::build_workscene()
     co1_.primitives[0].dimensions[shape_msgs::SolidPrimitive::BOX_X] = 0.05;
     co1_.primitives[0].dimensions[shape_msgs::SolidPrimitive::BOX_Y] = 1;
     co1_.primitives[0].dimensions[shape_msgs::SolidPrimitive::BOX_Z] = 1.2;
-    co1_.primitive_poses[0].position.x = -0.3;
+    co1_.primitive_poses[0].position.x = -0.25;
     co1_.primitive_poses[0].position.y = 0.0;
     co1_.primitive_poses[0].position.z = 0.5;
     pub_co_.publish(co1_);
@@ -494,19 +499,46 @@ void PickPlace::define_joint_values()
     start_joint_[4] = 88.5 *M_PI/180.0;
     start_joint_[5] = 151.0 *M_PI/180.0;
 
-    
-    grasp_joint_.resize(joint_names_.size());
-    //    getInvK(grasp_pose, grasp_joint_);
-    grasp_joint_[0] = 0.0 *M_PI/180.0;
-    grasp_joint_[1] = 83 *M_PI/180.0;
-    grasp_joint_[2] = 180 *M_PI/180.0;
-    grasp_joint_[3] = 182 *M_PI/180.0;
-    grasp_joint_[4] = 180 *M_PI/180.0;
-    grasp_joint_[5] = 93 *M_PI/180.0;
-    grasp_joint_[6] = -167 *M_PI/180.0;
+
+    grasp_joint_robot_0.resize(joint_names_.size());
+    grasp_joint_robot_0[0] = 10 *M_PI/180.0;
+    grasp_joint_robot_0[1] = 132 *M_PI/180.0;
+    grasp_joint_robot_0[2] = 180 *M_PI/180.0;
+    grasp_joint_robot_0[3] = 87 *M_PI/180.0;
+    grasp_joint_robot_0[4] = 180 *M_PI/180.0;
+    grasp_joint_robot_0[5] = 145 *M_PI/180.0;
+    grasp_joint_robot_0[6] = -167 *M_PI/180.0;
+
+
+    grasp_joint_robot_1.resize(joint_names_.size());
+    grasp_joint_robot_1[0] = -10 *M_PI/180.0;
+    grasp_joint_robot_1[1] = 132 *M_PI/180.0;
+    grasp_joint_robot_1[2] = 180 *M_PI/180.0;
+    grasp_joint_robot_1[3] = 87 *M_PI/180.0;
+    grasp_joint_robot_1[4] = 180 *M_PI/180.0;
+    grasp_joint_robot_1[5] = 145 *M_PI/180.0;
+    grasp_joint_robot_1[6] = -167 *M_PI/180.0;
+
+    grasp_joint_human_0.resize(joint_names_.size());
+    grasp_joint_human_0[0] = 0.0 *M_PI/180.0;
+    grasp_joint_human_0[1] = 111 *M_PI/180.0;
+    grasp_joint_human_0[2] = 182 *M_PI/180.0;
+    grasp_joint_human_0[3] = 139 *M_PI/180.0;
+    grasp_joint_human_0[4] = 180 *M_PI/180.0;
+    grasp_joint_human_0[5] = 115 *M_PI/180.0;
+    grasp_joint_human_0[6] = 194 *M_PI/180.0;
+
+
+    grasp_joint_human_1.resize(joint_names_.size());
+    grasp_joint_human_1[0] = -10.0 *M_PI/180.0;
+    grasp_joint_human_1[1] =  90 *M_PI/180.0;
+    grasp_joint_human_1[2] = 180 *M_PI/180.0;
+    grasp_joint_human_1[3] = 182 *M_PI/180.0;
+    grasp_joint_human_1[4] = 180 *M_PI/180.0;
+    grasp_joint_human_1[5] = 93 *M_PI/180.0;
+    grasp_joint_human_1[6] = -167 *M_PI/180.0;
 
     pregrasp_joint_.resize(joint_names_.size());
-    //    getInvK(pregrasp_pose, pregrasp_joint_);
     pregrasp_joint_[0] = 0 *M_PI/180.0;
     pregrasp_joint_[1] = 121 *M_PI/180.0;
     pregrasp_joint_[2] = 180 *M_PI/180.0;
@@ -514,61 +546,38 @@ void PickPlace::define_joint_values()
     pregrasp_joint_[4] = 180 *M_PI/180.0;
     pregrasp_joint_[5] = 93*M_PI/180.0;
     pregrasp_joint_[6] = -167 *M_PI/180.0;
-
-
-    release_joint_.resize(joint_names_.size());
-    release_joint_[0] = 100 *M_PI/180.0;
-    release_joint_[1] = 81 *M_PI/180.0;
-    release_joint_[2] = 180 *M_PI/180.0;
-    release_joint_[3] = 182 *M_PI/180.0;
-    release_joint_[4] = 180 *M_PI/180.0;
-    release_joint_[5] = 93 *M_PI/180.0;
-    release_joint_[6] = -167 *M_PI/180.0;
-
-    prerelease_joint_.resize(joint_names_.size());
-    prerelease_joint_[0] = 100 *M_PI/180.0;
-    prerelease_joint_[1] = 121 *M_PI/180.0;
-    prerelease_joint_[2] = 180 *M_PI/180.0;
-    prerelease_joint_[3] = 182 *M_PI/180.0;
-    prerelease_joint_[4] = 180 *M_PI/180.0;
-    prerelease_joint_[5] = 93*M_PI/180.0;
-    prerelease_joint_[6] = -167 *M_PI/180.0;
-
-
-    
+ 
 }
 
 
-void PickPlace::define_release(int area)
+void PickPlace::define_release()
 {
-    if (area==0){
-    release_joint_.resize(joint_names_.size());
-    release_joint_[0] = 105 *M_PI/180.0;
-    release_joint_[1] = 78 *M_PI/180.0;
-    release_joint_[2] = 180 *M_PI/180.0;
-    release_joint_[3] = 182 *M_PI/180.0;
-    release_joint_[4] = 180 *M_PI/180.0;
-    release_joint_[5] = 93 *M_PI/180.0;
-    release_joint_[6] = -167 *M_PI/180.0;
+    release_joint_4.resize(joint_names_.size());
+    release_joint_4[0] = 105 *M_PI/180.0;
+    release_joint_4[1] = 78 *M_PI/180.0;
+    release_joint_4[2] = 180 *M_PI/180.0;
+    release_joint_4[3] = 182 *M_PI/180.0;
+    release_joint_4[4] = 180 *M_PI/180.0;
+    release_joint_4[5] = 93 *M_PI/180.0;
+    release_joint_4[6] = -167 *M_PI/180.0;
 
-    prerelease_joint_.resize(joint_names_.size());
-    prerelease_joint_[0] = 100 *M_PI/180.0;
-    prerelease_joint_[1] = 121 *M_PI/180.0;
-    prerelease_joint_[2] = 180 *M_PI/180.0;
-    prerelease_joint_[3] = 182 *M_PI/180.0;
-    prerelease_joint_[4] = 180 *M_PI/180.0;
-    prerelease_joint_[5] = 93*M_PI/180.0;
-    prerelease_joint_[6] = -167 *M_PI/180.0; 
-    }
-    else{
-    release_joint_.resize(joint_names_.size());
-    release_joint_[0] = 105 *M_PI/180.0;
-    release_joint_[1] = 120 *M_PI/180.0;
-    release_joint_[2] = 160 *M_PI/180.0;
-    release_joint_[3] = 91 *M_PI/180.0;
-    release_joint_[4] = 180 *M_PI/180.0;
-    release_joint_[5] = 135*M_PI/180.0;
-    release_joint_[6] = -167 *M_PI/180.0;
+    release_joint_1.resize(joint_names_.size());
+    release_joint_1[0] = 105 *M_PI/180.0;
+    release_joint_1[1] = 120 *M_PI/180.0;
+    release_joint_1[2] = 160 *M_PI/180.0;
+    release_joint_1[3] = 91 *M_PI/180.0;
+    release_joint_1[4] = 180 *M_PI/180.0;
+    release_joint_1[5] = 135*M_PI/180.0;
+    release_joint_1[6] = -167 *M_PI/180.0;
+
+    release_joint_2.resize(joint_names_.size());
+    release_joint_2[0] = 115 *M_PI/180.0;
+    release_joint_2[1] = 120 *M_PI/180.0;
+    release_joint_2[2] = 160 *M_PI/180.0;
+    release_joint_2[3] = 91 *M_PI/180.0;
+    release_joint_2[4] = 180 *M_PI/180.0;
+    release_joint_2[5] = 135*M_PI/180.0;
+    release_joint_2[6] = -167 *M_PI/180.0;
 
     prerelease_joint_.resize(joint_names_.size());
     prerelease_joint_[0] = 100 *M_PI/180.0;
@@ -578,8 +587,7 @@ void PickPlace::define_release(int area)
     prerelease_joint_[4] = 180 *M_PI/180.0;
     prerelease_joint_[5] = 158*M_PI/180.0;
     prerelease_joint_[6] = -167 *M_PI/180.0;
-
-    }  
+ 
 }
 
 /**
@@ -840,47 +848,111 @@ bool PickPlace::my_pick()
     ///////////////////////////////////////////////////////////
     add_obstacle();
     clear_workscene();
+        ROS_INFO_STREAM("GOING PRERELEASE");
+    group_->setJointValueTarget(prerelease_joint_);
+    evaluate_plan(*group_);
     
-
-    for(int i=0;i<2;i++){
-    pregrasp_joint_[0]=(0-20*i)*M_PI/180.0;
-    grasp_joint_[0]=(0-20*i)*M_PI/180.0;
-    grasp_joint_[1]=(83-3*i)*M_PI/180.0;
-    ROS_INFO_STREAM("GOING PREGRASP");
-    group_->setJointValueTarget(pregrasp_joint_);
+    ROS_INFO_STREAM("GOING RELEASE");
+    group_->setJointValueTarget(release_joint_2);
     evaluate_plan(*group_);
 
-    ROS_INFO_STREAM("GRASP");
-    group_->setJointValueTarget(grasp_joint_);
-    evaluate_plan(*group_);
-
-    ROS_INFO_STREAM("CLOSE HAND");
-    gripper_action(0.75*FINGER_MAX); // partially close
-
-    ROS_INFO_STREAM("POSTGRASP");
-    group_->setJointValueTarget(pregrasp_joint_);
-    evaluate_plan(*group_);
-    define_release(i);
-    ROS_INFO_STREAM("PRERELEASE");
-    group_->setJointValueTarget(prerelease_joint_);
-    evaluate_plan(*group_);
-
-    ROS_INFO_STREAM("RELEASE");
-    group_->setJointValueTarget(release_joint_);
-    evaluate_plan(*group_);
-
-    ROS_INFO_STREAM("OPEN HAND");
-    gripper_action(0.0); // full open
-
-    ROS_INFO_STREAM("POSTRELEASE");
-    group_->setJointValueTarget(prerelease_joint_);
-    evaluate_plan(*group_);
-    }
     ROS_INFO_STREAM("GOING HOME");
     group_->clearPathConstraints();
     group_->setNamedTarget("Home");
     evaluate_plan(*group_);
+
+    ros::WallDuration(1.0).sleep();
+    gripper_group_->setNamedTarget("Open");
+    gripper_group_->move();
+
+    return true;
    
+}
+
+bool PickPlace::my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Response &res)
+{
+    clear_workscene();
+    ros::WallDuration(1.0).sleep();
+    build_workscene();
+    ros::WallDuration(1.0).sleep();
+
+
+    ROS_INFO_STREAM("GOING HOME");
+    group_->clearPathConstraints();
+    group_->setNamedTarget("Home");
+    evaluate_plan(*group_);
+
+    ros::WallDuration(1.0).sleep();
+    gripper_group_->setNamedTarget("Open");
+    gripper_group_->move();
+
+    //add_obstacle();
+    //clear_workscene();
+ 
+    ROS_INFO_STREAM("GOING PREGRASP");
+    group_->setJointValueTarget(pregrasp_joint_);
+    evaluate_plan(*group_);
+    int block=req.block;
+    if (req.block_owner=="human"){
+    if (block==0){
+    ROS_INFO_STREAM("GRASP");
+    group_->setJointValueTarget(grasp_joint_human_0);
+    evaluate_plan(*group_);
+    }
+    else if (block==1){
+    ROS_INFO_STREAM("GRASP");
+    group_->setJointValueTarget(grasp_joint_human_1);
+    evaluate_plan(*group_);
+    }
+    }
+    else if (req.block_owner=="robot"){
+    if (block==0){
+    ROS_INFO_STREAM("GRASP");
+    group_->setJointValueTarget(grasp_joint_robot_0);
+    evaluate_plan(*group_);
+    }
+    else if (block==1){
+    ROS_INFO_STREAM("GRASP");
+    group_->setJointValueTarget(grasp_joint_robot_1);
+    evaluate_plan(*group_);
+    }}
+
+    ROS_INFO_STREAM("CLOSE HAND");
+    gripper_action(0.75*FINGER_MAX); // partially close
+
+    ROS_INFO_STREAM("GOING PRERELEASE");
+    group_->setJointValueTarget(prerelease_joint_);
+    evaluate_plan(*group_);
+    if(req.final_pose=="area1"){
+    ROS_INFO_STREAM("GOING RELEASE");
+    group_->setJointValueTarget(release_joint_1);
+    evaluate_plan(*group_);
+    }
+    else if(req.final_pose=="area2"){
+    ROS_INFO_STREAM("GOING RELEASE");
+    group_->setJointValueTarget(release_joint_2);
+    evaluate_plan(*group_);
+    }
+
+    else if(req.final_pose=="area3"){
+    ROS_INFO_STREAM("GOING RELEASE");
+    group_->setJointValueTarget(release_joint_3);
+    evaluate_plan(*group_);
+    }
+    else if(req.final_pose=="area4"){
+    ROS_INFO_STREAM("GOING RELEASE");
+    group_->setJointValueTarget(release_joint_4);
+    evaluate_plan(*group_);
+    }
+
+    ROS_INFO_STREAM("OPEN HAND");
+    gripper_action(0.0); // full open
+
+    ROS_INFO_STREAM("GOING HOME");
+    group_->clearPathConstraints();
+    group_->setNamedTarget("Home");
+    evaluate_plan(*group_);
+   return true;
     
 }
 
@@ -894,11 +966,10 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "pick_place_demo");
     ros::NodeHandle node;
-    ros::AsyncSpinner spinner(1);
+    ros::AsyncSpinner spinner(2);
     spinner.start();
-
     kinova::PickPlace pick_place(node);
 
-    ros::spin();
+
     return 0;
 }

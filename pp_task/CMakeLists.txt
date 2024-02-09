@@ -157,7 +157,7 @@ link_directories(${catkin_LIBRARY_DIRS})
 include_directories(${kinova_driver_INCLUDE_DIRS})
 
 
-add_executable(kinova_as src/kinova_action_server.cpp include/pick_place.h)
+add_executable(kinova_as src/moveit_kinova_server.cpp include/pick_place.h)
 add_dependencies(kinova_as ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(kinova_as ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${kinova_driver_LIBRARIES})
 install(TARGETS kinova_as DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
