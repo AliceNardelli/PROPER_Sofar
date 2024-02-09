@@ -58,7 +58,7 @@ PickPlace::PickPlace(){
     pub_aco_ = nh_.advertise<moveit_msgs::AttachedCollisionObject>("/attached_collision_object", 10);
     pub_planning_scene_diff_ = nh_.advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
 
-    kinova_service = nh_.advertiseService("vaffanculo", &PickPlace::my_pick, this);
+    kinova_service = nh_.advertiseService("kinova_move_srv", &PickPlace::my_pick, this);
     
     int arm_joint_num = robot_type_[3]-'0';
     joint_names_.resize(arm_joint_num);
