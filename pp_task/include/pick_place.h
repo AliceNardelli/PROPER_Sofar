@@ -27,6 +27,7 @@
 #include <moveit_msgs/DisplayRobotState.h>
 #include <moveit_msgs/ApplyPlanningScene.h>
 #include <moveit_msgs/DisplayTrajectory.h>
+
 #include <pp_task/MoveArm.h>
 namespace kinova
 {
@@ -35,7 +36,7 @@ namespace kinova
     class PickPlace
     {
     public:
-        PickPlace(ros::NodeHandle &nh);
+        PickPlace();
         ~PickPlace();
 
 
@@ -122,12 +123,12 @@ namespace kinova
 
         void define_joint_values();
         void define_release();
-        void define_cartesian_pose(float x, float y, float z);
+        void define_cartesian_pose(float x , float y, float z);
         geometry_msgs::PoseStamped generate_gripper_align_pose(geometry_msgs::PoseStamped targetpose_msg, double dist, double azimuth, double polar, double rot_gripper_z);
         void setup_constrain(geometry_msgs::Pose target_pose, bool orientation, bool position);
         void check_constrain();
 
-        bool my_pick(pp_task::MoveArm::Request  &req, pp_task::MoveArm::Response &res);
+        bool my_pick(pp_task::MoveArm::Request &req, pp_task::MoveArm::Response &res);
         bool my_place();
 
         void get_current_state(const sensor_msgs::JointStateConstPtr &msg);

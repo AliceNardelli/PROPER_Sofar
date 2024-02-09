@@ -25,22 +25,13 @@ tf::Quaternion EulerZYZ_to_Quaternion(double tz1, double ty, double tz2)
 }
 
 
-PickPlace::PickPlace(ros::NodeHandle &nh):
-    nh_(nh)
-{
-//    if(ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug))
-//    {
-//        ros::console::notifyLoggerLevelsChanged();
-//    }
-
-    ros::NodeHandle pn("~");
-
+PickPlace::PickPlace(){
+    nh_=ros::NodeHandle("~"); 
     nh_.param<std::string>("/robot_type",robot_type_,"j2s7s300");
     nh_.param<bool>("/robot_connected",robot_connected_,true);
 
     if (robot_connected_)
     {
-        //sub_joint_ = nh_.subscribe<sensor_msgs::JointState>("/j2s7s300_driver/out/joint_state", 1, &PickPlace::get_current_state, this);
         sub_pose_ = nh_.subscribe<geometry_msgs::PoseStamped>("/" + robot_type_ +"_driver/out/tool_pose", 1, &PickPlace::get_current_pose, this);
     }
 
@@ -51,10 +42,6 @@ PickPlace::PickPlace(ros::NodeHandle &nh):
     // construct a `PlanningScene` that maintains the state of the world (including the robot).
     planning_scene_.reset(new planning_scene::PlanningScene(robot_model_));
     planning_scene_monitor_.reset(new planning_scene_monitor::PlanningSceneMonitor("robot_description"));
-
-//    //  every time need retrive current robot state, do the following.
-//    robot_state::RobotState& robot_state = planning_scene_->getCurrentStateNonConst();
-//    const robot_state::JointModelGroup *joint_model_group = robot_state.getJointModelGroup("arm");
 
     group_ = new moveit::planning_interface::MoveGroupInterface("arm");
     gripper_group_ = new moveit::planning_interface::MoveGroupInterface("gripper");
@@ -71,6 +58,8 @@ PickPlace::PickPlace(ros::NodeHandle &nh):
     pub_aco_ = nh_.advertise<moveit_msgs::AttachedCollisionObject>("/attached_collision_object", 10);
     pub_planning_scene_diff_ = nh_.advertise<moveit_msgs::PlanningScene>("planning_scene", 1);
 
+    kinova_service = nh_.advertiseService("vaffanculo", &PickPlace::my_pick, this);
+    
     int arm_joint_num = robot_type_[3]-'0';
     joint_names_.resize(arm_joint_num);
     joint_values_.resize(joint_names_.size());
@@ -86,7 +75,7 @@ PickPlace::PickPlace(ros::NodeHandle &nh):
 
     // pick process
     result_ = false;
-    kinova_service = nh_.advertiseService("/kinova_motion_srv", &PickPlace::my_pick, this);
+    
    
 }
 
@@ -470,6 +459,9 @@ void PickPlace::define_cartesian_pose(float x, float y, float z)
     grasp_pose_.pose.position.x = x;//0.0;
     grasp_pose_.pose.position.y = y;//0.6;
     grasp_pose_.pose.position.z = z; //0.3;
+//    //  every time need retrive current robot state, do the following.
+//    robot_state::RobotState& robot_state = planning_scene_->getCurrentStateNonConst();
+//    const robot_state::JointModelGroup *joint_model_group = robot_state.getJointModelGroup("arm");
 
     q = EulerZYZ_to_Quaternion(0, 0, M_PI);
     grasp_pose_.pose.orientation.x = q.x();
@@ -804,9 +796,9 @@ void PickPlace::getInvK(geometry_msgs::Pose &eef_pose, std::vector<double> &join
 }
 
 
-bool PickPlace::my_pick(pp_task::MoveArm::Request  &req,
-        pp_task::MoveArm::Response &res)
+bool PickPlace::my_pick(pp_task::MoveArm::Request  &req, pp_task::MoveArm::Response &res)
 {
+
     clear_workscene();
     ros::WallDuration(1.0).sleep();
     build_workscene();
@@ -914,12 +906,8 @@ bool PickPlace::my_pick(pp_task::MoveArm::Request  &req,
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "pick_place_demo");
-    ros::NodeHandle node;
-
-    kinova::PickPlace pick_place(node);
-     while (ros::ok())
-   {
-       ros::spin();
-   }
+    kinova::PickPlace pick_place;
+    ros::spin();
     return 0;
+
 }
