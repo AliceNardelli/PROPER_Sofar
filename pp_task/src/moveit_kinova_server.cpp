@@ -80,14 +80,14 @@ PickPlace::PickPlace(ros::NodeHandle &nh):
     }
 
     // set pre-defined joint and pose values.
-    define_cartesian_pose(0,0,0);
+    define_cartesian_pose();
     define_joint_values();
     define_release();
 
     // pick process
     
     result_ = false;
-    my_pick();
+    //my_pick();
     while(true){
         sleep(1);
     }
@@ -201,7 +201,8 @@ void PickPlace::clear_workscene()
 }
 
 void PickPlace::build_workscene()
-{
+{  
+    /*
     co_.header.frame_id = "root";
     co_.header.stamp = ros::Time::now();
 
@@ -210,15 +211,8 @@ void PickPlace::build_workscene()
     co_.operation = moveit_msgs::CollisionObject::REMOVE;
     pub_co_.publish(co_);
 
-    co1_.header.frame_id = "root";
-    co1_.header.stamp = ros::Time::now();
 
-    // remove table
-    co1_.id = "desk";
-    co1_.operation = moveit_msgs::CollisionObject::REMOVE;
-    pub_co_.publish(co1_);
-
-    // add table
+        // add table
     co_.primitives.resize(1);
     co_.primitive_poses.resize(1);
     co_.primitives[0].type = shape_msgs::SolidPrimitive::BOX;
@@ -230,12 +224,22 @@ void PickPlace::build_workscene()
     co_.primitives[0].dimensions[shape_msgs::SolidPrimitive::BOX_Z] = 0.03;
     co_.primitive_poses[0].position.x = 0;
     co_.primitive_poses[0].position.y = 0.0;
-    co_.primitive_poses[0].position.z = -0.03;
+    co_.primitive_poses[0].position.z = -0.1;
     pub_co_.publish(co_);
     planning_scene_msg_.world.collision_objects.push_back(co_);
     planning_scene_msg_.is_diff = true;
     pub_planning_scene_diff_.publish(planning_scene_msg_);
     ros::WallDuration(0.1).sleep();
+*/
+    co1_.header.frame_id = "root";
+    co1_.header.stamp = ros::Time::now();
+
+    // remove table
+    co1_.id = "desk";
+    co1_.operation = moveit_msgs::CollisionObject::REMOVE;
+    pub_co_.publish(co1_);
+
+
     // add scrivania
     co1_.primitives.resize(1);
     co1_.primitive_poses.resize(1);
@@ -448,7 +452,7 @@ void PickPlace::check_collision()
 }
 
 
-void PickPlace::define_cartesian_pose(float x, float y, float z)
+void PickPlace::define_cartesian_pose()
 {
     tf::Quaternion q;
 
@@ -466,25 +470,122 @@ void PickPlace::define_cartesian_pose(float x, float y, float z)
     start_pose_.pose.orientation.w = q.w();
 
     // define grasp pose
-    grasp_pose_.header.frame_id = "root";
-    grasp_pose_.header.stamp  = ros::Time::now();
+    grasp_pose_human_1.header.frame_id = "root";
+    grasp_pose_human_1.header.stamp  = ros::Time::now();
+
+    grasp_pose_human_0.header.frame_id = "root";
+    grasp_pose_human_0.header.stamp  = ros::Time::now();
+
+    grasp_pose_robot_1.header.frame_id = "root";
+    grasp_pose_robot_0.header.stamp  = ros::Time::now();
+
+    grasp_pose_robot_1.header.frame_id = "root";
+    grasp_pose_robot_0.header.stamp  = ros::Time::now();
 
     // Euler_ZYZ (-M_PI/4, M_PI/2, M_PI/2)
-    grasp_pose_.pose.position.x = x;//0.0;
-    grasp_pose_.pose.position.y = y;//0.6;
-    grasp_pose_.pose.position.z = z; //0.3;
+    //human0
 
-    q = EulerZYZ_to_Quaternion(0, 0, M_PI);
-    grasp_pose_.pose.orientation.x = q.x();
-    grasp_pose_.pose.orientation.y = q.y();
-    grasp_pose_.pose.orientation.z = q.z();
-    grasp_pose_.pose.orientation.w = q.w();
+    grasp_pose_human_0.pose.position.x = 0.55;//0.0;
+    grasp_pose_human_0.pose.position.y = -0.2;//0.6;
+    grasp_pose_human_0.pose.position.z = 0.03; //0.3;
 
+
+    grasp_pose_human_1.pose.position.x = 0.55;//0.0;
+    grasp_pose_human_1.pose.position.y = 0.2;//0.6;
+    grasp_pose_human_1.pose.position.z = 0.03; //0.3;
+
+
+    grasp_pose_robot_0.pose.position.x = 0.40;//0.0;
+    grasp_pose_robot_0.pose.position.y = -0.2;//0.6;
+    grasp_pose_robot_0.pose.position.z = 0.03; //0.3;
+
+    grasp_pose_robot_1.pose.position.x = 0.40;//0.0;
+    grasp_pose_robot_1.pose.position.y = 0.2;//0.6;
+    grasp_pose_robot_1.pose.position.z = 0.03; //0.3;
+
+    q = EulerZYZ_to_Quaternion(M_PI, M_PI, 0);
+    grasp_pose_human_0.pose.orientation.x = q.x();
+    grasp_pose_human_0.pose.orientation.y = q.y();
+    grasp_pose_human_0.pose.orientation.z = q.z();
+    grasp_pose_human_0.pose.orientation.w = q.w();
+
+    grasp_pose_human_1.pose.orientation.x = q.x();
+    grasp_pose_human_1.pose.orientation.y = q.y();
+    grasp_pose_human_1.pose.orientation.z = q.z();
+    grasp_pose_human_1.pose.orientation.w = q.w();
+
+    grasp_pose_robot_0.pose.orientation.x = q.x();
+    grasp_pose_robot_0.pose.orientation.y = q.y();
+    grasp_pose_robot_0.pose.orientation.z = q.z();
+    grasp_pose_robot_0.pose.orientation.w = q.w();
+
+    grasp_pose_robot_1.pose.orientation.x = q.x();
+    grasp_pose_robot_1.pose.orientation.y = q.y();
+    grasp_pose_robot_1.pose.orientation.z = q.z();
+    grasp_pose_robot_1.pose.orientation.w = q.w();
+
+
+    // define release
+    release_1.header.frame_id = "root";
+    release_1.header.stamp  = ros::Time::now();
+
+    release_2.header.frame_id = "root";
+    release_2.header.stamp  = ros::Time::now();
+
+
+    release_3.header.frame_id = "root";
+    release_3.header.stamp  = ros::Time::now();
+
+    release_4.header.frame_id = "root";
+    release_4.header.stamp  = ros::Time::now();
+
+
+
+    // Euler_ZYZ (-M_PI/4, M_PI/2, M_PI/2)
+    //human0
+    release_1.pose.position.x = 0.10;
+    release_1.pose.position.y = -0.55;
+    release_1.pose.position.z = 0.03;
+
+    release_2.pose.position.x = -0.10;
+    release_2.pose.position.y = -0.55;
+    release_2.pose.position.z = 0.03;
+
+    release_3.pose.position.x = 0.10;
+    release_3.pose.position.y = -0.73;
+    release_3.pose.position.z = 0.03;
+
+    release_4.pose.position.x = -0.10;
+    release_4.pose.position.y = -0.73;
+    release_4.pose.position.z = 0.03;
+
+
+    q = EulerZYZ_to_Quaternion(M_PI, M_PI, 0);
+    release_1.pose.orientation.x = q.x();
+    release_1.pose.orientation.y = q.y();
+    release_1.pose.orientation.z = q.z();
+    release_1.pose.orientation.w = q.w();
+
+    release_2.pose.orientation.x = q.x();
+    release_2.pose.orientation.y = q.y();
+    release_2.pose.orientation.z = q.z();
+    release_2.pose.orientation.w = q.w();
+
+    release_3.pose.orientation.x = q.x();
+    release_3.pose.orientation.y = q.y();
+    release_3.pose.orientation.z = q.z();
+    release_3.pose.orientation.w = q.w();
+
+    release_4.pose.orientation.x = q.x();
+    release_4.pose.orientation.y = q.y();
+    release_4.pose.orientation.z = q.z();
+    release_4.pose.orientation.w = q.w();
     // generate_pregrasp_pose(double dist, double azimuth, double polar, double rot_gripper_z)
+    /*
     grasp_pose_= generate_gripper_align_pose(grasp_pose_, 0.03999, 0, 0, M_PI);
     pregrasp_pose_ = generate_gripper_align_pose(grasp_pose_, 0.1, 0, 0, M_PI);
     postgrasp_pose_ = grasp_pose_;
-    postgrasp_pose_.pose.position.z = grasp_pose_.pose.position.z + 0.05;
+    postgrasp_pose_.pose.position.z = grasp_pose_.pose.position.z + 0.05;*/
 
 }
 
@@ -501,42 +602,82 @@ void PickPlace::define_joint_values()
 
 
     grasp_joint_robot_0.resize(joint_names_.size());
-    grasp_joint_robot_0[0] = 10 *M_PI/180.0;
-    grasp_joint_robot_0[1] = 132 *M_PI/180.0;
+    grasp_joint_robot_0[0] = 20 *M_PI/180.0;
+    grasp_joint_robot_0[1] = 120 *M_PI/180.0;
     grasp_joint_robot_0[2] = 180 *M_PI/180.0;
-    grasp_joint_robot_0[3] = 87 *M_PI/180.0;
+    grasp_joint_robot_0[3] = 105 *M_PI/180.0;
     grasp_joint_robot_0[4] = 180 *M_PI/180.0;
-    grasp_joint_robot_0[5] = 145 *M_PI/180.0;
+    grasp_joint_robot_0[5] = 130 *M_PI/180.0;
     grasp_joint_robot_0[6] = -167 *M_PI/180.0;
+
+    pregrasp_joint_robot_0.resize(joint_names_.size());
+    pregrasp_joint_robot_0[0] = 20 *M_PI/180.0;
+    pregrasp_joint_robot_0[1] = 130 *M_PI/180.0;
+    pregrasp_joint_robot_0[2] = 180 *M_PI/180.0;
+    pregrasp_joint_robot_0[3] = 150 *M_PI/180.0;
+    pregrasp_joint_robot_0[4] = 180 *M_PI/180.0;
+    pregrasp_joint_robot_0[5] = 130 *M_PI/180.0;
+    pregrasp_joint_robot_0[6] = -167 *M_PI/180.0;
 
 
     grasp_joint_robot_1.resize(joint_names_.size());
-    grasp_joint_robot_1[0] = -10 *M_PI/180.0;
-    grasp_joint_robot_1[1] = 132 *M_PI/180.0;
+    grasp_joint_robot_1[0] = 0 *M_PI/180.0;
+    grasp_joint_robot_1[1] = 120 *M_PI/180.0;
     grasp_joint_robot_1[2] = 180 *M_PI/180.0;
-    grasp_joint_robot_1[3] = 87 *M_PI/180.0;
+    grasp_joint_robot_1[3] = 105 *M_PI/180.0;
     grasp_joint_robot_1[4] = 180 *M_PI/180.0;
-    grasp_joint_robot_1[5] = 145 *M_PI/180.0;
+    grasp_joint_robot_1[5] = 130 *M_PI/180.0;
     grasp_joint_robot_1[6] = -167 *M_PI/180.0;
 
+    pregrasp_joint_robot_1.resize(joint_names_.size());
+    pregrasp_joint_robot_1[0] = 0 *M_PI/180.0;
+    pregrasp_joint_robot_1[1] = 130 *M_PI/180.0;
+    pregrasp_joint_robot_1[2] = 180 *M_PI/180.0;
+    pregrasp_joint_robot_1[3] = 140 *M_PI/180.0;
+    pregrasp_joint_robot_1[4] = 180 *M_PI/180.0;
+    pregrasp_joint_robot_1[5] = 130 *M_PI/180.0;
+    pregrasp_joint_robot_1[6] = -167 *M_PI/180.0;
+
+
+
     grasp_joint_human_0.resize(joint_names_.size());
-    grasp_joint_human_0[0] = 0.0 *M_PI/180.0;
-    grasp_joint_human_0[1] = 111 *M_PI/180.0;
-    grasp_joint_human_0[2] = 182 *M_PI/180.0;
-    grasp_joint_human_0[3] = 139 *M_PI/180.0;
+    grasp_joint_human_0[0] = 20 *M_PI/180.0;
+    grasp_joint_human_0[1] = 85 *M_PI/180.0;
+    grasp_joint_human_0[2] = 180 *M_PI/180.0;
+    grasp_joint_human_0[3] = 180 *M_PI/180.0;
     grasp_joint_human_0[4] = 180 *M_PI/180.0;
-    grasp_joint_human_0[5] = 115 *M_PI/180.0;
-    grasp_joint_human_0[6] = 194 *M_PI/180.0;
+    grasp_joint_human_0[5] = 90 *M_PI/180.0;
+    grasp_joint_human_0[6] = -167 *M_PI/180.0;
+
+
+    pregrasp_joint_human_0.resize(joint_names_.size());
+    pregrasp_joint_human_0[0] = 20 *M_PI/180.0;
+    pregrasp_joint_human_0[1] = 130 *M_PI/180.0;
+    pregrasp_joint_human_0[2] = 180 *M_PI/180.0;
+    pregrasp_joint_human_0[3] = 180 *M_PI/180.0;
+    pregrasp_joint_human_0[4] = 180 *M_PI/180.0;
+    pregrasp_joint_human_0[5] = 90 *M_PI/180.0;
+    pregrasp_joint_human_0[6] = -167 *M_PI/180.0;
 
 
     grasp_joint_human_1.resize(joint_names_.size());
-    grasp_joint_human_1[0] = -10.0 *M_PI/180.0;
-    grasp_joint_human_1[1] =  90 *M_PI/180.0;
+    grasp_joint_human_1[0] = 0 *M_PI/180.0;
+    grasp_joint_human_1[1] = 83 *M_PI/180.0;
     grasp_joint_human_1[2] = 180 *M_PI/180.0;
-    grasp_joint_human_1[3] = 182 *M_PI/180.0;
+    grasp_joint_human_1[3] = 180 *M_PI/180.0;
     grasp_joint_human_1[4] = 180 *M_PI/180.0;
-    grasp_joint_human_1[5] = 93 *M_PI/180.0;
+    grasp_joint_human_1[5] = 90 *M_PI/180.0;
     grasp_joint_human_1[6] = -167 *M_PI/180.0;
+
+
+    pregrasp_joint_human_1.resize(joint_names_.size());
+    pregrasp_joint_human_1[0] = 0 *M_PI/180.0;
+    pregrasp_joint_human_1[1] = 130 *M_PI/180.0;
+    pregrasp_joint_human_1[2] = 180 *M_PI/180.0;
+    pregrasp_joint_human_1[3] = 180 *M_PI/180.0;
+    pregrasp_joint_human_1[4] = 180 *M_PI/180.0;
+    pregrasp_joint_human_1[5] = 90 *M_PI/180.0;
+    pregrasp_joint_human_1[6] = -167 *M_PI/180.0;
 
     pregrasp_joint_.resize(joint_names_.size());
     pregrasp_joint_[0] = 0 *M_PI/180.0;
@@ -553,39 +694,48 @@ void PickPlace::define_joint_values()
 void PickPlace::define_release()
 {
     release_joint_4.resize(joint_names_.size());
-    release_joint_4[0] = 105 *M_PI/180.0;
-    release_joint_4[1] = 78 *M_PI/180.0;
+    release_joint_4[0] = 103 *M_PI/180.0;
+    release_joint_4[1] = 90 *M_PI/180.0;//90!
     release_joint_4[2] = 180 *M_PI/180.0;
-    release_joint_4[3] = 182 *M_PI/180.0;
+    release_joint_4[3] = 180 *M_PI/180.0;
     release_joint_4[4] = 180 *M_PI/180.0;
-    release_joint_4[5] = 93 *M_PI/180.0;
+    release_joint_4[5] = 90 *M_PI/180.0;
     release_joint_4[6] = -167 *M_PI/180.0;
 
+    release_joint_3.resize(joint_names_.size());
+    release_joint_3[0] = 90 *M_PI/180.0;
+    release_joint_3[1] = 90 *M_PI/180.0;
+    release_joint_3[2] = 180 *M_PI/180.0;
+    release_joint_3[3] = 180 *M_PI/180.0;
+    release_joint_3[4] = 180 *M_PI/180.0;
+    release_joint_3[5] = 90 *M_PI/180.0;
+    release_joint_3[6] = -167 *M_PI/180.0;
+
     release_joint_1.resize(joint_names_.size());
-    release_joint_1[0] = 105 *M_PI/180.0;
-    release_joint_1[1] = 120 *M_PI/180.0;
-    release_joint_1[2] = 160 *M_PI/180.0;
-    release_joint_1[3] = 91 *M_PI/180.0;
+    release_joint_1[0] = 90 *M_PI/180.0;
+    release_joint_1[1] = 125 *M_PI/180.0;//125
+    release_joint_1[2] = 180 *M_PI/180.0;
+    release_joint_1[3] = 90 *M_PI/180.0;
     release_joint_1[4] = 180 *M_PI/180.0;
-    release_joint_1[5] = 135*M_PI/180.0;
+    release_joint_1[5] = 130*M_PI/180.0;
     release_joint_1[6] = -167 *M_PI/180.0;
 
     release_joint_2.resize(joint_names_.size());
-    release_joint_2[0] = 115 *M_PI/180.0;
-    release_joint_2[1] = 120 *M_PI/180.0;
-    release_joint_2[2] = 160 *M_PI/180.0;
-    release_joint_2[3] = 91 *M_PI/180.0;
+    release_joint_2[0] = 105 *M_PI/180.0;
+    release_joint_2[1] = 125 *M_PI/180.0;
+    release_joint_2[2] = 180 *M_PI/180.0;
+    release_joint_2[3] = 90 *M_PI/180.0;
     release_joint_2[4] = 180 *M_PI/180.0;
-    release_joint_2[5] = 135*M_PI/180.0;
+    release_joint_2[5] = 130*M_PI/180.0;
     release_joint_2[6] = -167 *M_PI/180.0;
 
     prerelease_joint_.resize(joint_names_.size());
-    prerelease_joint_[0] = 100 *M_PI/180.0;
-    prerelease_joint_[1] = 150 *M_PI/180.0;
-    prerelease_joint_[2] = 160 *M_PI/180.0;
-    prerelease_joint_[3] = 91 *M_PI/180.0;
+    prerelease_joint_[0] = 90 *M_PI/180.0;
+    prerelease_joint_[1] = 130 *M_PI/180.0;
+    prerelease_joint_[2] = 180 *M_PI/180.0;
+    prerelease_joint_[3] = 139 *M_PI/180.0;
     prerelease_joint_[4] = 180 *M_PI/180.0;
-    prerelease_joint_[5] = 158*M_PI/180.0;
+    prerelease_joint_[5] = 130*M_PI/180.0;
     prerelease_joint_[6] = -167 *M_PI/180.0;
  
 }
@@ -630,114 +780,7 @@ geometry_msgs::PoseStamped PickPlace::generate_gripper_align_pose(geometry_msgs:
 
 void PickPlace::setup_constrain(geometry_msgs::Pose target_pose, bool orientation, bool position)
 {
-    if ( (!orientation) && (!position) )
-    {    //add_target();
-    ros::WallDuration(0.1).sleep();
 
-    ROS_INFO_STREAM("Press any key to move to start pose ...");
-    std::cin >> pause_;
-    group_->setPoseTarget(start_pose_);
-    evaluate_plan(*group_);
-
-    ROS_INFO_STREAM("Planning to go to pre-grasp position ...");
-    group_->setPoseTarget(pregrasp_pose_);
-    evaluate_plan(*group_);
-
-    ROS_INFO_STREAM("Approaching grasp position ...");
-    group_->setPoseTarget(grasp_pose_);
-    evaluate_plan(*group_);
-
-    ROS_INFO_STREAM("Grasping ...");
-    add_attached_obstacle();
-    gripper_action(0.75*FINGER_MAX); // partially close
-
-    ROS_INFO_STREAM("Planning to return to start position  ...");
-    group_->setPoseTarget(start_pose_);
-    evaluate_plan(*group_);
-
-    ROS_INFO_STREAM("Releasing gripper ...");
-
-    gripper_action(0.0);
-        ROS_WARN("Neither orientation nor position constrain applied.");
-        return;
-    }
-
-    moveit_msgs::Constraints grasp_constrains;
-
-    // setup constrains
-    moveit_msgs::OrientationConstraint ocm;
-    ocm.link_name = robot_type_ + "_end_effector";
-    ocm.header.frame_id = "root";
-    ocm.orientation = target_pose.orientation;
-    ocm.absolute_x_axis_tolerance = 2*M_PI;
-    ocm.absolute_y_axis_tolerance = 2*M_PI;
-    ocm.absolute_z_axis_tolerance = M_PI/10;
-    ocm.weight = 0.5;
-    if (orientation)
-    {
-        grasp_constrains.orientation_constraints.push_back(ocm);
-    }
-
-
-    /* Define position constrain box based on current pose and target pose. */
-    shape_msgs::SolidPrimitive primitive;
-    primitive.type = primitive.BOX;
-    primitive.dimensions.resize(3);
-
-    // group_->getCurrentPose() does not work.
-//    current_pose_ = group_->getCurrentPose();
-    geometry_msgs::Pose current_pose;
-    { // scope for mutex update
-        boost::mutex::scoped_lock lock_pose(mutex_pose_);
-        current_pose = current_pose_.pose;
-//        ROS_DEBUG_STREAM(__PRETTY_FUNCTION__ << ": LINE: " << __LINE__ << ": " << "current_pose_: x " << current_pose_.pose.position.x  << ", y " << current_pose_.pose.position.y  << ", z " << current_pose_.pose.position.z  << ", qx " << current_pose_.pose.orientation.x  << ", qy " << current_pose_.pose.orientation.y  << ", qz " << current_pose_.pose.orientation.z  << ", qw " << current_pose_.pose.orientation.w );
-    }
-
-    double constrain_box_scale = 2.0;
-    primitive.dimensions[0] = constrain_box_scale * std::abs(target_pose.position.x - current_pose.position.x);
-    primitive.dimensions[1] = constrain_box_scale * std::abs(target_pose.position.y - current_pose.position.y);
-    primitive.dimensions[2] = constrain_box_scale * std::abs(target_pose.position.z - current_pose.position.z);
-    ROS_INFO_STREAM("GOING PREGRASP");
-    group_->setJointValueTarget(pregrasp_joint_);
-    evaluate_plan(*group_);
-
-    ROS_INFO_STREAM("GRASP");
-    /* A pose for the box (specified relative to frame_id) */
-    geometry_msgs::Pose box_pose;
-    box_pose.orientation.w = 1.0;
-    // place between start point and goal point.
-    box_pose.position.x = (target_pose.position.x + current_pose.position.x)/2.0;
-    box_pose.position.y = (target_pose.position.y + current_pose.position.y)/2.0;
-    box_pose.position.z = (target_pose.position.z + current_pose.position.z)/2.0;
-
-    moveit_msgs::PositionConstraint pcm;
-    pcm.link_name = robot_type_+"_end_effector";
-    pcm.header.frame_id = "root";
-    pcm.constraint_region.primitives.push_back(primitive);
-    pcm.constraint_region.primitive_poses.push_back(box_pose);
-    pcm.weight = 0.5;
-    if(position)
-    {
-        grasp_constrains.position_constraints.push_back(pcm);
-    }
-
-    group_->setPathConstraints(grasp_constrains);
-
-
-//    // The bellowing code is just for visulizing the box and check.
-//    // Disable this part after checking.
-//    co_.id = "check_constrain";
-//    co_.operation = moveit_msgs::CollisionObject::REMOVE;
-//    pub_co_.publish(co_);
-
-//    co_.operation = moveit_msgs::CollisionObject::ADD;
-//    co_.primitives.push_back(primitive);
-//    co_.primitive_poses.push_back(box_pose);
-//    pub_co_.publish(co_);
-//    planning_scene_msg_.world.collision_objects.push_back(co_);
-//    planning_scene_msg_.is_diff = true;
-//    pub_planning_scene_diff_.publish(planning_scene_msg_);
-//    ros::WallDuration(0.1).sleep();
 }
 
 void PickPlace::check_constrain()
@@ -888,18 +931,25 @@ bool PickPlace::my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Respo
 
     //add_obstacle();
     //clear_workscene();
- 
-    ROS_INFO_STREAM("GOING PREGRASP");
-    group_->setJointValueTarget(pregrasp_joint_);
-    evaluate_plan(*group_);
+    
+
+
     int block=req.block;
     if (req.block_owner=="human"){
     if (block==0){
+
+    ROS_INFO_STREAM("GOING PREGRASP");
+    group_->setJointValueTarget(pregrasp_joint_human_0);
+    evaluate_plan(*group_);
     ROS_INFO_STREAM("GRASP");
     group_->setJointValueTarget(grasp_joint_human_0);
     evaluate_plan(*group_);
     }
     else if (block==1){
+
+    ROS_INFO_STREAM("GOING PREGRASP");
+    group_->setJointValueTarget(pregrasp_joint_human_1);
+    evaluate_plan(*group_);
     ROS_INFO_STREAM("GRASP");
     group_->setJointValueTarget(grasp_joint_human_1);
     evaluate_plan(*group_);
@@ -907,22 +957,33 @@ bool PickPlace::my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Respo
     }
     else if (req.block_owner=="robot"){
     if (block==0){
+
+    ROS_INFO_STREAM("GOING PREGRASP");
+    group_->setJointValueTarget(pregrasp_joint_robot_0);
+    evaluate_plan(*group_);
+
     ROS_INFO_STREAM("GRASP");
     group_->setJointValueTarget(grasp_joint_robot_0);
     evaluate_plan(*group_);
     }
     else if (block==1){
+
+    ROS_INFO_STREAM("GOING PREGRASP");
+    group_->setJointValueTarget(pregrasp_joint_robot_1);
+    evaluate_plan(*group_);
+
     ROS_INFO_STREAM("GRASP");
     group_->setJointValueTarget(grasp_joint_robot_1);
     evaluate_plan(*group_);
     }}
-
+    
     ROS_INFO_STREAM("CLOSE HAND");
     gripper_action(0.75*FINGER_MAX); // partially close
-
-    ROS_INFO_STREAM("GOING PRERELEASE");
+    
+    ROS_INFO_STREAM("GOING PREGRASP");
     group_->setJointValueTarget(prerelease_joint_);
     evaluate_plan(*group_);
+
     if(req.final_pose=="area1"){
     ROS_INFO_STREAM("GOING RELEASE");
     group_->setJointValueTarget(release_joint_1);

@@ -99,7 +99,10 @@ namespace kinova
         std::vector<double> grasp_joint_robot_0;
         std::vector<double> grasp_joint_robot_1;
         std::vector<double> pregrasp_joint_;
-        
+        std::vector<double> pregrasp_joint_robot_0;
+        std::vector<double> pregrasp_joint_robot_1;
+        std::vector<double> pregrasp_joint_human_0;
+        std::vector<double> pregrasp_joint_human_1;
         std::vector<double> release_joint_1;
         std::vector<double> release_joint_2;
         std::vector<double> release_joint_3;
@@ -107,7 +110,15 @@ namespace kinova
         std::vector<double> prerelease_joint_;
 
         geometry_msgs::PoseStamped start_pose_;
-        geometry_msgs::PoseStamped grasp_pose_;
+        geometry_msgs::PoseStamped grasp_pose_human_0;
+        geometry_msgs::PoseStamped grasp_pose_human_1;
+        geometry_msgs::PoseStamped grasp_pose_robot_0;
+        geometry_msgs::PoseStamped grasp_pose_robot_1;
+
+        geometry_msgs::PoseStamped release_1;
+        geometry_msgs::PoseStamped release_2;
+        geometry_msgs::PoseStamped release_3;
+        geometry_msgs::PoseStamped release_4;
         geometry_msgs::PoseStamped can_pose_;
         geometry_msgs::PoseStamped pregrasp_pose_;
         geometry_msgs::PoseStamped postgrasp_pose_;
@@ -123,7 +134,7 @@ namespace kinova
 
         void define_joint_values();
         void define_release();
-        void define_cartesian_pose(float x , float y, float z);
+        void define_cartesian_pose();
         geometry_msgs::PoseStamped generate_gripper_align_pose(geometry_msgs::PoseStamped targetpose_msg, double dist, double azimuth, double polar, double rot_gripper_z);
         void setup_constrain(geometry_msgs::Pose target_pose, bool orientation, bool position);
         void check_constrain();
