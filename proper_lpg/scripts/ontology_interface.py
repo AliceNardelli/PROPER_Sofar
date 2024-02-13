@@ -24,11 +24,11 @@ import datetime
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 
-we=0
-wi=1
-wc=0
+we=1
+wi=0
+wc=1
 wu=0
-wa=1
+wa=0
 wd=0
 sum_weights=0
 weights=[]
@@ -271,6 +271,7 @@ class ExAction(smach.State):
                 return "outcome8"
 
         else:
+            print(ac, personality)
             userdata, response=self.call_action_server(userdata, ac, personality)
             if response:
                 if first_trial:            

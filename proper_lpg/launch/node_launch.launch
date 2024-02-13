@@ -4,6 +4,6 @@
 <node pkg="pp_task" type="edge_detection.py" name="edge detection"/>  
 <node pkg="pp_task" type="game_player.py" name="game_player"/>  
 <node pkg="proper_lpg" type="perception_interface.py" name="perception_iterface"/>  
-<node pkg="rosbot_actions" type="action_dispatcher.py" name="action_dispatcher"/>         
-<node pkg="rosbot_actions" type="personality_generator.py" name="personality_generator"/>     
+<node pkg="proper_lpg" type="action_dispatcher.py" name="action_dispatcher"/>         
+<node pkg="proper_lpg" type="personality_generator.py" name="personality_generator"/>     
 </launch>

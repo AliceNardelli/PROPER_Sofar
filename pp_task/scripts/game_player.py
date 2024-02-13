@@ -53,14 +53,35 @@ def handle_game(req):
     elif req.type=="new_move":
         print("NEW MOVE")
         #capire se fare una media
+        area=[]
         if actual_board_state.area1==final_board_state.area1:
-            if actual_board_state.area2==final_board_state.area2:
-                if actual_board_state.area3==final_board_state.area3:
-                    if actual_board_state.area4==final_board_state.area4:
-                        print(actual_board_state, final_board_state)
-                        res.success=False #there is no new move
+            area.append(True)
         else:
-            res.success=True
+            area.append(False)
+            
+        if actual_board_state.area2==final_board_state.area2:
+            area.append(True)
+        else:
+            area.append(False)
+        if actual_board_state.area3==final_board_state.area3:
+            
+            area.append(True)
+        else:
+            area.append(False)
+        if actual_board_state.area4==final_board_state.area4:
+            area.append(True)
+        else:
+            area.append(False)
+        
+        for ba in area:
+            if not ba:
+                res.success=True
+                return res
+                        
+        res.success=False #there is no new move
+        return res
+      
+
     elif req.type=="new_action":
         if final_board_state.area1!=actual_board_state.area1:
             if (final_board_state.area1=="B" and req.firstmove=="human") or (final_board_state.area1=="R" and req.firstmove=="robot"):
@@ -74,12 +95,12 @@ def handle_game(req):
                 return res
         if final_board_state.area3!=actual_board_state.area3:
             if (final_board_state.area3=="B" and req.firstmove=="human") or (final_board_state.area3=="R" and req.firstmove=="robot"):
-                res.action="area1"
+                res.action="area3"
                 res.success=True
                 return res
-        if final_board_state.area1!=actual_board_state.area1:
-            if (final_board_state.area1=="B" and req.firstmove=="human") or (final_board_state.area1=="R" and req.firstmove=="robot"):
-                res.action="area1"
+        if final_board_state.area4!=actual_board_state.area4:
+            if (final_board_state.area4=="B" and req.firstmove=="human") or (final_board_state.area4=="R" and req.firstmove=="robot"):
+                res.action="area4"
                 res.success=True
                 return res
         else:
