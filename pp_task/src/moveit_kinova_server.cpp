@@ -703,7 +703,7 @@ void PickPlace::define_release()
     release_joint_4[6] = -167 *M_PI/180.0;
 
     release_joint_3.resize(joint_names_.size());
-    release_joint_3[0] = 90 *M_PI/180.0;
+    release_joint_3[0] = 85 *M_PI/180.0;
     release_joint_3[1] = 90 *M_PI/180.0;
     release_joint_3[2] = 180 *M_PI/180.0;
     release_joint_3[3] = 180 *M_PI/180.0;
@@ -712,7 +712,7 @@ void PickPlace::define_release()
     release_joint_3[6] = -167 *M_PI/180.0;
 
     release_joint_1.resize(joint_names_.size());
-    release_joint_1[0] = 90 *M_PI/180.0;
+    release_joint_1[0] = 85 *M_PI/180.0;
     release_joint_1[1] = 125 *M_PI/180.0;//125
     release_joint_1[2] = 180 *M_PI/180.0;
     release_joint_1[3] = 90 *M_PI/180.0;
@@ -937,7 +937,7 @@ bool PickPlace::my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Respo
     int block=req.block;
     if (req.block_owner=="human"){
     if (block==0){
-
+    
     ROS_INFO_STREAM("GOING PREGRASP");
     group_->setJointValueTarget(pregrasp_joint_human_0);
     evaluate_plan(*group_);
@@ -957,7 +957,7 @@ bool PickPlace::my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Respo
     }
     else if (req.block_owner=="robot"){
     if (block==0){
-
+    ROS_INFO_STREAM("ROBOT BLOCK 0");
     ROS_INFO_STREAM("GOING PREGRASP");
     group_->setJointValueTarget(pregrasp_joint_robot_0);
     evaluate_plan(*group_);
@@ -967,7 +967,7 @@ bool PickPlace::my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Respo
     evaluate_plan(*group_);
     }
     else if (block==1){
-
+    ROS_INFO_STREAM("ROBOT BLOCK 1");
     ROS_INFO_STREAM("GOING PREGRASP");
     group_->setJointValueTarget(pregrasp_joint_robot_1);
     evaluate_plan(*group_);

@@ -14,8 +14,7 @@ checking for cyclic := effects --- OK.
 ff: search configuration is EHC, if that fails then  best-first on 1*g(s) + 5*h(s) where
     metric is  plan length
 
-Cueing down from goal distance:    5 into depth [1]
-                                   4            [1]
+Cueing down from goal distance:    4 into depth [1]
                                    3            [1]
                                    2            [1]
                                    1            [1]
@@ -23,18 +22,17 @@ Cueing down from goal distance:    5 into depth [1]
 
 ff: found legal plan as follows
 
-step    0: ASSIGN_DOMINANCE
-        1: SAY_HUMAN_TABLET_TURN1
-        2: PICK_PLACE_ROBOT_PRECISE_TURN2
-        3: COMPUTE_HEDONIC_FEELINGS
-        4: CHECK_FINISH
+step    0: REACT_SURPRISE_EMOTION
+        1: REACT_ATTENTION
+        2: COMPUTE_HEDONIC_FEELINGS
+        3: CHECK_FINISH
      
 
 time spent:    0.00 seconds instantiating 12 easy, 0 hard action templates
-               0.00 seconds reachability analysis, yielding 11 facts and 9 actions
-               0.00 seconds creating final representation with 8 relevant facts, 3 relevant fluents
+               0.00 seconds reachability analysis, yielding 21 facts and 8 actions
+               0.00 seconds creating final representation with 13 relevant facts, 3 relevant fluents
                0.00 seconds computing LNF
                0.00 seconds building connectivity graph
-               0.00 seconds searching, evaluating 7 states, to a max depth of 1
+               0.00 seconds searching, evaluating 5 states, to a max depth of 1
                0.00 seconds total time
 

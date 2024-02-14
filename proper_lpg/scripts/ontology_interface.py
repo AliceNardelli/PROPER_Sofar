@@ -24,11 +24,11 @@ import datetime
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 
-we=1
+we=0
 wi=0
-wc=1
-wu=0
-wa=0
+wc=0
+wu=1
+wa=1
 wd=0
 sum_weights=0
 weights=[]
@@ -272,9 +272,9 @@ class ExAction(smach.State):
 
         else:
             print(ac, personality)
-            userdata, response=self.call_action_server(userdata, ac, personality)
-            if response:
-                if first_trial:            
+
+
+            if first_trial:            
                     
                     if ("TURN1" in ac):
                         first_trial=False
@@ -283,10 +283,18 @@ class ExAction(smach.State):
                         if ("HUMAN" in ac):
                             req.firstmove="human"
                         elif ("ROBOT" in ac):
-                            req.firstmove="robot"    
+                            req.firstmove="robot" 
+                        if ("REPLACE" in ac):
+                            req.firstmove="robot" 
+                        print(req)   
                         rospy.wait_for_service('game_player_srv')
                         game_client = rospy.ServiceProxy('game_player_srv', Game)
                         resp = game_client(req)
+
+            userdata, response=self.call_action_server(userdata, ac, personality)
+            
+
+            if response:
                 userdata.out_pp="no_trait"
                 return "outcome9"
             else:
@@ -303,6 +311,7 @@ class ExAction(smach.State):
                     req.firstmove="human" 
                 else:
                     req.firstmove="robot"
+                print(req)
                 rospy.wait_for_service('game_player_srv')
                 game_client = rospy.ServiceProxy('game_player_srv', Game)
                 resp = game_client(req)

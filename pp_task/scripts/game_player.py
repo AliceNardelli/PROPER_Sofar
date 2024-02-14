@@ -83,23 +83,30 @@ def handle_game(req):
       
 
     elif req.type=="new_action":
+        print(req)
+        print(final_board_state)
+        print(actual_board_state)
         if final_board_state.area1!=actual_board_state.area1:
             if (final_board_state.area1=="B" and req.firstmove=="human") or (final_board_state.area1=="R" and req.firstmove=="robot"):
+                print("area1")
                 res.action="area1"
                 res.success=True
                 return res
         if final_board_state.area2!=actual_board_state.area2:
             if (final_board_state.area2=="B" and req.firstmove=="human") or (final_board_state.area2=="R" and req.firstmove=="robot"):
+                print("area2")
                 res.action="area2"
                 res.success=True
                 return res
         if final_board_state.area3!=actual_board_state.area3:
             if (final_board_state.area3=="B" and req.firstmove=="human") or (final_board_state.area3=="R" and req.firstmove=="robot"):
+                print("area3")
                 res.action="area3"
                 res.success=True
                 return res
         if final_board_state.area4!=actual_board_state.area4:
             if (final_board_state.area4=="B" and req.firstmove=="human") or (final_board_state.area4=="R" and req.firstmove=="robot"):
+                print("area4")
                 res.action="area4"
                 res.success=True
                 return res
