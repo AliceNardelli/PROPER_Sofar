@@ -1,49 +1,28 @@
-consc_actions/goal1: ["say_it_is_important_to_focus_on_long_term_goals_of_your_life","say_to_be_aware_about_your_objective_of_today","say_to_be_calm_because_anger_is_useless"]
+consc_actions/goal1: ["say_to_be_more_focused","remind_to_not_loose_the_attention","say_to_be_calm_because_anger_is_useless","say_congratulations_to_remain_vigilant"]
 
-consc_actions/goal2: ["say_it_is_important_to_keep_idrateted_your_body","say_that_to_care_about_nutrition_it_is_important_for_healthcare","say_that_keep_the_environment_clean","say_to_drink_a_bit_of_water_allows_to_open_your_mind"]
-consc_actions/goal3: ["say_it_is_important_to_take_care_of_your_body","say_that_the_body_it_is_the_temple_of_the_soul","rememeber_to_be_precise_in_executing_exercizes","remember_to_not_forget_of_breath_during_training"]
-consc_actions/goal4: ["ask_what_is_your_favourite_museum","remind_that_the_art_is_food_for_the_mind","say_that_the_art_can_infer_the_calm"]
-
-zzz_c/goal1: {"say_it_is_important_to_focus_on_long_term_goals_of_your_life":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     "say_to_be_aware_about_your_objective_of_today":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     "say_to_be_calm_because_anger_is_useless":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+zzz_c/goal1: {"say_to_be_more_focused":{"w1":4,"w2":2,"expected_outcome":[1,0,0]},
+     "remind_to_not_loose_the_attention":{"w1":4,"w2":2,"expected_outcome":[1,0,0]},
+     "say_to_be_calm_because_anger_is_useless":{"w1":0,"w2":0,"expected_outcome":[1,0,0]},
+     "say_congratulations_to_remain_vigilant":{"w1":0,"w2":0,"expected_outcome":[1,0,0]},
      }
 
-zzz_c/goal2: {"say_it_is_important_to_keep_idrateted_your_body":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     "say_that_to_care_about_nutrition_it_is_important_for_healthcare":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     "say_that_keep_the_environment_clean":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     "say_to_drink_a_bit_of_water_allows_to_open_your_mind":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+zoz_c/goal1: {"say_to_be_more_focused":{"w1":4,"w2":2,"expected_outcome":[1,0,0]},
+     "remind_to_not_loose_the_attention":{"w1":4,"w2":2,"expected_outcome":[1,0,0]},
+     "say_to_be_calm_because_anger_is_useless":{"w1":4,"w2":2,"expected_outcome":[1,0,0]},
+     "say_congratulations_to_remain_vigilant":{"w1":0,"w2":0,"expected_outcome":[1,0,0]},
      }
 
-zzz_c/goal3: {"say_it_is_important_to_take_care_of_your_body":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     "say_that_the_body_it_is_the_temple_of_the_soul":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     "rememeber_to_be_precise_in_executing_exercizes":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     "remember_to_not_forget_of_breath_during_training":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+ooz_c/goal1: {"say_to_be_more_focused":{"w1":2,"w2":1,"expected_outcome":[1,0,0]},
+     "remind_to_not_loose_the_attention":{"w1":2,"w2":1,"expected_outcome":[1,0,0]},
+     "say_to_be_calm_because_anger_is_useless":{"w1":4,"w2":2,"expected_outcome":[1,0,0]},
+     "say_congratulations_to_remain_vigilant":{"w1":4,"w2":2,"expected_outcome":[1,0,0]},
      }
 
-zzz_c/goal4: {"ask_what_is_your_favourite_museum":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     "remind_that_the_art_is_food_for_the_mind":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     "say_that_the_art_can_infer_the_calm":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
+ozz_c/goal1: {"say_to_be_more_focused":{"w1":2,"w2":1,"expected_outcome":[1,0,0]},
+     "remind_to_not_loose_the_attention":{"w1":2,"w2":1,"expected_outcome":[1,0,0]},
+     "say_to_be_calm_because_anger_is_useless":{"w1":0,"w2":0,"expected_outcome":[1,0,0]},
+     "say_congratulations_to_remain_vigilant":{"w1":4,"w2":2,"expected_outcome":[1,0,0]},
      }
 
-zoz_c/goal1: {"say_it_is_important_to_focus_on_long_term_goals_of_your_life":{"w1":1,"w2":0,"expected_outcome":[0,0,0]},
-     "say_to_be_aware_about_your_objective_of_today":{"w1":1,"w2":0,"expected_outcome":[0,0,0]},
-     "say_to_be_calm_because_anger_is_useless":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     }
 
-zoz_c/goal2: {"say_it_is_important_to_keep_idrateted_your_body":{"w1":1,"w2":0,"expected_outcome":[0,0,0]},
-     "say_that_to_care_about_nutrition_it_is_important_for_healthcare":{"w1":1,"w2":0,"expected_outcome":[0,0,0]},
-     "say_that_keep_the_environment_clean":{"w1":1,"w2":0,"expected_outcome":[0,0,0]},
-     "say_to_drink_a_bit_of_water_allows_to_open_your_mind":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     }
 
-zoz_c/goal3: {"say_it_is_important_to_take_care_of_your_body":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
-     "say_that_the_body_it_is_the_temple_of_the_soul":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     "rememeber_to_be_precise_in_executing_exercizes":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
-     "remember_to_not_forget_of_breath_during_training":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     }
-
-zoz_c/goal4: {"ask_what_is_your_favourite_museum":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
-     "remind_that_the_art_is_food_for_the_mind":{"w1":2,"w2":0,"expected_outcome":[0,0,0]},
-     "say_that_the_art_can_infer_the_calm":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
-     }

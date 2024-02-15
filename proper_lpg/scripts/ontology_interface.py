@@ -262,9 +262,7 @@ class ExAction(smach.State):
             aa,rew=choose_action_u(pi)
             userdata, response= self.call_action_server(userdata, aa, personality)
             if response:
-                pn=map_perception_AV_axis[perception]
-                rr=update_weights_u(aa,pi,pn) #qui in ogni caso avrò una new perception
-                change_raward("reward_c",float(rr))
+                change_raward("reward_c",float(rew))
                 userdata.out_pp="trait"
                 return "outcome9"
             else:

@@ -43,30 +43,3 @@ def choose_action_u(perception):
     return to_execute, unsc_dict[perception]["weights"][to_execute]["w1"]+unsc_dict[perception]["weights"][to_execute]["w2"]
 
 
-"""
-NO NEED OF UPDATING WEIGHTS
-def update_weights_c(action, p_prev, p_after):
-    list_real=unsc_dict[p_after]["num"]
-    list_expected=unsc_dict[p_prev]["weights"][action]["expected_outcome"]
-    error=0
-    #accumulate the error between the perception and the expected one
-    for i in range(0,len(list_real)):
-        error+=(np.abs(list_real[i]-list_expected[i]))
-    #normalize the error
-    error=error/len(list_real)
-    #update the weights
-    prev=unsc_dict[p_prev]["weights"][action]["w2"]
-    print("PREV", prev)
-    if error==0:
-        unsc_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev+0.1),2)
-        print("AFTER", round(np.abs(prev+0.1),2))
-        return round(np.abs(prev + 0.1),2)
-    else:
-        if prev<0.1:
-            print("AFTER", prev)
-            return  prev
-        else:
-           unsc_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev - 0.1),2)
-           print("AFTER",round(np.abs(prev - 0.1),2))
-           return round(np.abs(prev - 0.1),2)
-"""

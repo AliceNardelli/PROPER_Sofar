@@ -1,213 +1,64 @@
-extro_actions/goal1: ["go_closer","express_happiness","ask_a_question","tell_a_joke","say_something_about_itself"]
-extro_actions/goal2: ["ask_something_about_personal_care","say_a_robot_cannot_drink_and_you_are_a_robot","say_should_eat_sweet_to_become_happy","say_you_can_embrace_me"]
-extro_actions/goal3: ["say_you_are_excited_to_do_training_together","say_you_like_energetic_workout","say to high five","ask what the person think about sport"]
-extro_actions/goal4: ["ask_who_is_your_favourite_painter","ask_which_is_your_favourite_paint","express_excitement_to_express_the_morning_routine","say_you_like_physical_contact"]
+extro_actions/goal1: ["say_an_enthusiastic_sentence","gesture_visible","say_something_to_capture_the_attention","tell_a_joke","say_something_about_itself"]
 
-zzz_e/goal1: {"go_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
-     "express_happiness":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "tell_a_joke":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
-
-zzz_e/goal2: {"ask_something_about_personal_care":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
-     "say_a_robot_cannot_drink_and_you_are_a_robot":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "say_should_eat_sweet_to_become_happy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_you_can_embrace_me":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     }
-
-zzz_e/goal3: {"say_you_are_excited_to_do_training_together":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
-     "say_you_like_energetic_workout":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "say to high five":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "ask what the person think about sport":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
-
-zzz_e/goal4: {"ask_who_is_your_favourite_painter":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
-     "ask_which_is_your_favourite_paint":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "express_excitement_to_express_the_morning_routine":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_you_like_physical_contact":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     }
-zzo_e/goal1: {"go_closer":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
-     "express_happiness":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[0,0,1]},
-     "tell_a_joke":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_something_about_itself":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     }
-
-zzo_e/goal2: {"ask_something_about_personal_care":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
-     "say_a_robot_cannot_drink_and_you_are_a_robot":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "say_should_eat_sweet_to_become_happy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_you_can_embrace_me":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
-
-zzo_e/goal3: {"say_you_are_excited_to_do_training_together":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
-     "say_you_like_energetic_workout":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "say to high five":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "ask what the person think about sport":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     }
-zzo_e/goal4: {"ask_who_is_your_favourite_painter":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
-     "ask_which_is_your_favourite_paint":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "express_excitement_to_express_the_morning_routine":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_you_like_physical_contact":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     }
-
-zoz_e/goal1: {"go_closer":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},  
-     "express_happiness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
-
-zoz_e/goal2: {"ask_something_about_personal_care":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
-     "say_a_robot_cannot_drink_and_you_are_a_robot":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_should_eat_sweet_to_become_happy":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "say_you_can_embrace_me":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     }
-
-zoz_e/goal3: {"say_you_are_excited_to_do_training_together":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
-     "say_you_like_energetic_workout":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say to high five":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "ask what the person think about sport":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
-
-zoz_e/goal4: {"ask_who_is_your_favourite_painter":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
-     "ask_which_is_your_favourite_paint":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "express_excitement_to_express_the_morning_routine":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_you_like_physical_contact":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     }
-
-zoo_e/goal1: {"go_closer":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
-     "express_happiness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
-
-
-zoo_e/goal2: {"ask_something_about_personal_care":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
-     "say_a_robot_cannot_drink_and_you_are_a_robot":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_should_eat_sweet_to_become_happy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "say_you_can_embrace_me":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     }
-
-zoo_e/goal3: {"say_you_are_excited_to_do_training_together":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
-     "say_you_like_energetic_workout":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say to high five":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "ask what the person think about sport":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
-
-zoo_e/goal4: {"ask_who_is_your_favourite_painter":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
-     "ask_which_is_your_favourite_paint":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "express_excitement_to_express_the_morning_routine":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_you_like_physical_contact":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     }
-
-ozz_e/goal1: {"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
-     "express_happiness":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
-     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
-     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+zzz_e/goal1: {"say_an_enthusiastic_sentence":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},  
+     "gesture_visible":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "say_something_to_capture_the_attention":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "tell_a_joke":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
      "say_something_about_itself":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
      }
 
-ozz_e/goal2: {"ask_something_about_personal_care":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
-     "say_a_robot_cannot_drink_and_you_are_a_robot":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "say_should_eat_sweet_to_become_happy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "say_you_can_embrace_me":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
-
-
-ozz_e/goal3: {"say_you_are_excited_to_do_training_together":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
-     "say_you_like_energetic_workout":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "say to high five":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "ask what the person think about sport":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     }
-
-ozz_e/goal4: {"ask_who_is_your_favourite_painter":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
-     "ask_which_is_your_favourite_paint":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_excitement_to_express_the_morning_routine":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "say_you_like_physical_contact":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }   
-
-ozo_e/goal1: {"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
-     "express_happiness":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "ask_a_question":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+zzo_e/goal1: {"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},  
+     "gesture_visible":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "say_something_to_capture_the_attention":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      "tell_a_joke":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
-     "say_something_about_itself":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     }
-
-ozo_e/goal2: {"ask_something_about_personal_care":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
-     "say_a_robot_cannot_drink_and_you_are_a_robot":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "say_should_eat_sweet_to_become_happy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_you_can_embrace_me":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+     "say_something_about_itself":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      }
 
 
-ozo_e/goal3: {"say_you_are_excited_to_do_training_together":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
-     "say_you_like_energetic_workout":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "say to high five":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "ask what the person think about sport":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     }
-
-ozo_e/goal4: {"ask_who_is_your_favourite_painter":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
-     "ask_which_is_your_favourite_paint":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_excitement_to_express_the_morning_routine":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "say_you_like_physical_contact":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }   
-
-
-
-
-
-ooz_e/goal1: {"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
-     "express_happiness":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "ask_a_question":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
-     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+zoz_e/goal1: {"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},  
+     "gesture_visible":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_something_to_capture_the_attention":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      }
 
-ooz_e/goal2: {"ask_something_about_personal_care":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
-     "say_a_robot_cannot_drink_and_you_are_a_robot":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "say_should_eat_sweet_to_become_happy":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_you_can_embrace_me":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+
+zoo_e/goal1: {"say_an_enthusiastic_sentence":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
+     "gesture_visible":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_something_to_capture_the_attention":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      }
 
 
-ooz_e/goal3: {"say_you_are_excited_to_do_training_together":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
-     "say_you_like_energetic_workout":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "say to high five":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "ask what the person think about sport":{"w1":1,"w2":1,"expected_outcome":[0,1,1]},
+ozz_e/goal1: {"say_an_enthusiastic_sentence":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
+     "gesture_visible":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "say_something_to_capture_the_attention":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "say_something_about_itself":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
      }
+  
 
-ooz_e/goal4: {"ask_who_is_your_favourite_painter":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
-     "ask_which_is_your_favourite_paint":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_excitement_to_express_the_morning_routine":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "say_you_like_physical_contact":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }   
-
-
-
-ooo_e/goal1: {"go_closer":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
-     "express_happiness":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "ask_a_question":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }
-
-ooo_e/goal2: {"ask_something_about_personal_care":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},  
-     "say_a_robot_cannot_drink_and_you_are_a_robot":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say_should_eat_sweet_to_become_happy":{"w1":0,"w2":0,"expected_outcome":[0,1,1]},
-     "say_you_can_embrace_me":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+ozo_e/goal1: {"say_an_enthusiastic_sentence":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},  
+     "gesture_visible":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "say_something_to_capture_the_attention":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "tell_a_joke":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      }
 
 
-ooo_e/goal3: {"say_you_are_excited_to_do_training_together":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},  
-     "say_you_like_energetic_workout":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "say to high five":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     "ask what the person think about sport":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
+ooz_e/goal1: {"say_an_enthusiastic_sentence":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
+     "gesture_visible":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "say_something_to_capture_the_attention":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      }
 
-ooo_e/goal4: {"ask_who_is_your_favourite_painter":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},  
-     "ask_which_is_your_favourite_paint":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "express_excitement_to_express_the_morning_routine":{"w1":2,"w2":1,"expected_outcome":[0,1,1]},
-     "say_you_like_physical_contact":{"w1":4,"w2":2,"expected_outcome":[0,1,1]},
-     }   
+
+ooo_e/goal1: {"say_an_enthusiastic_sentence":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},  
+     "gesture_visible":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "say_something_to_capture_the_attention":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "tell_a_joke":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
+     "say_something_about_itself":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     }
+
