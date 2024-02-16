@@ -32,6 +32,7 @@ data={
     "selected_personality":"",
     "limit_response":"",
     "response":"",
+    "attention":"",
 
 }
 
@@ -44,6 +45,8 @@ def run_cmp():
     user_input = "{"
     user_input += "emotion: "
     user_input += data["emotion"]
+    user_input += ", attention: "
+    user_input += data["attention"]
     user_input += ", personality: "
     user_input += data["selected_personality"]
     user_input += ", response_style: "
