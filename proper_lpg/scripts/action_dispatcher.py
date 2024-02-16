@@ -57,6 +57,13 @@ volume_map={
     "very_dynamic":1,
 }
 
+g_speed={
+    "no_active":0.5,
+    "low":0.1,
+    "mid":0.5,
+    "high":1,
+}
+
 def callback(data):
     global emotion, attention
     emotion=map_perception_emotion[data][1]
@@ -127,14 +134,24 @@ def dispatch_action(req):
 
                 req2.final_pose=req.move
                 req2.amplitude=mmap["amplitude"]
-                req2.speed=mmap["g_speed"]
+                req2.speed=g_speed[mmap["g_speed"]]
                 print(req2)
                 rospy.wait_for_service('/kinova_move_srv')
                 kinova_srv = rospy.ServiceProxy('/kinova_move_srv', MoveArm)
                 resp = kinova_srv(req2) 
                 return True
-                 
-        
+            
+            else:
+                req2=MoveArmRequest()
+                if "home" in str(req.action):
+                    req2.block_owner="home"
+                else:
+                    req2.block_owner="random"
+                rospy.wait_for_service('/kinova_move_srv')
+                kinova_srv = rospy.ServiceProxy('/kinova_move_srv', MoveArm)
+                resp = kinova_srv(req2) 
+                return True
+            
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
     #execute 

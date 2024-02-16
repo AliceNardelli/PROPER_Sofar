@@ -872,41 +872,6 @@ void PickPlace::evaluate_plan(moveit::planning_interface::MoveGroupInterface &gr
 
 bool PickPlace::my_pick()
 {
-    clear_workscene();
-    ros::WallDuration(1.0).sleep();
-    build_workscene();
-    ros::WallDuration(1.0).sleep();
-
-    ROS_INFO_STREAM("GOING HOME");
-    group_->clearPathConstraints();
-    group_->setNamedTarget("Home");
-    evaluate_plan(*group_);
-
-    ros::WallDuration(1.0).sleep();
-    gripper_group_->setNamedTarget("Open");
-    gripper_group_->move();
-
-    ///////////////////////////////////////////////////////////
-    //// joint space without obstacle
-    ///////////////////////////////////////////////////////////
-    add_obstacle();
-    clear_workscene();
-        ROS_INFO_STREAM("GOING PRERELEASE");
-    group_->setJointValueTarget(prerelease_joint_);
-    evaluate_plan(*group_);
-    
-    ROS_INFO_STREAM("GOING RELEASE");
-    group_->setJointValueTarget(release_joint_2);
-    evaluate_plan(*group_);
-
-    ROS_INFO_STREAM("GOING HOME");
-    group_->clearPathConstraints();
-    group_->setNamedTarget("Home");
-    evaluate_plan(*group_);
-
-    ros::WallDuration(1.0).sleep();
-    gripper_group_->setNamedTarget("Open");
-    gripper_group_->move();
 
     return true;
    
@@ -914,11 +879,28 @@ bool PickPlace::my_pick()
 
 bool PickPlace::my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Response &res)
 {
+    int block=req.block;
+    double vel=req.speed;
     clear_workscene();
     ros::WallDuration(1.0).sleep();
     build_workscene();
     ros::WallDuration(1.0).sleep();
+    group_->setMaxVelocityScalingFactor(vel);
+    group_->setMaxAccelerationScalingFactor(vel);
 
+    if (req.block_owner=="home"){
+    ROS_INFO_STREAM("GOING HOME");
+    group_->clearPathConstraints();
+    group_->setNamedTarget("Home");
+    evaluate_plan(*group_);
+    }
+    else if (req.block_owner=="random"){
+     ROS_INFO_STREAM("GOING HOME");
+    group_->clearPathConstraints();
+    group_->setRandomTarget();
+    evaluate_plan(*group_);
+    }
+    else{
 
     ROS_INFO_STREAM("GOING HOME");
     group_->clearPathConstraints();
@@ -934,10 +916,10 @@ bool PickPlace::my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Respo
     
 
 
-    int block=req.block;
+    
     if (req.block_owner=="human"){
     if (block==0){
-    
+
     ROS_INFO_STREAM("GOING PREGRASP");
     group_->setJointValueTarget(pregrasp_joint_human_0);
     evaluate_plan(*group_);
@@ -1013,6 +995,7 @@ bool PickPlace::my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Respo
     group_->clearPathConstraints();
     group_->setNamedTarget("Home");
     evaluate_plan(*group_);
+    }
    return true;
     
 }
