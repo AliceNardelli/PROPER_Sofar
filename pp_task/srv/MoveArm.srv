@@ -3,5 +3,6 @@ string block_owner
 string final_pose
 string amplitude
 float64 speed
+string style
 ----
 bool success

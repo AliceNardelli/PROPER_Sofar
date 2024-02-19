@@ -24,11 +24,11 @@ import datetime
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 
-we=0
+we=1
 wi=0
 wc=0
 wu=1
-wa=1
+wa=0
 wd=0
 sum_weights=0
 weights=[]
@@ -280,18 +280,31 @@ class ExAction(smach.State):
                         req.type="init"
                         if ("HUMAN" in ac):
                             req.firstmove="human"
+                            userdata, response=self.call_action_server(userdata, ac, personality)
+                            print(req)   
+                            rospy.wait_for_service('game_player_srv')
+                            game_client = rospy.ServiceProxy('game_player_srv', Game)
+                            resp = game_client(req)
                         elif ("ROBOT" in ac):
                             req.firstmove="robot" 
+                            print(req)   
+                            rospy.wait_for_service('game_player_srv')
+                            game_client = rospy.ServiceProxy('game_player_srv', Game)
+                            resp = game_client(req)
+                            userdata, response=self.call_action_server(userdata, ac, personality)
                         if ("REPLACE" in ac):
                             req.firstmove="robot" 
-                        print(req)   
-                        rospy.wait_for_service('game_player_srv')
-                        game_client = rospy.ServiceProxy('game_player_srv', Game)
-                        resp = game_client(req)
+                            print(req)   
+                            rospy.wait_for_service('game_player_srv')
+                            game_client = rospy.ServiceProxy('game_player_srv', Game)
+                            resp = game_client(req)
+                            userdata, response=self.call_action_server(userdata, ac, personality)
 
-            userdata, response=self.call_action_server(userdata, ac, personality)
+                    else:
+                        userdata, response=self.call_action_server(userdata, ac, personality)
+            else:
+                userdata, response=self.call_action_server(userdata, ac, personality)
             
-
             if response:
                 userdata.out_pp="no_trait"
                 return "outcome9"

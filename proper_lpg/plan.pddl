@@ -22,8 +22,8 @@ Cueing down from goal distance:    4 into depth [1]
 
 ff: found legal plan as follows
 
-step    0: REACT_SURPRISE_EMOTION
-        1: REACT_ATTENTION
+step    0: REACT_NEUTRAL_EMOTION
+        1: REACT_LOW_ATTENTION
         2: COMPUTE_HEDONIC_FEELINGS
         3: CHECK_FINISH
      

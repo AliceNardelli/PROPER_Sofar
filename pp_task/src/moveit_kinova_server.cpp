@@ -879,6 +879,8 @@ bool PickPlace::my_pick()
 
 bool PickPlace::my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Response &res)
 {
+
+    ROS_INFO_STREAM("I AM HERE");
     int block=req.block;
     double vel=req.speed;
     clear_workscene();
@@ -913,32 +915,57 @@ bool PickPlace::my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Respo
 
     //add_obstacle();
     //clear_workscene();
-    
-
 
     
     if (req.block_owner=="human"){
     if (block==0){
 
     ROS_INFO_STREAM("GOING PREGRASP");
+    if (req.amplitude=="high"){
+        pregrasp_joint_human_0[1]=pregrasp_joint_human_0[1]+5*M_PI/180.0;
+    }
+    else if (req.amplitude=="low"){
+        pregrasp_joint_human_0[1]=pregrasp_joint_human_0[1]-5*M_PI/180.0;
+    }
     group_->setJointValueTarget(pregrasp_joint_human_0);
     evaluate_plan(*group_);
     ROS_INFO_STREAM("GRASP");
     group_->setJointValueTarget(grasp_joint_human_0);
     evaluate_plan(*group_);
+    ROS_INFO_STREAM("CLOSE HAND");
+    gripper_action(0.75*FINGER_MAX); // partially close
+    ROS_INFO_STREAM("GOING PREGRASP");
+    group_->setJointValueTarget(pregrasp_joint_human_0);
+    evaluate_plan(*group_);
     }
     else if (block==1){
-
+    if (req.amplitude=="high"){
+        pregrasp_joint_human_1[1]=pregrasp_joint_human_1[1]+5*M_PI/180.0;
+    }
+    else if (req.amplitude=="low"){
+        pregrasp_joint_human_1[1]=pregrasp_joint_human_1[1]-5*M_PI/180.0;
+    }
     ROS_INFO_STREAM("GOING PREGRASP");
     group_->setJointValueTarget(pregrasp_joint_human_1);
     evaluate_plan(*group_);
     ROS_INFO_STREAM("GRASP");
     group_->setJointValueTarget(grasp_joint_human_1);
     evaluate_plan(*group_);
+    ROS_INFO_STREAM("CLOSE HAND");
+    gripper_action(0.75*FINGER_MAX); // partially close
+    ROS_INFO_STREAM("GOING PREGRASP");
+    group_->setJointValueTarget(pregrasp_joint_human_1);
+    evaluate_plan(*group_);
     }
     }
     else if (req.block_owner=="robot"){
     if (block==0){
+    if (req.amplitude=="high"){
+        pregrasp_joint_robot_0[1]=pregrasp_joint_robot_0[1]+5*M_PI/180.0;
+    }
+    else if (req.amplitude=="low"){
+        pregrasp_joint_robot_0[1]=pregrasp_joint_robot_0[1]-5*M_PI/180.0;
+    }
     ROS_INFO_STREAM("ROBOT BLOCK 0");
     ROS_INFO_STREAM("GOING PREGRASP");
     group_->setJointValueTarget(pregrasp_joint_robot_0);
@@ -947,8 +974,20 @@ bool PickPlace::my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Respo
     ROS_INFO_STREAM("GRASP");
     group_->setJointValueTarget(grasp_joint_robot_0);
     evaluate_plan(*group_);
+    ROS_INFO_STREAM("CLOSE HAND");
+    gripper_action(0.75*FINGER_MAX); // partially close
+    ROS_INFO_STREAM("GOING PREGRASP");
+    group_->setJointValueTarget(pregrasp_joint_robot_0);
+    evaluate_plan(*group_);
     }
     else if (block==1){
+
+    if (req.amplitude=="high"){
+        pregrasp_joint_robot_1[1]=pregrasp_joint_robot_1[1]+5*M_PI/180.0;
+    }
+    else if (req.amplitude=="low"){
+        pregrasp_joint_robot_1[1]=pregrasp_joint_robot_1[1]-5*M_PI/180.0;
+    }
     ROS_INFO_STREAM("ROBOT BLOCK 1");
     ROS_INFO_STREAM("GOING PREGRASP");
     group_->setJointValueTarget(pregrasp_joint_robot_1);
@@ -957,44 +996,71 @@ bool PickPlace::my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Respo
     ROS_INFO_STREAM("GRASP");
     group_->setJointValueTarget(grasp_joint_robot_1);
     evaluate_plan(*group_);
-    }}
-    
     ROS_INFO_STREAM("CLOSE HAND");
     gripper_action(0.75*FINGER_MAX); // partially close
+    ROS_INFO_STREAM("GOING PREGRASP");
+    group_->setJointValueTarget(pregrasp_joint_robot_1);
+    evaluate_plan(*group_);
+
+    }}
     
+
+    if (req.amplitude=="high"){
+        prerelease_joint_[1]=prerelease_joint_[1]+5*M_PI/180.0;
+    }
+    else if (req.amplitude=="low"){
+        prerelease_joint_[1]=prerelease_joint_[1]-5*M_PI/180.0;
+    }
     ROS_INFO_STREAM("GOING PREGRASP");
     group_->setJointValueTarget(prerelease_joint_);
     evaluate_plan(*group_);
 
     if(req.final_pose=="area1"){
     ROS_INFO_STREAM("GOING RELEASE");
+    if(req.style=="wrong"){
+        release_joint_1[0]=release_joint_1[0]-10*M_PI/180.0;
+    }
     group_->setJointValueTarget(release_joint_1);
     evaluate_plan(*group_);
     }
     else if(req.final_pose=="area2"){
     ROS_INFO_STREAM("GOING RELEASE");
+    if(req.style=="wrong"){
+        release_joint_2[0]=release_joint_2[0]-10*M_PI/180.0;
+    }
     group_->setJointValueTarget(release_joint_2);
     evaluate_plan(*group_);
     }
 
     else if(req.final_pose=="area3"){
     ROS_INFO_STREAM("GOING RELEASE");
+    if(req.style=="wrong"){
+        release_joint_3[0]=release_joint_3[0]-10*M_PI/180.0;
+    }
     group_->setJointValueTarget(release_joint_3);
     evaluate_plan(*group_);
     }
     else if(req.final_pose=="area4"){
     ROS_INFO_STREAM("GOING RELEASE");
+    if(req.style=="wrong"){
+        release_joint_4[0]=release_joint_4[0]-10*M_PI/180.0;
+    }
     group_->setJointValueTarget(release_joint_4);
     evaluate_plan(*group_);
     }
-
     ROS_INFO_STREAM("OPEN HAND");
     gripper_action(0.0); // full open
+    ROS_INFO_STREAM("GOING PREGRASP");
+    group_->setJointValueTarget(prerelease_joint_);
+    evaluate_plan(*group_);
+
+
 
     ROS_INFO_STREAM("GOING HOME");
     group_->clearPathConstraints();
     group_->setNamedTarget("Home");
     evaluate_plan(*group_);
+    define_release();
     }
    return true;
     

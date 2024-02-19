@@ -59,15 +59,15 @@ volume_map={
 
 g_speed={
     "no_active":0.5,
-    "low":0.1,
-    "mid":0.5,
+    "low":0.5,
+    "mid":0.8,
     "high":1,
 }
 
 def callback(data):
     global emotion, attention
-    emotion=map_perception_emotion[data][1]
-    attention=map_perception_emotion[data][0]
+    emotion=map_perception_emotion[data.data][1]
+    attention=map_perception_emotion[data.data][0]
     
 
 def save_file(text):
@@ -79,8 +79,10 @@ def save_file(text):
 def reproduce_audio(file_name,volume):
     pygame.init()
     sp=pygame.mixer.Sound(file_name)
+    length=sp.get_length()
     sp.set_volume(volume)
     sp.play()
+    time.sleep(length)
 
 
 def dispatch_action(req):
@@ -94,12 +96,15 @@ def dispatch_action(req):
         resp = personality_generator_srv(msg)     
         mmap =get_map(resp.params)
         #SPEAK ACTION
+        print(req.action)
         if mmap["language"]!="no_active":
+            print("I am here")
             if "say_human" in  str(req.action):
                 human_block+=1
-            if "tablet" in msg.action:
-                file="/home/alice/beep.mp3"
+            if "tablet" in req.action:
+                file="/home/alice/bepp.mp3"
             else:
+                print("I am here2")
                 data["emotion"]=emotion
                 data["attention"]=attention
                 data["response_style"]=mmap["language"]
@@ -108,10 +113,11 @@ def dispatch_action(req):
                 else:
                     data["selected_personality"]=msg.personality
                 try:
-                    data["action"]=map_action[msg.action]
+                    data["action"]=map_action[req.action]
                 except:
                     data["action"]=req.action.replace("_"," ")
                 resp=requests.put(url+'run_completion', json=data, headers=headers)
+                print("I am here3")
                 file=save_file(eval(resp.text)["response"])
             vol=volume_map[mmap["volume"]]
             reproduce_audio(file,vol)
@@ -131,7 +137,10 @@ def dispatch_action(req):
                     req2.block=robot_block
                     req2.block_owner="robot"
                     robot_block+=1
-
+                if "wrong" in  str(req.action):
+                    req2.style="wrong"
+                else:
+                    req2.style="precise"
                 req2.final_pose=req.move
                 req2.amplitude=mmap["amplitude"]
                 req2.speed=g_speed[mmap["g_speed"]]
@@ -139,6 +148,27 @@ def dispatch_action(req):
                 rospy.wait_for_service('/kinova_move_srv')
                 kinova_srv = rospy.ServiceProxy('/kinova_move_srv', MoveArm)
                 resp = kinova_srv(req2) 
+                if "wrong" in  str(req.action):
+                    msg=PersonalityGeneratorRequest()
+                    msg.action="ask"
+                    msg.personality=req.personality
+                    resp = personality_generator_srv(msg)     
+                    mmap =get_map(resp.params)
+                    data["emotion"]=emotion
+                    data["attention"]=attention
+                    data["response_style"]=mmap["language"]
+                    if msg.personality=="Unscrupolous":
+                        data["selected_personality"]="Distracted"
+                    else:
+                        data["selected_personality"]=msg.personality
+
+                    data["action"]="ask the human to correctly put the block because you make an error bu you are lazy to pick again the block"
+                    resp=requests.put(url+'run_completion', json=data, headers=headers)
+                
+                    file=save_file(eval(resp.text)["response"])
+                    vol=volume_map[mmap["volume"]]
+                    reproduce_audio(file,vol)
+
                 return True
             
             else:
