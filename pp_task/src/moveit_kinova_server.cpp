@@ -1026,18 +1026,18 @@ bool PickPlace::my_pick2(pp_task::MoveArm::Request &req, pp_task::MoveArm::Respo
     else if(req.final_pose=="area2"){
     ROS_INFO_STREAM("GOING RELEASE");
     if(req.style=="wrong"){
-        release_joint_2[0]=release_joint_2[0]-10*M_PI/180.0;
+        release_joint_3[0]=release_joint_3[0]-10*M_PI/180.0;
     }
-    group_->setJointValueTarget(release_joint_2);
+    group_->setJointValueTarget(release_joint_3);
     evaluate_plan(*group_);
     }
 
     else if(req.final_pose=="area3"){
     ROS_INFO_STREAM("GOING RELEASE");
     if(req.style=="wrong"){
-        release_joint_3[0]=release_joint_3[0]-10*M_PI/180.0;
+        release_joint_2[0]=release_joint_2[0]-10*M_PI/180.0;
     }
-    group_->setJointValueTarget(release_joint_3);
+    group_->setJointValueTarget(release_joint_2);
     evaluate_plan(*group_);
     }
     else if(req.final_pose=="area4"){

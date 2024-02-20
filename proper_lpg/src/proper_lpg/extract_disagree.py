@@ -18,6 +18,7 @@ disagreeableness_dict={}
 def init_disagreeable_actions():
     global disagree_actions, disagreeableness_dict
     disagree_actions=rospy.get_param("disagree_actions")[rospy.get_param("actual_goal")]
+    print(disagree_actions)
     disagreeableness_dict={
         "NA_N":{"weights":rospy.get_param("zzz_d")[rospy.get_param("actual_goal")],"num":[0,0,0]},
         "NA_S":{"weights":rospy.get_param("zzo_d")[rospy.get_param("actual_goal")],"num":[0,0,1]},

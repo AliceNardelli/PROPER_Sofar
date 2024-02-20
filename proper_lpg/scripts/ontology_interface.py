@@ -24,12 +24,12 @@ import datetime
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 
-we=1
+we=0
 wi=0
-wc=0
-wu=1
+wc=1
+wu=0
 wa=0
-wd=0
+wd=1
 sum_weights=0
 weights=[]
 gamma=1
@@ -174,6 +174,7 @@ class GetActions(smach.State):
         print('Reading Actions to execute')
           
         out_a=read_plan(userdata.plan_path)
+        print(out_a)
         userdata.executing_actions_out=out_a
         return 'outcome7'
     
@@ -202,9 +203,10 @@ class ExAction(smach.State):
             else:
                 return "outcome8"
             
-        if ac=="DISGREE_ACTION":
+        if ac=="DISAGREE_ACTION":
             pi=map_perception_AV_axis[perception]
             aa,rew=choose_action_d(pi)
+            print(aa)
             userdata, response= self.call_action_server(userdata, aa, personality)
             if response:
                 pn=map_perception_AV_axis[perception]
@@ -278,7 +280,15 @@ class ExAction(smach.State):
                         first_trial=False
                         req=GameRequest()
                         req.type="init"
-                        if ("HUMAN" in ac):
+                        if ("REPLACE" in ac):
+                            req.firstmove="robot" 
+                            print(req)   
+                            rospy.wait_for_service('game_player_srv')
+                            game_client = rospy.ServiceProxy('game_player_srv', Game)
+                            resp = game_client(req)
+                            userdata, response=self.call_action_server(userdata, ac, personality)
+
+                        if ("HUMAN" in ac)and (not ("REPLACE" in ac)):
                             req.firstmove="human"
                             userdata, response=self.call_action_server(userdata, ac, personality)
                             print(req)   
@@ -292,13 +302,7 @@ class ExAction(smach.State):
                             game_client = rospy.ServiceProxy('game_player_srv', Game)
                             resp = game_client(req)
                             userdata, response=self.call_action_server(userdata, ac, personality)
-                        if ("REPLACE" in ac):
-                            req.firstmove="robot" 
-                            print(req)   
-                            rospy.wait_for_service('game_player_srv')
-                            game_client = rospy.ServiceProxy('game_player_srv', Game)
-                            resp = game_client(req)
-                            userdata, response=self.call_action_server(userdata, ac, personality)
+
 
                     else:
                         userdata, response=self.call_action_server(userdata, ac, personality)
@@ -351,6 +355,8 @@ class ExAction(smach.State):
                 rospy.loginfo('Action executed: '+ac)
                 userdata.action=ac
                 userdata.updated_actions=userdata.executing_actions
+                acs=userdata.executing_actions
+                print(acs)
                 return userdata,True
                 
             except rospy.ServiceException as e:
@@ -371,6 +377,7 @@ class CheckPerc(smach.State):
         
         go_plan=False
         if new_perception: 
+            print("I have a new perception")
             new_perception=False
             emotion_pred=perception_predicate_map[perception]["emotion"]
             attention_pred=perception_predicate_map[perception]["attention"]
@@ -393,7 +400,7 @@ class CheckPerc(smach.State):
         
         # se sono al primo giro o ho finito il giro
         print("ho un nuovo blocco da sistemare?")
-        print(predicates_objects["action2"].is_grounded)
+        print(userdata.action=="" or predicates_objects["action2"].is_grounded)
         if userdata.action=="" or predicates_objects["action2"].is_grounded:
             req=GameRequest()
             req.type="new_move"
@@ -422,6 +429,8 @@ class CheckPerc(smach.State):
                 if userdata.exec_actions==[]:
                     return "outcome4"
                 else:
+                    print("I should be here")
+                    print(userdata.exec_actions)
                     return "outcome2"
 
 

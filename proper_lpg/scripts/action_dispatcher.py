@@ -64,6 +64,7 @@ g_speed={
     "high":1,
 }
 
+traits="cd"
 def callback(data):
     global emotion, attention
     emotion=map_perception_emotion[data.data][1]
@@ -86,7 +87,7 @@ def reproduce_audio(file_name,volume):
 
 
 def dispatch_action(req):
-    global robot_block, human_block, emotion, attention
+    global robot_block, human_block, emotion, attention, traits
     try:
         rospy.wait_for_service('personality_generator_srv')
         personality_generator_srv = rospy.ServiceProxy('personality_generator_srv', PersonalityGenerator)
@@ -142,8 +143,15 @@ def dispatch_action(req):
                 else:
                     req2.style="precise"
                 req2.final_pose=req.move
-                req2.amplitude=mmap["amplitude"]
-                req2.speed=g_speed[mmap["g_speed"]]
+                if "e" in traits:
+                    req2.amplitude="high"
+                    req2.speed=1
+                elif "i" in traits:
+                    req2.amplitude="low"
+                    req2.speed=0.5
+                else:
+                    req2.amplitude=mmap["amplitude"]
+                    req2.speed=g_speed[mmap["g_speed"]]
                 print(req2)
                 rospy.wait_for_service('/kinova_move_srv')
                 kinova_srv = rospy.ServiceProxy('/kinova_move_srv', MoveArm)

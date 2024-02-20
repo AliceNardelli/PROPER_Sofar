@@ -20,6 +20,7 @@
         (attention_r)  
         (low_attention_r)  
         (new_block)
+        (=(replace)0)
 )
 
 (:goal (and 

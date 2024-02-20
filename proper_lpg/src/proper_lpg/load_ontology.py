@@ -524,6 +524,7 @@ def update_ontology(a):
                                 else:
                                     try:
                                         f.has_value=actual_value + float(o[3])
+                                        print("HELLO FROM LOAD")
                                     except:
                                         f.has_value=actual_value + function_objects[o[3]].has_value
                         elif o[1]=="decrease":

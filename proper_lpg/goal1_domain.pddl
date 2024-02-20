@@ -19,10 +19,12 @@
         (react)
         (reward_e)
         (reward_a)
-        (reward_c)     
+        (reward_c) 
+        (replace)    
 )
 
 (:predicates 
+        
         (to_assign_dominance) 
         (finished)
         (feel_comfort)
@@ -471,6 +473,7 @@
                            (human_start)
                            (disagree)
                            (>(agreeableness_coefficient)0)
+                           (<(replace) 1)
                         
 
                 )
@@ -483,6 +486,7 @@
                            (when (disagree)(increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
                            (action1_say)
                            (not (new_block)) 
+                           (increase(replace)1)
                 )
 )
 
@@ -542,6 +546,7 @@
                            (action1_move)
                            (disagree)
                            (>(agreeableness_coefficient)0)
+                           (<(replace) 1)
                           
                 )
         :effect
@@ -553,6 +558,7 @@
                            (action2)
                            (not(action1_move))
                            (not(to_assign_dominance))  
+                           (increase(replace)1)
                 )
 )
 (:action COMPUTE_HEDONIC_FEELINGS
