@@ -137,9 +137,9 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
         std::cout<<rx<<" "<<ry<<" "<<std::endl;
         trajectoryPoint.Position.CartesianPosition.X = rx;
         trajectoryPoint.Position.CartesianPosition.Y = ry;
-        trajectoryPoint.Position.CartesianPosition.ThetaX = 0.0 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(3.14-0.0)));
-        trajectoryPoint.Position.CartesianPosition.ThetaY = 0.0 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(3.14-0.0)));
-        trajectoryPoint.Position.CartesianPosition.ThetaZ = 0.0 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(3.14-0.0)));
+        trajectoryPoint.Position.CartesianPosition.ThetaX = -1.5 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1.5-(-1.5))));
+        trajectoryPoint.Position.CartesianPosition.ThetaY = 1.5 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(4.6-1.5)));
+        trajectoryPoint.Position.CartesianPosition.ThetaZ = -1.5 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1.5-(-1.5))));
         (*MySendAdvanceTrajectory)(trajectoryPoint);
         while (distance>0.1){
             result = (*MyGetCartesianPosition)(data);
@@ -150,6 +150,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
         }
         distance=100;
     } 
+
     trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
     trajectoryPoint.Position.CartesianPosition.ThetaY = 3.14f;
     trajectoryPoint.Position.CartesianPosition.ThetaZ = 0.04f;
@@ -211,8 +212,6 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
         distance=std::sqrt(dx*dx + dy*dy + dz*dz);
     }
     distance=100;
-    
-    
     }
     ROS_INFO_STREAM("GOING GRASP");
     trajectoryPoint.Position.CartesianPosition.Z = 0.13f;
@@ -227,9 +226,9 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     distance=100;  
     ROS_INFO_STREAM("EXIT GRASP"); 
 
-    trajectoryPoint.Position.Fingers.Finger1 = float(0.8*6800);
-    trajectoryPoint.Position.Fingers.Finger2 = float(0.8*6800);
-    trajectoryPoint.Position.Fingers.Finger3 = float(0.8*6800);
+    trajectoryPoint.Position.Fingers.Finger1 = 6800.f;
+    trajectoryPoint.Position.Fingers.Finger2 = 6800.f;
+    trajectoryPoint.Position.Fingers.Finger3 = 6800.f;
 
     (*MySendAdvanceTrajectory)(trajectoryPoint);
     
@@ -269,20 +268,20 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
 
 
     if(req.final_pose=="area1"){
-        trajectoryPoint.Position.CartesianPosition.X=0.08;
+        trajectoryPoint.Position.CartesianPosition.X=0.05;
         trajectoryPoint.Position.CartesianPosition.Y=-0.53;
     }
     else if (req.final_pose=="area2"){
-        trajectoryPoint.Position.CartesianPosition.X=-0.08;
-        trajectoryPoint.Position.CartesianPosition.Y=-0.53;
+        trajectoryPoint.Position.CartesianPosition.X=0.05;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.6;
     }
     else if (req.final_pose=="area3"){
-        trajectoryPoint.Position.CartesianPosition.X=0.08;
-        trajectoryPoint.Position.CartesianPosition.Y=-0.7;
+        trajectoryPoint.Position.CartesianPosition.X=-0.05;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.53;
     }
     else if (req.final_pose=="area4"){
-        trajectoryPoint.Position.CartesianPosition.X=-0.08;
-        trajectoryPoint.Position.CartesianPosition.Y=-0.7;
+        trajectoryPoint.Position.CartesianPosition.X=-0.05;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.6;
     }
     (*MySendAdvanceTrajectory)(trajectoryPoint);
     while (distance>0.05){
@@ -302,7 +301,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     else if(req.style=="wrong" & (req.final_pose=="area1" || req.final_pose=="area2")){
         trajectoryPoint.Position.CartesianPosition.X=trajectoryPoint.Position.CartesianPosition.X-0.1;
     }
-    trajectoryPoint.Position.CartesianPosition.Z = 0.1f;
+    trajectoryPoint.Position.CartesianPosition.Z = 0.12f;
     (*MySendAdvanceTrajectory)(trajectoryPoint);
     while (distance>0.05){
         result = (*MyGetCartesianPosition)(data);
