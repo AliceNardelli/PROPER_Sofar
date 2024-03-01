@@ -64,7 +64,7 @@ g_speed={
     "high":1,
 }
 
-traits="dc"
+traits="ea"
 def callback(data):
     global emotion, attention
     emotion=map_perception_emotion[data.data][1]
@@ -171,6 +171,26 @@ def dispatch_action(req):
                         data["selected_personality"]=msg.personality
 
                     data["action"]="ask the human to correctly put the block because you make an error bu you are lazy to pick again the block"
+                    resp=requests.put(url+'run_completion', json=data, headers=headers)
+                
+                    file=save_file(eval(resp.text)["response"])
+                    vol=volume_map[mmap["volume"]]
+                    reproduce_audio(file,vol)
+                if "replace" in  str(req.action):
+                    msg=PersonalityGeneratorRequest()
+                    msg.action="say"
+                    msg.personality=req.personality
+                    resp = personality_generator_srv(msg)     
+                    mmap =get_map(resp.params)
+                    data["emotion"]=emotion
+                    data["attention"]=attention
+                    data["response_style"]=mmap["language"]
+                    if msg.personality=="Unscrupolous":
+                        data["selected_personality"]="Distracted"
+                    else:
+                        data["selected_personality"]=msg.personality
+
+                    data["action"]="say the human you have replace it in positioning the block in order to do it better and faster"
                     resp=requests.put(url+'run_completion', json=data, headers=headers)
                 
                     file=save_file(eval(resp.text)["response"])

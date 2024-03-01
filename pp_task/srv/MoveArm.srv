@@ -3,6 +3,8 @@ string block_owner
 string final_pose
 string amplitude
 float64 speed
+float64 acc
+string traj
 string style
 ----
 bool success
