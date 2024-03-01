@@ -171,9 +171,6 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
 
     ROS_INFO_STREAM("GOING PREGRASP");
 
-    
-  
-
     (*MySendAdvanceTrajectory)(trajectoryPoint);
     while (distance>0.05){
         result = (*MyGetCartesianPosition)(data);
@@ -184,7 +181,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     }
     distance=100;
     
-
+    ROS_INFO_STREAM("EXIT PREGRASP");
     if(req.style=="wrong"){
     trajectoryPoint.Position.CartesianPosition.Z = trajectoryPoint.Position.CartesianPosition.Z-0.05;
     trajectoryPoint.Position.Fingers.Finger1 = float(0.8*6800);
@@ -218,9 +215,18 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     
     }
     ROS_INFO_STREAM("GOING GRASP");
-    trajectoryPoint.Position.CartesianPosition.Z = 0.1f;
+    trajectoryPoint.Position.CartesianPosition.Z = 0.13f;
     (*MySendAdvanceTrajectory)(trajectoryPoint);
-    
+    while (distance>0.05){
+        result = (*MyGetCartesianPosition)(data);
+        dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
+        dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
+        dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
+        distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+    }
+    distance=100;  
+    ROS_INFO_STREAM("EXIT GRASP"); 
+
     trajectoryPoint.Position.Fingers.Finger1 = float(0.8*6800);
     trajectoryPoint.Position.Fingers.Finger2 = float(0.8*6800);
     trajectoryPoint.Position.Fingers.Finger3 = float(0.8*6800);
@@ -230,7 +236,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
 
     ROS_INFO_STREAM("GOING PRERELEASE");
     if (req.amplitude=="high"){
-        trajectoryPoint.Position.CartesianPosition.Z = 0.5f;
+        trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
     }
     else if (req.amplitude=="low"){
         trajectoryPoint.Position.CartesianPosition.Z = 0.2f;
@@ -287,7 +293,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
         distance=std::sqrt(dx*dx + dy*dy + dz*dz);
     }
     distance=100;
-    
+    ROS_INFO_STREAM("EXIT PRERELEASE");
     ROS_INFO_STREAM("GOING RELEASE");
     
     if(req.style=="wrong" & (req.final_pose=="area4" || req.final_pose=="area3")){
@@ -306,7 +312,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
         distance=std::sqrt(dx*dx + dy*dy + dz*dz);
     }
     distance=100;
-    
+    ROS_INFO_STREAM("EXIT RELEASE");
 
     ROS_INFO_STREAM("OPEN HAND");
     

@@ -99,6 +99,12 @@ def dispatch_action(req):
         #SPEAK ACTION
         print(req.action)
         if mmap["language"]!="no_active":
+            if "say_human" in  str(req.action):
+                human_block+=1
+                file="/home/alice/bepp.mp3"
+                vol=volume_map[mmap["volume"]]
+                reproduce_audio(file,vol)
+            """
             print("I am here")
             if "say_human" in  str(req.action):
                 human_block+=1
@@ -122,6 +128,7 @@ def dispatch_action(req):
                 file=save_file(eval(resp.text)["response"])
             vol=volume_map[mmap["volume"]]
             reproduce_audio(file,vol)
+            """
             return True
         #MOVE ACTION
         else:
