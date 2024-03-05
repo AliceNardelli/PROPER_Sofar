@@ -1,10 +1,15 @@
 extro_actions/goal1: ["say_an_enthusiastic_sentence","gesture_visible","say_something_to_capture_the_attention","tell_a_joke","say_something_about_itself"]
+extro_actions/goal2: ["gesture_vertical","gesture_horizontal"]
 
 zzz_e/goal1: {"say_an_enthusiastic_sentence":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},  
      "gesture_visible":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
      "say_something_to_capture_the_attention":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      "tell_a_joke":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
      "say_something_about_itself":{"w1":2,"w2":1,"expected_outcome":[1,1,1]},
+     }
+
+zzz_e/goal2: {"gesture_horizontal":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
+     "gesture_vertical":{"w1":4,"w2":2,"expected_outcome":[1,1,1]},
      }
 
 zzo_e/goal1: {"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},  

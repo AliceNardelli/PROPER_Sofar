@@ -145,35 +145,62 @@ def dispatch_action(req):
                     req2.block=robot_block
                     req2.block_owner="robot"
                     robot_block+=1
-                if "wrong" in  str(req.action):
-                    req2.style="wrong"
-                else:
-                    req2.style="precise"
+            else:
+                if "vertical" in str(req.action):
+                    req2.block_owner="vertical"
+                elif "horizontal" in str(req.action):
+                    req2.block_owner="horizontal"
+                elif "avoid" in str(req.action):
+                    req2.block_owner="avoid"
+                elif "back" in str(req.action):
+                    req2.block_owner="back"
+                elif "lateral" in str(req.action):
+                    req2.block_owner="lateral"  
+                elif "front" in str(req.action):
+                    req2.block_owner="front"                  
+                elif "gripper" in str(req.action):
+                    req2.block_owner="gripper"                
+                elif "near" in str(req.action):
+                    req2.block_owner="near"
+                elif "gripper" in str(req.action):
+                    req2.block_owner="gripper"                
+                elif "attention" in str(req.action):
+                    req2.block_owner="attention"
+                elif "random" in str(req.action):
+                    req2.block_owner="random"
+                elif "sleep" in str(req.action):
+                    time.sleep(4)
+                    return True
+            if "wrong" in  str(req.action):
+                req2.style="wrong"
+            else:
+                req2.style="precise"
 
-                req2.final_pose=req.move
-                if "e" in traits or "d" in traits :
-                    req2.amplitude="high"
-                    req2.speed=2
-                elif "i" in traits:
-                    req2.amplitude="low"
-                    req2.speed=0
-                else:
-                    req2.amplitude=mmap["amplitude"]
-                    req2.speed=1
+            req2.final_pose=req.move
+            if "e" in traits or "d" in traits :
+                req2.amplitude="high"
+                req2.speed=2
+            elif "i" in traits:
+                req2.amplitude="low"
+                req2.speed=0
+            else:
+                req2.amplitude=mmap["amplitude"]
+                req2.speed=1
 
-                if "d" in traits:
-                    req2.acc=1
-                else:
-                    req2.acc=1
+            if "d" in traits:
+                req2.acc=1
+            else:
+                req2.acc=1
 
-                if "d" in traits or "u" in traits:
-                    req2.traj="no_fluent"
-                else:
-                    req2.traj="fluent"
-                print(req2)
-                rospy.wait_for_service('/kinova_server')
-                kinova_srv = rospy.ServiceProxy('/kinova_server', MoveArm)
-                resp = kinova_srv(req2) 
+            if "d" in traits or "u" in traits:
+                req2.traj="no_fluent"
+            else:
+                req2.traj="fluent"
+            print(req2)
+            rospy.wait_for_service('/kinova_server')
+            kinova_srv = rospy.ServiceProxy('/kinova_server', MoveArm)
+            resp = kinova_srv(req2) 
+            """
                 if "wrong" in  str(req.action):
                     msg=PersonalityGeneratorRequest()
                     msg.action="ask"
@@ -214,21 +241,10 @@ def dispatch_action(req):
                     file=save_file(eval(resp.text)["response"])
                     vol=volume_map[mmap["volume"]]
                     reproduce_audio(file,vol)
-
-                return True
+            """
+            return True
             
-            else:
-                """
-                req2=MoveArmRequest()
-                if "home" in str(req.action):
-                    req2.block_owner="home"
-                else:
-                    req2.block_owner="random"
-                rospy.wait_for_service('/kinova_move_srv')
-                kinova_srv = rospy.ServiceProxy('/kinova_move_srv', MoveArm)
-                resp = kinova_srv(req2)
-                """ 
-                return True
+            
             
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)

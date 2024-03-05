@@ -1,10 +1,15 @@
 disagree_actions/goal1: ["say_something_provocative","say_something_skeptical","say_to_be_faster","say_to_not_whine"]
-
+disagree_actions/goal2: ["gesture_lateral","gesture_frontal","gesture_gripper"]
 
 zzz_d/goal1: {"say_something_provocative":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      "say_something_skeptical":{"w1":0,"w2":0,"expected_outcome":[0,1,0]},
      "say_to_be_faster":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      "say_to_not_whine":{"w1":0,"w2":0,"expected_outcome":[0,1,0]},
+     }
+
+zzz_d/goal2: {"gesture_lateral":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
+               "gesture_frontal":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
+               "gesture_gripper":{"w1":4,"w2":2,"expected_outcome":[0,1,0]},
      }
 
 

@@ -18,7 +18,7 @@ def init_extro_actions():
      extro_actions=rospy.get_param("extro_actions")[rospy.get_param("actual_goal")]
 
 
-
+     """
      extroversion_dict={
      "NA_N":{"weights":rospy.get_param("zzz_e")[rospy.get_param("actual_goal")],"num":[0,0,0]},
      "NA_S":{"weights":rospy.get_param("zzo_e")[rospy.get_param("actual_goal")],"num":[0,0,1]},
@@ -28,6 +28,17 @@ def init_extro_actions():
      "A_S":{"weights":rospy.get_param("ozo_e")[rospy.get_param("actual_goal")],"num":[1,0,1]},
      "A_A":{"weights":rospy.get_param("ooz_e")[rospy.get_param("actual_goal")],"num":[1,1,0]},
      "A_H":{"weights":rospy.get_param("ooo_e")[rospy.get_param("actual_goal")],"num":[1,1,1]}
+     }
+     """
+     extroversion_dict={
+     "NA_N":{"weights":rospy.get_param("zzz_e")[rospy.get_param("actual_goal")],"num":[0,0,0]},
+     "NA_S":{"weights":rospy.get_param("zzz_e")[rospy.get_param("actual_goal")],"num":[0,0,1]},
+     "NA_A":{"weights":rospy.get_param("zzz_e")[rospy.get_param("actual_goal")],"num":[0,1,0]},
+     "NA_H":{"weights":rospy.get_param("zzz_e")[rospy.get_param("actual_goal")],"num":[0,1,1]},
+     "A_N":{"weights":rospy.get_param("zzz_e")[rospy.get_param("actual_goal")],"num":[1,0,0]},
+     "A_S":{"weights":rospy.get_param("zzz_e")[rospy.get_param("actual_goal")],"num":[1,0,1]},
+     "A_A":{"weights":rospy.get_param("zzz_e")[rospy.get_param("actual_goal")],"num":[1,1,0]},
+     "A_H":{"weights":rospy.get_param("zzz_e")[rospy.get_param("actual_goal")],"num":[1,1,1]}
      }
 
 

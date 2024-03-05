@@ -13,6 +13,7 @@ consc_dict={}
 def init_consc_actions():
     global consc_actions, consc_dict
     consc_actions=rospy.get_param("consc_actions")[rospy.get_param("actual_goal")]
+    """
     consc_dict={
         "NA_N":{"weights":rospy.get_param("zzz_c")[rospy.get_param("actual_goal")],"num":[0,0,0]},
         "NA_S":{"weights":rospy.get_param("zzz_c")[rospy.get_param("actual_goal")],"num":[0,0,1]},
@@ -22,6 +23,17 @@ def init_consc_actions():
         "A_S":{"weights":rospy.get_param("ozz_c")[rospy.get_param("actual_goal")],"num":[1,0,1]},
         "A_A":{"weights":rospy.get_param("ooz_c")[rospy.get_param("actual_goal")],"num":[1,1,0]},
         "A_H":{"weights":rospy.get_param("ozz_c")[rospy.get_param("actual_goal")],"num":[1,1,1]}
+    }
+    """
+    consc_dict={
+        "NA_N":{"weights":rospy.get_param("zzz_c")[rospy.get_param("actual_goal")],"num":[0,0,0]},
+        "NA_S":{"weights":rospy.get_param("zzz_c")[rospy.get_param("actual_goal")],"num":[0,0,1]},
+        "NA_A":{"weights":rospy.get_param("zzz_c")[rospy.get_param("actual_goal")],"num":[0,1,0]},
+        "NA_H":{"weights":rospy.get_param("zzz_c")[rospy.get_param("actual_goal")],"num":[0,1,1]},
+        "A_N":{"weights":rospy.get_param("zzz_c")[rospy.get_param("actual_goal")],"num":[1,0,0]},
+        "A_S":{"weights":rospy.get_param("zzz_c")[rospy.get_param("actual_goal")],"num":[1,0,1]},
+        "A_A":{"weights":rospy.get_param("zzz_c")[rospy.get_param("actual_goal")],"num":[1,1,0]},
+        "A_H":{"weights":rospy.get_param("zzz_c")[rospy.get_param("actual_goal")],"num":[1,1,1]}
     }
 
 

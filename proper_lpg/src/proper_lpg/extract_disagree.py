@@ -19,15 +19,27 @@ def init_disagreeable_actions():
     global disagree_actions, disagreeableness_dict
     disagree_actions=rospy.get_param("disagree_actions")[rospy.get_param("actual_goal")]
     print(disagree_actions)
+    """
     disagreeableness_dict={
         "NA_N":{"weights":rospy.get_param("zzz_d")[rospy.get_param("actual_goal")],"num":[0,0,0]},
         "NA_S":{"weights":rospy.get_param("zzo_d")[rospy.get_param("actual_goal")],"num":[0,0,1]},
         "NA_A":{"weights":rospy.get_param("zoz_d")[rospy.get_param("actual_goal")],"num":[0,1,0]},
         "NA_H":{"weights":rospy.get_param("zoo_d")[rospy.get_param("actual_goal")],"num":[0,1,1]},
+        "A_N":{"weights":rospy.get_param("ozz_d")[rospy.get_param("actual_goal")],"num":[1,0,0]},
+        "A_S":{"weights":rospy.get_param("ozo_d")[rospy.get_param("actual_goal")],"num":[1,0,1]},
+        "A_A":{"weights":rospy.get_param("ooz_d")[rospy.get_param("actual_goal")],"num":[1,1,0]},
+        "A_H":{"weights":rospy.get_param("ooo_d")[rospy.get_param("actual_goal")],"num":[1,1,1]}
+    }
+    """
+    disagreeableness_dict={
+        "NA_N":{"weights":rospy.get_param("zzz_d")[rospy.get_param("actual_goal")],"num":[0,0,0]},
+        "NA_S":{"weights":rospy.get_param("zzz_d")[rospy.get_param("actual_goal")],"num":[0,0,1]},
+        "NA_A":{"weights":rospy.get_param("zzz_d")[rospy.get_param("actual_goal")],"num":[0,1,0]},
+        "NA_H":{"weights":rospy.get_param("zzz_d")[rospy.get_param("actual_goal")],"num":[0,1,1]},
         "A_N":{"weights":rospy.get_param("zzz_d")[rospy.get_param("actual_goal")],"num":[1,0,0]},
-        "A_S":{"weights":rospy.get_param("zzo_d")[rospy.get_param("actual_goal")],"num":[1,0,1]},
-        "A_A":{"weights":rospy.get_param("zoz_d")[rospy.get_param("actual_goal")],"num":[1,1,0]},
-        "A_H":{"weights":rospy.get_param("zoo_d")[rospy.get_param("actual_goal")],"num":[1,1,1]}
+        "A_S":{"weights":rospy.get_param("zzz_d")[rospy.get_param("actual_goal")],"num":[1,0,1]},
+        "A_A":{"weights":rospy.get_param("zzz_d")[rospy.get_param("actual_goal")],"num":[1,1,0]},
+        "A_H":{"weights":rospy.get_param("zzz_d")[rospy.get_param("actual_goal")],"num":[1,1,1]}
     }
 
 

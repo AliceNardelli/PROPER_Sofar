@@ -1,10 +1,13 @@
 intro_actions/goal1: ["gesture_home","say_something_confidential"]
-
+intro_actions/goal2: ["gesture_avoid","gesture_back"]
 
 zzz_i/goal1: {"gesture_home":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      "say_something_confidential":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
      }
 
+zzz_i/goal2: {"gesture_avoid":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     "gesture_back":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},
+     }
 
 zzo_i/goal1: {"gesture_home":{"w1":2,"w2":1,"expected_outcome":[0,0,0]},
                 "say_something_confidential":{"w1":4,"w2":2,"expected_outcome":[0,0,0]},

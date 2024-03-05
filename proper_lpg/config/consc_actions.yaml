@@ -1,9 +1,14 @@
 consc_actions/goal1: ["say_to_be_more_focused","remind_to_not_loose_the_attention","say_to_be_calm_because_anger_is_useless","say_congratulations_to_remain_vigilant"]
 
+consc_actions/goal2: ["gesture_attention"]
+
 zzz_c/goal1: {"say_to_be_more_focused":{"w1":4,"w2":2,"expected_outcome":[1,0,0]},
      "remind_to_not_loose_the_attention":{"w1":4,"w2":2,"expected_outcome":[1,0,0]},
      "say_to_be_calm_because_anger_is_useless":{"w1":0,"w2":0,"expected_outcome":[1,0,0]},
      "say_congratulations_to_remain_vigilant":{"w1":0,"w2":0,"expected_outcome":[1,0,0]},
+     }
+
+zzz_c/goal2: {"gesture_attention":{"w1":4,"w2":2,"expected_outcome":[1,0,0]},
      }
 
 zoz_c/goal1: {"say_to_be_more_focused":{"w1":4,"w2":2,"expected_outcome":[1,0,0]},
