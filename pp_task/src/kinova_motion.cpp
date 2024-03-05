@@ -117,29 +117,29 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.Fingers.Finger3 = 6.0f;
     trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
     trajectoryPoint.Position.CartesianPosition.ThetaY = 3.14f;
-    trajectoryPoint.Position.CartesianPosition.ThetaZ = 0.04f;
+    trajectoryPoint.Position.CartesianPosition.ThetaZ = 1.57f;
     if (req.amplitude=="high"){
-        trajectoryPoint.Position.CartesianPosition.Z = 0.5f;
+        trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
     }
     else if (req.amplitude=="low"){
-        trajectoryPoint.Position.CartesianPosition.Z = 0.3f;
+        trajectoryPoint.Position.CartesianPosition.Z = 0.25f;
     }
     else {
-        trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
+        trajectoryPoint.Position.CartesianPosition.Z = 0.3f;
     }
     double distance=100;
     double dx = 0;
     double dy = 0;
     double dz = 0;
     if (req.traj=="no_fluent"){
-        rx = 0.0 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.4-0.0)));
-        ry = -0.1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.1-(-0.1))));
+        rx = 0.15 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.4-0.15)));
+        ry = -0.2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.2-(-0.2))));
         std::cout<<rx<<" "<<ry<<" "<<std::endl;
         trajectoryPoint.Position.CartesianPosition.X = rx;
         trajectoryPoint.Position.CartesianPosition.Y = ry;
-        trajectoryPoint.Position.CartesianPosition.ThetaX = -1.5 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1.5-(-1.5))));
-        trajectoryPoint.Position.CartesianPosition.ThetaY = 1.5 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(4.6-1.5)));
-        trajectoryPoint.Position.CartesianPosition.ThetaZ = -1.5 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1.5-(-1.5))));
+        //trajectoryPoint.Position.CartesianPosition.ThetaX = -1.5 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1.5-(-1.5))));
+        //trajectoryPoint.Position.CartesianPosition.ThetaY = 1.5 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(4.6-1.5)));
+        //trajectoryPoint.Position.CartesianPosition.ThetaZ = -1.5 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1.5-(-1.5))));
         (*MySendAdvanceTrajectory)(trajectoryPoint);
         while (distance>0.1){
             result = (*MyGetCartesianPosition)(data);
@@ -153,20 +153,20 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
 
     trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
     trajectoryPoint.Position.CartesianPosition.ThetaY = 3.14f;
-    trajectoryPoint.Position.CartesianPosition.ThetaZ = 0.04f;
+    trajectoryPoint.Position.CartesianPosition.ThetaZ = 1.57f;
     if (req.block_owner=="human"){
-
-        trajectoryPoint.Position.CartesianPosition.X = 0.5f;
-    }
-    else{
 
         trajectoryPoint.Position.CartesianPosition.X = 0.4f;
     }
+    else{
+
+        trajectoryPoint.Position.CartesianPosition.X = 0.3f;
+    }
     if (block==0){
-        trajectoryPoint.Position.CartesianPosition.Y = -0.05f;
+        trajectoryPoint.Position.CartesianPosition.Y = -0.1f;
     }
     else{
-        trajectoryPoint.Position.CartesianPosition.Y = 0.05f;
+        trajectoryPoint.Position.CartesianPosition.Y = 0.1f;
     }
     
 
@@ -185,9 +185,9 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     ROS_INFO_STREAM("EXIT PREGRASP");
     if(req.style=="wrong"){
     trajectoryPoint.Position.CartesianPosition.Z = trajectoryPoint.Position.CartesianPosition.Z-0.05;
-    trajectoryPoint.Position.Fingers.Finger1 = float(0.8*6800);
-    trajectoryPoint.Position.Fingers.Finger2 = float(0.8*6800);
-    trajectoryPoint.Position.Fingers.Finger3 = float(0.8*6800);
+    trajectoryPoint.Position.Fingers.Finger1 = float(0.8*6800.0);
+    trajectoryPoint.Position.Fingers.Finger2 = float(0.8*6800.0);
+    trajectoryPoint.Position.Fingers.Finger3 = float(0.8*6800.0);
     (*MySendAdvanceTrajectory)(trajectoryPoint);
     while (distance>0.05){
         result = (*MyGetCartesianPosition)(data);
@@ -200,9 +200,9 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     
     trajectoryPoint.Position.CartesianPosition.Z = trajectoryPoint.Position.CartesianPosition.Z+0.05;  
     
-    trajectoryPoint.Position.Fingers.Finger1 = 6;
-    trajectoryPoint.Position.Fingers.Finger2 = 6;
-    trajectoryPoint.Position.Fingers.Finger3 = 6;
+    trajectoryPoint.Position.Fingers.Finger1 = 6.0f;
+    trajectoryPoint.Position.Fingers.Finger2 = 6.0f;
+    trajectoryPoint.Position.Fingers.Finger3 = 6.0f;
     (*MySendAdvanceTrajectory)(trajectoryPoint);
     while (distance>0.05){
         result = (*MyGetCartesianPosition)(data);
@@ -214,7 +214,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     distance=100;
     }
     ROS_INFO_STREAM("GOING GRASP");
-    trajectoryPoint.Position.CartesianPosition.Z = 0.13f;
+    trajectoryPoint.Position.CartesianPosition.Z = 0.08f;
     (*MySendAdvanceTrajectory)(trajectoryPoint);
     while (distance>0.05){
         result = (*MyGetCartesianPosition)(data);
@@ -226,9 +226,9 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     distance=100;  
     ROS_INFO_STREAM("EXIT GRASP"); 
 
-    trajectoryPoint.Position.Fingers.Finger1 = 6800.f;
-    trajectoryPoint.Position.Fingers.Finger2 = 6800.f;
-    trajectoryPoint.Position.Fingers.Finger3 = 6800.f;
+    trajectoryPoint.Position.Fingers.Finger1 = float(0.8*6800.0);
+    trajectoryPoint.Position.Fingers.Finger2 = float(0.8*6800.0);
+    trajectoryPoint.Position.Fingers.Finger3 = float(0.8*6800.0);
 
     (*MySendAdvanceTrajectory)(trajectoryPoint);
     
@@ -238,19 +238,19 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
         trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
     }
     else if (req.amplitude=="low"){
-        trajectoryPoint.Position.CartesianPosition.Z = 0.2f;
+        trajectoryPoint.Position.CartesianPosition.Z = 0.25f;
     }
     else {
         trajectoryPoint.Position.CartesianPosition.Z = 0.3f;
     }
     if (req.traj=="no_fluent"){
-        rx = -0.1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.3-(-0.1))));
-        ry = -0.1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/((-0.5)-(-0.1))));
+        rx = -0.1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.4-(-0.1))));
+        ry = -0.4 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/((-0.1)-(-0.4))));
         trajectoryPoint.Position.CartesianPosition.X = rx;
         trajectoryPoint.Position.CartesianPosition.Y = ry;
-        trajectoryPoint.Position.CartesianPosition.ThetaX = 0.0 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(3.14-0.0)));
-        trajectoryPoint.Position.CartesianPosition.ThetaY = 0.0 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(3.14-0.0)));
-        trajectoryPoint.Position.CartesianPosition.ThetaZ = 0.0 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(3.14-0.0)));
+        //trajectoryPoint.Position.CartesianPosition.ThetaX = 0.0 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(3.14-0.0)));
+        //trajectoryPoint.Position.CartesianPosition.ThetaY = 0.0 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(3.14-0.0)));
+        //trajectoryPoint.Position.CartesianPosition.ThetaZ = 0.0 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(3.14-0.0)));
         (*MySendAdvanceTrajectory)(trajectoryPoint);
         while (distance>0.1){
             result = (*MyGetCartesianPosition)(data);
@@ -264,25 +264,26 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     
     trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
     trajectoryPoint.Position.CartesianPosition.ThetaY = 3.14f;
-    trajectoryPoint.Position.CartesianPosition.ThetaZ = 0.04f;
+    trajectoryPoint.Position.CartesianPosition.ThetaZ = 1.57f;
 
 
     if(req.final_pose=="area1"){
-        trajectoryPoint.Position.CartesianPosition.X=0.05;
-        trajectoryPoint.Position.CartesianPosition.Y=-0.53;
+        trajectoryPoint.Position.CartesianPosition.X=0.1;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.3;
     }
     else if (req.final_pose=="area2"){
-        trajectoryPoint.Position.CartesianPosition.X=0.05;
-        trajectoryPoint.Position.CartesianPosition.Y=-0.6;
+        trajectoryPoint.Position.CartesianPosition.X=0.1;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.5;
     }
     else if (req.final_pose=="area3"){
         trajectoryPoint.Position.CartesianPosition.X=-0.05;
-        trajectoryPoint.Position.CartesianPosition.Y=-0.53;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.3;
     }
     else if (req.final_pose=="area4"){
         trajectoryPoint.Position.CartesianPosition.X=-0.05;
-        trajectoryPoint.Position.CartesianPosition.Y=-0.6;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.5;
     }
+    
     (*MySendAdvanceTrajectory)(trajectoryPoint);
     while (distance>0.05){
         result = (*MyGetCartesianPosition)(data);
@@ -295,13 +296,10 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     ROS_INFO_STREAM("EXIT PRERELEASE");
     ROS_INFO_STREAM("GOING RELEASE");
     
-    if(req.style=="wrong" & (req.final_pose=="area4" || req.final_pose=="area3")){
-        trajectoryPoint.Position.CartesianPosition.X=trajectoryPoint.Position.CartesianPosition.X+0.1;
+    if(req.style=="wrong"){
+        trajectoryPoint.Position.CartesianPosition.X=0.2f;
     }
-    else if(req.style=="wrong" & (req.final_pose=="area1" || req.final_pose=="area2")){
-        trajectoryPoint.Position.CartesianPosition.X=trajectoryPoint.Position.CartesianPosition.X-0.1;
-    }
-    trajectoryPoint.Position.CartesianPosition.Z = 0.12f;
+    trajectoryPoint.Position.CartesianPosition.Z=0.04f;
     (*MySendAdvanceTrajectory)(trajectoryPoint);
     while (distance>0.05){
         result = (*MyGetCartesianPosition)(data);
@@ -319,7 +317,17 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.Fingers.Finger2 = 6.0f;
     trajectoryPoint.Position.Fingers.Finger3 = 6.0f;
     (*MySendAdvanceTrajectory)(trajectoryPoint);
-    trajectoryPoint.Position.CartesianPosition.Z = 0.3f;
+    trajectoryPoint.Position.CartesianPosition.X=0.2;
+    trajectoryPoint.Position.CartesianPosition.Y=-0.2;
+    if (req.amplitude=="high"){
+        trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
+    }
+    else if (req.amplitude=="low"){
+        trajectoryPoint.Position.CartesianPosition.Z = 0.25f;
+    }
+    else {
+        trajectoryPoint.Position.CartesianPosition.Z = 0.3f;
+    }
     (*MySendAdvanceTrajectory)(trajectoryPoint);
     while (distance>0.05){
         result = (*MyGetCartesianPosition)(data);

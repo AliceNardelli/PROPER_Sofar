@@ -163,7 +163,10 @@ add_dependencies(kinova_as ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED
 target_link_libraries(kinova_as ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${kinova_driver_LIBRARIES})
 install(TARGETS kinova_as DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
-
+add_executable(follow_trajectory src/advanced_trajectory.cpp)
+add_dependencies(follow_trajectory ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(follow_trajectory ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${kinova_driver_LIBRARIES})
+install(TARGETS follow_trajectory DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 #############
 ## Install ##
 #############
