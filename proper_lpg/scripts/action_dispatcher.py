@@ -64,7 +64,7 @@ g_speed={
     "high":1,
 }
 
-traits="dc"
+traits="au"
 def callback(data):
     global emotion, attention
     emotion=map_perception_emotion[data.data][1]
@@ -104,6 +104,7 @@ def dispatch_action(req):
                 file="/home/alice/bepp.mp3"
                 vol=volume_map[mmap["volume"]]
                 reproduce_audio(file,vol)
+                time.sleep(5)
             """
             print("I am here")
             if "say_human" in  str(req.action):
@@ -133,8 +134,8 @@ def dispatch_action(req):
         #MOVE ACTION
         else:
             print("EXEC "+ str(req.action))
+            req2=MoveArmRequest()
             if "pick_place" in  str(req.action):
-                req2=MoveArmRequest()
                 if "replace" in  str(req.action):
                     
                     req2.block=human_block
@@ -162,12 +163,14 @@ def dispatch_action(req):
                     req2.block_owner="gripper"                
                 elif "near" in str(req.action):
                     req2.block_owner="near"
+                    return True
                 elif "gripper" in str(req.action):
                     req2.block_owner="gripper"                
                 elif "attention" in str(req.action):
                     req2.block_owner="attention"
                 elif "random" in str(req.action):
                     req2.block_owner="random"
+                    return True
                 elif "sleep" in str(req.action):
                     time.sleep(4)
                     return True
@@ -190,12 +193,13 @@ def dispatch_action(req):
             if "d" in traits:
                 req2.acc=1
             else:
-                req2.acc=1
+                req2.acc=0
 
-            if "d" in traits or "u" in traits:
+            if req.personality=="Disagreeable" or req.personality=="Unscrupolous":
                 req2.traj="no_fluent"
             else:
                 req2.traj="fluent"
+
             print(req2)
             rospy.wait_for_service('/kinova_server')
             kinova_srv = rospy.ServiceProxy('/kinova_server', MoveArm)

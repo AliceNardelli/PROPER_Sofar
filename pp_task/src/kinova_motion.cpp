@@ -125,7 +125,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
     trajectoryPoint.Position.CartesianPosition.ThetaY = 0.04f;
     trajectoryPoint.Position.CartesianPosition.ThetaZ = 0.04f;
-    for(int i=0; i<3; i++){
+    for(int i=0; i<2; i++){
     trajectoryPoint.Position.CartesianPosition.X = 0.2f;
     trajectoryPoint.Position.CartesianPosition.Y = 0.3f;
     trajectoryPoint.Position.CartesianPosition.Z = 1.1f;
@@ -159,7 +159,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
     trajectoryPoint.Position.CartesianPosition.ThetaY = 1.57f;
     trajectoryPoint.Position.CartesianPosition.ThetaZ = 1.57f;
-    for(int i=0; i<3; i++){
+    for(int i=0; i<2; i++){
     trajectoryPoint.Position.CartesianPosition.X = 0.6f;
     trajectoryPoint.Position.CartesianPosition.Y = -0.4f;
     trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
@@ -207,9 +207,36 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     }
     distance=100;
     }
-
     ////////NEAR || ATTENTION MOVEMENT || GRIPPER
-    else if(req.block_owner=="near" || req.block_owner=="attention" || req.block_owner=="gripper"){
+    else if(req.block_owner=="attention"){
+    std::cout<<req.block_owner<<std::endl;
+    if (req.block_owner=="near"){
+    trajectoryPoint.Position.Fingers.Finger1 = 6.0f;
+    trajectoryPoint.Position.Fingers.Finger2 = 6.0f;
+    trajectoryPoint.Position.Fingers.Finger3 = 6.0f; }
+    else{
+    trajectoryPoint.Position.Fingers.Finger1 = float(0.8*6800.0);
+    trajectoryPoint.Position.Fingers.Finger2 = float(0.8*6800.0);
+    trajectoryPoint.Position.Fingers.Finger3 = float(0.8*6800.0);  
+    }   
+    trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
+    trajectoryPoint.Position.CartesianPosition.ThetaY = 3.14f;
+    trajectoryPoint.Position.CartesianPosition.ThetaZ = 1.57f;
+    trajectoryPoint.Position.CartesianPosition.X = 0.1f;
+    trajectoryPoint.Position.CartesianPosition.Y = -0.3f;
+    trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
+    (*MySendAdvanceTrajectory)(trajectoryPoint);
+    while (distance>0.1){
+            result = (*MyGetCartesianPosition)(data);
+            dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
+            dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
+            dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
+            distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+    }
+    distance=100;
+    }
+    ////////NEAR || ATTENTION MOVEMENT || GRIPPER
+    else if(req.block_owner=="near" || req.block_owner=="gripper"){
     std::cout<<req.block_owner<<std::endl;
     if (req.block_owner=="near"){
     trajectoryPoint.Position.Fingers.Finger1 = 6.0f;
@@ -224,7 +251,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.CartesianPosition.ThetaY = 0.04f;
     trajectoryPoint.Position.CartesianPosition.ThetaZ = 0.04f;
     trajectoryPoint.Position.CartesianPosition.X = 0.4f;
-    trajectoryPoint.Position.CartesianPosition.Y = -0.4f;
+    trajectoryPoint.Position.CartesianPosition.Y = -0.2f;
     trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
     (*MySendAdvanceTrajectory)(trajectoryPoint);
     while (distance>0.1){
@@ -252,9 +279,9 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     }
     }
     else if(req.block_owner=="random"){
-        rx = 0.15 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.4-0.15)));
+        rx = 0.2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.4-0.2)));
         ry = -0.3 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.3-(-0.3))));
-        rz = 0.1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.8-0.1)));
+        rz = 0.2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.8-0.2)));
         std::cout<<rx<<" "<<ry<<" "<<std::endl;
         trajectoryPoint.Position.CartesianPosition.X = rx;
         trajectoryPoint.Position.CartesianPosition.Y = ry;

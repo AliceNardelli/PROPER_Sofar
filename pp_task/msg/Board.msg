@@ -2,3 +2,8 @@ string area1
 string area2
 string area3
 string area4
+string area5
+string area6
+string area7
+string area8
+string area9

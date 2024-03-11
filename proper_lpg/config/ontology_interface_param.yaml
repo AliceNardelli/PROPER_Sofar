@@ -1,4 +1,4 @@
-goals: ['goal1','goal2']
+goals: ['goal2']
 actual_goal: "goal2"
 goal1: {"domain":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/goal1_domain.pddl', 
       "problem":'/home/alice/catkin_ws/src/PROPER_Sofar/proper_lpg/prova_problem.pddl',

@@ -8,7 +8,7 @@ zzz_u/goal1: {"say_something_to_loose_time":{"w1":4,"w2":0,"expected_outcome":[0
      "gesture_random":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-zzz_u/goal12: {
+zzz_u/goal2: {
      "gesture_random":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      "gesture_sleep":{"w1":4,"w2":0,"expected_outcome":[0,0,0]},
      }
