@@ -19,8 +19,8 @@
 or
 > roslaunch proper_lpg node_launch.launch
 or
-> rosrun pp_task edge_detection.py
-> rosrun pp_task game_player.py
+> rosrun pp_task edge_detection3x3.py
+> rosrun pp_task game_player3x3.py
 > rosrun proper_lpg perception_interface.py
 > rosrun proper_lpg action_dispatcher.py
 > rosrun proper_lpg personality_generator.py

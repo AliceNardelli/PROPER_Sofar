@@ -26,8 +26,8 @@ traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 
 we=0
 wi=0
-wc=0
-wu=1
+wc=1
+wu=0
 wa=1
 wd=0
 sum_weights=0
@@ -401,21 +401,42 @@ class CheckPerc(smach.State):
         # se sono al primo giro o ho finito il giro
         print("ho un nuovo blocco da sistemare?")
         print(userdata.action=="" or predicates_objects["action2"].is_grounded)
+
+        req=GameRequest()
+        req.type="new_move"
+        rospy.wait_for_service('game_player_srv')
+        game_client = rospy.ServiceProxy('game_player_srv', Game)
+        resp = game_client(req)
+        
         if userdata.action=="" or predicates_objects["action2"].is_grounded:
-            req=GameRequest()
-            req.type="new_move"
-            rospy.wait_for_service('game_player_srv')
-            game_client = rospy.ServiceProxy('game_player_srv', Game)
-            resp = game_client(req)
-            print(resp)
             if resp.success==True:
-                add_goal("finished")
-                remove_predicate("action2")
-                add_predicate("new_block")
-                add_goal("feel_comfort")
-                remove_predicate("feel_comfort")
+                if resp.no_blocks==1:
+                    print("last block")
+                    add_goal("finished")
+                    remove_predicate("action2")
+                    add_predicate("new_block")
+                    add_goal("feel_comfort")
+                    remove_predicate("feel_comfort")                        
+                    remove_predicate("robot_start")
+                    remove_predicate("human_start")
+                    add_predicate("to_assign_dominance")
+                    if resp.action=="human":
+                        print("last block")
+                        add_predicate("human_start")
+                    else:
+                        add_predicate("robot_start")
+                else:
+                    add_goal("finished")
+                    remove_predicate("action2")
+                    add_predicate("new_block")
+                    add_goal("feel_comfort")
+                    remove_predicate("feel_comfort")
                 go_plan=True
 
+        #if there is not new moves I exit
+        if resp.success==False:
+            return "outcome4"
+        
         if go_plan==True:
             return "outcome3"
 

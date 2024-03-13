@@ -58,62 +58,83 @@ def handle_game(req):
                         no_color=False
 
             if actual_board_state.area2=="B" or actual_board_state.area4=="B" or actual_board_state.area6=="B" or actual_board_state.area9=="B":
-                set_goal_configuration(2)
-            else:
                 set_goal_configuration(1)
+            else:
+                set_goal_configuration(2)
         res.success=True
 
     elif req.type=="new_move":
         print("NEW MOVE")
-        
+        map_color={"B":"human",
+                   "R":"robot"}
+        counter_area=0
         area=[]
         if actual_board_state.area1==final_board_state.area1:
             area.append(True)
         else:
             area.append(False)
+            counter_area+=1
+            res.action=map_color[final_board_state.area1]
             
         if actual_board_state.area2==final_board_state.area2:
             area.append(True)
         else:
             area.append(False)
+            counter_area+=1
+            res.action=map_color[final_board_state.area2]
+
         if actual_board_state.area3==final_board_state.area3:
-            
             area.append(True)
         else:
             area.append(False)
+            counter_area+=1
+            res.action=map_color[final_board_state.area3]
 
         if actual_board_state.area4==final_board_state.area4:
             area.append(True)
         else:
             area.append(False)
+            counter_area+=1
+            res.action=map_color[final_board_state.area4]
 
         if actual_board_state.area5==final_board_state.area5:
             area.append(True)
         else:
             area.append(False)
+            counter_area+=1
+            res.action=map_color[final_board_state.area5]
 
         if actual_board_state.area6==final_board_state.area6:
             area.append(True)
         else:
             area.append(False)
+            counter_area+=1
+            res.action=map_color[final_board_state.area6]
+
         if actual_board_state.area7==final_board_state.area7:
-            
             area.append(True)
         else:
             area.append(False)
+            counter_area+=1
+            res.action=map_color[final_board_state.area7]
 
         if actual_board_state.area8==final_board_state.area8:
             area.append(True)
         else:
             area.append(False)
+            counter_area+=1
+            res.action=map_color[final_board_state.area8]
 
         if actual_board_state.area9==final_board_state.area9:
             area.append(True)
         else:
             area.append(False)
+            counter_area+=1
+            res.action=map_color[final_board_state.area9]
         
         for ba in area:
             if not ba:
+                res.no_blocks=counter_area
                 res.success=True
                 return res
                         
@@ -197,10 +218,15 @@ if __name__ == "__main__":
     s = rospy.Service('game_player_srv', Game, handle_game)
     actual_board_state=Board()
     final_board_state=Board()
-    final_board_state.area1="B"
-    final_board_state.area2="R"
-    final_board_state.area3="B"
-    final_board_state.area4="R"
+    final_board_state.area1="R"
+    final_board_state.area2="B"
+    final_board_state.area3="R"
+    final_board_state.area4="B"
+    final_board_state.area5="R"
+    final_board_state.area6="B"
+    final_board_state.area7="R"
+    final_board_state.area8="B"
+    final_board_state.area9="R"
     start=False
     new_data=False
     

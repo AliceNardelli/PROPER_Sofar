@@ -397,21 +397,49 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
     trajectoryPoint.Position.CartesianPosition.ThetaY = 3.14f;
     trajectoryPoint.Position.CartesianPosition.ThetaZ = 1.57f;
-    if (req.block_owner=="human"){
-
-        trajectoryPoint.Position.CartesianPosition.X = 0.4f;
-    }
-    else{
-
+    if (req.block_owner=="robot" and block==0){
         trajectoryPoint.Position.CartesianPosition.X = 0.3f;
+        trajectoryPoint.Position.CartesianPosition.Y = -0.3f;
     }
-    if (block==0){
+    else if (req.block_owner=="robot" and block==1){
+        trajectoryPoint.Position.CartesianPosition.X = 0.3f;
+        trajectoryPoint.Position.CartesianPosition.Y = -0.15f;
+    }
+    else if (req.block_owner=="robot" and block==2){
+        trajectoryPoint.Position.CartesianPosition.X = 0.3f;
+        trajectoryPoint.Position.CartesianPosition.Y = 0.0f;
+    }
+    else if (req.block_owner=="robot" and block==3){
+        trajectoryPoint.Position.CartesianPosition.X = 0.3f;
+        trajectoryPoint.Position.CartesianPosition.Y = 0.15f;
+    }
+    else if (req.block_owner=="robot" and block==4){
+        trajectoryPoint.Position.CartesianPosition.X = 0.4f;
+        trajectoryPoint.Position.CartesianPosition.Y = 0.15f;
+    }
+    else if (req.block_owner=="human" and block==0){
+        trajectoryPoint.Position.CartesianPosition.X = 0.4f;
+        trajectoryPoint.Position.CartesianPosition.Y = -0.15f;
+    }
+    else if (req.block_owner=="human" and block==1){
+        trajectoryPoint.Position.CartesianPosition.X = 0.5f;
         trajectoryPoint.Position.CartesianPosition.Y = -0.1f;
     }
-    else{
+    else if (req.block_owner=="human" and block==2){
+        trajectoryPoint.Position.CartesianPosition.X = 0.4f;
+        trajectoryPoint.Position.CartesianPosition.Y = 0.0f;
+    }
+    else if (req.block_owner=="human" and block==3){
+        trajectoryPoint.Position.CartesianPosition.X = 0.5f;
         trajectoryPoint.Position.CartesianPosition.Y = 0.1f;
     }
-    
+    else if (req.block_owner=="human" and block==4){
+        trajectoryPoint.Position.CartesianPosition.X = 0.5f;
+        trajectoryPoint.Position.CartesianPosition.Y = 0.2f;
+    }
+    else{
+        ROS_INFO_STREAM("WRONG GOAL");
+    }
 
     ROS_INFO_STREAM("GOING PREGRASP");
 
@@ -478,7 +506,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
 
     ROS_INFO_STREAM("GOING PRERELEASE");
     if (req.amplitude=="high"){
-        trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
+        trajectoryPoint.Position.CartesianPosition.Z = 0.35f;
     }
     else if (req.amplitude=="low"){
         trajectoryPoint.Position.CartesianPosition.Z = 0.25f;
@@ -511,20 +539,40 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
 
 
     if(req.final_pose=="area1"){
-        trajectoryPoint.Position.CartesianPosition.X=0.1;
+        trajectoryPoint.Position.CartesianPosition.X=0.15;
         trajectoryPoint.Position.CartesianPosition.Y=-0.3;
     }
     else if (req.final_pose=="area2"){
-        trajectoryPoint.Position.CartesianPosition.X=0.1;
-        trajectoryPoint.Position.CartesianPosition.Y=-0.5;
+        trajectoryPoint.Position.CartesianPosition.X=0.15;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.45;
     }
     else if (req.final_pose=="area3"){
-        trajectoryPoint.Position.CartesianPosition.X=-0.05;
-        trajectoryPoint.Position.CartesianPosition.Y=-0.3;
+        trajectoryPoint.Position.CartesianPosition.X=0.15;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.6;
     }
     else if (req.final_pose=="area4"){
-        trajectoryPoint.Position.CartesianPosition.X=-0.05;
-        trajectoryPoint.Position.CartesianPosition.Y=-0.5;
+        trajectoryPoint.Position.CartesianPosition.X=0.0;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.3;
+    }
+    else if (req.final_pose=="area5"){
+        trajectoryPoint.Position.CartesianPosition.X=0.0;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.45;
+    }
+    else if (req.final_pose=="area6"){
+        trajectoryPoint.Position.CartesianPosition.X=0.0;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.6;
+    }
+    else if (req.final_pose=="area7"){
+        trajectoryPoint.Position.CartesianPosition.X=-0.15;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.3;
+    }
+    else if (req.final_pose=="area8"){
+        trajectoryPoint.Position.CartesianPosition.X=-0.15;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.45;
+    }
+    else if (req.final_pose=="area9"){
+        trajectoryPoint.Position.CartesianPosition.X=-0.15;
+        trajectoryPoint.Position.CartesianPosition.Y=-0.6;
     }
     
     (*MySendAdvanceTrajectory)(trajectoryPoint);
@@ -563,7 +611,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.CartesianPosition.X=0.2;
     trajectoryPoint.Position.CartesianPosition.Y=-0.2;
     if (req.amplitude=="high"){
-        trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
+        trajectoryPoint.Position.CartesianPosition.Z = 0.35f;
     }
     else if (req.amplitude=="low"){
         trajectoryPoint.Position.CartesianPosition.Z = 0.25f;

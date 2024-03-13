@@ -205,7 +205,7 @@ def main():
     index_max=yyy.index(max(yyy))
     rectangles[ar[index_max]]["name"]="A7"
     index.remove(index_max)
-    rectangles[ar[index[0]]]["name"]="A7"
+    rectangles[ar[index[0]]]["name"]="A4"
     #column2
     xxx=[x_values[3],x_values[4],x_values[5]]
     ar=[reverse_dict_x[xxx[0]],reverse_dict_x[xxx[1]],reverse_dict_x[xxx[2]]]
@@ -227,9 +227,9 @@ def main():
     rectangles[ar[index_min]]["name"]="A3"
     index.remove(index_min)
     index_max=yyy.index(max(yyy))
-    rectangles[ar[index_max]]["name"]="A6"
+    rectangles[ar[index_max]]["name"]="A9"
     index.remove(index_max)
-    rectangles[ar[index[0]]]["name"]="A9"
+    rectangles[ar[index[0]]]["name"]="A6"
    
     
 

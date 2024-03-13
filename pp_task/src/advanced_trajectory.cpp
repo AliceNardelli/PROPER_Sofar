@@ -59,29 +59,23 @@ int main()
                 trajectoryPoint.Position.HandMode = POSITION_MODE;
                 //We initialize the fingers.
 
-                
-                trajectoryPoint.Position.CartesianPosition.X = 0.4f;
-                trajectoryPoint.Position.CartesianPosition.Y = -0.4f;
-                trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
+                trajectoryPoint.Position.Fingers.Finger1 = 6.0f;
+                trajectoryPoint.Position.Fingers.Finger2 = 6.0f;
+                trajectoryPoint.Position.Fingers.Finger3 = 6.0f;
+                trajectoryPoint.Position.CartesianPosition.X = -0.15f;
+                trajectoryPoint.Position.CartesianPosition.Y = -0.6f;
+                trajectoryPoint.Position.CartesianPosition.Z = 0.35f;
                 //We set the orientation part of the position (unit is RAD)
                 trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
-                trajectoryPoint.Position.CartesianPosition.ThetaY = 1.57f;
+                trajectoryPoint.Position.CartesianPosition.ThetaY = 3.14f;
                 trajectoryPoint.Position.CartesianPosition.ThetaZ = 1.57f;
                 (*MySendAdvanceTrajectory)(trajectoryPoint); 
-/*
-                for(int i=0;i<3;i++){
-                               
-                trajectoryPoint.Position.Fingers.Finger1 = float(0.8*6800.0);
-                trajectoryPoint.Position.Fingers.Finger2 = float(0.8*6800.0);
-                trajectoryPoint.Position.Fingers.Finger3 = float(0.8*6800.0);
 
+                trajectoryPoint.Position.CartesianPosition.Z = 0.1f;
+                (*MySendAdvanceTrajectory)(trajectoryPoint);               
+                
+                trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
                 (*MySendAdvanceTrajectory)(trajectoryPoint);
-
-                trajectoryPoint.Position.Fingers.Finger1 = 30.0f;
-                trajectoryPoint.Position.Fingers.Finger2 = 30.0f;
-                trajectoryPoint.Position.Fingers.Finger3 = 30.0f;
-
-                (*MySendAdvanceTrajectory)(trajectoryPoint);}*/
                 cout << endl << "Calling the method CloseAPI()" << endl;
                 result = (*MyCloseAPI)();
                 cout << "result of CloseAPI() = " << result << endl;

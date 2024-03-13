@@ -3,3 +3,4 @@ string firstmove
 -----------------
 bool success
 string action
+int64 no_blocks

@@ -179,6 +179,8 @@ install(TARGETS follow_trajectory DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
  catkin_install_python(PROGRAMS
    scripts/edge_detection.py
    scripts/game_player.py
+   scripts/edge_detection3x3.py
+   scripts/game_player3x3.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
