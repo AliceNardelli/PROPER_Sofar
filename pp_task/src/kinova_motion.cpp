@@ -17,7 +17,7 @@ int (*MySetActuatorPID)(unsigned int address, float P, float I, float D);
 int (*MySendAdvanceTrajectory)(TrajectoryPoint command);
 int (*MyStartControlAPI)();
 int (*MyGetCartesianPosition)(CartesianPosition &);
-
+ros::Publisher pose_pub;
 
 
 
@@ -74,6 +74,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     double vel=req.speed;
     int acc=req.acc;
     TrajectoryPoint trajectoryPoint;
+    geometry_msgs::PoseStamped msg;
     int result;
     void * commandLayer_handle;
     //Function pointers to the functions we need
@@ -125,7 +126,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
     trajectoryPoint.Position.CartesianPosition.ThetaY = 0.04f;
     trajectoryPoint.Position.CartesianPosition.ThetaZ = 0.04f;
-    for(int i=0; i<2; i++){
+    for(int i=0; i<1; i++){
     trajectoryPoint.Position.CartesianPosition.X = 0.2f;
     trajectoryPoint.Position.CartesianPosition.Y = 0.3f;
     trajectoryPoint.Position.CartesianPosition.Z = 1.1f;
@@ -136,6 +137,14 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
             dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
             distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;
     trajectoryPoint.Position.CartesianPosition.Y = -0.3f;
@@ -146,6 +155,14 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
             dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
             distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;}
     }
@@ -159,7 +176,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
     trajectoryPoint.Position.CartesianPosition.ThetaY = 1.57f;
     trajectoryPoint.Position.CartesianPosition.ThetaZ = 1.57f;
-    for(int i=0; i<2; i++){
+    for(int i=0; i<1; i++){
     trajectoryPoint.Position.CartesianPosition.X = 0.6f;
     trajectoryPoint.Position.CartesianPosition.Y = -0.4f;
     trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
@@ -170,6 +187,14 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
             dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
             distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;
     trajectoryPoint.Position.CartesianPosition.Y = 0.4f;
@@ -180,6 +205,14 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
             dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
             distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;}
     }
@@ -204,6 +237,14 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
             dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
             distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;
     }
@@ -232,6 +273,14 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
             dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
             distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;
     }
@@ -248,11 +297,11 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.Fingers.Finger3 = float(0.8*6800.0);  
     }   
     trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
-    trajectoryPoint.Position.CartesianPosition.ThetaY = 0.04f;
-    trajectoryPoint.Position.CartesianPosition.ThetaZ = 0.04f;
-    trajectoryPoint.Position.CartesianPosition.X = 0.4f;
-    trajectoryPoint.Position.CartesianPosition.Y = -0.2f;
-    trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
+    trajectoryPoint.Position.CartesianPosition.ThetaY = 1.57f;
+    trajectoryPoint.Position.CartesianPosition.ThetaZ = 1.57f;
+    trajectoryPoint.Position.CartesianPosition.X = 0.5f;
+    trajectoryPoint.Position.CartesianPosition.Y = -0.3f;
+    trajectoryPoint.Position.CartesianPosition.Z = 0.4f; 
     (*MySendAdvanceTrajectory)(trajectoryPoint);
     while (distance>0.1){
             result = (*MyGetCartesianPosition)(data);
@@ -260,6 +309,14 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
             dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
             distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;
     if (req.block_owner=="gripper"){
@@ -291,11 +348,19 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
         trajectoryPoint.Position.Fingers.Finger3 = 30.0f;
         (*MySendAdvanceTrajectory)(trajectoryPoint);
         while (distance>0.1){
-            result = (*MyGetCartesianPosition)(data);
-            dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
-            dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
-            dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
-            distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+                result = (*MyGetCartesianPosition)(data);
+                dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
+                dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
+                dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
+                distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+                msg.header.stamp=ros::Time::now();
+                msg.pose.position.x=data.Coordinates.X;
+                msg.pose.position.y=data.Coordinates.Y;
+                msg.pose.position.z=data.Coordinates.Z;
+                msg.pose.orientation.x=data.Coordinates.ThetaX;
+                msg.pose.orientation.y=data.Coordinates.ThetaY;
+                msg.pose.orientation.z=data.Coordinates.ThetaZ;
+                pose_pub.publish(msg);
         }
         distance=100;
 
@@ -308,7 +373,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
     trajectoryPoint.Position.CartesianPosition.ThetaY = 1.57f;
     trajectoryPoint.Position.CartesianPosition.ThetaZ = 1.57f;
-    for(int i=0; i<3; i++){
+    for(int i=0; i<1; i++){
     if (req.block_owner=="front"){
     trajectoryPoint.Position.Fingers.Finger1 = float(0.8*6800.0);
     trajectoryPoint.Position.Fingers.Finger2 = float(0.8*6800.0);
@@ -331,6 +396,14 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
             dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
             distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;
     if (req.block_owner=="front"){trajectoryPoint.Position.CartesianPosition.X = 0.6f;
@@ -353,6 +426,14 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
             dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
             distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;}
     }
@@ -375,7 +456,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     }
 
     if (req.traj=="no_fluent"){
-        rx = 0.15 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.4-0.15)));
+        rx = 0.2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.4-0.2)));
         ry = -0.2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.2-(-0.2))));
         std::cout<<rx<<" "<<ry<<" "<<std::endl;
         trajectoryPoint.Position.CartesianPosition.X = rx;
@@ -385,11 +466,19 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
         //trajectoryPoint.Position.CartesianPosition.ThetaZ = -1.5 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1.5-(-1.5))));
         (*MySendAdvanceTrajectory)(trajectoryPoint);
         while (distance>0.1){
-            result = (*MyGetCartesianPosition)(data);
-            dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
-            dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
-            dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
-            distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+                result = (*MyGetCartesianPosition)(data);
+                dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
+                dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
+                dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
+                distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+                msg.header.stamp=ros::Time::now();
+                msg.pose.position.x=data.Coordinates.X;
+                msg.pose.position.y=data.Coordinates.Y;
+                msg.pose.position.z=data.Coordinates.Z;
+                msg.pose.orientation.x=data.Coordinates.ThetaX;
+                msg.pose.orientation.y=data.Coordinates.ThetaY;
+                msg.pose.orientation.z=data.Coordinates.ThetaZ;
+                pose_pub.publish(msg);
         }
         distance=100;
     } 
@@ -444,12 +533,20 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     ROS_INFO_STREAM("GOING PREGRASP");
 
     (*MySendAdvanceTrajectory)(trajectoryPoint);
-    while (distance>0.05){
-        result = (*MyGetCartesianPosition)(data);
-        dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
-        dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
-        dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
-        distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+    while (distance>0.1){
+            result = (*MyGetCartesianPosition)(data);
+            dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
+            dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
+            dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
+            distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;
     
@@ -460,12 +557,20 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.Fingers.Finger2 = float(0.8*6800.0);
     trajectoryPoint.Position.Fingers.Finger3 = float(0.8*6800.0);
     (*MySendAdvanceTrajectory)(trajectoryPoint);
-    while (distance>0.05){
-        result = (*MyGetCartesianPosition)(data);
-        dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
-        dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
-        dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
-        distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+    while (distance>0.1){
+            result = (*MyGetCartesianPosition)(data);
+            dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
+            dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
+            dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
+            distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;
     
@@ -475,24 +580,40 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.Fingers.Finger2 = 6.0f;
     trajectoryPoint.Position.Fingers.Finger3 = 6.0f;
     (*MySendAdvanceTrajectory)(trajectoryPoint);
-    while (distance>0.05){
-        result = (*MyGetCartesianPosition)(data);
-        dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
-        dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
-        dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
-        distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+    while (distance>0.1){
+            result = (*MyGetCartesianPosition)(data);
+            dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
+            dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
+            dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
+            distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;
     }
     ROS_INFO_STREAM("GOING GRASP");
     trajectoryPoint.Position.CartesianPosition.Z = 0.08f;
     (*MySendAdvanceTrajectory)(trajectoryPoint);
-    while (distance>0.05){
-        result = (*MyGetCartesianPosition)(data);
-        dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
-        dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
-        dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
-        distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+    while (distance>0.1){
+            result = (*MyGetCartesianPosition)(data);
+            dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
+            dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
+            dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
+            distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;  
     ROS_INFO_STREAM("EXIT GRASP"); 
@@ -524,11 +645,19 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
         //trajectoryPoint.Position.CartesianPosition.ThetaZ = 0.0 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(3.14-0.0)));
         (*MySendAdvanceTrajectory)(trajectoryPoint);
         while (distance>0.1){
-            result = (*MyGetCartesianPosition)(data);
-            dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
-            dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
-            dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
-            distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+                result = (*MyGetCartesianPosition)(data);
+                dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
+                dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
+                dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
+                distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+                msg.header.stamp=ros::Time::now();
+                msg.pose.position.x=data.Coordinates.X;
+                msg.pose.position.y=data.Coordinates.Y;
+                msg.pose.position.z=data.Coordinates.Z;
+                msg.pose.orientation.x=data.Coordinates.ThetaX;
+                msg.pose.orientation.y=data.Coordinates.ThetaY;
+                msg.pose.orientation.z=data.Coordinates.ThetaZ;
+                pose_pub.publish(msg);
         }
         distance=100;
     }
@@ -539,15 +668,15 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
 
 
     if(req.final_pose=="area1"){
-        trajectoryPoint.Position.CartesianPosition.X=0.15;
+        trajectoryPoint.Position.CartesianPosition.X=0.13;
         trajectoryPoint.Position.CartesianPosition.Y=-0.3;
     }
     else if (req.final_pose=="area2"){
-        trajectoryPoint.Position.CartesianPosition.X=0.15;
+        trajectoryPoint.Position.CartesianPosition.X=0.13;
         trajectoryPoint.Position.CartesianPosition.Y=-0.45;
     }
     else if (req.final_pose=="area3"){
-        trajectoryPoint.Position.CartesianPosition.X=0.15;
+        trajectoryPoint.Position.CartesianPosition.X=0.13;
         trajectoryPoint.Position.CartesianPosition.Y=-0.6;
     }
     else if (req.final_pose=="area4"){
@@ -576,12 +705,20 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     }
     
     (*MySendAdvanceTrajectory)(trajectoryPoint);
-    while (distance>0.05){
-        result = (*MyGetCartesianPosition)(data);
-        dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
-        dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
-        dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
-        distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+    while (distance>0.1){
+            result = (*MyGetCartesianPosition)(data);
+            dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
+            dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
+            dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
+            distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;
     ROS_INFO_STREAM("EXIT PRERELEASE");
@@ -592,12 +729,20 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     }
     trajectoryPoint.Position.CartesianPosition.Z=0.04f;
     (*MySendAdvanceTrajectory)(trajectoryPoint);
-    while (distance>0.05){
-        result = (*MyGetCartesianPosition)(data);
-        dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
-        dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
-        dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
-        distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+    while (distance>0.1){
+            result = (*MyGetCartesianPosition)(data);
+            dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
+            dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
+            dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
+            distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;
     ROS_INFO_STREAM("EXIT RELEASE");
@@ -620,12 +765,20 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
         trajectoryPoint.Position.CartesianPosition.Z = 0.3f;
     }
     (*MySendAdvanceTrajectory)(trajectoryPoint);
-    while (distance>0.05){
-        result = (*MyGetCartesianPosition)(data);
-        dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
-        dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
-        dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
-        distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+    while (distance>0.1){
+            result = (*MyGetCartesianPosition)(data);
+            dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
+            dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
+            dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
+            distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
     }
     distance=100;
 
@@ -640,7 +793,7 @@ int main(int argc, char **argv)
 {
        ros::init(argc, argv, "kinova_move_server");
        ros::NodeHandle n;
- 
+       pose_pub = n.advertise<geometry_msgs::PoseStamped>("kinova_pose", 1000);
         
         ros::Subscriber sub;
         ros::AsyncSpinner spinner(2);
@@ -657,4 +810,3 @@ int main(int argc, char **argv)
         }
         return 0; 
 }
-

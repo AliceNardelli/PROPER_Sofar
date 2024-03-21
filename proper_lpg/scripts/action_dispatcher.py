@@ -64,7 +64,7 @@ g_speed={
     "high":1,
 }
 
-traits="ae"
+traits="iu"
 def callback(data):
     global emotion, attention
     emotion=map_perception_emotion[data.data][1]
@@ -104,7 +104,12 @@ def dispatch_action(req):
                 file="/home/alice/bepp.mp3"
                 vol=volume_map[mmap["volume"]]
                 reproduce_audio(file,vol)
-                time.sleep(5)
+                if "d" in traits:
+                    time.sleep(4)
+                if "a" in traits:
+                    time.sleep(6)
+                else:
+                    time.sleep(5)
             """
             print("I am here")
             if "say_human" in  str(req.action):

@@ -50,6 +50,7 @@ int main(int argc, char **argv)
                 msg.pose.orientation.x=data.Coordinates.ThetaX;
                 msg.pose.orientation.y=data.Coordinates.ThetaY;
                 msg.pose.orientation.z=data.Coordinates.ThetaZ;
+                pose_pub.publish(msg);
                 cout << "       Position X : " << data.Coordinates.X << endl;
                 cout << "       Position Y : " << data.Coordinates.Y << endl;
                 cout << "       Position Z : " << data.Coordinates.Z << endl;

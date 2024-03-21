@@ -2,8 +2,9 @@
 
 <launch>
 <include file="$(find proper_lpg)/launch/parameter_launch.launch" />
-<node pkg="pp_task" type="edge_detection3x3.py" name="edge_detection" output="screen"/>  
+<node pkg="pp_task" type="edge_detection3x3.py" name="edge_detection"/>  
 <node pkg="pp_task" type="game_player3x3.py" name="game_player" output="screen"/>  
+<node pkg="pp_task" type="kinova_as" name="kinova_as" output="screen"/>  
 <node pkg="proper_lpg" type="perception_interface.py" name="perception_iterface" output="screen"/>  
 <node pkg="proper_lpg" type="action_dispatcher.py" name="action_dispatcher" output="screen"/>         
 <node pkg="proper_lpg" type="personality_generator.py" name="personality_generator" output="screen"/> 

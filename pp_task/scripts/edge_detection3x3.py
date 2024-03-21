@@ -168,7 +168,7 @@ def main():
     board_pub = rospy.Publisher('/board_state', Board, queue_size=10)
     # Open the default webcam  
     cap = cv2.VideoCapture()
-    cap.open("/dev/video4")
+    cap.open("/dev/video2")
     listener = keyboard.Listener(on_press=key_press)
     listener.start()
     #detecting area while a keyboard is inserted
@@ -207,6 +207,7 @@ def main():
     rectangles[ar[index_max]]["name"]="A7"
     index.remove(index_max)
     rectangles[ar[index[0]]]["name"]="A4"
+    print(rectangles)
     #column2
     xxx=[x_values[3],x_values[4],x_values[5]]
     ar=[reverse_dict_x[xxx[0]],reverse_dict_x[xxx[1]],reverse_dict_x[xxx[2]]]
@@ -219,6 +220,7 @@ def main():
     rectangles[ar[index_max]]["name"]="A8"
     index.remove(index_max)
     rectangles[ar[index[0]]]["name"]="A5"
+    print(rectangles)
     #column3
     xxx=[x_values[6],x_values[7],x_values[8]]
     ar=[reverse_dict_x[xxx[0]],reverse_dict_x[xxx[1]],reverse_dict_x[xxx[2]]]
@@ -231,6 +233,7 @@ def main():
     rectangles[ar[index_max]]["name"]="A9"
     index.remove(index_max)
     rectangles[ar[index[0]]]["name"]="A6"
+    print(rectangles)
    
     
 
