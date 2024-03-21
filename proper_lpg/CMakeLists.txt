@@ -168,6 +168,7 @@ catkin_install_python(PROGRAMS
   scripts/Alice_client.py
   scripts/action_dispatcher.py
   scripts/personality_generator.py
+  scripts/webcam_reader.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

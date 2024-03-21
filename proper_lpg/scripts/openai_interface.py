@@ -21,6 +21,7 @@ app = Flask(__name__)
 
 @app.route ('/sentence_generation', methods = ['PUT'] )
 def main():
+  
   updated_data = request.get_json()
   data.update(updated_data)
   if data["personality"]=="Extrovert":
@@ -32,8 +33,8 @@ def main():
   sentence='Generate a sentence with a "'+data["personality"]+'" personality with a "'+data["language"]+'" style in italian to achieve the following goal "'+data["sentence"]+'". Plese follow the style and the personality to write the sentence and not generate emoticons. Please do mot directly express the personality.  Generate the sentences within  square brackets []'
   response = client.chat.completions.create(
     model=model,
-    messages=[{"role": "user", 
-              "content": sentence}],
+    messages=[
+              {"role": "user", "content": sentence}],
     temperature=1,
     max_tokens=tokens,
     top_p=1,

@@ -24,9 +24,9 @@ import datetime
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 
-we=0
+we=1
 wi=0
-wc=1
+wc=0
 wu=0
 wa=1
 wd=0

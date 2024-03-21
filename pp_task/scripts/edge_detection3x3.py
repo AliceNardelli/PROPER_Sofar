@@ -167,7 +167,8 @@ def main():
     rospy.init_node("board_state_publisher")
     board_pub = rospy.Publisher('/board_state', Board, queue_size=10)
     # Open the default webcam  
-    cap = cv2.VideoCapture(2)
+    cap = cv2.VideoCapture()
+    cap.open("/dev/video4")
     listener = keyboard.Listener(on_press=key_press)
     listener.start()
     #detecting area while a keyboard is inserted

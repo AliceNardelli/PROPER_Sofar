@@ -13,12 +13,12 @@ def publish_perception():
     global perc_pub
     resp=requests.put(url+'get_input', json=data, headers=headers)
     new_perception=eval(resp.text)["new_perception"]  
+    print(new_perception)
     time.sleep(3)
     if new_perception=="True":
         perc=eval(resp.text)["perception"]
         msg=String()
         msg.data=perc
-
         perc_pub.publish(msg)
 
         

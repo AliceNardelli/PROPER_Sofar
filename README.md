@@ -16,9 +16,6 @@
 ## python 3 environment
 ### PROPER
 > roslaunch proper_lpg parameter_launch.launch
-or
-> roslaunch proper_lpg node_launch.launch
-or
 > rosrun pp_task edge_detection3x3.py
 > rosrun pp_task game_player3x3.py
 > rosrun proper_lpg perception_interface.py
@@ -29,7 +26,7 @@ or
 
 ### MOVEIT
 > rosrun pp_task kinova_as 
-
+> rosrun pp_task pose_publisher
 
 ## OPENAI VENV
 > python3 chat_playground.py
@@ -43,3 +40,11 @@ or
 metric-FF url: https://fai.cs.uni-saarland.de/hoffmann/metric-ff.html
 
 # openai-1.3.7 typing-extensions-4.8.0
+
+command to list video devices:
+
+v4l2-ctl --list-devices
+
+# bag
+
+rosbag record -O /home/alice/prova12.bag /webcam/image_raw/compressed /kinova_pose

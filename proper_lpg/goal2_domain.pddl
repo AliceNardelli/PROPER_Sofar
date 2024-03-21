@@ -431,7 +431,7 @@
                 (and
                            
                            (when (intro)(increase (interaction_level)(*(extroversion_coefficient)(dur))))
-                           (when (extro)(decrease (interaction_level)(*(extroversion_coefficient)(+(dur)4))))
+                           (when (extro)(decrease (interaction_level)(*(extroversion_coefficient)(dur))))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
                            (when (disagree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(dur))))
                            (when (agree)(increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
@@ -480,7 +480,7 @@
         :effect
                 (and
                            (when (intro)(increase (interaction_level)(*(extroversion_coefficient)(dur))))
-                           (when (extro)(decrease (interaction_level)(*(extroversion_coefficient)(+(dur)4))))
+                           (when (extro)(decrease (interaction_level)(*(extroversion_coefficient)(dur))))
                            (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
                            (when (disagree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(dur))))
