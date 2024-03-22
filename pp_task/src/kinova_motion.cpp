@@ -668,15 +668,15 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
 
 
     if(req.final_pose=="area1"){
-        trajectoryPoint.Position.CartesianPosition.X=0.13;
+        trajectoryPoint.Position.CartesianPosition.X=0.11;
         trajectoryPoint.Position.CartesianPosition.Y=-0.3;
     }
     else if (req.final_pose=="area2"){
-        trajectoryPoint.Position.CartesianPosition.X=0.13;
+        trajectoryPoint.Position.CartesianPosition.X=0.11;
         trajectoryPoint.Position.CartesianPosition.Y=-0.45;
     }
     else if (req.final_pose=="area3"){
-        trajectoryPoint.Position.CartesianPosition.X=0.13;
+        trajectoryPoint.Position.CartesianPosition.X=0.11;
         trajectoryPoint.Position.CartesianPosition.Y=-0.6;
     }
     else if (req.final_pose=="area4"){

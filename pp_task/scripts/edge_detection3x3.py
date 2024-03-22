@@ -91,7 +91,7 @@ def red_detection(imageFrame):
 
     # Set range for green color and  
     # define mask 
-    green_lower = np.array([136, 87, 111], np.uint8) 
+    green_lower = np.array([120, 75, 100], np.uint8) #[136, 87, 111]
     green_upper = np.array([180, 255, 255], np.uint8) 
     green_mask = cv2.inRange(hsvFrame, green_lower, green_upper) 
   
