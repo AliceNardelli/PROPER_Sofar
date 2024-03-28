@@ -52,7 +52,7 @@ catkin_python_setup()
 add_message_files(
    FILES
    Emotions.msg
-#   Message2.msg
+   ActionD.msg
  )
 
 ## Generate services in the 'srv' folder

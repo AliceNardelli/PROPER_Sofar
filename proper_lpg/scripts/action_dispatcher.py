@@ -9,6 +9,7 @@ from proper_lpg.srv import PersonalityGenerator, PersonalityGeneratorRequest
 from proper_lpg.srv import ExecAction, ExecActionResponse
 from pp_task.srv import MoveArm, MoveArmRequest
 from std_msgs.msg import String
+from proper_lpg.msg import ActionD
 import rospy
 from proper_lpg.get_parameters import *
 import requests
@@ -64,7 +65,7 @@ g_speed={
     "high":1,
 }
 
-traits="ed"
+traits="eu"
 def callback(data):
     global emotion, attention
     emotion=map_perception_emotion[data.data][1]
@@ -91,13 +92,16 @@ def dispatch_action(req):
     try:
         rospy.wait_for_service('personality_generator_srv')
         personality_generator_srv = rospy.ServiceProxy('personality_generator_srv', PersonalityGenerator)
+        pub_action = rospy.Publisher('experiment', ActionD, queue_size=10)
         msg=PersonalityGeneratorRequest()
         msg.action=req.action.split("_")[0]
         msg.personality=req.personality
         resp = personality_generator_srv(msg)     
         mmap =get_map(resp.params)
         #SPEAK ACTION
+        ad=ActionD()
         print(req.action)
+        ad.action=req.action
         if mmap["language"]!="no_active":
             if "say_human" in  str(req.action):
                 human_block+=1
@@ -105,7 +109,7 @@ def dispatch_action(req):
                 vol=volume_map[mmap["volume"]]
                 reproduce_audio(file,vol)
                 if "d" in traits:
-                    time.sleep(4)
+                    time.sleep(3)
                 if "a" in traits:
                     time.sleep(6)
                 else:
@@ -151,6 +155,8 @@ def dispatch_action(req):
                     req2.block=robot_block
                     req2.block_owner="robot"
                     robot_block+=1
+                ad.who_block=req2.block_owner
+                ad.which_block=req2.block
             else:
                 if "vertical" in str(req.action):
                     req2.block_owner="vertical"
@@ -183,14 +189,18 @@ def dispatch_action(req):
                 req2.style="wrong"
             else:
                 req2.style="precise"
-
+            ad.move_style=req2.style
+            ad.final_loc=req.move
             req2.final_pose=req.move
-            if "e" in traits or "d" in traits :
+            if "e" in traits:
                 req2.amplitude="high"
                 req2.speed=2
             elif "i" in traits:
                 req2.amplitude="low"
                 req2.speed=0
+            elif "d" in traits:
+                req2.amplitude=mmap["amplitude"]
+                req2.speed=2
             else:
                 req2.amplitude=mmap["amplitude"]
                 req2.speed=1
@@ -204,11 +214,17 @@ def dispatch_action(req):
                 req2.traj="no_fluent"
             else:
                 req2.traj="fluent"
-
+            ad.amplitude_m=req2.amplitude
+            ad.speed_m=req2.speed
+            ad.acc_m=req2.acc
+            ad.traj_m=req2.traj
             print(req2)
+            pub_action.publish(ad)
             rospy.wait_for_service('/kinova_server')
             kinova_srv = rospy.ServiceProxy('/kinova_server', MoveArm)
-            resp = kinova_srv(req2) 
+            resp = kinova_srv(req2)
+            ad.action="finished"
+            pub_action.publish(ad) 
             """
                 if "wrong" in  str(req.action):
                     msg=PersonalityGeneratorRequest()

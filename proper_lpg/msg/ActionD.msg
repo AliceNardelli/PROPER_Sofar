@@ -1,0 +1,10 @@
+string action
+string sentence
+string who_block
+int64 which_block
+string move_style
+string final_loc
+string amplitude_m
+float64 speed_m
+float64 acc_m
+string traj_m
