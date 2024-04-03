@@ -49,4 +49,4 @@ v4l2-ctl --list-devices
 
 # bag
 
-rosbag record -O /home/alice/s0_t3.bag /webcam/image_raw/compressed /kinova_pose /experiment
+rosbag record -O /home/alice/s2_t3.bag /webcam/image_raw/compressed /kinova_pose /experiment

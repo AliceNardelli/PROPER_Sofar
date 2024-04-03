@@ -481,6 +481,9 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
                 pose_pub.publish(msg);
         }
         distance=100;
+        if (req.traj=="no_fluent"){
+            ros::Duration(1).sleep(); 
+        }
     } 
 
     trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
@@ -549,6 +552,9 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             pose_pub.publish(msg);
     }
     distance=100;
+    if (req.traj=="no_fluent"){
+            ros::Duration(1).sleep(); 
+    }
     
     ROS_INFO_STREAM("EXIT PREGRASP");
     if(req.style=="wrong"){
@@ -573,6 +579,9 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             pose_pub.publish(msg);
     }
     distance=100;
+    if (req.traj=="no_fluent"){
+            ros::Duration(1).sleep(); 
+    }
     
     trajectoryPoint.Position.CartesianPosition.Z = trajectoryPoint.Position.CartesianPosition.Z+0.05;  
     
@@ -596,6 +605,9 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             pose_pub.publish(msg);
     }
     distance=100;
+    if (req.traj=="no_fluent"){
+            ros::Duration(1).sleep(); 
+    }
     }
     ROS_INFO_STREAM("GOING GRASP");
     trajectoryPoint.Position.CartesianPosition.Z = 0.08f;
@@ -616,6 +628,9 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             pose_pub.publish(msg);
     }
     distance=100;  
+    if (req.traj=="no_fluent"){
+            ros::Duration(1).sleep(); 
+    }
     ROS_INFO_STREAM("EXIT GRASP"); 
 
     trajectoryPoint.Position.Fingers.Finger1 = float(0.8*6800.0);
@@ -623,8 +638,36 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.Fingers.Finger3 = float(0.8*6800.0);
 
     (*MySendAdvanceTrajectory)(trajectoryPoint);
-    
-
+    ROS_INFO_STREAM("GOING POST GRASP"); 
+    if (req.amplitude=="high"){
+        trajectoryPoint.Position.CartesianPosition.Z = 0.4f;
+    }
+    else if (req.amplitude=="low"){
+        trajectoryPoint.Position.CartesianPosition.Z = 0.25f;
+    }
+    else {
+        trajectoryPoint.Position.CartesianPosition.Z = 0.3f;
+    } 
+    (*MySendAdvanceTrajectory)(trajectoryPoint);
+    while (distance>0.1){
+            result = (*MyGetCartesianPosition)(data);
+            dx=data.Coordinates.X-trajectoryPoint.Position.CartesianPosition.X;
+            dy=data.Coordinates.Y-trajectoryPoint.Position.CartesianPosition.Y;
+            dz=data.Coordinates.Z-trajectoryPoint.Position.CartesianPosition.Z;
+            distance=std::sqrt(dx*dx + dy*dy + dz*dz);
+            msg.header.stamp=ros::Time::now();
+            msg.pose.position.x=data.Coordinates.X;
+            msg.pose.position.y=data.Coordinates.Y;
+            msg.pose.position.z=data.Coordinates.Z;
+            msg.pose.orientation.x=data.Coordinates.ThetaX;
+            msg.pose.orientation.y=data.Coordinates.ThetaY;
+            msg.pose.orientation.z=data.Coordinates.ThetaZ;
+            pose_pub.publish(msg);
+    }
+    distance=100;   
+    if (req.traj=="no_fluent"){
+            ros::Duration(1).sleep(); 
+    }
     ROS_INFO_STREAM("GOING PRERELEASE");
     if (req.amplitude=="high"){
         trajectoryPoint.Position.CartesianPosition.Z = 0.35f;
@@ -660,6 +703,9 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
                 pose_pub.publish(msg);
         }
         distance=100;
+        if (req.traj=="no_fluent"){
+            ros::Duration(1).sleep(); 
+        }
     }
     
     trajectoryPoint.Position.CartesianPosition.ThetaX = 0.04f;
@@ -668,15 +714,15 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
 
 
     if(req.final_pose=="area1"){
-        trajectoryPoint.Position.CartesianPosition.X=0.11;
+        trajectoryPoint.Position.CartesianPosition.X=0.1;
         trajectoryPoint.Position.CartesianPosition.Y=-0.3;
     }
     else if (req.final_pose=="area2"){
-        trajectoryPoint.Position.CartesianPosition.X=0.11;
+        trajectoryPoint.Position.CartesianPosition.X=0.1;
         trajectoryPoint.Position.CartesianPosition.Y=-0.45;
     }
     else if (req.final_pose=="area3"){
-        trajectoryPoint.Position.CartesianPosition.X=0.11;
+        trajectoryPoint.Position.CartesianPosition.X=0.1;
         trajectoryPoint.Position.CartesianPosition.Y=-0.6;
     }
     else if (req.final_pose=="area4"){
@@ -721,6 +767,9 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             pose_pub.publish(msg);
     }
     distance=100;
+    if (req.traj=="no_fluent"){
+            ros::Duration(1).sleep(); 
+    }
     ROS_INFO_STREAM("EXIT PRERELEASE");
     ROS_INFO_STREAM("GOING RELEASE");
     
@@ -745,6 +794,9 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
             pose_pub.publish(msg);
     }
     distance=100;
+    if (req.traj=="no_fluent"){
+            ros::Duration(1).sleep(); 
+    }
     ROS_INFO_STREAM("EXIT RELEASE");
 
     ROS_INFO_STREAM("OPEN HAND");
@@ -753,6 +805,7 @@ bool kinova_motion_srv(pp_task::MoveArm::Request  &req,
     trajectoryPoint.Position.Fingers.Finger2 = 6.0f;
     trajectoryPoint.Position.Fingers.Finger3 = 6.0f;
     (*MySendAdvanceTrajectory)(trajectoryPoint);
+    ros::Duration(1).sleep(); 
     trajectoryPoint.Position.CartesianPosition.X=0.2;
     trajectoryPoint.Position.CartesianPosition.Y=-0.2;
     if (req.amplitude=="high"){
