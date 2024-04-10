@@ -43,10 +43,10 @@ metric-FF url: https://fai.cs.uni-saarland.de/hoffmann/metric-ff.html
 
 command to list video devices:
 
-# webcam
+# webcame
 
 v4l2-ctl --list-devices
 
 # bag
 
-rosbag record -O /home/alice/s2_t3.bag /webcam/image_raw/compressed /kinova_pose /experiment
+rosbag record -O /home/alice/s13_t3.bag /webcam/image_raw/compressed /kinova_pose /experiment
