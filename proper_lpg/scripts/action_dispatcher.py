@@ -15,6 +15,7 @@ from proper_lpg.get_parameters import *
 import requests
 from gtts import gTTS 
 import pygame
+from proper_lpg.tts import STT
 emotion=""
 attention=""
 headers= {'Content-Type':'application/json'}
@@ -65,7 +66,7 @@ g_speed={
     "high":1,
 }
 
-traits="au"
+traits="ed"
 def callback(data):
     global emotion, attention
     emotion=map_perception_emotion[data.data][1]
@@ -86,9 +87,8 @@ def reproduce_audio(file_name,volume):
     sp.play()
     time.sleep(length)
 
-
 def dispatch_action(req):
-    global robot_block, human_block, emotion, attention, traits
+    global robot_block, human_block, emotion, attention, traits, model
     try:
         rospy.wait_for_service('personality_generator_srv')
         personality_generator_srv = rospy.ServiceProxy('personality_generator_srv', PersonalityGenerator)
@@ -107,6 +107,8 @@ def dispatch_action(req):
                 human_block+=1
             if "tablet" in req.action:
                 file="/home/alice/bepp.mp3"
+                vol=volume_map[mmap["volume"]]
+                reproduce_audio(file,vol)
             else:
                 print("I am here2")
                 data["emotion"]=emotion
@@ -122,9 +124,13 @@ def dispatch_action(req):
                     data["action"]=req.action.replace("_"," ")
                 resp=requests.put(url+'run_completion', json=data, headers=headers)
                 print("I am here3")
-                file=save_file(eval(resp.text)["response"])
-            vol=volume_map[mmap["volume"]]
-            reproduce_audio(file,vol)
+                audio_duration, audio = model(
+                    "default",
+                    1,
+                    eval(resp.text)["response"]
+                )
+               
+
             if "d" in traits:
                 time.sleep(3)
             if "a" in traits:
@@ -269,9 +275,10 @@ def dispatch_action(req):
     return True
 
 if __name__ == "__main__":
-    global robot_block, human_block
+    global robot_block, human_block, model
     robot_block=0
     human_block=0
+    model = STT(True)
     rospy.Subscriber("perception", String, callback)
     rospy.init_node('action_dispatcher')
     s = rospy.Service('action_dispatcher_srv', ExecAction, dispatch_action)
