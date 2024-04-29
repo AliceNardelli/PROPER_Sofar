@@ -473,7 +473,7 @@
                            (human_start)
                            (disagree)
                            (>(agreeableness_coefficient)0)
-                           (<(replace) 1)
+                           (<(replace) 2)
                         
 
                 )
@@ -546,7 +546,7 @@
                            (action1_move)
                            (disagree)
                            (>(agreeableness_coefficient)0)
-                           (<(replace) 1)
+                           (<(replace) 2)
                           
                 )
         :effect

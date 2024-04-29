@@ -105,19 +105,6 @@ def dispatch_action(req):
         if mmap["language"]!="no_active":
             if "say_human" in  str(req.action):
                 human_block+=1
-                file="/home/alice/bepp.mp3"
-                vol=volume_map[mmap["volume"]]
-                reproduce_audio(file,vol)
-                if "d" in traits:
-                    time.sleep(3)
-                if "a" in traits:
-                    time.sleep(6)
-                else:
-                    time.sleep(5)
-            """
-            print("I am here")
-            if "say_human" in  str(req.action):
-                human_block+=1
             if "tablet" in req.action:
                 file="/home/alice/bepp.mp3"
             else:
@@ -138,7 +125,13 @@ def dispatch_action(req):
                 file=save_file(eval(resp.text)["response"])
             vol=volume_map[mmap["volume"]]
             reproduce_audio(file,vol)
-            """
+            if "d" in traits:
+                time.sleep(3)
+            if "a" in traits:
+                time.sleep(6)
+            else:
+                time.sleep(5)
+
             return True
         #MOVE ACTION
         else:
@@ -225,48 +218,47 @@ def dispatch_action(req):
             resp = kinova_srv(req2)
             ad.action="finished"
             pub_action.publish(ad) 
-            """
-                if "wrong" in  str(req.action):
-                    msg=PersonalityGeneratorRequest()
-                    msg.action="ask"
-                    msg.personality=req.personality
-                    resp = personality_generator_srv(msg)     
-                    mmap =get_map(resp.params)
-                    data["emotion"]=emotion
-                    data["attention"]=attention
-                    data["response_style"]=mmap["language"]
-                    if msg.personality=="Unscrupolous":
-                        data["selected_personality"]="Distracted"
-                    else:
-                        data["selected_personality"]=msg.personality
+            if "wrong" in  str(req.action):
+                msg=PersonalityGeneratorRequest()
+                msg.action="ask"
+                msg.personality=req.personality
+                resp = personality_generator_srv(msg)     
+                mmap =get_map(resp.params)
+                data["emotion"]=emotion
+                data["attention"]=attention
+                data["response_style"]=mmap["language"]
+                if msg.personality=="Unscrupolous":
+                    data["selected_personality"]="Distracted"
+                else:
+                    data["selected_personality"]=msg.personality
 
-                    data["action"]="ask the human to correctly put the block because you make an error bu you are lazy to pick again the block"
-                    resp=requests.put(url+'run_completion', json=data, headers=headers)
-                
-                    file=save_file(eval(resp.text)["response"])
-                    vol=volume_map[mmap["volume"]]
-                    reproduce_audio(file,vol)
-                if "replace" in  str(req.action):
-                    msg=PersonalityGeneratorRequest()
-                    msg.action="say"
-                    msg.personality=req.personality
-                    resp = personality_generator_srv(msg)     
-                    mmap =get_map(resp.params)
-                    data["emotion"]=emotion
-                    data["attention"]=attention
-                    data["response_style"]=mmap["language"]
-                    if msg.personality=="Unscrupolous":
-                        data["selected_personality"]="Distracted"
-                    else:
-                        data["selected_personality"]=msg.personality
+                data["action"]="ask the human to correctly put the block because you make an error bu you are lazy to pick again the block"
+                resp=requests.put(url+'run_completion', json=data, headers=headers)
+            
+                file=save_file(eval(resp.text)["response"])
+                vol=volume_map[mmap["volume"]]
+                reproduce_audio(file,vol)
+            if "replace" in  str(req.action):
+                msg=PersonalityGeneratorRequest()
+                msg.action="say"
+                msg.personality=req.personality
+                resp = personality_generator_srv(msg)     
+                mmap =get_map(resp.params)
+                data["emotion"]=emotion
+                data["attention"]=attention
+                data["response_style"]=mmap["language"]
+                if msg.personality=="Unscrupolous":
+                    data["selected_personality"]="Distracted"
+                else:
+                    data["selected_personality"]=msg.personality
 
-                    data["action"]="say the human you have replace it in positioning the block in order to do it better and faster"
-                    resp=requests.put(url+'run_completion', json=data, headers=headers)
-                
-                    file=save_file(eval(resp.text)["response"])
-                    vol=volume_map[mmap["volume"]]
-                    reproduce_audio(file,vol)
-            """
+                data["action"]="say the human you have replace it in positioning the block in order to do it better and faster"
+                resp=requests.put(url+'run_completion', json=data, headers=headers)
+            
+                file=save_file(eval(resp.text)["response"])
+                vol=volume_map[mmap["volume"]]
+                reproduce_audio(file,vol)
+            
             return True
             
             
