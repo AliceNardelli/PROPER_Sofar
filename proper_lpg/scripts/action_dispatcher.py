@@ -11,6 +11,7 @@ from pp_task.srv import MoveArm, MoveArmRequest
 from std_msgs.msg import String
 from proper_lpg.msg import ActionD
 import rospy
+import random
 from proper_lpg.get_parameters import *
 import requests
 from gtts import gTTS 
@@ -65,7 +66,14 @@ g_speed={
     "mid":0.8,
     "high":1,
 }
-
+traits_dict={
+    "e":"Extrovert",
+    "i":"Introvert",
+    "a":"Agreeable",
+    "d":"Disagreeable",
+    "c":"Conscientious",
+    "u":"Unscrupolous"
+}
 traits="ed"
 def callback(data):
     global emotion, attention
@@ -103,6 +111,7 @@ def dispatch_action(req):
         print(req.action)
         ad.action=req.action
         if mmap["language"]!="no_active":
+
             if "say_human" in  str(req.action):
                 human_block+=1
             if "tablet" in req.action:
@@ -110,20 +119,33 @@ def dispatch_action(req):
                 vol=volume_map[mmap["volume"]]
                 reproduce_audio(file,vol)
             else:
-                print("I am here2")
-                data["emotion"]=emotion
-                data["attention"]=attention
-                data["response_style"]=mmap["language"]
-                if msg.personality=="Unscrupolous":
-                    data["selected_personality"]="Distracted"
-                else:
-                    data["selected_personality"]=msg.personality
+                try:
+                    pers=traits_dict[traits[0]]+" and "+traits_dict[traits[1]]
+                    response_style=""
+                    value1=remap_language[pers_lang_dict[traits_dict[traits[0]]]][random.randint(0,len(remap_language[pers_lang_dict[traits_dict[traits[0]]]])-1)]
+                    value2=remap_language[pers_lang_dict[traits_dict[traits[1]]]][random.randint(0,len(remap_language[pers_lang_dict[traits_dict[traits[1]]]])-1)]
+                    response_style=value1+" and "+value2
+                    data["emotion"]=emotion
+                    data["attention"]=attention
+                    data["response_style"]=response_style
+                    if "Unscrupolous" in pers:
+                        data["selected_personality"]=pers.replace("Unscrupolous","Distracted")
+                    else:
+                        data["selected_personality"]=pers
+                except:
+                    data["emotion"]=emotion
+                    data["attention"]=attention
+                    data["response_style"]=mmap["language"]
+                    if msg.personality=="Unscrupolous":
+                        data["selected_personality"]="Distracted"
+                    else:
+                        data["selected_personality"]=msg.personality
                 try:
                     data["action"]=map_action[req.action]
                 except:
                     data["action"]=req.action.replace("_"," ")
+                print(data)
                 resp=requests.put(url+'run_completion', json=data, headers=headers)
-                print("I am here3")
                 audio_duration, audio = model(
                     "default",
                     1,
@@ -132,14 +154,15 @@ def dispatch_action(req):
                
 
             if "d" in traits:
-                time.sleep(3)
+                time.sleep(0.01)
             if "a" in traits:
-                time.sleep(6)
+                time.sleep(1)
             else:
-                time.sleep(5)
+                time.sleep(0.5)
 
             return True
         #MOVE ACTION
+        
         else:
             print("EXEC "+ str(req.action))
             req2=MoveArmRequest()
@@ -238,7 +261,7 @@ def dispatch_action(req):
                 else:
                     data["selected_personality"]=msg.personality
 
-                data["action"]="ask the human to correctly put the block because you make an error bu you are lazy to pick again the block"
+                data["action"]="ask the human to correctly put the block because you make an error and you are lazy"
                 resp=requests.put(url+'run_completion', json=data, headers=headers)
             
                 file=save_file(eval(resp.text)["response"])
@@ -258,7 +281,7 @@ def dispatch_action(req):
                 else:
                     data["selected_personality"]=msg.personality
 
-                data["action"]="say the human you have replace it in positioning the block in order to do it better and faster"
+                data["action"]="say the human you have replaced him in positioning the block"
                 resp=requests.put(url+'run_completion', json=data, headers=headers)
             
                 file=save_file(eval(resp.text)["response"])
