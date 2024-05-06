@@ -59,7 +59,7 @@ def run_cmp():
         user_input += 'the text attribute must be no more than 40 words'
     
     user_input += "}"
-   
+    print(user_input)
     # Add each new message to the list
     messages=start_message
     messages.append({"role": "user", "content": user_input})
@@ -74,7 +74,7 @@ def run_cmp():
 
     # Print the response and add it to the messages list
    
-    print(type(response.choices[0].message.content))
+    
     print(response.choices[0].message.content)
     #chat_message = emoji.replace_emoji(string=chat_message, replace='')
     res = json.loads(response.choices[0].message.content)

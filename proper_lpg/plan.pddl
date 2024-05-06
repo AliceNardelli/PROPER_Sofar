@@ -16,28 +16,29 @@ ff: search configuration is EHC, if that fails then  best-first on 1*g(s) + 5*h(
 
 Cueing down from goal distance:    6 into depth [1]
                                    5            [1]
-                                   4            [1][2]
-                                   3            [1]
+                                   4            [1]
+                                   3            [1][2][3]
                                    2            [1]
                                    1            [1]
                                    0            
 
 ff: found legal plan as follows
 
-step    0: REACT_SURPRISE_EMOTION
-        1: REACT_LOW_ATTENTION
-        2: PICK_PLACE_ROBOT_PRECISE_TURN1
-        3: SAY_HUMAN_VOICE_TURN2
-        4: DISAGREE_ACTION
-        5: COMPUTE_HEDONIC_FEELINGS
-        6: CHECK_FINISH
+step    0: ASSIGN_DOMINANCE
+        1: SAY_HUMAN_TABLET_TURN1
+        2: AGREE_ACTION
+        3: PICK_PLACE_ROBOT_PRECISE_TURN2
+        4: AGREE_ACTION
+        5: INTRO_ACTION
+        6: COMPUTE_HEDONIC_FEELINGS
+        7: CHECK_FINISH
      
 
-time spent:    0.00 seconds instantiating 16 easy, 0 hard action templates
-               0.00 seconds reachability analysis, yielding 23 facts and 12 actions
-               0.00 seconds creating final representation with 15 relevant facts, 5 relevant fluents
+time spent:    0.00 seconds instantiating 12 easy, 0 hard action templates
+               0.00 seconds reachability analysis, yielding 18 facts and 9 actions
+               0.00 seconds creating final representation with 8 relevant facts, 4 relevant fluents
                0.00 seconds computing LNF
                0.00 seconds building connectivity graph
-               0.00 seconds searching, evaluating 9 states, to a max depth of 2
+               0.00 seconds searching, evaluating 12 states, to a max depth of 3
                0.00 seconds total time
 
