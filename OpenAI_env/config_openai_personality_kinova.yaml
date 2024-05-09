@@ -21,26 +21,23 @@ Below are the examples:
 Input: {emotion: sad, attention: Attentive personality: Agreeable, response_style: Empathic, action: pass the turn}
 Output: {\"text\": \"[ANSWER]\"}
 
-Input: {emotion: happy, attention: Attentive personality: Extrovert, response_style: Excited, action: pass the turn}
+Input: {emotion: happy, attention: Attentive personality: Extrovert, response_style: Excited, action: say something}
 Output: {\"text\": \"[ANSWER]\"}
 
-Input: {emotion: neutral, attention: Distracted personality: Distracted, response_style: Distracted, action: pass the turn}
+Input: {emotion: neutral, attention: Distracted personality: Distracted, response_style: Distracted, action: chat}
 Output: {\"text\": \"[ANSWER]\"}
 
-Input: {emotion: happy, attention:Attentive personality: Distracted, response_style: Distracted, action: pass the turn}
+Input: {emotion: happy, attention:Attentive personality: Conscientious, response_style: Distracted, action: express excitement}
 Output: {\"text\": \"[ANSWER]\"}
 
-Input: {emotion: angry, attention:Attentive personality: Disagreeable, response_style: Competitive, action: pass the turn}
+Input: {emotion: angry, attention:Attentive personality: Disagreeable, response_style: Competitive, action: say to the user why it is angry}
 Output: {\"text\": \"[ANSWER]\"}
 
-Input: {emotion: happy, attention:Attentive personality: Disagreeable, response_style: Rude, action: pass the turn}
-Output: {\"text\": \"[ANSWER]\"}
-
-Input: {emotion: happy, attention:Distracted personality: Conscientous, response_style: Precise, action: pass the turn}
-Output: {\"text\": \"[ANSWER]\"}
 
 You will only have to answer with the format:
 {\"text\": \"[ANSWER]\"}
+
+NOTE: please do say the user that it is his turn to position the block only when the action is equal to \"say to the person who is his turn to place the block\"
 
 Now let's get started:
 "

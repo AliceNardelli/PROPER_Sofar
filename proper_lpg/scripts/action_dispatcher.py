@@ -75,7 +75,7 @@ traits_dict={
     "u":"Unscrupolous"
 }
 
-traits="ia"
+traits="ea"
 def callback(data):
     global emotion, attention
     emotion=map_perception_emotion[data.data][1]
@@ -127,7 +127,8 @@ def dispatch_action(req):
                     value2=remap_language[pers_lang_dict[traits_dict[traits[1]]]][random.randint(0,len(remap_language[pers_lang_dict[traits_dict[traits[1]]]])-1)]
                     response_style=value1+" and "+value2
                     data["emotion"]=emotion
-                    data["attention"]=attention
+                    #data["attention"]=attention
+                    data["attention"]=""
                     data["response_style"]=response_style
                     if "Unscrupolous" in pers:
                         data["selected_personality"]=pers.replace("Unscrupolous","Distracted")
@@ -135,7 +136,7 @@ def dispatch_action(req):
                         data["selected_personality"]=pers
                 except:
                     data["emotion"]=emotion
-                    data["attention"]=attention
+                    data["attention"]=""
                     data["response_style"]=mmap["language"]
                     if msg.personality=="Unscrupolous":
                         data["selected_personality"]="Distracted"
@@ -261,7 +262,7 @@ def dispatch_action(req):
                     value2=remap_language[pers_lang_dict[traits_dict[traits[1]]]][random.randint(0,len(remap_language[pers_lang_dict[traits_dict[traits[1]]]])-1)]
                     response_style=value1+" and "+value2
                     data["emotion"]=emotion
-                    data["attention"]=attention
+                    data["attention"]=""
                     data["response_style"]=response_style
                     if "Unscrupolous" in pers:
                         data["selected_personality"]=pers.replace("Unscrupolous","Distracted")
@@ -269,7 +270,7 @@ def dispatch_action(req):
                         data["selected_personality"]=pers
                 except:
                     data["emotion"]=emotion
-                    data["attention"]=attention
+                    data["attention"]=""
                     data["response_style"]=mmap["language"]
                     if msg.personality=="Unscrupolous":
                         data["selected_personality"]="Distracted"

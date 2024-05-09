@@ -3,8 +3,8 @@
 )
 (:init
         (=(dur)5)
-        (=(react)0.5)
-        (=(reacta)0.05)
+        (=(react)1)
+        (=(reacta)0.5)
         (=(reward_e)5)
         (=(reward_a)5)
         (=(reward_c)5)
