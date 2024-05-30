@@ -75,7 +75,7 @@ traits_dict={
     "u":"Unscrupolous"
 }
 
-traits="ea"
+traits="au"
 def callback(data):
     global emotion, attention
     emotion=map_perception_emotion[data.data][1]
@@ -277,7 +277,7 @@ def dispatch_action(req):
                     else:
                         data["selected_personality"]=msg.personality
 
-                data["action"]="ask the human to correctly put the block because you make an error and you are lazy"
+                data["action"]="ask the human to correctly put the block in the correct position because you make an error and you are lazy"
                 resp=requests.put(url+'run_completion', json=data, headers=headers)
             
                 audio_duration, audio = model(
@@ -313,7 +313,7 @@ def dispatch_action(req):
                     else:
                         data["selected_personality"]=msg.personality
 
-                data["action"]="advise the human you have replaced him in positioning the block"
+                data["action"]="advise the human you have replaced him in positioning the block because you are more competent than the human"
                 resp=requests.put(url+'run_completion', json=data, headers=headers)
                 audio_duration, audio = model(
                     "default",

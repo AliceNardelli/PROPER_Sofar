@@ -15,27 +15,14 @@
 
 ## python 3 environment
 ### PROPER
-> roslaunch proper_lpg parameter_launch.launch
-> rosrun pp_task edge_detection3x3.py
-> rosrun pp_task game_player3x3.py
-> rosrun proper_lpg perception_interface.py
-> rosrun proper_lpg action_dispatcher.py
-> rosrun proper_lpg personality_generator.py
+> roslaunch proper_lpg node_launch.launch
 
 > rosrun proper_lpg ontology_interface.py
 
-### MOVEIT
-> rosrun pp_task kinova_as 
-> rosrun pp_task pose_publisher
 
 ## OPENAI VENV
 > python3 chat_playground.py
 
-
-
-
-## Cairlib environment
-> python3 audio_recorder_multiparty.py
 
 metric-FF url: https://fai.cs.uni-saarland.de/hoffmann/metric-ff.html
 
@@ -49,4 +36,4 @@ v4l2-ctl --list-devices
 
 # bag
 
-rosbag record -O /home/alice/s13_t3.bag /webcam/image_raw/compressed /kinova_pose /experiment
+rosbag record -O /home/alice/ss0_t1.bag /webcam/image_raw/compressed /kinova_pose /experiment
