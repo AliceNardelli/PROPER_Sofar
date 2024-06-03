@@ -75,7 +75,7 @@ traits_dict={
     "u":"Unscrupolous"
 }
 
-traits="ca"
+traits="eu"
 def callback(data):
     global emotion, attention
     emotion=map_perception_emotion[data.data][1]
