@@ -65,7 +65,7 @@ g_speed={
     "high":1,
 }
 
-traits="dc"
+traits="ed"
 def callback(data):
     global emotion, attention
     emotion=map_perception_emotion[data.data][1]
