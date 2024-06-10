@@ -24,11 +24,11 @@ import datetime
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 
-we=1
+we=0
 wi=0
 wc=0
 wu=1
-wa=0
+wa=1
 wd=0
 sum_weights=0
 weights=[]

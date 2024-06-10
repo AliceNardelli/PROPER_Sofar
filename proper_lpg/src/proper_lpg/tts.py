@@ -57,10 +57,10 @@ class STT:
             return audio_duration, audio_data
         elif result.reason == speechsdk.ResultReason.Canceled:
             cancellation_details = result.cancellation_details
-            self.logger.error("Speech synthesis canceled: {}".format(cancellation_details.reason))
-            print("there")
-            if cancellation_details.reason == speechsdk.CancellationReason.Error:
-                self.logger.error("Error details: {}".format(cancellation_details.error_details))
+            #self.logger.error("Speech synthesis canceled: {}".format(cancellation_details.reason))
+            print("Errorrrr")
+            #if cancellation_details.reason == speechsdk.CancellationReason.Error:
+                #self.logger.error("Error details: {}".format(cancellation_details.error_details))
 
             return None, []
 
