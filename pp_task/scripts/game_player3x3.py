@@ -57,7 +57,7 @@ def handle_game(req):
                         time.sleep(1)
                         no_color=False
 
-            if actual_board_state.area2=="B" or actual_board_state.area4=="B" or actual_board_state.area6=="B" or actual_board_state.area9=="B":
+            if actual_board_state.area2=="B" or actual_board_state.area4=="B" or actual_board_state.area6=="B" or actual_board_state.area8=="B":
                 set_goal_configuration(1)
             else:
                 set_goal_configuration(2)
