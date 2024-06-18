@@ -15,7 +15,7 @@ goals=[]
 
 onto_path.append("/home/alice/")
 #onto_path.append("/home/alice/")
-onto = get_ontology("http://www.semanticweb.org/alice/ontologies/2023/10/goal1#").load()        
+onto = get_ontology("http://www.semanticweb.org/alice/ontologies/2024/5/goal1#").load()        
 with onto:
     class Predicates(Thing):
         pass
