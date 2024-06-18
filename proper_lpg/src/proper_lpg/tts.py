@@ -67,7 +67,7 @@ class STT:
 
 if __name__ == "__main__":
     model = STT(True)
-
+    print("there")
     utterance = "Quando c'è il sole le lucciole non brillano"
 
     audio_duration, audio = model(
