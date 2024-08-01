@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import requests
 from load_ontology import *
-from problem_param_vm import *
-#from problem_param import *
+#from problem_param_vm import *
+from problem_param import *
 from perception_predicate import *
 from extract_agree import *
 from extract_intro import *
@@ -21,7 +21,7 @@ import datetime
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=0
+we=1
 wi=0
 wc=0
 wu=0
@@ -39,10 +39,7 @@ new_sentence=False
 new_attention=False
 begin=True
 url='http://127.0.0.1:5020/'
-url1='http://127.0.0.1:5019/'
 
-
-headers= {'Content-Type':'application/json'}
 
 
 data={
@@ -57,17 +54,7 @@ data={
 
 
 
-data_action={
-        "action":"",
-        "pitch":"",
-        "volume":"",
-        "velocity":"",
-        "gaze":"",
-        "head":"",
-        "g_amplitude":"",
-        "g_velocity":"",
-        "result":"",   
-}
+
 
 
 class State_Start(smach.State):
@@ -201,14 +188,8 @@ class ExAction(smach.State):
                              input_keys=['executing_actions'],
                              output_keys=['updated_actions','action','state']) 
     def execute(self, userdata):
-        global new_emotion, emotion, new_sentence, start
-        resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
-        if eval(resp.text)["restart"]=="True":
-            print("restart")
-            userdata.action=""
-            start=True
-            return 'outcome13'
-      
+        global new_emotion, emotion, new_sentence, sentence, new_attention, attention
+        
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
 
@@ -222,13 +203,13 @@ class ExAction(smach.State):
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
+
             if predicates_objects["new_sentence"].is_grounded==True:
                 aa,rew=choose_action_a(pi,False)
             else:
                 aa,rew=choose_action_a(pi,False)
-            userdata, response, restart=self.call_action_server(userdata, aa, personality)
-            if restart:
-                return "outcome13"
+            userdata, response = self.call_action_server(userdata, aa, personality)
+            
             if response:
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
@@ -260,9 +241,7 @@ class ExAction(smach.State):
                 aa,rew=choose_action_d(pi,False)
             else:
                 aa,rew=choose_action_d(pi,False)
-            userdata, response, restart=self.call_action_server(userdata, aa, personality)            
-            if restart:
-                return "outcome13"
+            userdata, response =self.call_action_server(userdata, aa, personality)            
             if response:
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
@@ -294,9 +273,7 @@ class ExAction(smach.State):
                 aa,rew=choose_action_i(pi,False)
             else:
                 aa,rew=choose_action_i(pi,False)
-            userdata, response, restart =self.call_action_server(userdata, aa, personality)
-            if restart:
-                return "outcome13"
+            userdata, response =self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
@@ -331,9 +308,7 @@ class ExAction(smach.State):
                 aa,rew=choose_action_e(pi,False)
             else:
                 aa,rew=choose_action_e(pi,False)
-            userdata, response, restart =self.call_action_server(userdata, aa, personality)
-            if restart:
-                return "outcome13"
+            userdata, response =self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
@@ -366,9 +341,7 @@ class ExAction(smach.State):
                 aa,rew=choose_action_c(pi,False)
             else:
                 aa,rew=choose_action_c(pi,False)
-            userdata, response, restart =self.call_action_server(userdata, aa,personality)
-            if restart:
-                return "outcome13"
+            userdata, response =self.call_action_server(userdata, aa,personality)
             if response:
                 change_raward("reward_c",float(rew))
                 return "outcome9"
@@ -391,9 +364,7 @@ class ExAction(smach.State):
             else:
                 aa,rew=choose_action_u(pi,False)
            
-            userdata, response, restart=self.call_action_server(userdata, aa,personality)
-            if restart:
-                return "outcome13"
+            userdata, response =self.call_action_server(userdata, aa,personality)
             if response:
                 change_raward("reward_c",float(rew))
                 return "outcome9"
@@ -402,59 +373,48 @@ class ExAction(smach.State):
 
 
         else:
-            userdata, response, restart =self.call_action_server(userdata, ac, personality)
-            if restart:
-                return "outcome13"
+            userdata, response =self.call_action_server(userdata, ac, personality)
             if response:
                 return "outcome9"
             else:
                 return "outcome8"
 
 
-    def call_action_server(self, userdata, ac,personality):
-            global data_action, start, action_counter
+    def call_action_server(self, userdata, ac, personality):
+            global data_action, emotion, sentence 
             userdata.state="exec"
-            resp, mmap, to_exec_action, exec_personality = dispatch_action(ac, personality)
+            #get the comfortability
+            if wa>0 or wd > 0:
+                comfortability = function_objects["agreeableness_level"].has_value
+            elif wi>0 or we > 0:
+                comfortability = function_objects["interaction_level"].has_value
+            elif wc >0 or wu >0 :
+                comfortability = function_objects["scrupulousness_level"].has_value
+            else:
+                comfortability= 1
+            print(comfortability)
+            if comfortability> 0:
+                comfortability= "positive"
+
+            else:
+                comfortability = "negative"
+            resp, to_exec_action = dispatch_action(ac, personality, emotion, sentence, comfortability)
+            
             resp2=True
             if ("react" not in to_exec_action) and ("compute" not in to_exec_action) and ("check" not in to_exec_action):
                 change_raward("react",float(1))
-                #set that I have executed an action
-                data_action["finished"]="False"
-                data_action["personality"]=exec_personality
-                data_action["action"]=to_exec_action
-                data_action["language"]=mmap["language"]
-                data_action["pitch"]=mmap["pitch"]
-                data_action["velocity"]=mmap["velocity"]
-                data_action["volume"]=mmap["volume"]
-                data_action["head"]=mmap["head"]
-                data_action["gaze"]=mmap["gaze"]
-                data_action["new_action"]="True"
-                data_action["timestamp"]=str(action_counter)
-                action_counter+=1
-                respac=requests.put(url3+'set_action', json=data_action, headers=headers)
-                respex=requests.put(url3+'get_exec', json=data_action, headers=headers)
-                while eval(respex.text)["executed"]=="False":
-                    time.sleep(1)
-                    respex=requests.put(url3+'get_exec', json=data_action, headers=headers)
-                    resp_rest=requests.put(url2+'get_restart', json=data_restart, headers=headers)
-                    if eval(resp_rest.text)["restart"]=="True":
-                        print("restart")
-                        userdata.action=""
-                        start=True
-                        return userdata, False, True
-
-                if eval(respex.text)["result"]=="False":
-                    resp2=False
+                
             
             if resp2==False:
                     print('Action Failed')        
-                    return userdata, False, False
+                    return userdata, False
             else:
                     ac=userdata.executing_actions.pop(0)
                     print('Action executed: '+ac)
                     userdata.action=ac
                     userdata.updated_actions=userdata.executing_actions
-            return userdata,True, False
+
+            return userdata,True
 
                 
         
@@ -470,13 +430,15 @@ class CheckPerc(smach.State):
         resp=requests.put(url+'get_input', json=data, headers=headers)
         a=userdata.action
         print("action",a)
+
         if eval(resp.text)["new_emotion"]=="True":
             new_emotion=True
             emotion=eval(resp.text)["emotion"]
+            
         if eval(resp.text)["new_sentence"]=="True":
             new_sentence=True
             attention=eval(resp.text)["sentence"]
-            
+
         if eval(resp.text)["new_attention"]=="True":
             new_attention=True
             attention=eval(resp.text)["attention"]
@@ -484,26 +446,19 @@ class CheckPerc(smach.State):
 
         while (new_emotion==False and new_sentence==False and  new_attention==False and userdata.action==""):
             time.sleep(1)
-            resp_rest=requests.put(url2+'get_restart', json=data_restart, headers=headers)
-            if eval(resp_rest.text)["restart"]=="True":
-                print("restart")
-                userdata.out_action=""
-                start=True
-                return 'outcome13'
-            
-            
-            data["update"]="True"
             resp=requests.put(url+'get_input', json=data, headers=headers)
             if eval(resp.text)["new_emotion"]=="True":
                 new_emotion=True
                 emotion=eval(resp.text)["emotion"]
-                print(emotion)
+                
             if eval(resp.text)["new_sentence"]=="True":
                 new_sentence=True
+                attention=eval(resp.text)["sentence"]
 
             if eval(resp.text)["new_attention"]=="True":
-               new_attention=True
-               attention=eval(resp.text)["attention"]
+                new_attention=True
+                attention=eval(resp.text)["attention"]
+
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
         if new_emotion==False and new_sentence==False and new_attention==False:
           
@@ -525,8 +480,6 @@ class CheckPerc(smach.State):
           
             if new_emotion:
                new_emotion=False
-               print(emotion)
-               print(perception_predicate_map)
                emotion_pred=perception_predicate_map[emotion]["emotion"]
                goals=perception_predicate_map[emotion]["goals"]
                add_predicate(emotion_pred)
@@ -534,6 +487,7 @@ class CheckPerc(smach.State):
                for g in goals:
                     add_goal(g)#state that that predicate is a goal
                     remove_predicate(g) #now the goal predicate is not grounded
+
             if new_attention:
                 new_attention=False
                 if attention=="positive":
@@ -544,6 +498,7 @@ class CheckPerc(smach.State):
                     add_predicate("low_attention")
                     add_goal("low_attention_r") 
                     remove_predicate("low_attention_r")  
+
             if new_sentence:
                 add_goal("answered")
                 add_goal("finished")
@@ -596,14 +551,8 @@ class Finish(smach.State):
         if userdata.input_goals!=[]:
             print('Passing to the next goal')
             userdata.out_action=""
-            data_action["finished"]="True"
-            data_action["new_action"]="False"
-            respac=requests.put(url3+'set_action', json=data_action, headers=headers)
             return "outcome11"
         else:
-            data_action["finished"]="True"
-            data_action["new_action"]="False"
-            respac=requests.put(url3+'set_action', json=data_action, headers=headers)
             print('Finishhh')
             return 'outcome12'
 

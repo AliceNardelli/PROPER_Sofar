@@ -17,22 +17,28 @@ system_message = openai_config.system_message
 start_message = [
     {"role": "system", "content": system_message},
 ]
-model="gpt-4i"
+model="gpt-4o"
 
 client = OpenAI()
 
+map_emotion={
+   "SA":"Sad",
+   "SU":"Happy",
+   "H":"Happy",
+   "A":"Angry",
+   "D":"Angry",
+   "F":"Angry",
+   "N":"Neutral",
+}
 
 
 def generate_sentence(user_emotion, robot_emotion, text, personality, response_style, action):
    
-    updated_data = request.get_json()
-    
-    
     user_input = "{"
     user_input += "text: "
     user_input += text
     user_input += ", user_emotion: "
-    user_input += user_emotion
+    user_input += map_emotion[user_emotion]
     user_input += ", robot_emotion: "
     user_input += robot_emotion
     user_input += ", personality: "
@@ -51,10 +57,10 @@ def generate_sentence(user_emotion, robot_emotion, text, personality, response_s
    
 
     response = client.chat.completions.create(
-    model=model,
-    messages=messages,
-    temperature=1,
-    top_p=1,
+        model=model,
+        messages=messages,
+        temperature=1,
+        top_p=1,
     )
 
     # Print the response and add it to the messages list
