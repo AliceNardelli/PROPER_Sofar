@@ -32,6 +32,7 @@ weights=[]
 gamma=1
 emotion=""
 attention=""
+sentence=""
 start=True
 new_emotion=False
 new_sentence=False
@@ -39,68 +40,36 @@ new_attention=False
 begin=True
 url='http://127.0.0.1:5020/'
 url1='http://127.0.0.1:5019/'
-url2='http://127.0.0.1:5018/'
-url3='http://127.0.0.1:5021/'
+
 
 headers= {'Content-Type':'application/json'}
 
 
 data={
-        "emotion":"",
         "new_sentence":"False",
         "new_emotion":"False",
         "new_attention":"False",
         "attention":"negative",
-        "update":"False",
+        "emotion":"",
+        "sentence":"",
+        
 }
 
 
-action_counter=0
-
-data_personality={
-        "new_personality":"False",
-        "Extrovert":0,
-        "Introvert":0,
-        "Agreeable":0,
-        "Disagreeable":0,
-        "Conscientious":0,
-        "Unscrupolous":0,
-}
-
-data_restart={
-    "restart":"False"
-}
 
 data_action={
         "action":"",
-        "language":"",
-        "personality":"",
         "pitch":"",
         "volume":"",
         "velocity":"",
         "gaze":"",
         "head":"",
-        "new_action":"",
-        "executed":"",
-        "result":"",
-        "timestamp":str(-1)
+        "g_amplitude":"",
+        "g_velocity":"",
+        "result":"",   
 }
 
-starting_data={
-        "action":"",
-        "language":"",
-        "personality":"",
-        "pitch":"",
-        "volume":"",
-        "velocity":"",
-        "head":"",
-        "gaze":"",
-        "new_action":"",
-        "executed":"",
-        "result":"",
-        "finished":"",
-        "timestamp":str(-1)
-}
+
 class State_Start(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
@@ -109,8 +78,7 @@ class State_Start(smach.State):
                              output_keys=['output_goals','domain_path','problem_path','init_pb','command','path','plan_path'])
         
     def execute(self, userdata):
-        global wa,wd,we,wi,wc,wd,sum_weights,weights, data, start, begin, action_counter
-        
+        global wa,wd,we,wi,wc,wd,sum_weights,weights
         goals=userdata.input_goals
         #actual_goal=goals.pop(0) #always goal1
         print('Executing goal: '+ actual_goal)
@@ -122,58 +90,15 @@ class State_Start(smach.State):
         userdata.command=dict_goal["command"]
         userdata.path=dict_goal["folder"]
         userdata.plan_path=dict_goal["plan"]
-        
-        if begin==True:
-            begin=False
-            print("first restart")
-            resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
-            while eval(resp.text)["restart"]=="False":
-                resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
-
-        if start==True:
-            respac=requests.put(url3+'set_action', json=starting_data, headers=headers)
-            data_action["timestamp"]=str(-1)
-            reset_timestamp=requests.put(url3+'reset_timestamp', json=data_action, headers=headers)
-            action_counter=0
-            resp=requests.put(url1+'get_personality', json=data_personality, headers=headers)
-            new_personality=False
-            print("setting new personality")
-            if  eval(resp.text)["new_personality"]=="True":
-                new_personality=True
-            while new_personality==False:
-                time.sleep(1)
-                resp=requests.put(url1+'get_personality', json=data_personality, headers=headers)
-                if  eval(resp.text)["new_personality"]=="True":
-                    new_personality=True
-            start=False
-            reset=True
-        
-        else:
-          
-            resp=requests.put(url1+'get_personality', json=data_personality, headers=headers)
-            if  eval(resp.text)["new_personality"]=="True":
-                reset=True
-            else: 
-                reset=False
-
-        if reset==True:
-            wi=float( eval(resp.text)["Introvert"])
-            we=float( eval(resp.text)["Extrovert"])
-            wa=float( eval(resp.text)["Agreeable"])
-            wd=float( eval(resp.text)["Disagreeable"])
-            wc=float( eval(resp.text)["Conscientious"])
-            wu=float( eval(resp.text)["Unscrupolous"])
-            print("weights unscrupolous",wu)
-            sum_weights=float(we +wi +wc + wu + wa + wd)
-            try: 
+        sum_weights=float(we +wi +wc + wu + wa + wd)
+        try: 
                 weights=[we/sum_weights,wi/sum_weights,wc/sum_weights,wu/sum_weights,wa/sum_weights,wd/sum_weights]
-                print(weights)
-            except:
-                print(weights)
+        except:
                 weights=6*[0]
                 sum_weights=1
 
         return 'outcome0'
+
 
 class State_Init(smach.State):
    def __init__(self):
@@ -184,8 +109,7 @@ class State_Init(smach.State):
 
    def execute(self, userdata):
         print('Executing state INIT') 
-        global wa,wd,we,wi,wc,wd,sum_weights,weights
-        print(weights)     
+        global wa,wd,we,wi,wc,wd,sum_weights,weights    
         with open(userdata.init_pb,'r') as firstfile, open(userdata.problem_path,'w') as secondfile:
             for line in firstfile:
             
@@ -542,17 +466,7 @@ class CheckPerc(smach.State):
                              output_keys=["out_action"])
         
     def execute(self, userdata):
-        global emotion, new_emotion, new_sentence, data, new_attention, attention, start
-        
-        resp=requests.put(url2+'get_restart', json=data_restart, headers=headers)
-        if eval(resp.text)["restart"]=="True":
-            print("restart")
-            userdata.out_action=""
-            start=True
-            return 'outcome13'
-        
-        print('check perception') 
-        data["update"]="True"
+        global emotion, new_emotion, new_sentence, data, new_attention, attention, sentence
         resp=requests.put(url+'get_input', json=data, headers=headers)
         a=userdata.action
         print("action",a)
@@ -561,7 +475,8 @@ class CheckPerc(smach.State):
             emotion=eval(resp.text)["emotion"]
         if eval(resp.text)["new_sentence"]=="True":
             new_sentence=True
-
+            attention=eval(resp.text)["sentence"]
+            
         if eval(resp.text)["new_attention"]=="True":
             new_attention=True
             attention=eval(resp.text)["attention"]
