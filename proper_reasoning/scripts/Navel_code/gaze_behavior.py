@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+
+import asyncio
+import os
+import textwrap
+from collections import deque
+import time
+import navel
+
+
+async def avoid_gaze():
+    async with navel.Robot() as robot:
+
+        while True:
+            await asyncio.sleep(3)
+            data = await robot.next_frame()
+            if data.persons!=[]:
+                print(data.persons)
+                person=data.persons[0]
+
+                gaze=person.g_gaze[0]
+                #print(gaze)
+                if gaze.x<0:
+                    gaze.x=1
+                else:
+                    gaze.x=-1
+                if gaze.y<0:
+                    gaze.y=1
+                else:
+                    gaze.y=-1
+                if gaze.z<0:
+                    gaze.z=1
+                else:
+                    gaze.z=-1
+                #print(gaze)
+                r=robot.look_at_cart(gaze,1)
+               # print(r)
+
+async def mutual_gaze():
+    async with navel.Robot() as robot:
+
+        while True:
+            await asyncio.sleep(3)
+            data = await robot.next_frame()
+            if data.persons!=[]:
+                print(data.persons)
+                person=data.persons[0]
+                r=robot.look_at_person(data.persons[0].uuid,1)
+               # print(r)
+
+if __name__ == "__main__":
+    try:
+        asyncio.run(mutual_gaze())
+    except KeyboardInterrupt:
+        pass

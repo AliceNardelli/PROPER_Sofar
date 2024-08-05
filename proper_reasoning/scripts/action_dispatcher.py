@@ -7,7 +7,7 @@ import requests
 from emotion_generation import *
 from chat_playground import *
 
-url='http://127.0.0.1:5019/'
+url='http://127.0.0.1:5022/'
 
 headers= {'Content-Type':'application/json'}
 
@@ -36,15 +36,15 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                 print(robot_emotion)
                 robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, user_sentence, personality, mmap["language"], action)
                 print(robot_sentence)
-                data_action["robot_emotion"]=robot_emotion
+                data_action["facial_expression"]=robot_emotion
                 data_action["sentence"]=robot_sentence
                 data_action["volume"]=mmap["volume"]
                 data_action["gaze"]=mmap["gaze"]
                 data_action["tone"]=tone
-                data_action["gesture_amplitude"]=mmap["amplitude"]
+                data_action["g_amplitude"]=mmap["amplitude"]
                 data_action["head"]=mmap["head"]
                 print(data_action)
-                resp=requests.put(url+'exec_action', json=data_action, headers=headers)
+                resp=requests.put(url+'exec_actions', json=data_action, headers=headers)
         return True, action
         
     
