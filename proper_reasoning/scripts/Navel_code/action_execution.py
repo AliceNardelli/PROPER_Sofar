@@ -5,14 +5,22 @@ import requests
 import navel
 from flask import Flask, request, jsonify
 import asyncio
+import time
 app = Flask(__name__)
 
 data = {
     "":"",
 }
 
-                
+url='http://127.0.0.1:5020/'
+headers= {'Content-Type':'application/json'}
+
+data_a ={
+    "activate":"False"
+}              
+
 async def say(sentence, facial_expression, g_amplitude):
+    
     async with navel.Robot() as robot:
             #neutral: float = 0, happy: float = 0, sad: float = 0, surprise: float = 0, anger: float = 0, smile: float = 0
             if facial_expression=="Happy":
@@ -39,13 +47,19 @@ async def say(sentence, facial_expression, g_amplitude):
                 await robot.rotate_arms(70, 70)
                 await robot.rotate_arms(0, 0)
 
+            
 
 @app.route('/exec_actions', methods=['PUT'])
 def exec():
     updated_data = request.get_json()
     data.update(updated_data)
+    data_a["activate"]="False"
+    res =requests.put(url+'activate_recognizer', json=data_a, headers=headers)
     asyncio.run(say("<lang,it1>"+data["sentence"], data["facial_expression"],data["g_amplitude"]))
-    
+
+    data_a["activate"]="True"
+    requests.put(url+'activate_recognizer', json=data_a, headers=headers)
+    time.sleep(3)
     return jsonify(data)
 
 if __name__ == "__main__":

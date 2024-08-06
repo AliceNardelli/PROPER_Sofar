@@ -124,7 +124,6 @@ def get_map(predictions,personality):
     
     for i in range(len(bit_map)):
         param=parameters[i]
-        print(param)
         no_bit=bit_map[i]
         bits=predictions[c:c+no_bit]
         c+=no_bit

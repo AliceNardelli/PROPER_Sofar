@@ -30,15 +30,15 @@ wd=0
 sum_weights=0
 weights=[]
 gamma=1
-emotion=""
-attention=""
+emotion="N"
+attention="NA"
 sentence=""
 start=True
 new_emotion=False
 new_sentence=False
 new_attention=False
 begin=True
-url='http://127.0.0.1:5021/'
+url='http://130.251.13.139:5021/'
 
 
 
@@ -49,6 +49,7 @@ data={
         "attention":"negative",
         "emotion":"",
         "sentence":"",
+        "listening":"False",
         
 }
 
@@ -392,8 +393,8 @@ class ExAction(smach.State):
                 comfortability = function_objects["scrupulousness_level"].has_value
             else:
                 comfortability= 1
-            print(comfortability)
-            if comfortability> 0:
+            
+            if comfortability> 5:
                 comfortability= "positive"
 
             else:
@@ -427,9 +428,16 @@ class CheckPerc(smach.State):
         
     def execute(self, userdata):
         global emotion, new_emotion, new_sentence, data, new_attention, attention, sentence
+        print("before")
         resp=requests.put(url+'get_input', json=data, headers=headers)
+        print("after")
         a=userdata.action
         print("action",a)
+
+        while eval(resp.text)["listening"]=="True":
+            time.sleep(0.5)
+            print("listening ...")
+            resp=requests.put(url+'get_input', json=data, headers=headers)
 
         if eval(resp.text)["new_emotion"]=="True":
             new_emotion=True
@@ -437,7 +445,7 @@ class CheckPerc(smach.State):
             
         if eval(resp.text)["new_sentence"]=="True":
             new_sentence=True
-            attention=eval(resp.text)["sentence"]
+            sentence=eval(resp.text)["sentence"]
 
         if eval(resp.text)["new_attention"]=="True":
             new_attention=True
@@ -447,13 +455,19 @@ class CheckPerc(smach.State):
         while (new_emotion==False and new_sentence==False and  new_attention==False and userdata.action==""):
             time.sleep(1)
             resp=requests.put(url+'get_input', json=data, headers=headers)
+
+            while eval(resp.text)["listening"]=="True":
+                time.sleep(0.5)
+                print("listening ...")
+                resp=requests.put(url+'get_input', json=data, headers=headers)
+
             if eval(resp.text)["new_emotion"]=="True":
                 new_emotion=True
                 emotion=eval(resp.text)["emotion"]
                 
             if eval(resp.text)["new_sentence"]=="True":
                 new_sentence=True
-                attention=eval(resp.text)["sentence"]
+                sentence=eval(resp.text)["sentence"]
 
             if eval(resp.text)["new_attention"]=="True":
                 new_attention=True
@@ -506,6 +520,7 @@ class CheckPerc(smach.State):
                 remove_predicate("finished")
                 add_predicate("new_sentence")
                 new_sentence=False
+
             add_goal("feel_comfort")
             remove_predicate("feel_comfort")
             return "outcome3"

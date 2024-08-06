@@ -27,7 +27,7 @@ step    0: ANSWER_WITH_A_QUESTION
      
 
 time spent:    0.00 seconds instantiating 9 easy, 0 hard action templates
-               0.00 seconds reachability analysis, yielding 14 facts and 9 actions
+               0.00 seconds reachability analysis, yielding 7 facts and 9 actions
                0.00 seconds creating final representation with 4 relevant facts, 3 relevant fluents
                0.00 seconds computing LNF
                0.00 seconds building connectivity graph

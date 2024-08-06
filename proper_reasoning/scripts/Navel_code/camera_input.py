@@ -36,7 +36,7 @@ def get_cam_input():
     if perception_to_take:
         perception_to_take = False
         data["new_perception"] = "True"
-        data["emotion"] = actual_emotion
+        data["emotion"] = emotion_dict_interface[actual_emotion]
         data["attention"] = gaze
     else:
         data["new_perception"] = "False"
@@ -62,13 +62,13 @@ async def perception():
     global actual_emotion, gaze, perception_to_take
     async with navel.Robot() as robot:
         while True:
-            #await asyncio.sleep(5)  # Use asyncio.sleep to avoid blocking the event loop
+            asyncio.sleep(2)  # Use asyncio.sleep to avoid blocking the event loop
             data = await robot.next_frame()
-            
+
             if data.persons:
                 perception_to_take = True
                 person = data.persons[0]
-                print(person)
+            
                 gaze_vector = np.array([person.g_gaze[0].x, person.g_gaze[0].y, person.g_gaze[0].z])
                 camera_position = np.array([0.0, 0.0, 0.0])  # Example camera position
                 eye_position = np.array([person.g_eye_right[0].x, person.g_eye_right[0].y, person.g_eye_right[0].z])  # Example eye position (1 unit in front of the camera)
@@ -86,6 +86,8 @@ async def perception():
                     window_emotion.pop(0)
 
                 actual_emotion = max(set(window_emotion), key=window_emotion.count)
+                print(gaze,actual_emotion)
+
 
 async def run_flask_app():
     from hypercorn.asyncio import serve

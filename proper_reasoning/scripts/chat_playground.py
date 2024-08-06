@@ -17,7 +17,7 @@ system_message = openai_config.system_message
 start_message = [
     {"role": "system", "content": system_message},
 ]
-model="gpt-4o"
+model="gpt-3.5-turbo"
 
 client = OpenAI()
 

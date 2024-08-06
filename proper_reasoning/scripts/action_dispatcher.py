@@ -7,7 +7,7 @@ import requests
 from emotion_generation import *
 from chat_playground import *
 
-url='http://127.0.0.1:5022/'
+url='http://130.251.13.139:5022/'
 
 headers= {'Content-Type':'application/json'}
 
@@ -32,7 +32,6 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
         if ("react" not in action) and ("compute" not in action) and ("check" not in action):
                 print("generate the current robot emotion ********************")
                 robot_emotion= generate_emotion( user_sentence, user_emotion, comfortability, personality)
-                #robot_emotion="Angry"
                 print(robot_emotion)
                 robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, user_sentence, personality, mmap["language"], action)
                 print(robot_sentence)
@@ -45,6 +44,7 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                 data_action["head"]=mmap["head"]
                 print(data_action)
                 resp=requests.put(url+'exec_actions', json=data_action, headers=headers)
+                
         return True, action
         
     
