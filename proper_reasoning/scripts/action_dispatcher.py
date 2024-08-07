@@ -12,7 +12,7 @@ url='http://130.251.13.139:5022/'
 headers= {'Content-Type':'application/json'}
 
 data_action={
-        "robot_emotion":"",
+        "facia_expression":"",
         "sentence":"",
         "volume":"",
         "gaze":"",

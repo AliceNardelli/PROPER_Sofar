@@ -21,12 +21,12 @@ import datetime
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=1
+we=0
 wi=0
 wc=0
 wu=0
 wa=0
-wd=0
+wd=1
 sum_weights=0
 weights=[]
 gamma=1
@@ -185,7 +185,7 @@ class GetActions(smach.State):
 class ExAction(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome8','outcome9','outcome13'],
+                             outcomes=['outcome8','outcome9','outcome13','outcome15'],
                              input_keys=['executing_actions'],
                              output_keys=['updated_actions','action','state']) 
     def execute(self, userdata):
@@ -209,7 +209,7 @@ class ExAction(smach.State):
                 aa,rew=choose_action_a(pi,False)
             else:
                 aa,rew=choose_action_a(pi,False)
-            userdata, response = self.call_action_server(userdata, aa, personality)
+            userdata, response, ea  = self.call_action_server(userdata, aa, personality)
             
             if response:
                 data["update"]="False"
@@ -242,7 +242,7 @@ class ExAction(smach.State):
                 aa,rew=choose_action_d(pi,False)
             else:
                 aa,rew=choose_action_d(pi,False)
-            userdata, response =self.call_action_server(userdata, aa, personality)            
+            userdata, response , ea =self.call_action_server(userdata, aa, personality)            
             if response:
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
@@ -273,7 +273,7 @@ class ExAction(smach.State):
             if predicates_objects["new_sentence"].is_grounded==True:
                 aa,rew=choose_action_i(pi,False)
             else:
-                aa,rew=choose_action_i(pi,False)
+                aa,rew, ea =choose_action_i(pi,False)
             userdata, response =self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
@@ -309,7 +309,7 @@ class ExAction(smach.State):
                 aa,rew=choose_action_e(pi,False)
             else:
                 aa,rew=choose_action_e(pi,False)
-            userdata, response =self.call_action_server(userdata, aa, personality)
+            userdata, response, ea  =self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
                 resp=requests.put(url+'get_input', json=data, headers=headers)
@@ -342,7 +342,7 @@ class ExAction(smach.State):
                 aa,rew=choose_action_c(pi,False)
             else:
                 aa,rew=choose_action_c(pi,False)
-            userdata, response =self.call_action_server(userdata, aa,personality)
+            userdata, response, ea  =self.call_action_server(userdata, aa,personality)
             if response:
                 change_raward("reward_c",float(rew))
                 return "outcome9"
@@ -365,7 +365,7 @@ class ExAction(smach.State):
             else:
                 aa,rew=choose_action_u(pi,False)
            
-            userdata, response =self.call_action_server(userdata, aa,personality)
+            userdata, response, ea  =self.call_action_server(userdata, aa,personality)
             if response:
                 change_raward("reward_c",float(rew))
                 return "outcome9"
@@ -374,7 +374,9 @@ class ExAction(smach.State):
 
 
         else:
-            userdata, response =self.call_action_server(userdata, ac, personality)
+            userdata, response, ea =self.call_action_server(userdata, ac, personality)
+            if "react" in ea:
+                return 'outcome15'
             if response:
                 return "outcome9"
             else:
@@ -402,20 +404,20 @@ class ExAction(smach.State):
             resp, to_exec_action = dispatch_action(ac, personality, emotion, sentence, comfortability)
             
             resp2=True
-            if ("react" not in to_exec_action) and ("compute" not in to_exec_action) and ("check" not in to_exec_action):
-                change_raward("react",float(1))
+            #if ("react" not in to_exec_action) and ("compute" not in to_exec_action) and ("check" not in to_exec_action):
+                #change_raward("react",float(1))
                 
             
             if resp2==False:
                     print('Action Failed')        
-                    return userdata, False
+                    return userdata, False, to_exec_action
             else:
                     ac=userdata.executing_actions.pop(0)
                     print('Action executed: '+ac)
                     userdata.action=ac
                     userdata.updated_actions=userdata.executing_actions
 
-            return userdata,True
+            return userdata,True, to_exec_action
 
                 
         
@@ -622,7 +624,8 @@ def main():
             smach.StateMachine.add('EXEC', ExAction(), 
                                 transitions={'outcome8':'CHECK_PERC',
                                             'outcome9':'UPDATE_ONTOLOGY',
-                                            'outcome13':'START'
+                                            'outcome13':'START',
+                                            'outcome15':'EXEC'
                                             },
                                 remapping={'executing_actions':'actions',
                                         'updated_actions':'actions',
