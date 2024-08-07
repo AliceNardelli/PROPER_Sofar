@@ -38,7 +38,7 @@ new_emotion=False
 new_sentence=False
 new_attention=False
 begin=True
-url='http://130.251.13.139:5021/'
+url='http://192.168.1.15:5021/'
 
 
 
@@ -185,7 +185,7 @@ class GetActions(smach.State):
 class ExAction(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome8','outcome9','outcome13','outcome15'],
+                             outcomes=['outcome8','outcome9','outcome13'],
                              input_keys=['executing_actions'],
                              output_keys=['updated_actions','action','state']) 
     def execute(self, userdata):
@@ -376,7 +376,7 @@ class ExAction(smach.State):
         else:
             userdata, response, ea =self.call_action_server(userdata, ac, personality)
             if "react" in ea:
-                return 'outcome15'
+                return 'outcome9'
             if response:
                 return "outcome9"
             else:
@@ -478,9 +478,6 @@ class CheckPerc(smach.State):
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
         if new_emotion==False and new_sentence==False and new_attention==False:
           
-            if "ACTION" in userdata.action:
-                return "outcome3" #if I have done a trait specific action I need to replan
-            
             if userdata.state=="exec": #action fail
                 
                 return "outcome3"
@@ -517,14 +514,14 @@ class CheckPerc(smach.State):
 
             if new_sentence:
                 add_goal("answered")
-                add_goal("finished")
                 remove_predicate("answered")
-                remove_predicate("finished")
                 add_predicate("new_sentence")
                 new_sentence=False
 
             add_goal("feel_comfort")
             remove_predicate("feel_comfort")
+            remove_predicate("finished")
+            add_goal("finished")
             return "outcome3"
 
         
@@ -542,7 +539,7 @@ class WriteProblem(smach.State):
 class UpdateOntology(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome10'],
+                             outcomes=['outcome10','outcome11'],
                              input_keys=['action'],
                              output_keys=['state',"out_action"])
         
@@ -553,6 +550,8 @@ class UpdateOntology(smach.State):
         userdata.state="update"
         initialize_reward()
         userdata.out_action=acc
+        if "react" in acc:
+            return 'outcome11'
         return 'outcome10'
     
 
@@ -625,7 +624,6 @@ def main():
                                 transitions={'outcome8':'CHECK_PERC',
                                             'outcome9':'UPDATE_ONTOLOGY',
                                             'outcome13':'START',
-                                            'outcome15':'EXEC'
                                             },
                                 remapping={'executing_actions':'actions',
                                         'updated_actions':'actions',
@@ -653,6 +651,7 @@ def main():
             
             smach.StateMachine.add('UPDATE_ONTOLOGY', UpdateOntology(), 
                         transitions={'outcome10':'CHECK_PERC',
+                                     'outcome11':'EXEC',
                                     },
                         remapping={'action':'a',
                                    "previous_state":"state",

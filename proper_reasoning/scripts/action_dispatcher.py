@@ -7,17 +7,17 @@ import requests
 from emotion_generation import *
 from chat_playground import *
 
-url='http://130.251.13.139:5022/'
+url='http://192.168.1.15:5022/'
 
 headers= {'Content-Type':'application/json'}
 
 data_action={
-        "facia_expression":"",
+        "facial_expression":"",
         "sentence":"",
         "volume":"",
         "gaze":"",
         "tone":"",
-        "gesture_amplitude":"",
+        "g_amplitude":"",
         "head":""
          
 }

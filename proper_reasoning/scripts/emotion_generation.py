@@ -12,7 +12,7 @@ openai.organization = "org-OWePijhLCGVSJWhT7TQXBK7D"
 openai.api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
 system_message_dict = {"Agreeable":openai_config.system_message_A,
-                       "Disagreeable":openai_config.system_message_E,
+                       "Disagreeable":openai_config.system_message_D,
                        "Extrovert":openai_config.system_message_E,
                        "Introvert":openai_config.system_message_I,
                        "Conscientious":openai_config.system_message_C,
