@@ -25,8 +25,8 @@ we=0
 wi=0
 wc=0
 wu=0
-wa=0
-wd=1
+wa=1
+wd=0
 sum_weights=0
 weights=[]
 gamma=1
@@ -389,6 +389,7 @@ class ExAction(smach.State):
             #get the comfortability
             if wa>0 or wd > 0:
                 comfortability = function_objects["agreeableness_level"].has_value
+                print("COMFORTABILITY: ", function_objects["agreeableness_level"].has_value)
             elif wi>0 or we > 0:
                 comfortability = function_objects["interaction_level"].has_value
             elif wc >0 or wu >0 :
@@ -550,7 +551,8 @@ class UpdateOntology(smach.State):
         userdata.state="update"
         initialize_reward()
         userdata.out_action=acc
-        if "react" in acc:
+        print(acc)
+        if "REACT" in acc:
             return 'outcome11'
         return 'outcome10'
     

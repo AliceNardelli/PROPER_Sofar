@@ -19,7 +19,7 @@ system_message_dict = {"Agreeable":openai_config.system_message_A,
                        "Unscrupolous":openai_config.system_message_U,
                        }
 
-model="gpt-3.5-turbo"
+model="gpt-4o"
 
 map_emotion={
    "SA":"Sad",

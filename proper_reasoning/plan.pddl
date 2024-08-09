@@ -22,14 +22,14 @@ Cueing down from goal distance:    4 into depth [1]
 
 ff: found legal plan as follows
 
-step    0: REACT_SAD_EMOTION
-        1: REACT_ATTENTION
+step    0: REACT_NEUTRAL_EMOTION
+        1: REACT_LOW_ATTENTION
         2: CHECK_FINISH
         3: COMPUTE_HEDONIC_FEELINGS
      
 
 time spent:    0.00 seconds instantiating 7 easy, 0 hard action templates
-               0.00 seconds reachability analysis, yielding 12 facts and 7 actions
+               0.00 seconds reachability analysis, yielding 14 facts and 7 actions
                0.00 seconds creating final representation with 10 relevant facts, 3 relevant fluents
                0.00 seconds computing LNF
                0.00 seconds building connectivity graph
