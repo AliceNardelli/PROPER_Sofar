@@ -68,13 +68,14 @@ async def perception():
             if data.persons:
                 perception_to_take = True
                 person = data.persons[0]
-            
-                gaze_vector = np.array([person.g_gaze[0].x, person.g_gaze[0].y, person.g_gaze[0].z])
-                camera_position = np.array([0.0, 0.0, 0.0])  # Example camera position
-                eye_position = np.array([person.g_eye_right[0].x, person.g_eye_right[0].y, person.g_eye_right[0].z])  # Example eye position (1 unit in front of the camera)
-                is_looking = is_looking_at_camera(gaze_vector, camera_position, eye_position)
-                gaze = "positive" if is_looking else "negative"
-                
+                try:
+                    gaze_vector = np.array([person.g_gaze[0].x, person.g_gaze[0].y, person.g_gaze[0].z])
+                    camera_position = np.array([0.0, 0.0, 0.0])  # Example camera position
+                    eye_position = np.array([person.g_eye_right[0].x, person.g_eye_right[0].y, person.g_eye_right[0].z])  # Example eye position (1 unit in front of the camera)
+                    is_looking = is_looking_at_camera(gaze_vector, camera_position, eye_position)
+                    gaze = "positive" if is_looking else "negative"
+                except:
+                    gaze=""
                 emotions_intensity[0] = person.facial_expression.anger
                 emotions_intensity[1] = person.facial_expression.happy
                 emotions_intensity[2] = person.facial_expression.neutral

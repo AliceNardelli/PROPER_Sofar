@@ -46,7 +46,10 @@ def get_input():
         data['emotion'] = eval(camera_response.text)["emotion"]
         data['new_emotion'] = eval(camera_response.text)["new_perception"]
         data['attention'] = eval(camera_response.text)["attention"]
-        data['new_attention'] = eval(camera_response.text)["new_perception"]
+        if data['attention']=="":
+            data['new_attention']="False"
+        else:
+            data['new_attention'] = eval(camera_response.text)["new_perception"]
         print("retreive camera response")
         print(data)
     except requests.exceptions.RequestException as e:
