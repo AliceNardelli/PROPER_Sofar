@@ -38,7 +38,7 @@ new_emotion=False
 new_sentence=False
 new_attention=False
 begin=True
-url='http://192.168.1.15:5021/'
+url='http://192.168.1.7:5021/'
 
 
 
