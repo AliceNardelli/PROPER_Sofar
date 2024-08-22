@@ -131,7 +131,9 @@ def get_map(predictions,personality):
             a=reversed[param][str(list([int(b) for b in bits]))]
             #a=pers_lang_dict[personality]
             value=remap_language[a][random.randint(0,len(remap_language[a])-1)]
-           
+            if value=="no_active":
+                a=pers_lang_dict[personality]
+                value=remap_language[a][random.randint(0,len(remap_language[a])-1)]
         else:
             value=reversed[param][str(list([int(b) for b in bits]))]
         result[param]=value

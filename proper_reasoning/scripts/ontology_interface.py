@@ -23,10 +23,10 @@ traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disa
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
 wi=0
-wc=0
+wc=1
 wu=0
-wa=1
-wd=0
+wa=0
+wd=1
 sum_weights=0
 weights=[]
 gamma=1
@@ -54,6 +54,13 @@ data={
 }
 
 
+emotion_mask={
+    "A":[0.2,0.1,0.2,0.1,0.2,0.2],
+    "H":[0.3,0.2,0.0,0.0,0.25,0.25],
+    "SA":[0.1,0.1,0.1,0.1,0.5,0.1],
+    "SU":[0.3,0.2,0.0,0.0,0.25,0.25],
+    "N":[0.3,0.3,0.0,0.0,0.2,0.2],
+}
 
 
 
@@ -374,6 +381,10 @@ class ExAction(smach.State):
 
 
         else:
+            resp=requests.put(url+'get_input', json=data, headers=headers)
+            em=eval(resp.text)["emotion"]
+            if em!="":
+                emotion=em
             userdata, response, ea =self.call_action_server(userdata, ac, personality)
             if "react" in ea:
                 return 'outcome9'
@@ -387,14 +398,31 @@ class ExAction(smach.State):
             global data_action, emotion, sentence 
             userdata.state="exec"
             #get the comfortability
-            if wa>0 or wd > 0:
+            mask_weights=emotion_mask[emotion]
+            emotion_weights=np.multiply(mask_weights, weights)
+            
+            sum_em_weights=0
+            for ew in emotion_weights:
+                sum_em_weights+=ew
+
+            
+            ind=0
+            for ew in emotion_weights:
+                emotion_weights[ind]=ew/sum_em_weights
+                ind+=1
+
+            
+            personality_emotions=np.random.choice(traits,p=emotion_weights)
+            print("personality emotion: "+personality_emotions)
+            if personality_emotions=="Agreeable" or personality_emotions=="Disagreeable":
                 comfortability = function_objects["agreeableness_level"].has_value
-                print("COMFORTABILITY: ", function_objects["agreeableness_level"].has_value)
-            elif wi>0 or we > 0:
+                
+            elif personality_emotions=="Extrovert" or personality_emotions=="Introvert":
                 comfortability = function_objects["interaction_level"].has_value
-            elif wc >0 or wu >0 :
+            elif personality_emotions=="Unscrupolous" or personality_emotions=="Conscientious":
                 comfortability = function_objects["scrupulousness_level"].has_value
             else:
+                print("no personality found")
                 comfortability= 1
             
             if comfortability> 5:
@@ -402,7 +430,9 @@ class ExAction(smach.State):
 
             else:
                 comfortability = "negative"
-            resp, to_exec_action = dispatch_action(ac, personality, emotion, sentence, comfortability)
+
+            
+            resp, to_exec_action = dispatch_action(ac, personality, personality_emotions, emotion, sentence, comfortability, weights)
             
             resp2=True
             #if ("react" not in to_exec_action) and ("compute" not in to_exec_action) and ("check" not in to_exec_action):
