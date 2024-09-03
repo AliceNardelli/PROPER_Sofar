@@ -56,7 +56,12 @@ def dispatch_action(action, personality, personality_emotions, user_emotion, use
                 data_action["volume"]=mmap["volume"]
                 data_action["gaze"]=mmap["gaze"]
                 data_action["tone"]=tone
-                data_action["g_amplitude"]=mmap["amplitude"]
+                if "Extrovert" in personality_sentence:
+                        data_action["g_amplitude"]="high"
+                elif "Introvert" in personality_sentence:
+                        data_action["g_amplitude"]="low"
+                else:
+                        data_action["g_amplitude"]=mmap["amplitude"]
                 data_action["head"]=mmap["head"]
                 print(data_action)
                 resp=requests.put(url+'exec_actions', json=data_action, headers=headers)

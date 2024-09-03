@@ -42,10 +42,10 @@ async def say(sentence, facial_expression, g_amplitude):
                 await robot.rotate_arms(100, 100)
                 await robot.rotate_arms(0, 0)
             if g_amplitude=="mid":
-                await robot.rotate_arms(70, 70)
+                await robot.rotate_arms(50, 50)
                 await robot.rotate_arms(0, 0)
             if g_amplitude=="low":
-                await robot.rotate_arms(40, 40)
+                await robot.rotate_arms(20, 20)
                 await robot.rotate_arms(0, 0)
                 
             

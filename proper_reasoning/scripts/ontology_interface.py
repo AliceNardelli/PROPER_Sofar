@@ -21,10 +21,10 @@ import datetime
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=1
-wi=0
-wc=0
-wu=1
+we=0
+wi=1
+wc=1
+wu=0
 wa=0
 wd=0
 sum_weights=0
@@ -55,11 +55,11 @@ data={
 
 
 emotion_mask={
-    "A":[4,2,3,1,4,4],
-    "H":[4,2,1,1,4,4],
-    "SA":[2,2,1,1,4,2],
-    "SU":[4,2,1,1,4,4],
-    "N":[4,4,1,1,2,2],
+    "A":[4,2,3,1,5,5],
+    "H":[4,2,1,1,5,5],
+    "SA":[2,2,1,1,5,2],
+    "SU":[4,2,1,1,5,5],
+    "N":[4,4,1,1,4,4],
 }
 
 
