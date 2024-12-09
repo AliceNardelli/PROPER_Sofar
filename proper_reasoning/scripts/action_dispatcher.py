@@ -7,7 +7,7 @@ import requests
 from emotion_generation import *
 from chat_playground import *
 
-url='http://192.168.1.7:5022/'
+url='http://192.168.1.55:5022/'
 
 headers= {'Content-Type':'application/json'}
 
@@ -24,6 +24,8 @@ data_action={
 
 traits_res=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 
+file_name="/home/alice/navel_files/p28ff.txt"
+file = open(file_name, 'a')
 
 def dispatch_action(action, personality, personality_emotions, user_emotion, user_sentence, comfortability, weights_res):
         
@@ -50,6 +52,15 @@ def dispatch_action(action, personality, personality_emotions, user_emotion, use
                 print(robot_emotion)
                 
                 robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, user_sentence, personality_sentence, language_sentence, action)
+                file_data={
+                        "human_sentence":user_sentence,
+                        "human_emotion":user_emotion,
+                        "robot_sentence":robot_sentence,
+                        "robot_emotion":robot_emotion
+                }
+                file.write(str(file_data))
+                file.write("\n")
+                file.flush()
                 print(robot_sentence)
                 data_action["facial_expression"]=robot_emotion
                 data_action["sentence"]=robot_sentence

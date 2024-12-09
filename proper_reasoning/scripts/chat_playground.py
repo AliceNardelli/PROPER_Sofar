@@ -34,13 +34,13 @@ map_emotion={
    "N":"Neutral",
 }
 messages=[]
-
-def generate_sentence(user_emotion, robot_emotion, text, personality, response_style, action):
-    openai_config = OmegaConf.load(file_path_openai_config_dict["global"]).config
-    system_message = openai_config.system_message
-    start_message = [
+openai_config = OmegaConf.load(file_path_openai_config_dict["global"]).config
+system_message = openai_config.system_message
+start_message = [
         {"role": "system", "content": system_message},
     ]
+def generate_sentence(user_emotion, robot_emotion, text, personality, response_style, action):
+    
     user_input = "{"
     user_input += "text: "
     user_input += text
@@ -58,13 +58,13 @@ def generate_sentence(user_emotion, robot_emotion, text, personality, response_s
 
     user_input += "}"
     # Add each new message to the list
-    new_message=start_message
-    new_message.append({"role": "user", "content": user_input})
+    
+    start_message.append({"role": "user", "content": user_input})
     
 
     response = client.chat.completions.create(
         model=model,
-        messages=new_message,
+        messages=start_message,
         temperature=1,
         top_p=1,
     )

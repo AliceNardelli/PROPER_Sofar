@@ -21,10 +21,10 @@ import datetime
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=0
-wi=1
-wc=1
-wu=0
+we=1
+wi=0
+wc=0
+wu=1
 wa=0
 wd=0
 sum_weights=0
@@ -38,7 +38,7 @@ new_emotion=False
 new_sentence=False
 new_attention=False
 begin=True
-url='http://192.168.1.7:5021/'
+url='http://192.168.1.55:5021/'
 
 
 
@@ -280,7 +280,7 @@ class ExAction(smach.State):
             if predicates_objects["new_sentence"].is_grounded==True:
                 aa,rew=choose_action_i(pi,False)
             else:
-                aa,rew, ea =choose_action_i(pi,False)
+                aa,rew =choose_action_i(pi,False)
             userdata, response =self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
