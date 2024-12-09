@@ -8,9 +8,10 @@ from emotion_generation import *
 from chat_playground import *
 
 url='http://192.168.1.55:5022/'
+url_emoACT='http://192.168.1.55:3000/'
 
 headers= {'Content-Type':'application/json'}
-
+expression=""
 data_action={
         "facial_expression":"",
         "sentence":"",
@@ -48,7 +49,18 @@ def dispatch_action(action, personality, personality_emotions, user_emotion, use
         print(mmap,action,personality)
         if ("react" not in action) and ("compute" not in action) and ("check" not in action):
                 print("generate the current robot emotion ********************")
-                robot_emotion= generate_emotion( user_sentence, user_emotion, comfortability, personality_emotions)
+                try:
+                        response = requests.get(url)
+                        if response.status_code == 200:
+                                data = response.json()  # Parse the JSON response
+                                robot_emotion = data.get("emotion")
+                                expression = data.get("new_emotion")
+                                print(f"Emotion: {robot_emotion}")
+                        else:
+                                print(f"Failed to retrieve emotion. Status code: {response.status_code}, Response: {response.text}")
+                except requests.exceptions.RequestException as e:
+                        print(f"An error occurred: {e}")
+                #robot_emotion= generate_emotion( user_sentence, user_emotion, comfortability, personality_emotions)
                 print(robot_emotion)
                 
                 robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, user_sentence, personality_sentence, language_sentence, action)
@@ -77,7 +89,7 @@ def dispatch_action(action, personality, personality_emotions, user_emotion, use
                 print(data_action)
                 resp=requests.put(url+'exec_actions', json=data_action, headers=headers)
                 time.sleep(2)
-        return True, action
+        return True, action, expression
         
     
 

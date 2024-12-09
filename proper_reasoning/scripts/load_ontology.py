@@ -114,6 +114,13 @@ with onto:
 def change_raward(func,r):
     function_objects[func].has_value=r
 
+
+def emotion_effect(r, scale):
+    function_objects["interaction_level"].has_value=function_objects["interaction_level"].has_value-scale*r
+    function_objects["scrupulousness_level"].has_value=function_objects["scrupulousness_level"].has_value-scale*r
+    function_objects["agreeableness_level"].has_value=function_objects["agreeableness_level"].has_value-scale*r
+
+
 def initialize_reward():
     function_objects["reward_a"].has_value=5
     function_objects["reward_e"].has_value=5

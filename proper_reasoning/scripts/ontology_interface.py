@@ -38,9 +38,11 @@ new_emotion=False
 new_sentence=False
 new_attention=False
 begin=True
-url='http://192.168.1.55:5021/'
+url_navel='http://192.168.1.55:5021/'
+url_emoACT='http://192.168.1.55:8008/'
+expression=""
 
-
+headers= {'Content-Type':'application/json'}
 
 data={
         "new_sentence":"False",
@@ -62,7 +64,7 @@ emotion_mask={
     "N":[4,4,1,1,4,4],
 }
 
-
+personality_to_send=True
 
 
 class State_Start(smach.State):
@@ -91,7 +93,18 @@ class State_Start(smach.State):
         except:
                 weights=6*[0]
                 sum_weights=1
-
+        if personality_to_send:
+            personality_to_send=False
+            value_wc=str(wc+(-wu))
+            value_we=str(we+(-wi))
+            value_wa=str(wa+(-wd))
+            print('Send weights to emoACT')
+            payload = [
+                {"wc": value_wc},  
+                {"we": value_we},  
+                {"wa": value_wa}   
+            ]
+            response = requests.post(url_emoACT+'personality', json=payload, headers=headers)
         return 'outcome0'
 
 
@@ -145,13 +158,13 @@ class State_Init(smach.State):
                         secondfile.write(p)
                 else:
                     secondfile.write(line)
+        
         print('Reading domain and populate ontology')
         populate_ontology(userdata.domain_path)
         print('Initialize function and predicates in the ontology')
         initialize_functions_predicates()
         print('Read the problem and set the initial values of predicates and functions')
         read_the_problem(userdata.problem_path)  
-        
         return 'outcome1'
       
 
@@ -203,7 +216,7 @@ class ExAction(smach.State):
 
         if ac=="AGREE_ACTION":
             data["update"]="False"
-            resp=requests.put(url+'get_input', json=data, headers=headers)
+            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
             if emotion not in list_of_emotions:
                     emotion="N"
@@ -220,7 +233,7 @@ class ExAction(smach.State):
             
             if response:
                 data["update"]="False"
-                resp=requests.put(url+'get_input', json=data, headers=headers)
+                resp=requests.put(url_navel+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
                 if emotion not in list_of_emotions:
                     emotion="N"
@@ -237,7 +250,7 @@ class ExAction(smach.State):
         
         if ac=="DISAGREE_ACTION":
             data["update"]="False"
-            resp=requests.put(url+'get_input', json=data, headers=headers)
+            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
             if emotion not in list_of_emotions:
                     emotion="N"
@@ -252,7 +265,7 @@ class ExAction(smach.State):
             userdata, response , ea =self.call_action_server(userdata, aa, personality)            
             if response:
                 data["update"]="False"
-                resp=requests.put(url+'get_input', json=data, headers=headers)
+                resp=requests.put(url_navel+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
                 if emotion not in list_of_emotions:
                     emotion="N"
@@ -269,7 +282,7 @@ class ExAction(smach.State):
             
         elif ac=="INTRO_ACTION":
             data["update"]="False"
-            resp=requests.put(url+'get_input', json=data, headers=headers)
+            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
             if emotion not in list_of_emotions:
                     emotion="N"
@@ -284,7 +297,7 @@ class ExAction(smach.State):
             userdata, response =self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
-                resp=requests.put(url+'get_input', json=data, headers=headers)
+                resp=requests.put(url_navel+'get_input', json=data, headers=headers)
                 emotion=eval(resp.text)["emotion"]
                 if emotion not in list_of_emotions:
                     emotion="N"
@@ -304,7 +317,7 @@ class ExAction(smach.State):
 
         elif ac=="EXTRO_ACTION":
             data["update"]="False"
-            resp=requests.put(url+'get_input', json=data, headers=headers)
+            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
             if emotion not in list_of_emotions:
                     emotion="N"
@@ -319,7 +332,7 @@ class ExAction(smach.State):
             userdata, response, ea  =self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
-                resp=requests.put(url+'get_input', json=data, headers=headers)
+                resp=requests.put(url_navel+'get_input', json=data, headers=headers)
                 
                 emotion=eval(resp.text)["emotion"]
                 if emotion not in list_of_emotions:
@@ -337,7 +350,7 @@ class ExAction(smach.State):
 
         elif ac=="CONSC_ACTION":
             data["update"]="False"
-            resp=requests.put(url+'get_input', json=data, headers=headers)
+            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
             if emotion not in list_of_emotions:
                     emotion="N"
@@ -359,7 +372,7 @@ class ExAction(smach.State):
 
         elif ac=="UNSC_ACTION":
             data["update"]="False"
-            resp=requests.put(url+'get_input', json=data, headers=headers)
+            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
             if emotion not in list_of_emotions:
                     emotion="N"
@@ -381,7 +394,7 @@ class ExAction(smach.State):
 
 
         else:
-            resp=requests.put(url+'get_input', json=data, headers=headers)
+            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
             em=eval(resp.text)["emotion"]
             if em!="":
                 emotion=em
@@ -432,8 +445,10 @@ class ExAction(smach.State):
                 comfortability = "negative"
 
             
-            resp, to_exec_action = dispatch_action(ac, personality, personality_emotions, emotion, sentence, comfortability, weights)
-            
+            resp, to_exec_action, expression = dispatch_action(ac, personality, personality_emotions, emotion, sentence, comfortability, weights)
+            #effect of emotions on comfortability
+            scale_factor=0.5
+            emotion_effect(float(expression), scale_factor)
             resp2=True
             #if ("react" not in to_exec_action) and ("compute" not in to_exec_action) and ("check" not in to_exec_action):
                 #change_raward("react",float(1))
@@ -462,7 +477,7 @@ class CheckPerc(smach.State):
     def execute(self, userdata):
         global emotion, new_emotion, new_sentence, data, new_attention, attention, sentence
         print("before")
-        resp=requests.put(url+'get_input', json=data, headers=headers)
+        resp=requests.put(url_navel+'get_input', json=data, headers=headers)
         print("after")
         a=userdata.action
         print("action",a)
@@ -470,7 +485,7 @@ class CheckPerc(smach.State):
         while eval(resp.text)["listening"]=="True":
             time.sleep(0.5)
             print("listening ...")
-            resp=requests.put(url+'get_input', json=data, headers=headers)
+            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
 
         if eval(resp.text)["new_emotion"]=="True":
             new_emotion=True
@@ -487,12 +502,12 @@ class CheckPerc(smach.State):
 
         while (new_emotion==False and new_sentence==False and  new_attention==False and userdata.action==""):
             time.sleep(1)
-            resp=requests.put(url+'get_input', json=data, headers=headers)
+            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
 
             while eval(resp.text)["listening"]=="True":
                 time.sleep(0.5)
                 print("listening ...")
-                resp=requests.put(url+'get_input', json=data, headers=headers)
+                resp=requests.put(url_navel+'get_input', json=data, headers=headers)
 
             if eval(resp.text)["new_emotion"]=="True":
                 new_emotion=True
