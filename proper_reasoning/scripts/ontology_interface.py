@@ -453,7 +453,7 @@ class ExAction(smach.State):
             #if ("react" not in to_exec_action) and ("compute" not in to_exec_action) and ("check" not in to_exec_action):
                 #change_raward("react",float(1))
                 
-            
+
             if resp2==False:
                     print('Action Failed')        
                     return userdata, False, to_exec_action
