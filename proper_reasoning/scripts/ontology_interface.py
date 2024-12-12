@@ -35,24 +35,27 @@ attention="NA"
 sentence=""
 start=True
 new_emotion=False
-new_sentence=False
 new_attention=False
+new_hint=False
+new_number=False
 begin=True
 url_navel='http://192.168.1.55:5021/'
 url_emoACT='http://192.168.1.55:8008/'
 expression=""
+quiz_guessed=False
 
 headers= {'Content-Type':'application/json'}
 
 data={
+        "new_number":"False",
+        "new_hint":"False",
         "new_sentence":"False",
         "new_emotion":"False",
         "new_attention":"False",
         "attention":"negative",
         "emotion":"",
         "sentence":"",
-        "listening":"False",
-        
+        "listening":"False",   
 }
 
 
@@ -77,7 +80,7 @@ class State_Start(smach.State):
     def execute(self, userdata):
         global wa,wd,we,wi,wc,wd,sum_weights,weights
         goals=userdata.input_goals
-        #actual_goal=goals.pop(0) #always goal1
+        actual_goal=goals.pop(0) 
         print('Executing goal: '+ actual_goal)
         dict_goal=goals_dict[actual_goal]
         userdata.output_goals=goals
@@ -167,7 +170,31 @@ class State_Init(smach.State):
         read_the_problem(userdata.problem_path)  
         return 'outcome1'
       
-
+class Reset_Quiz(smach.State):
+    def __init__(self):
+        smach.State.__init__(self, 
+                             outcomes=['outcome0'],
+                             input_keys=['input_goals'],
+                             output_keys=['output_goals'])
+        
+    def execute(self, userdata):
+        
+        goals=userdata.input_goals
+        actual_goal=goals.pop(0) 
+        userdata.output_goals=goals
+        print('Executing new quiz: '+ actual_goal)
+        remove_predicate("new_hint")
+        remove_predicate("present_quiz")
+        remove_predicate("answered")
+        remove_predicate("guessed_quiz")
+        remove_predicate("finished_quiz")
+        remove_predicate("game_finished")
+        remove_predicate("sentence_said")
+        remove_predicate("number_said")
+        remove_predicate("number_seen")
+        remove_predicate("waited")
+        return 'outcome0'
+    
 
 # define state Bar
 class Planning(smach.State):
@@ -205,7 +232,7 @@ class GetActions(smach.State):
 class ExAction(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome8','outcome9','outcome13'],
+                             outcomes=['outcome8','outcome9'],
                              input_keys=['executing_actions'],
                              output_keys=['updated_actions','action','state']) 
     def execute(self, userdata):
@@ -453,7 +480,7 @@ class ExAction(smach.State):
             #if ("react" not in to_exec_action) and ("compute" not in to_exec_action) and ("check" not in to_exec_action):
                 #change_raward("react",float(1))
                 
-
+            
             if resp2==False:
                     print('Action Failed')        
                     return userdata, False, to_exec_action
@@ -470,70 +497,65 @@ class ExAction(smach.State):
 class CheckPerc(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome3',"outcome4","outcome2","outcome13"],
+                             outcomes=['outcome3',"outcome4","outcome2"],
                              input_keys=["state","exec_actions","action"],
                              output_keys=["out_action"])
         
     def execute(self, userdata):
-        global emotion, new_emotion, new_sentence, data, new_attention, attention, sentence
-        print("before")
+        global emotion, new_emotion, new_sentence, new_hint, new_number, data, new_attention, attention, sentence
         resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-        print("after")
+        
         a=userdata.action
         print("action",a)
 
+        #se l'utente sta parlando aspetto di avere una frase riconosciuta
         while eval(resp.text)["listening"]=="True":
-            time.sleep(0.5)
+            time.sleep(0.2)
             print("listening ...")
             resp=requests.put(url_navel+'get_input', json=data, headers=headers)
 
         if eval(resp.text)["new_emotion"]=="True":
             new_emotion=True
             emotion=eval(resp.text)["emotion"]
-            
-        if eval(resp.text)["new_sentence"]=="True":
-            new_sentence=True
-            sentence=eval(resp.text)["sentence"]
 
         if eval(resp.text)["new_attention"]=="True":
             new_attention=True
             attention=eval(resp.text)["attention"]
 
 
-        while (new_emotion==False and new_sentence==False and  new_attention==False and userdata.action==""):
-            time.sleep(1)
-            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
+        #aggiungere il controllo sulla frase che può essere estrapolato come hint
 
-            while eval(resp.text)["listening"]=="True":
-                time.sleep(0.5)
-                print("listening ...")
-                resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-
-            if eval(resp.text)["new_emotion"]=="True":
-                new_emotion=True
-                emotion=eval(resp.text)["emotion"]
-                
-            if eval(resp.text)["new_sentence"]=="True":
-                new_sentence=True
-                sentence=eval(resp.text)["sentence"]
-
-            if eval(resp.text)["new_attention"]=="True":
-                new_attention=True
-                attention=eval(resp.text)["attention"]
+        #aggiungere il controllo sul numero
+        
 
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
-        if new_emotion==False and new_sentence==False and new_attention==False:
-          
+        if new_emotion==False and new_attention==False and new_hint==False and new_number==False:
+
+            if userdata.action=="start": #if I start I need to add first goals
+                add_goal("feel_comfort")
+                remove_predicate("feel_comfort")
+                if quiz_guessed:
+                    remove_goal("waited")
+                    add_predicate("guessed_quiz")
+                    remove_predicate("game_finished")
+                    add_goal("game_finished")
+                else:
+                    remove_predicate("waited")
+                    add_goal("waited")
+
+                return "outcome3" #plan
+            
             if userdata.state=="exec": #action fail
                 
-                return "outcome3"
+                return "outcome3" #plan
             
             else: #pass to the next action
                 if userdata.exec_actions==[]:
-                   
-                    return "outcome4"
+
+                    return "outcome4" #finish
                 else:
-                    return "outcome2"
+                    return "outcome2" #exec 
+                
         #IF NEW PERCEPTION
         else:
           
@@ -558,16 +580,32 @@ class CheckPerc(smach.State):
                     add_goal("low_attention_r") 
                     remove_predicate("low_attention_r")  
 
-            if new_sentence:
+            if new_hint:
                 add_goal("answered")
                 remove_predicate("answered")
-                add_predicate("new_sentence")
-                new_sentence=False
+                add_predicate("new_hint")
+                new_hint=False
+
+            
+            if new_number:
+                add_goal("number_said")
+                remove_predicate("number_said")
+                add_predicate("number_seen")
+                new_number=False
+
 
             add_goal("feel_comfort")
             remove_predicate("feel_comfort")
-            remove_predicate("finished")
-            add_goal("finished")
+            if quiz_guessed:
+                remove_goal("waited")
+                add_predicate("guessed_quiz")
+                remove_predicate("game_finished")
+                add_goal("game_finished")
+
+            else:
+                remove_predicate("waited")
+                add_goal("waited")
+
             return "outcome3"
 
         
@@ -607,13 +645,16 @@ class Finish(smach.State):
         smach.State.__init__(self, 
                              input_keys=['input_goals'],
                              output_keys=["out_action"],
-                             outcomes=['outcome11','outcome12'],
+                             outcomes=['outcome11','outcome12','outcome1'],
                              )
         
     def execute(self,userdata):
+        if predicates_objects["game_finished"].is_grounded==False: #if I have only achieved the goal waited I need to return above
+            return "outcome1"
+        
         if userdata.input_goals!=[]:
             print('Passing to the next goal')
-            userdata.out_action=""
+            userdata.out_action="start"
             return "outcome11"
         else:
             print('Finishhh')
@@ -624,7 +665,7 @@ class Finish(smach.State):
 
 def main():
     try:
-        sm = smach.StateMachine(outcomes=['outcome13'])
+        sm = smach.StateMachine(outcomes=['outcome12'])
         sm.userdata.goals=problem_goals
         sm.userdata.path_domain=""
         sm.userdata.path_problem=""
@@ -633,7 +674,7 @@ def main():
         sm.userdata.folder =""
         sm.userdata.path_plan =""
         sm.userdata.actions =[]
-        sm.userdata.a=""
+        sm.userdata.a="start"
         sm.userdata.previous_state=""
         # Open the container
         with sm:
@@ -648,6 +689,13 @@ def main():
                                     'path':'folder',
                                     'plan_path':'path_plan'
                                     })
+            
+            smach.StateMachine.add('RESET', Reset_Quiz(), 
+                        transitions={'outcome1':'CHECK_PERC'},
+                        remapping={ 'input_goals':'goals',
+                                    'output_goals':'goals',
+                                    })
+            
             # Add states to the container
             smach.StateMachine.add('INIT', State_Init(), 
                                     transitions={'outcome1':'CHECK_PERC'},
@@ -670,7 +718,6 @@ def main():
             smach.StateMachine.add('EXEC', ExAction(), 
                                 transitions={'outcome8':'CHECK_PERC',
                                             'outcome9':'UPDATE_ONTOLOGY',
-                                            'outcome13':'START',
                                             },
                                 remapping={'executing_actions':'actions',
                                         'updated_actions':'actions',
@@ -682,7 +729,6 @@ def main():
                                 transitions={'outcome2':'EXEC',
                                             'outcome4':'FINISH',
                                             'outcome3':'WRITE_PLAN',
-                                            "outcome13":"START",
                                             },
                                 remapping={
                                     "action":"a",
@@ -706,7 +752,8 @@ def main():
                                 })
 
             smach.StateMachine.add('FINISH', Finish(), 
-                        transitions={'outcome11':"START",
+                        transitions={'outcome1':'CHECK_PERC',
+                                     'outcome11':"RESET",
                                      'outcome12':'outcome13'},
                         remapping={
                             "input_goals":"goals",
