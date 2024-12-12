@@ -149,12 +149,9 @@ class State_Init(smach.State):
         initialize_functions_predicates()
         print('Read the problem and set the initial values of predicates and functions')
         read_the_problem(userdata.problem_path)  
-        
         return 'outcome1'
       
 
-
-# define state Bar
 class Planning(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
@@ -453,7 +450,7 @@ class ExAction(smach.State):
 class CheckPerc(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome3',"outcome4","outcome2","outcome13"],
+                             outcomes=['outcome3',"outcome4","outcome2"],
                              input_keys=["state","exec_actions","action"],
                              output_keys=["out_action"])
         
@@ -618,7 +615,6 @@ def main():
         sm.userdata.actions =[]
         sm.userdata.a=""
         sm.userdata.previous_state=""
-        # Open the container
         with sm:
             smach.StateMachine.add('START', State_Start(), 
                         transitions={'outcome0':'INIT'},
@@ -631,6 +627,7 @@ def main():
                                     'path':'folder',
                                     'plan_path':'path_plan'
                                     })
+            
             # Add states to the container
             smach.StateMachine.add('INIT', State_Init(), 
                                     transitions={'outcome1':'CHECK_PERC'},
@@ -653,7 +650,6 @@ def main():
             smach.StateMachine.add('EXEC', ExAction(), 
                                 transitions={'outcome8':'CHECK_PERC',
                                             'outcome9':'UPDATE_ONTOLOGY',
-                                            'outcome13':'START',
                                             },
                                 remapping={'executing_actions':'actions',
                                         'updated_actions':'actions',
@@ -665,7 +661,6 @@ def main():
                                 transitions={'outcome2':'EXEC',
                                             'outcome4':'FINISH',
                                             'outcome3':'WRITE_PLAN',
-                                            "outcome13":"START",
                                             },
                                 remapping={
                                     "action":"a",
@@ -689,7 +684,7 @@ def main():
                                 })
 
             smach.StateMachine.add('FINISH', Finish(), 
-                        transitions={'outcome11':"START",
+                        transitions={'outcome11':'CHECK_PERC',
                                      'outcome12':'outcome13'},
                         remapping={
                             "input_goals":"goals",

@@ -28,11 +28,13 @@ person
 	(answered)
         (new_sentence)
         (person_present ?p - person)
+        (person_there ?p - person)
         (greetings ?p - person)
         (ask_to_present ?p - person)
         (present_the_lab ?p - person)
         (ask_the_preferences ?p - person)
         (give_information ?p - person)
+        (welcomed)
 	(extro)
         (intro)
         (consc)
@@ -311,13 +313,15 @@ person
 
 
 (:action GREET
-        :parameters (?p - person)
+        :parameters 
+                (?p - person)
         :precondition
                (and 
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
                            (person_present ?p)
+                           (person_there ?p)
                 )
         :effect
                 (and
@@ -326,6 +330,7 @@ person
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
                            (greetings ?p)
+                           (welcomed)
                            (not (person_present ?p))
                            (answered)                 
                 )
@@ -333,13 +338,15 @@ person
 
 
 (:action ASK_PRESENT
-        :parameters (?p - person)
+        :parameters 
+                (?p - person)
         :precondition
                (and 
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
-                           (greetings ?p)
+                           (welcomed)
+                           (person_there ?p)
                 )
         :effect
                 (and
@@ -348,20 +355,23 @@ person
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
                            (ask_to_present ?p)
-                           (answered)                 
+                           (answered)   
+                           (not (greetings ?p))              
                 )
 )
 
 
 (:action PRESENT_LAB
-        :parameters (?p - person)
+        :parameters 
+                ( ?p - person)
         :precondition
                (and 
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
-                           (greetings ?p)
+                           (welcomed)
                            (ask_to_present ?p)
+                           (person_there ?p)
                 )
         :effect
                 (and
@@ -378,14 +388,16 @@ person
 
 
 (:action ASK_PREFERENCES
-        :parameters (?p - person)
+        :parameters 
+                (?p - person)
         :precondition
                (and 
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
-                           (greetings ?p)
+                           (welcomed)
                            (present_the_lab ?p)
+                           (person_there ?p)
                 )
         :effect
                 (and
@@ -402,14 +414,16 @@ person
 
 
 (:action GIVE_NEW_INFO
-        :parameters (?p - person)
+        :parameters 
+                (?p - person)
         :precondition
                (and 
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
-                           (greetings ?p)
+                           (welcomed)
                            (ask_the_preferences ?p)
+                           (person_there ?p)
                 )
         :effect
                 (and

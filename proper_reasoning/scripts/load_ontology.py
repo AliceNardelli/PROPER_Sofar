@@ -215,6 +215,7 @@ def populate_ontology(domain):
     associated_actions=[]
     associated_orders=[]
     for p in raw_domain:
+        print(pr)
         if (":duration" in p) or (":precondition" in p):
             pr=False
         if (":durative-action" in p) or (":action" in p):
@@ -258,7 +259,9 @@ def populate_ontology(domain):
                                 function_objects[check].has_operator.append(ops)
                                 break
         if pr==True:
+            print("read param")
             params=p[p.index("(")+1:p.index(")")].replace("-","").split(" ")
+            print(params)
             while 1:
                     try:
                      params.remove("")
@@ -267,6 +270,7 @@ def populate_ontology(domain):
             c=0
             for i in params:
                 if "?" in i:
+                    print("find a new param")
                     c+=1
                     new_params.append(i)
                     associated_actions.append(last_action)
@@ -276,6 +280,7 @@ def populate_ontology(domain):
                         associated_types.append(i)
                     c=0
         if ":parameters" in p:
+            print("hello there")
             pr=True
         if ":effect" in p:
             t=True
@@ -416,14 +421,16 @@ def read_plan(output_path):
         actions_to_execute=[]
         for i in plan:
             try:
-                a=i[i.find(":")+1:i.find("\n")].split()[0]
-            
-                if a!="":
-                    actions_to_execute.append(a)   
+                
+                a=i[i.find(":")+1:i.find("\n")].split()[0]+" "+i[i.find(":")+1:i.find("\n")].split()[1]
+ 
             except:
-                pass
-        
+                a=i[i.find(":")+1:i.find("\n")].replace(" ","")
 
+            if a!="":
+                    actions_to_execute.append(a)   
+        
+        return actions_to_execute
     else:
             print("Plan not found")
 
@@ -434,33 +441,54 @@ def update_ontology(a):
     params=a.split(" ")[1:]
     preds=actions_objects[ac].has_effect_predicates
     #prendo tutti i predicati effetto di quell'azione
+    print(preds)
     for p in preds:
-        ops=p.has_operator
-        key = list(filter(lambda x: predicates_objects[x] == p, predicates_objects))[0]
-        #per ogni predicato prendo tutte le operazioni di quel predicato
-        for o in ops:
-            o=o.replace("\n","").replace("\t","").split(" ")
-            while 1:
-                try:
-                    o.remove("")
-                except:
-                    break
-            #considero solo quelle che sono dell'azione che sto eseguendo
-            if o[0]==ac:
-                if o[1]=="not":
-                    p.is_grounded=False
-                    o.pop(1)
-                else:
-                    p.is_grounded=True
+            
+            ops=p.has_operator
+            key = list(filter(lambda x: predicates_objects[x] == p, predicates_objects))[0]
+            #per ogni predicato prendo tutte le operazioni di quel predicato
+            for o in ops:
                 
-                if len(o)>2 and p.is_grounded==True:
-                    if p.has_single_object==True:
-                        p.has_object=[objects_objects[params[parameters_objects[o[2]].has_order-1].lower()]]
+                o=o.replace("\n","").replace("\t","").split(" ")
+                while 1:
+                    try:
+                        o.remove("")
+                    except:
+                        break
+                
+                #considero solo quelle che sono dell'azione che sto eseguendo
+                if o[0]==ac:
+                    if o[1]=="not":
+                        p.is_grounded=False
+                        o.pop(1)
+                        
                     else:
-                        #print(p,p.has_object)
-                        if objects_objects[params[parameters_objects[o[2]].has_order-1].lower()] not in p.has_object:
-                            p.has_object.append(objects_objects[params[parameters_objects[o[2]].has_order-1].lower()])
-                   
+                        p.is_grounded=True
+                    
+                    if len(o)>2:
+                        if p.has_single_object==True:
+                            
+                            if p.is_grounded:
+                                p.has_object=[objects_objects[params[parameters_objects[o[2]].has_order-1].lower()]]
+                            else:
+                                p.has_object.remove(objects_objects[params[parameters_objects[o[2]].has_order-1].lower()])
+                        else:
+                            
+                            if p.is_grounded:
+                                    if objects_objects[params[parameters_objects[o[2]].has_order-1].lower()] not in p.has_object:
+                                        print("added")
+                                        p.has_object.append(objects_objects[params[parameters_objects[o[2]].has_order-1].lower()])
+                                        print(p,p.has_object)
+                            else:
+                                    print("removed")
+                                    print(objects_objects[params[parameters_objects[o[2]].has_order-1].lower()])
+                                    p.has_object.remove(objects_objects[params[parameters_objects[o[2]].has_order-1].lower()])
+                                    if(len(p.has_object))>=1:
+                                        p.is_grounded=True
+                            
+                            
+                    
+
 
     funcs=actions_objects[ac].has_effect_function
    
@@ -583,7 +611,7 @@ def update_problem(plan_path):
     object_file=[]
     for i in Objects.instances():
         key = list(filter(lambda x: objects_objects[x] == i, objects_objects))[0]
-        key_type = list(filter(lambda x: types_objects[x] == objects_objects["alice"].has_type[0], types_objects))[0]
+        key_type = list(filter(lambda x: types_objects[x] == objects_objects[key].has_type[0], types_objects))[0]
         new_line="      " +key+" - "+key_type+" \n"
         object_file.append(new_line)
 
