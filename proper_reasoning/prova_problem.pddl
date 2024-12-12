@@ -1,8 +1,11 @@
 (define (problem p) (:domain goal1)
 (:objects
+      alice - person 
+      fabio - person 
 )
-(:init
-      (new_sentence)
+(:init 
+      (answered)
+      (person_present fabio)
       (extro)
       (unsc)
       (disagree)
@@ -26,6 +29,4 @@
 )
 (:goal (and
       (finished)
-      (feel_comfort)
-      (answered)
 )))

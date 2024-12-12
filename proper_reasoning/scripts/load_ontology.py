@@ -142,6 +142,7 @@ def populate_ontology(domain):
             if (":durative-action" in p):
                 last_action=p.replace(":durative-action","").replace("( ","").replace("\n","")
             elif (":action" in p):
+                
                 last_action=p.replace(":action","").replace("( ","").replace("\n","")
             actions.append(last_action)
    
@@ -155,10 +156,13 @@ def populate_ontology(domain):
             if (")" in p):
                 t=False
             if t==True:
-                type.append(p.replace("\t","").replace("\n",""))
+                
+                type.append(p.replace("\t","").replace("\n","").replace(" ",""))
             if (":types" in p):
+               
                 t=True
     for t in type:
+        
         types_objects[t]=Types(t)
     #PREDICATES
     t=False
@@ -329,13 +333,16 @@ def read_the_problem(problem_path):
             if (":goal" in p):
                 t=False
             if t==True:
+                
                 prec=p.replace("("," ").replace(")"," ").replace("\n"," ").split(" ")
                 while 1:
                     try:
                         prec.remove("")
                     except:
                         break
+                print(prec)
                 if prec!=[]:
+                    print(prec)
                     if prec[0]=="=":
                         ff=prec[1]
                         function_objects[ff].has_value=float(prec[2])
@@ -349,6 +356,7 @@ def read_the_problem(problem_path):
                                  objects_objects[oj].is_at=True  
     
             if (":init" in p):
+                
                 t=True
 
 
@@ -407,10 +415,14 @@ def read_plan(output_path):
                     plan.append(p)
         actions_to_execute=[]
         for i in plan:
-            a=i[i.find(":")+1:i.find("\n")].replace(" ","")
-            if a!="":
-                actions_to_execute.append(a)   
-        return actions_to_execute 
+            try:
+                a=i[i.find(":")+1:i.find("\n")].split()[0]
+            
+                if a!="":
+                    actions_to_execute.append(a)   
+            except:
+                pass
+        
 
     else:
             print("Plan not found")
@@ -553,25 +565,36 @@ def update_problem(plan_path):
     c=0
     c_init_1=0
     c_init_2=0
-    c_end_1=0
-    c_end_2=0
+    c_init_3=0
     for p in raw_problem_copy:
         if "define" in p:
             c_init_1=c
         if "init" in p:
             c_init_2=c+1
-        if "goal" in p:
-            c_end_1=c-1
+        if "objects" in p:
+            c_init_3=c+1
+        
         c+=1   
-    c_end_2=c
+    
     domain_file.close()
-    start_file=raw_problem_copy[c_init_1:c_init_2]
+    start_file=raw_problem_copy[c_init_1:c_init_3]
+
+
+    object_file=[]
+    for i in Objects.instances():
+        key = list(filter(lambda x: objects_objects[x] == i, objects_objects))[0]
+        key_type = list(filter(lambda x: types_objects[x] == objects_objects["alice"].has_type[0], types_objects))[0]
+        new_line="      " +key+" - "+key_type+" \n"
+        object_file.append(new_line)
+
+    object_file.append(")\n")
     end_file=[]
     init_file=[]
-
+    init_file.append("(:init \n")
     for i in Predicates.instances():
         key = list(filter(lambda x: predicates_objects[x] == i, predicates_objects))[0]
         if i.is_grounded==True:
+                print(i)
                 if i.has_object!=[]:
                     #print(i.has_object,i)
                     for j in i.has_object:
@@ -597,7 +620,7 @@ def update_problem(plan_path):
             end_file.append(new_line)
 
     end_file.append(")))") 
-    new_pb=start_file+init_file+end_file
+    new_pb=start_file+object_file+init_file+end_file
     output_path=plan_path
     with open(output_path, "w") as pb_file:
         for line in new_pb:

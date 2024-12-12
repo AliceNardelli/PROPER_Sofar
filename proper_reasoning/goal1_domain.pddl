@@ -3,6 +3,7 @@
 (:requirements :adl :strips :typing :conditional-effects :negative-preconditions :equality :fluents )
 
 (:types	
+person
 )
 
 (:functions
@@ -24,9 +25,14 @@
 
 (:predicates 
         (finished)
-        (feel_comfort)
 	(answered)
         (new_sentence)
+        (person_present ?p - person)
+        (greetings ?p - person)
+        (ask_to_present ?p - person)
+        (present_the_lab ?p - person)
+        (ask_the_preferences ?p - person)
+        (give_information ?p - person)
 	(extro)
         (intro)
         (consc)
@@ -304,6 +310,119 @@
 )
 
 
+(:action GREET
+        :parameters (?p - person)
+        :precondition
+               (and 
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (person_present ?p)
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (greetings ?p)
+                           (not (person_present ?p))
+                           (answered)                 
+                )
+)
+
+
+(:action ASK_PRESENT
+        :parameters (?p - person)
+        :precondition
+               (and 
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (greetings ?p)
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (ask_to_present ?p)
+                           (answered)                 
+                )
+)
+
+
+(:action PRESENT_LAB
+        :parameters (?p - person)
+        :precondition
+               (and 
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (greetings ?p)
+                           (ask_to_present ?p)
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (present_the_lab ?p)
+                           (not (ask_to_present ?p))
+                           (answered)                 
+                )
+)
+
+
+
+(:action ASK_PREFERENCES
+        :parameters (?p - person)
+        :precondition
+               (and 
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (greetings ?p)
+                           (present_the_lab ?p)
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (ask_the_preferences ?p)
+                           (not (present_the_lab ?p))
+                           (answered)                 
+                )
+)
+
+
+
+(:action GIVE_NEW_INFO
+        :parameters (?p - person)
+        :precondition
+               (and 
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (greetings ?p)
+                           (ask_the_preferences ?p)
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (not (ask_the_preferences ?p))
+                           (give_information ?p)
+                           (answered)                 
+                )
+)
+
 (:action ANSWER
         :precondition
                (and 
@@ -391,29 +510,8 @@
 )
 
 
-
-
-(:action COMPUTE_HEDONIC_FEELINGS
-        :precondition
-                (and
-                        
-                        (emotion_r)
-                        (attention_r)  
-                        (low_attention_r) 
-                        (answered) 
-                        (>(interaction_level)(desired_interaction))
-                        (>(scrupulousness_level)(desired_scrupulousness))
-                        (>(agreeableness_level)(desired_agreeableness))
-                )
-
-        :effect
-                (and    
-			(feel_comfort)
-			
-                )
-)
-
 (:action CHECK_FINISH
+        :parameters (?p - person)
         :precondition
                 (and
                         
@@ -421,6 +519,7 @@
                         (attention_r) 
                         (low_attention_r)   
                         (answered)
+                        (give_information ?p)
                         (>(interaction_level)(desired_interaction))
                         (>(scrupulousness_level)(desired_scrupulousness))
                         (>(agreeableness_level)(desired_agreeableness))
