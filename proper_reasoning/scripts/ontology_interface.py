@@ -37,7 +37,11 @@ start=True
 new_emotion=False
 new_sentence=False
 new_attention=False
+human_present=False
+start_proactivity=False
+person=""
 begin=True
+
 url='http://192.168.1.55:5021/'
 
 
@@ -50,7 +54,9 @@ data={
         "emotion":"",
         "sentence":"",
         "listening":"False",
-        
+        "human_present":"False",
+        "start_proactivity":"False",
+        "person":""
 }
 
 
@@ -179,10 +185,10 @@ class GetActions(smach.State):
         
     def execute(self, userdata):
         print('Reading Actions to execute')
-          
         out_a=read_plan(userdata.plan_path)
         userdata.executing_actions_out=out_a
         return 'outcome7'
+    
     
 class ExAction(smach.State):
     def __init__(self):
@@ -455,17 +461,12 @@ class CheckPerc(smach.State):
                              output_keys=["out_action"])
         
     def execute(self, userdata):
-        global emotion, new_emotion, new_sentence, data, new_attention, attention, sentence
-        print("before")
-        resp=requests.put(url+'get_input', json=data, headers=headers)
-        print("after")
+        global emotion, new_emotion, new_sentence, data, new_attention, attention, sentence, human_present, start_proactivity, person
+        resp = requests.get(url+'get_perception', params=data)
+        
+    
         a=userdata.action
         print("action",a)
-
-        while eval(resp.text)["listening"]=="True":
-            time.sleep(0.5)
-            print("listening ...")
-            resp=requests.put(url+'get_input', json=data, headers=headers)
 
         if eval(resp.text)["new_emotion"]=="True":
             new_emotion=True
@@ -479,7 +480,19 @@ class CheckPerc(smach.State):
             new_attention=True
             attention=eval(resp.text)["attention"]
 
+        if eval(resp.text)["human_present"]=="True":
+            human_present=True
+        else:
+            if person!="":
+                self.remove_person(person)
+                person=""
+            
 
+        if eval(resp.text)["start_proactivity"]=="True":
+            start_proactivity=True
+            person=eval(resp.text)["person"]
+
+        """
         while (new_emotion==False and new_sentence==False and  new_attention==False and userdata.action==""):
             time.sleep(1)
             resp=requests.put(url+'get_input', json=data, headers=headers)
@@ -500,10 +513,10 @@ class CheckPerc(smach.State):
             if eval(resp.text)["new_attention"]=="True":
                 new_attention=True
                 attention=eval(resp.text)["attention"]
-
+                
+        """
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
-        if new_emotion==False and new_sentence==False and new_attention==False:
-          
+        if new_emotion==False and new_sentence==False and new_attention==False and start_proactivity==False:
             if userdata.state=="exec": #action fail
                 
                 return "outcome3"
@@ -516,7 +529,6 @@ class CheckPerc(smach.State):
                     return "outcome2"
         #IF NEW PERCEPTION
         else:
-          
             if new_emotion:
                new_emotion=False
                emotion_pred=perception_predicate_map[emotion]["emotion"]
@@ -544,12 +556,30 @@ class CheckPerc(smach.State):
                 add_predicate("new_sentence")
                 new_sentence=False
 
-            add_goal("feel_comfort")
-            remove_predicate("feel_comfort")
+            if start_proactivity:
+                start_proactivity=False
+                self.add_person(person)
+
+            remove_predicate("welcomed")
             remove_predicate("finished")
             add_goal("finished")
             return "outcome3"
+        
 
+    def add_person(self, name):
+        objects_objects[name]=Objects(name)
+        objects_objects[name].has_type=[types_objects["person"]]
+        predicates_objects["person_present"].is_grounded=True
+        predicates_objects["person_present"].has_object.append(objects_objects[name])
+        predicates_objects["person_there"].is_grounded=True
+        predicates_objects["person_there"].has_object=[]
+        predicates_objects["person_there"].has_object.append(objects_objects[name])
+
+
+    def remove_person(self, name):
+        remove_predicate("person_there")
+        predicates_objects["person_there"].has_object.remove(objects_objects[name])
+        add_predicate("finished")
         
 class WriteProblem(smach.State):
     def __init__(self):
@@ -613,7 +643,7 @@ def main():
         sm.userdata.folder =""
         sm.userdata.path_plan =""
         sm.userdata.actions =[]
-        sm.userdata.a=""
+        sm.userdata.a="start"
         sm.userdata.previous_state=""
         with sm:
             smach.StateMachine.add('START', State_Start(), 
@@ -688,7 +718,7 @@ def main():
                                      'outcome12':'outcome13'},
                         remapping={
                             "input_goals":"goals",
-                            "out_action":"a"
+                            "out_action":"a",
                         }
                         )
     

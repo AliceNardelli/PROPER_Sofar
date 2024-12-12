@@ -1,18 +1,17 @@
+import json
+import os
 import random
 import numpy as np
 
-#GOAL obtain social attention
-#00 N 
-#01 SA
-#10 A, D, F
-#11 H, SU
-extro_actions=["say_an_enthusiastic_sentence",
-               "say_something_funny",
-               "ask_a_question",
-               "say_something_to_capture_the_attention",
-               "say_something_to_init_a_conversation",
-               "tell_a_personal_story"]
-
+# Define extroversion actions and dictionaries
+extro_actions = [
+    "say_an_enthusiastic_sentence",
+    "say_something_funny",
+    "ask_a_question",
+    "say_something_to_capture_the_attention",
+    "say_something_to_init_a_conversation",
+    "tell_a_personal_story"
+]
 
 zzz_e={"say_an_enthusiastic_sentence":{"w1":0,"w2":0,"expected_outcome":[1,1,1]},
      "say_something_funny":{"w1":4,"w2":1,"expected_outcome":[1,1,1]},
@@ -79,7 +78,7 @@ ooo_e={"say_an_enthusiastic_sentence":{"w1":6,"w2":2,"expected_outcome":[1,1,1]}
      }
 
 
-extroversion_dict={
+default_extroversion_dict={
     "NA_N":{"weights":zzz_e,"num":[0,0,0]},
     "NA_S":{"weights":zzo_e,"num":[0,0,1]},
     "NA_A":{"weights":zoz_e,"num":[0,1,0]},
@@ -90,48 +89,60 @@ extroversion_dict={
     "A_H":{"weights":ooo_e,"num":[1,1,1]},
 }
 
+# Initialize or load data for a person
+def initialize_or_load_person(person_id):
+    filename = f"{person_id}.json"
+    if not os.path.exists(filename):
+        with open(filename, "w") as f:
+            json.dump(default_extroversion_dict, f, indent=4)
+        print(f"Initialized data for {person_id}.")
+    with open(filename, "r") as f:
+        return json.load(f)
 
+# Save updated data back to the file
+def save_person_data(person_id, data):
+    filename = f"{person_id}.json"
+    with open(filename, "w") as f:
+        json.dump(data, f, indent=4)
 
-def choose_action_e(perception,sentence, person):
-    global extro_actions, extroversion_dict
-    w=[]
-    for a in extro_actions:
-        if (sentence==True) and ("ask" in a):
-            weight=0
-        else:
-            weight=extroversion_dict[perception]["weights"][a]["w1"]+extroversion_dict[perception]["weights"][a]["w2"]
+# Choose an action based on perception and sentence flag
+def choose_action_e(data, perception):
+    weights = data[perception]["weights"]
+    w = []
+    for action in extro_actions:
+        weight = weights[action]["w1"] + weights[action]["w2"]
         w.append(float(weight))
+    norm = [i / sum(w) for i in w] if sum(w) != 0 else [1 / len(w)] * len(w)
+    chosen_action = np.random.choice(extro_actions, p=norm)
+    return chosen_action, weights[chosen_action]["w1"] + weights[chosen_action]["w2"]
 
-   
-    norm = [i/sum(w) for i in w]
-    to_execute=np.random.choice(extro_actions,p=norm) #trovare il modo di normalizzare i pesi
-    return to_execute, extroversion_dict[perception]["weights"][to_execute]["w1"]+extroversion_dict[perception]["weights"][to_execute]["w2"]
+# Update weights based on perception change
+def update_weights_e(data, action, p_prev, p_after):
+    list_real = data[p_after]["num"]
+    list_expected = data[p_prev]["weights"][action]["expected_outcome"]
+    error = sum(np.abs(np.array(list_real) - np.array(list_expected))) / len(list_real)
+    prev_w2 = data[p_prev]["weights"][action]["w2"]
 
+    if error == 0:
+        data[p_prev]["weights"][action]["w2"] = round(prev_w2 + 0.5, 2)
+    elif prev_w2 > 0.1:
+        data[p_prev]["weights"][action]["w2"] = round(prev_w2 - 0.5, 2)
 
+    return data
 
-def update_weights_e(action, p_prev, p_after):
-    list_real=extroversion_dict[p_after]["num"]
-    list_expected=extroversion_dict[p_prev]["weights"][action]["expected_outcome"]
-    error=0
-    #accumulate the error between the perception and the expected one
-    for i in range(0,len(list_real)):
-        error+=(np.abs(list_real[i]-list_expected[i]))
-    #normalize the error
-    error=error/len(list_real)
-    #update the weights
-    prev=extroversion_dict[p_prev]["weights"][action]["w2"]
+# Main interaction function
+def main():
+    person_id = input("Enter person ID: ")
+    data = initialize_or_load_person(person_id)
+
+    perception = input("Enter current perception: ")
     
-    if error==0:
-        extroversion_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev + 0.5),2)
-        return round(np.abs(prev + 0.5),2)+extroversion_dict[p_prev]["weights"][action]["w1"]
-    else:
-        if prev<0.1:
-            
-            return  prev+extroversion_dict[p_prev]["weights"][action]["w1"]
-        else:
-           extroversion_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev - 0.5),2)
-          
-           return round(np.abs(prev - 0.5),2)+extroversion_dict[p_prev]["weights"][action]["w1"]
-        
+    chosen_action, weight = choose_action_e(data, perception)
+    print(f"Chosen action: {chosen_action} with weight {weight}")
 
-        
+    p_after = input("Enter new perception after action: ")
+    data = update_weights_e(data, chosen_action, perception, p_after)
+    save_person_data(person_id, data)
+
+if __name__ == "__main__":
+    main()
