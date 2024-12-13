@@ -130,6 +130,9 @@ def remove_predicate(new_pred):
 def add_goal(g):
     predicates_objects[g].is_goal=True
 
+def remove_goal(g):
+    predicates_objects[g].is_goal=False
+
 
 def populate_ontology(domain):     
     if os.path.isfile(domain):

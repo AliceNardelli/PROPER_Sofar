@@ -25,6 +25,7 @@ person
 
 (:predicates 
         (finished)
+        (finished_sentence)
 	(answered)
         (new_sentence)
         (person_present ?p - person)
@@ -542,6 +543,28 @@ person
         :effect
                 (and    
 			(finished)
+			
+                )
+)
+
+
+(:action CHECK_FINISH_SENTENCE
+        :parameters (?p - person)
+        :precondition
+                (and
+                        
+                        (emotion_r)
+                        (attention_r) 
+                        (low_attention_r)   
+                        (answered)
+                        (>(interaction_level)(desired_interaction))
+                        (>(scrupulousness_level)(desired_scrupulousness))
+                        (>(agreeableness_level)(desired_agreeableness))
+                )
+
+        :effect
+                (and    
+			(finished_sentence)
 			
                 )
 )

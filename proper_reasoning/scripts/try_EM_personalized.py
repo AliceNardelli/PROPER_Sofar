@@ -89,21 +89,40 @@ default_extroversion_dict={
     "A_H":{"weights":ooo_e,"num":[1,1,1]},
 }
 
-# Initialize or load data for a person
 def initialize_or_load_person(person_id):
-    filename = f"{person_id}.json"
+    directory = f"/home/alice/EpisodicMemory/{person_id}/"
+    filename = os.path.join(directory, f"{person_id}.json")
+
+    # Ensure the directory exists
+    if not os.path.exists(directory):
+        os.makedirs(directory)  # Create the directory
+        print(f"Created directory: {directory}")
+    
+    # Initialize the JSON file if it doesn't exist
     if not os.path.exists(filename):
         with open(filename, "w") as f:
             json.dump(default_extroversion_dict, f, indent=4)
         print(f"Initialized data for {person_id}.")
+    
+    # Load and return the data from the file
     with open(filename, "r") as f:
         return json.load(f)
+    
 
-# Save updated data back to the file
 def save_person_data(person_id, data):
-    filename = f"{person_id}.json"
+    directory = f"/home/alice/EpisodicMemory/{person_id}/"
+    filename = os.path.join(directory, f"{person_id}.json")
+
+    # Ensure the directory exists before saving
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+        print(f"Created directory: {directory}")
+
+    # Save the updated data to the file
     with open(filename, "w") as f:
         json.dump(data, f, indent=4)
+    print(f"Data for {person_id} has been saved.")
+
 
 # Choose an action based on perception and sentence flag
 def choose_action_e(data, perception):
@@ -115,6 +134,7 @@ def choose_action_e(data, perception):
     norm = [i / sum(w) for i in w] if sum(w) != 0 else [1 / len(w)] * len(w)
     chosen_action = np.random.choice(extro_actions, p=norm)
     return chosen_action, weights[chosen_action]["w1"] + weights[chosen_action]["w2"]
+
 
 # Update weights based on perception change
 def update_weights_e(data, action, p_prev, p_after):
@@ -129,6 +149,7 @@ def update_weights_e(data, action, p_prev, p_after):
         data[p_prev]["weights"][action]["w2"] = round(prev_w2 - 0.5, 2)
 
     return data
+
 
 # Main interaction function
 def main():

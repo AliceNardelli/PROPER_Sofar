@@ -24,7 +24,7 @@ traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=1
 wi=0
 wc=0
-wu=1
+wu=0
 wa=0
 wd=0
 sum_weights=0
@@ -42,9 +42,7 @@ start_proactivity=False
 person=""
 begin=True
 
-url='http://192.168.1.55:5021/'
-
-
+url='http://127.0.0.1:5021/'
 
 data={
         "new_sentence":"False",
@@ -67,6 +65,7 @@ emotion_mask={
     "SU":[4,2,1,1,5,5],
     "N":[4,4,1,1,4,4],
 }
+
 
 
 class State_Start(smach.State):
@@ -170,7 +169,6 @@ class Planning(smach.State):
         return_code=planning(userdata.command,userdata.planning_folder,userdata.plan)  
         while return_code!=0:
             return_code=planning(userdata.command,userdata.planning_folder,userdata.plan)  
-            
         print("start experiment")
         return 'outcome6'
     
@@ -201,91 +199,26 @@ class ExAction(smach.State):
         
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
-
-        if ac=="AGREE_ACTION":
-            data["update"]="False"
-            resp=requests.put(url+'get_input', json=data, headers=headers)
+        
+        if ac=="EXTRO_ACTION":
+            resp = requests.get(url+'get_perception', params=data)
             emotion=eval(resp.text)["emotion"]
             if emotion not in list_of_emotions:
                     emotion="N"
-            if  eval(resp.text)["attention"]=="positive":
+            if eval(resp.text)["attention"]=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
-
-            if predicates_objects["new_sentence"].is_grounded==True:
-                aa,rew=choose_action_a(pi,False)
-            else:
-                aa,rew=choose_action_a(pi,False)
-            userdata, response, ea  = self.call_action_server(userdata, aa, personality)
+            file_data = initialize_or_load_person(person)
             
-            if response:
-                data["update"]="False"
-                resp=requests.put(url+'get_input', json=data, headers=headers)
-                emotion=eval(resp.text)["emotion"]
-                if emotion not in list_of_emotions:
-                    emotion="N"
-                if eval(resp.text)["attention"]=="positive":
-                    pn="A_"+map_emotion_AV_axis[emotion]
-                else:
-                    pn="NA_"+map_emotion_AV_axis[emotion]
-                rr=update_weights_a(aa,pi,pn) #qui in ogni caso avrò una new perception
-                change_raward("reward_a",float(rr))
-                return "outcome9"
-            else:
-                return "outcome8"
+            chosen_action, weight = choose_action_e(file_data, pi)
+            print(f"Chosen action: {chosen_action} with weight {weight}")
 
         
-        if ac=="DISAGREE_ACTION":
-            data["update"]="False"
-            resp=requests.put(url+'get_input', json=data, headers=headers)
-            emotion=eval(resp.text)["emotion"]
-            if emotion not in list_of_emotions:
-                    emotion="N"
-            if eval(resp.text)["attention"]=="positive":
-                pi="A_"+map_emotion_AV_axis[emotion]
-            else:
-                pi="NA_"+map_emotion_AV_axis[emotion]
-            if predicates_objects["new_sentence"].is_grounded==True:
-                aa,rew=choose_action_d(pi,False)
-            else:
-                aa,rew=choose_action_d(pi,False)
-            userdata, response , ea =self.call_action_server(userdata, aa, personality)            
-            if response:
-                data["update"]="False"
-                resp=requests.put(url+'get_input', json=data, headers=headers)
-                emotion=eval(resp.text)["emotion"]
-                if emotion not in list_of_emotions:
-                    emotion="N"
-                if eval(resp.text)["attention"]=="positive":
-                    pn="A_"+map_emotion_AV_axis[emotion]
-                else:
-                    pn="NA_"+map_emotion_AV_axis[emotion]
-                rr=update_weights_d(aa,pi,pn) #qui in ogni caso avrò una new perception
-                change_raward("reward_a",float(rr))
-                return "outcome9"
-            else:
-                return "outcome8"
 
-            
-        elif ac=="INTRO_ACTION":
-            data["update"]="False"
-            resp=requests.put(url+'get_input', json=data, headers=headers)
-            emotion=eval(resp.text)["emotion"]
-            if emotion not in list_of_emotions:
-                    emotion="N"
-            if eval(resp.text)["attention"]=="positive":
-                pi="A_"+map_emotion_AV_axis[emotion]
-            else:
-                pi="NA_"+map_emotion_AV_axis[emotion]
-            if predicates_objects["new_sentence"].is_grounded==True:
-                aa,rew=choose_action_i(pi,False)
-            else:
-                aa,rew =choose_action_i(pi,False)
-            userdata, response =self.call_action_server(userdata, aa, personality)
+            userdata, response, ea  =self.call_action_server(userdata, chosen_action, personality)
             if response:
-                data["update"]="False"
-                resp=requests.put(url+'get_input', json=data, headers=headers)
+                resp = requests.get(url+'get_perception', params=data)
                 emotion=eval(resp.text)["emotion"]
                 if emotion not in list_of_emotions:
                     emotion="N"
@@ -293,96 +226,16 @@ class ExAction(smach.State):
                     pn="A_"+map_emotion_AV_axis[emotion]
                 else:
                     pn="NA_"+map_emotion_AV_axis[emotion]
-                rr=update_weights_i(aa,pi,pn) #qui in ogni caso avrò una new perception
+
+                file_data, rr = update_weights_e(file_data, chosen_action, pi, pn)
+                save_person_data(person, file_data)
                 change_raward("reward_e",float(rr))
                 return "outcome9"
             else:
                 return "outcome8"
-            
-
-           
-
-
-        elif ac=="EXTRO_ACTION":
-            data["update"]="False"
-            resp=requests.put(url+'get_input', json=data, headers=headers)
-            emotion=eval(resp.text)["emotion"]
-            if emotion not in list_of_emotions:
-                    emotion="N"
-            if eval(resp.text)["attention"]=="positive":
-                pi="A_"+map_emotion_AV_axis[emotion]
-            else:
-                pi="NA_"+map_emotion_AV_axis[emotion]
-            if predicates_objects["new_sentence"].is_grounded==True:
-                aa,rew=choose_action_e(pi,False)
-            else:
-                aa,rew=choose_action_e(pi,False)
-            userdata, response, ea  =self.call_action_server(userdata, aa, personality)
-            if response:
-                data["update"]="False"
-                resp=requests.put(url+'get_input', json=data, headers=headers)
-                
-                emotion=eval(resp.text)["emotion"]
-                if emotion not in list_of_emotions:
-                    emotion="N"
-                if eval(resp.text)["attention"]=="positive":
-                    pn="A_"+map_emotion_AV_axis[emotion]
-                else:
-                    pn="NA_"+map_emotion_AV_axis[emotion]
-                rr=update_weights_e(aa,pi,pn) #qui in ogni caso avrò una new perception
-                change_raward("reward_e",float(rr))
-                return "outcome9"
-            else:
-                return "outcome8"
-
-
-        elif ac=="CONSC_ACTION":
-            data["update"]="False"
-            resp=requests.put(url+'get_input', json=data, headers=headers)
-            emotion=eval(resp.text)["emotion"]
-            if emotion not in list_of_emotions:
-                    emotion="N"
-            if eval(resp.text)["attention"]=="positive":
-                pi="A_"+map_emotion_AV_axis[emotion]
-            else:
-                pi="NA_"+map_emotion_AV_axis[emotion]
-            if predicates_objects["new_sentence"].is_grounded==True:
-                aa,rew=choose_action_c(pi,False)
-            else:
-                aa,rew=choose_action_c(pi,False)
-            userdata, response, ea  =self.call_action_server(userdata, aa,personality)
-            if response:
-                change_raward("reward_c",float(rew))
-                return "outcome9"
-            else:
-                return "outcome8"
-
-
-        elif ac=="UNSC_ACTION":
-            data["update"]="False"
-            resp=requests.put(url+'get_input', json=data, headers=headers)
-            emotion=eval(resp.text)["emotion"]
-            if emotion not in list_of_emotions:
-                    emotion="N"
-            if eval(resp.text)["attention"]=="positive":
-                pi="A_"+map_emotion_AV_axis[emotion]
-            else:
-                pi="NA_"+map_emotion_AV_axis[emotion]
-            if predicates_objects["new_sentence"].is_grounded==True:
-                aa,rew=choose_action_u(pi,False)
-            else:
-                aa,rew=choose_action_u(pi,False)
-           
-            userdata, response, ea  =self.call_action_server(userdata, aa,personality)
-            if response:
-                change_raward("reward_c",float(rew))
-                return "outcome9"
-            else:
-                return "outcome8"
-
 
         else:
-            resp=requests.put(url+'get_input', json=data, headers=headers)
+            resp = requests.get(url+'get_perception', params=data)
             em=eval(resp.text)["emotion"]
             if em!="":
                 emotion=em
@@ -554,15 +407,21 @@ class CheckPerc(smach.State):
                 add_goal("answered")
                 remove_predicate("answered")
                 add_predicate("new_sentence")
+                
+                remove_predicate("finished_sentence")
+                add_goal("finished_sentence")
+                remove_goal("finished")
                 new_sentence=False
 
             if start_proactivity:
                 start_proactivity=False
                 self.add_person(person)
+                remove_predicate("welcomed")
+                remove_predicate("finished")
+                remove_goal("finished_sentence")
+                add_goal("finished")
 
-            remove_predicate("welcomed")
-            remove_predicate("finished")
-            add_goal("finished")
+
             return "outcome3"
         
 
