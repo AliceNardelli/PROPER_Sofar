@@ -36,6 +36,7 @@ sentence=""
 start=True
 new_emotion=False
 new_attention=False
+new_sentence=False
 new_hint=False
 new_number=False
 begin=True
@@ -48,14 +49,12 @@ headers= {'Content-Type':'application/json'}
 
 data={
         "new_number":"False",
-        "new_hint":"False",
         "new_sentence":"False",
         "new_emotion":"False",
         "new_attention":"False",
         "attention":"negative",
         "emotion":"",
         "sentence":"",
-        "listening":"False",   
 }
 
 
@@ -186,6 +185,7 @@ class Reset_Quiz(smach.State):
         remove_predicate("new_hint")
         remove_predicate("present_quiz")
         remove_predicate("answered")
+        remove_predicate("hint_given")
         remove_predicate("guessed_quiz")
         remove_predicate("finished_quiz")
         remove_predicate("game_finished")
@@ -522,6 +522,10 @@ class CheckPerc(smach.State):
             new_attention=True
             attention=eval(resp.text)["attention"]
 
+        if eval(resp.text)["new_sentence"]=="True":
+            new_sentence=True
+            sentence=eval(resp.text)["sentence"]
+            new_hint = self.ask_for_hint(sentence)
 
         #aggiungere il controllo sulla frase che può essere estrapolato come hint
 
@@ -529,7 +533,7 @@ class CheckPerc(smach.State):
         
 
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
-        if new_emotion==False and new_attention==False and new_hint==False and new_number==False:
+        if new_emotion==False and new_attention==False and new_hint==False and new_number==False and quiz_guessed==False:
 
             if userdata.action=="start": #if I start I need to add first goals
                 add_goal("feel_comfort")
@@ -581,8 +585,8 @@ class CheckPerc(smach.State):
                     remove_predicate("low_attention_r")  
 
             if new_hint:
-                add_goal("answered")
-                remove_predicate("answered")
+                add_goal("hint_given")
+                remove_predicate("hint_given")
                 add_predicate("new_hint")
                 new_hint=False
 
@@ -608,6 +612,11 @@ class CheckPerc(smach.State):
 
             return "outcome3"
 
+    def ask_for_hint(self,ss):
+        if ("Navel" in ss) and (("suggerimento" in ss) or ("aiuto" in ss) or ("indizio" in ss)):
+            return True
+        else:
+            return False
         
 class WriteProblem(smach.State):
     def __init__(self):
