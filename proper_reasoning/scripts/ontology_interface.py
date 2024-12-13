@@ -209,13 +209,10 @@ class ExAction(smach.State):
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
-            file_data = initialize_or_load_person(person)
+            file_data = initialize_or_load_person_e(person)
             
             chosen_action, weight = choose_action_e(file_data, pi)
             print(f"Chosen action: {chosen_action} with weight {weight}")
-
-        
-
             userdata, response, ea  =self.call_action_server(userdata, chosen_action, personality)
             if response:
                 resp = requests.get(url+'get_perception', params=data)
@@ -228,11 +225,163 @@ class ExAction(smach.State):
                     pn="NA_"+map_emotion_AV_axis[emotion]
 
                 file_data, rr = update_weights_e(file_data, chosen_action, pi, pn)
-                save_person_data(person, file_data)
+                save_person_data_e(person, file_data)
                 change_raward("reward_e",float(rr))
                 return "outcome9"
             else:
                 return "outcome8"
+            
+
+
+        if ac=="INTRO_ACTION":
+            resp = requests.get(url+'get_perception', params=data)
+            emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
+            if eval(resp.text)["attention"]=="positive":
+                pi="A_"+map_emotion_AV_axis[emotion]
+            else:
+                pi="NA_"+map_emotion_AV_axis[emotion]
+            file_data = initialize_or_load_person_i(person)
+            
+            chosen_action, weight = choose_action_i(file_data, pi)
+            print(f"Chosen action: {chosen_action} with weight {weight}")
+            userdata, response, ea  =self.call_action_server(userdata, chosen_action, personality)
+            if response:
+                resp = requests.get(url+'get_perception', params=data)
+                emotion=eval(resp.text)["emotion"]
+                if emotion not in list_of_emotions:
+                    emotion="N"
+                if eval(resp.text)["attention"]=="positive":
+                    pn="A_"+map_emotion_AV_axis[emotion]
+                else:
+                    pn="NA_"+map_emotion_AV_axis[emotion]
+
+                file_data, rr = update_weights_i(file_data, chosen_action, pi, pn)
+                save_person_data_i(person, file_data)
+                change_raward("reward_e",float(rr))
+                return "outcome9"
+            else:
+                return "outcome8"
+
+
+        elif ac=="DISAGREE_ACTION":
+            resp = requests.get(url+'get_perception', params=data)
+            emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
+            if eval(resp.text)["attention"]=="positive":
+                pi="A_"+map_emotion_AV_axis[emotion]
+            else:
+                pi="NA_"+map_emotion_AV_axis[emotion]
+            file_data = initialize_or_load_person_d(person)
+            
+            chosen_action, weight = choose_action_d(file_data, pi)
+            print(f"Chosen action: {chosen_action} with weight {weight}")
+            userdata, response, ea  =self.call_action_server(userdata, chosen_action, personality)
+            if response:
+                resp = requests.get(url+'get_perception', params=data)
+                emotion=eval(resp.text)["emotion"]
+                if emotion not in list_of_emotions:
+                    emotion="N"
+                if eval(resp.text)["attention"]=="positive":
+                    pn="A_"+map_emotion_AV_axis[emotion]
+                else:
+                    pn="NA_"+map_emotion_AV_axis[emotion]
+
+                file_data, rr = update_weights_d(file_data, chosen_action, pi, pn)
+                save_person_data_d(person, file_data)
+                change_raward("reward_a",float(rr))
+                return "outcome9"
+            else:
+                return "outcome8"
+            
+
+        elif ac=="AGREE_ACTION":
+            resp = requests.get(url+'get_perception', params=data)
+            emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
+            if eval(resp.text)["attention"]=="positive":
+                pi="A_"+map_emotion_AV_axis[emotion]
+            else:
+                pi="NA_"+map_emotion_AV_axis[emotion]
+            file_data = initialize_or_load_person_a(person)
+            
+            chosen_action, weight = choose_action_a(file_data, pi)
+            print(f"Chosen action: {chosen_action} with weight {weight}")
+            userdata, response, ea  =self.call_action_server(userdata, chosen_action, personality)
+            if response:
+                resp = requests.get(url+'get_perception', params=data)
+                emotion=eval(resp.text)["emotion"]
+                if emotion not in list_of_emotions:
+                    emotion="N"
+                if eval(resp.text)["attention"]=="positive":
+                    pn="A_"+map_emotion_AV_axis[emotion]
+                else:
+                    pn="NA_"+map_emotion_AV_axis[emotion]
+
+                file_data, rr = update_weights_a(file_data, chosen_action, pi, pn)
+                save_person_data_a(person, file_data)
+                change_raward("reward_a",float(rr))
+                return "outcome9"
+            else:
+                return "outcome8"        
+
+
+        elif ac=="CONSC_ACTION":
+            resp = requests.get(url+'get_perception', params=data)
+            emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
+            if eval(resp.text)["attention"]=="positive":
+                pi="A_"+map_emotion_AV_axis[emotion]
+            else:
+                pi="NA_"+map_emotion_AV_axis[emotion]
+            file_data = initialize_or_load_person_c(person)
+            
+            chosen_action, weight = choose_action_c(file_data, pi)
+            print(f"Chosen action: {chosen_action} with weight {weight}")
+            userdata, response, ea  =self.call_action_server(userdata, chosen_action, personality)
+            if response:
+                resp = requests.get(url+'get_perception', params=data)
+                emotion=eval(resp.text)["emotion"]
+                if emotion not in list_of_emotions:
+                    emotion="N"
+                if eval(resp.text)["attention"]=="positive":
+                    pn="A_"+map_emotion_AV_axis[emotion]
+                else:
+                    pn="NA_"+map_emotion_AV_axis[emotion]
+
+                file_data, rr = update_weights_c(file_data, chosen_action, pi, pn)
+                save_person_data_c(person, file_data)
+                change_raward("reward_c",float(rr))
+                return "outcome9"
+            else:
+                return "outcome8"
+            
+
+
+        elif ac=="UNSC_ACTION":
+            resp = requests.get(url+'get_perception', params=data)
+            emotion=eval(resp.text)["emotion"]
+            if emotion not in list_of_emotions:
+                    emotion="N"
+            if eval(resp.text)["attention"]=="positive":
+                pi="A_"+map_emotion_AV_axis[emotion]
+            else:
+                pi="NA_"+map_emotion_AV_axis[emotion]
+            file_data = initialize_or_load_person_u(person)
+            
+            chosen_action, weight = choose_action_u(file_data, pi)
+            print(f"Chosen action: {chosen_action} with weight {weight}")
+            userdata, response, ea  =self.call_action_server(userdata, chosen_action, personality)
+            if response:
+                change_raward("reward_c",float(weight))
+                return "outcome9"
+            else:
+                return "outcome8"
+            
 
         else:
             resp = requests.get(url+'get_perception', params=data)

@@ -89,8 +89,8 @@ default_extroversion_dict={
     "A_H":{"weights":ooo_e,"num":[1,1,1]},
 }
 
-def initialize_or_load_person(person_id):
-    directory = f"/home/alice/EpisodicMemory/{person_id}/"
+def initialize_or_load_person_e(person_id):
+    directory = f"/home/alice/EpisodicMemory/{person_id}/HE/"
     filename = os.path.join(directory, f"{person_id}.json")
 
     # Ensure the directory exists
@@ -109,8 +109,8 @@ def initialize_or_load_person(person_id):
         return json.load(f)
     
 
-def save_person_data(person_id, data):
-    directory = f"/home/alice/EpisodicMemory/{person_id}/"
+def save_person_data_e(person_id, data):
+    directory = f"/home/alice/EpisodicMemory/{person_id}/HE/"
     filename = os.path.join(directory, f"{person_id}.json")
 
     # Ensure the directory exists before saving

@@ -1,12 +1,13 @@
+import json
+import os
 import random
 import numpy as np
 
-#GOAL avoid the human interaction, terminate the task cleanly
-#00 N 
-#01 SA
-#10 A, D, F
-#11 H, SU
-intro_actions=["say_if_can_be_useful","ask_a_reflective_question","say_that_you_are_there_to_listen_actively_the_human_thoughts","say_that_you_prefer_confidential_conversation"]
+
+intro_actions=["say_if_can_be_useful",
+               "ask_a_reflective_question",
+               "say_that_you_are_there_to_listen_actively_the_human_thoughts",
+               "say_that_you_prefer_confidential_conversation"]
 
 
 zzz_i={"say_if_can_be_useful":{"w1":6,"w2":2,"expected_outcome":[0,0,0]},
@@ -59,7 +60,7 @@ ooo_i={"say_if_can_be_useful":{"w1":6,"w2":2,"expected_outcome":[0,0,0]},
 
 
 
-introversion_dict={
+default_introversion_dict={
     "NA_N":{"weights":zzz_i,"num":[0,0,0]},
     "NA_S":{"weights":zzo_i,"num":[0,0,1]},
     "NA_A":{"weights":zoz_i,"num":[0,1,0]},
@@ -72,46 +73,65 @@ introversion_dict={
 
 
 
-def choose_action_i(perception, sentence):
-    global intro_actions, introversion_dict
-    w=[]
-    for a in intro_actions:
-        if (sentence==True) and ("ask" in a):
-            weight=0
-        else:
-          weight=introversion_dict[perception]["weights"][a]["w1"]+introversion_dict[perception]["weights"][a]["w2"]
+def initialize_or_load_person_i(person_id):
+    directory = f"/home/alice/EpisodicMemory/{person_id}/LE/"
+    filename = os.path.join(directory, f"{person_id}.json")
+
+    # Ensure the directory exists
+    if not os.path.exists(directory):
+        os.makedirs(directory)  # Create the directory
+        print(f"Created directory: {directory}")
+    
+    # Initialize the JSON file if it doesn't exist
+    if not os.path.exists(filename):
+        with open(filename, "w") as f:
+            json.dump(default_introversion_dict, f, indent=4)
+        print(f"Initialized data for {person_id}.")
+    
+    # Load and return the data from the file
+    with open(filename, "r") as f:
+        return json.load(f)
+    
+
+def save_person_data_i(person_id, data):
+    directory = f"/home/alice/EpisodicMemory/{person_id}/LE/"
+    filename = os.path.join(directory, f"{person_id}.json")
+
+    # Ensure the directory exists before saving
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+        print(f"Created directory: {directory}")
+
+    # Save the updated data to the file
+    with open(filename, "w") as f:
+        json.dump(data, f, indent=4)
+    print(f"Data for {person_id} has been saved.")
+
+
+# Choose an action based on perception and sentence flag
+def choose_action_i(data, perception):
+    weights = data[perception]["weights"]
+    w = []
+    for action in intro_actions:
+        weight = weights[action]["w1"] + weights[action]["w2"]
         w.append(float(weight))
-
-   
-    norm = [i/sum(w) for i in w]
-    to_execute=np.random.choice(intro_actions,p=norm) #trovare il modo di normalizzare i pesi
-    return to_execute, introversion_dict[perception]["weights"][to_execute]["w1"]+introversion_dict[perception]["weights"][to_execute]["w2"]
+    norm = [i / sum(w) for i in w] if sum(w) != 0 else [1 / len(w)] * len(w)
+    chosen_action = np.random.choice(intro_actions, p=norm)
+    return chosen_action, weights[chosen_action]["w1"] + weights[chosen_action]["w2"]
 
 
+# Update weights based on perception change
+def update_weights_i(data, action, p_prev, p_after):
+    list_real = data[p_after]["num"]
+    list_expected = data[p_prev]["weights"][action]["expected_outcome"]
+    error = sum(np.abs(np.array(list_real) - np.array(list_expected))) / len(list_real)
+    prev_w2 = data[p_prev]["weights"][action]["w2"]
 
-def update_weights_i(action, p_prev, p_after):
-    list_real=introversion_dict[p_after]["num"]
-    list_expected=introversion_dict[p_prev]["weights"][action]["expected_outcome"]
-    error=0
-    #accumulate the error between the perception and the expected one
-    for i in range(0,len(list_real)):
-        error+=(np.abs(list_real[i]-list_expected[i]))
-    #normalize the error
-    error=error/len(list_real)
-    #update the weights
-    prev=introversion_dict[p_prev]["weights"][action]["w2"]
-   
-    if error==0:
-        introversion_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev + 0.5),2)
-        return round(np.abs(prev + 0.5),2)+introversion_dict[p_prev]["weights"][action]["w1"]
-    else:
-        if prev<0.1:
-           
-            return  prev+introversion_dict[p_prev]["weights"][action]["w1"]
-        else:
-           introversion_dict[p_prev]["weights"][action]["w2"]=round(np.abs(prev - 0.5),2)
-           
-           return round(np.abs(prev - 0.5),2)+introversion_dict[p_prev]["weights"][action]["w1"]
+    if error == 0:
+        data[p_prev]["weights"][action]["w2"] = round(prev_w2 + 0.5, 2)
+    elif prev_w2 > 0.1:
+        data[p_prev]["weights"][action]["w2"] = round(prev_w2 - 0.5, 2)
+    return data, data[p_prev]["weights"][action]["w2"]+data[p_prev]["weights"][action]["w1"]
         
 
         
