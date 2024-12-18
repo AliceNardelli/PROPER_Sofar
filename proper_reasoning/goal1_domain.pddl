@@ -26,8 +26,10 @@
         (present)
         (finished)
         (feel_comfort)
-	(answered)
+	(hint_given)
         (new_hint)
+        (answered)
+        (new_sentence)
         (present_quiz)
         (guessed_quiz)
         (finished_quiz)
@@ -67,7 +69,6 @@
 (:action EXTRO_ACTION
         :precondition
                (and 
-                (answered)
                	(extro)
                 )
         :effect
@@ -81,7 +82,6 @@
         :precondition
                (and 
                (intro)
-               (answered)
                )
         :effect
                 (and
@@ -93,7 +93,6 @@
         :precondition
                (and 
                	(consc)
-                (answered)
                 )
         :effect
                 (and
@@ -107,7 +106,6 @@
         :precondition
                (and 
                	(unsc)
-                (answered)
                 )
         :effect
                 (and
@@ -120,7 +118,6 @@
         :precondition
                (and 
                	(agree)
-                (answered)
                 )
         :effect
                 (and
@@ -132,7 +129,6 @@
         :precondition
                (and 
                	(disagree)
-                (answered)
                 )
         :effect
                 (and
@@ -318,7 +314,7 @@
 
                            (number_said)
                            (sentence_said)
-                           (answered)
+                           (hint_given)
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
@@ -360,7 +356,7 @@
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
-                           (not (answered))
+                           (not (hint_given))
                            (present_quiz)
                 )
         :effect
@@ -368,7 +364,7 @@
                            (decrease (interaction_level)(*(conscientious_coefficient)(dur)))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-                           (answered)
+                           (hint_given)
                            (not(new_hint))                 
                 )
 )
@@ -446,7 +442,7 @@
                            (not(finished_quiz))
                            (number_said) 
                            (sentence_said)  
-                           (answered)  
+                           (hint_given)  
                 )
         :effect
                 (and
@@ -460,6 +456,114 @@
 )
 
 
+(:action NOT_ANSWER
+        :precondition
+               (and 
+                           (new_sentence)
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (not (answered))
+                )
+        :effect
+                (and
+                           
+                           (when (intro) (increase (interaction_level)(*(extroversion_coefficient)(dur))))
+                           (when (extro) (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)4))))
+                           (when (consc) (increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (when (unsc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)4))))
+                           (when (agree) (increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (when (disagree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)4))))
+                           (answered)                 
+                )
+)
+
+
+(:action ANSWER
+        :precondition
+               (and 
+                           (new_sentence)
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (not (answered))
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+                           (when (consc) (increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (when (unsc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)4))))
+                           (when (agree) (increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (when (disagree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)4))))
+                           (answered)                 
+                )
+)
+
+
+(:action ANSWER_WRONGLY
+        :precondition
+               (and 
+                           (new_sentence)
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (not (answered))
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)2)))
+                           (when (unsc) (increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (when (consc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)4))))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)2)))
+                           (answered)                 
+                )
+)
+
+(:action ANSWER_WITH_A_QUESTION
+        :precondition
+               (and 
+                           (new_sentence)
+                           (emotion_r)
+                           (attention_r)  
+                           (low_attention_r)
+                           (not (answered))
+                        
+                )
+        :effect
+                (and
+                           
+                           (when (intro) (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)4))))
+                           (when (extro) (increase (interaction_level)(*(extroversion_coefficient)(dur))))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)2)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)2)))
+                           (answered)                 
+                )
+)
+
+
+(:action ANSWER_WITH_A_NEGATION
+        :precondition
+               (and 
+                           
+                           (emotion_r)
+                           (new_sentence)
+                           (attention_r)  
+                           (low_attention_r)
+                           (not (answered))
+                        
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)2)))
+                           (when (disagree) (increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (when (agree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)4))))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)2)))
+                           (answered)                 
+                )
+)
 
 
 (:action CHECK_FINISH

@@ -6,6 +6,7 @@ from personality_generator import *
 import requests
 from emotion_generation import *
 from chat_playground import *
+from omegaconf import OmegaConf
 
 url='http://192.168.1.55:5022/'
 url_emoACT='http://192.168.1.55:3000/'
@@ -19,17 +20,14 @@ data_action={
         "gaze":"",
         "tone":"",
         "g_amplitude":"",
-        "head":""
-         
+        "head":""       
 }
 
 traits_res=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 
-file_name="/home/alice/navel_files/p28ff.txt"
-file = open(file_name, 'a')
 
-def dispatch_action(action, personality, personality_emotions, user_emotion, user_sentence, comfortability, weights_res):
-        
+def dispatch_action(action, personality, user_emotion, user_sentence, comfortability, weights_res, quiz, solution, sentence, to_say_sentence, number):
+        #takes parameters
         params=generate_params(personality, action)
         mmap =get_map(params,personality)
         personality_sentence=""
@@ -44,36 +42,74 @@ def dispatch_action(action, personality, personality_emotions, user_emotion, use
                                 mmap_l =get_map(params_l,traits_res[i])
                                 language_sentence=language_sentence+" "+mmap_l["language"]
         print("PERSONALITY and LANGUAGE paramos: "+ personality_sentence+" "+language_sentence)
-        action=action.replace("_"," ").lower()
-        print("otput personality generator********************")
-        print(mmap,action,personality)
-        if ("react" not in action) and ("compute" not in action) and ("check" not in action):
-                print("generate the current robot emotion ********************")
-                try:
-                        response = requests.get(url)
-                        if response.status_code == 200:
-                                data = response.json()  # Parse the JSON response
-                                robot_emotion = data.get("emotion")
-                                expression = data.get("new_emotion")
-                                print(f"Emotion: {robot_emotion}")
-                        else:
-                                print(f"Failed to retrieve emotion. Status code: {response.status_code}, Response: {response.text}")
-                except requests.exceptions.RequestException as e:
-                        print(f"An error occurred: {e}")
-                #robot_emotion= generate_emotion( user_sentence, user_emotion, comfortability, personality_emotions)
-                print(robot_emotion)
+
+        #in each case evaluate the robot emotion
+
+
+        print("generate the current robot emotion ********************")
+        try:
+                response = requests.get(url)
+                if response.status_code == 200:
+                        data = response.json()  # Parse the JSON response
+                        robot_emotion = data.get("emotion")
+                        expression = data.get("new_emotion")
+                        print(f"Emotion: {robot_emotion}")
+                else:
+                        print(f"Failed to retrieve emotion. Status code: {response.status_code}, Response: {response.text}")
+        except requests.exceptions.RequestException as e:
+                print(f"An error occurred: {e}")
+
+        #TO DO: send the comfortability
+        if ("REACT" not in action) and ("WAIT" not in action) and ("NOT_ANSWER" not in action) and ("WAIT" not in action):
+                action=action.replace("_"," ").lower()
                 
-                robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, user_sentence, personality_sentence, language_sentence, action)
-                file_data={
-                        "human_sentence":user_sentence,
-                        "human_emotion":user_emotion,
-                        "robot_sentence":robot_sentence,
-                        "robot_emotion":robot_emotion
-                }
-                file.write(str(file_data))
-                file.write("\n")
-                file.flush()
+                if (action == "say sentence"):
+                        robot_sentence = to_say_sentence
+                        tone="chat"
+
+                elif (action == "say number"):
+                        robot_sentence = number
+                        tone="chat"
+                elif (action=="present escape room"):
+                        sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").presentation
+                        action_to_fullfill= "say: '"+sentence_to_say+"'"
+                        robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, "", personality_sentence, language_sentence, action_to_fullfill)
+
+                elif (action=="present quiz"):
+                        if quiz=="quiz1":
+                                sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").present_quiz1
+                        elif quiz=="quiz2":
+                                sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").present_quiz2_1+sentence+OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").present_quiz2_2
+
+                        else:
+                                sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").present_quiz3
+
+                        action_to_fullfill= "say: '"+sentence_to_say+"'"
+                        robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, "", personality_sentence, language_sentence, action_to_fullfill)
+
+                elif (action=="guess quiz"):
+                        if quiz=="quiz1":
+                                sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").guess_quiz1
+                        elif quiz=="quiz2":
+                                sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").guess_quiz2
+                        else:
+                                sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").guess_quiz3
+                                
+                        action_to_fullfill= "say: '"+sentence_to_say+"'"
+                        robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, "", personality_sentence, language_sentence, action_to_fullfill)
+                elif (action=="give hint"):
+                        if quiz=="quiz3":
+                                robot_sentence = to_say_sentence
+                                tone="chat"   
+                        else:
+                                generated_hint=generate_hint(quiz,solution, sentence)
+                                action_to_fullfill= "say: '"+generated_hint+"'"
+                                robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, "", personality_sentence, language_sentence, action_to_fullfill)
+                else:
+                        robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, user_sentence, personality_sentence, language_sentence, action)
+                
                 print(robot_sentence)
+
                 data_action["facial_expression"]=robot_emotion
                 data_action["sentence"]=robot_sentence
                 data_action["volume"]=mmap["volume"]

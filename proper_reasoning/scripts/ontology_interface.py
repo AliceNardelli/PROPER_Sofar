@@ -12,6 +12,7 @@ from extract_extro import *
 from extract_consc import *
 from extract_unscr import *
 from action_dispatcher import *
+from escape_room import *
 import smach
 import random
 import numpy as np
@@ -39,12 +40,13 @@ new_attention=False
 new_sentence=False
 new_hint=False
 new_number=False
+number=0
 begin=True
 url_navel='http://192.168.1.55:5021/'
 url_emoACT='http://192.168.1.55:8008/'
 expression=""
 quiz_guessed=False
-
+actual_goal=""
 headers= {'Content-Type':'application/json'}
 
 data={
@@ -55,6 +57,7 @@ data={
         "attention":"negative",
         "emotion":"",
         "sentence":"",
+        "number":"",
 }
 
 
@@ -77,7 +80,7 @@ class State_Start(smach.State):
                              output_keys=['output_goals','domain_path','problem_path','init_pb','command','path','plan_path'])
         
     def execute(self, userdata):
-        global wa,wd,we,wi,wc,wd,sum_weights,weights
+        global wa,wd,we,wi,wc,wd,sum_weights,weights, actual_goal
         goals=userdata.input_goals
         actual_goal=goals.pop(0) 
         print('Executing goal: '+ actual_goal)
@@ -166,8 +169,15 @@ class State_Init(smach.State):
         print('Initialize function and predicates in the ontology')
         initialize_functions_predicates()
         print('Read the problem and set the initial values of predicates and functions')
-        read_the_problem(userdata.problem_path)  
+        read_the_problem(userdata.problem_path)
+        self.init_escape_room()  
         return 'outcome1'
+   
+   def init_escape_room(self):
+       print("Starting the game")
+       start_escape_room()
+       
+
       
 class Reset_Quiz(smach.State):
     def __init__(self):
@@ -177,7 +187,7 @@ class Reset_Quiz(smach.State):
                              output_keys=['output_goals'])
         
     def execute(self, userdata):
-        
+        global quiz_guessed
         goals=userdata.input_goals
         actual_goal=goals.pop(0) 
         userdata.output_goals=goals
@@ -193,6 +203,7 @@ class Reset_Quiz(smach.State):
         remove_predicate("number_said")
         remove_predicate("number_seen")
         remove_predicate("waited")
+        quiz_guessed=False
         return 'outcome0'
     
 
@@ -337,9 +348,6 @@ class ExAction(smach.State):
                 return "outcome9"
             else:
                 return "outcome8"
-            
-
-           
 
 
         elif ac=="EXTRO_ACTION":
@@ -419,7 +427,6 @@ class ExAction(smach.State):
             else:
                 return "outcome8"
 
-
         else:
             resp=requests.put(url_navel+'get_input', json=data, headers=headers)
             em=eval(resp.text)["emotion"]
@@ -435,7 +442,7 @@ class ExAction(smach.State):
 
 
     def call_action_server(self, userdata, ac, personality):
-            global data_action, emotion, sentence 
+            global data_action, emotion, sentence, actual_goal, number
             userdata.state="exec"
             #get the comfortability
             mask_weights=emotion_mask[emotion]
@@ -451,7 +458,6 @@ class ExAction(smach.State):
                 emotion_weights[ind]=ew/sum_em_weights
                 ind+=1
 
-            
             personality_emotions=np.random.choice(traits,p=emotion_weights)
             print("personality emotion: "+personality_emotions)
             if personality_emotions=="Agreeable" or personality_emotions=="Disagreeable":
@@ -471,16 +477,21 @@ class ExAction(smach.State):
             else:
                 comfortability = "negative"
 
-            
-            resp, to_exec_action, expression = dispatch_action(ac, personality, personality_emotions, emotion, sentence, comfortability, weights)
+            if actual_goal=="quiz1":
+                    sol1=select_animal()
+                    sol2=""
+            elif actual_goal=="quiz2":
+                sol1, sol2 =select_dates()
+
+            else:
+                sol1, sol2 =select_sentence()
+            a, to_say_sentence =select_sentence()
+            resp, to_exec_action, expression = dispatch_action(ac, personality, emotion, sentence, comfortability, weights, actual_goal, sol2, sol1, to_say_sentence, number )
+
             #effect of emotions on comfortability
             scale_factor=0.5
             emotion_effect(float(expression), scale_factor)
             resp2=True
-            #if ("react" not in to_exec_action) and ("compute" not in to_exec_action) and ("check" not in to_exec_action):
-                #change_raward("react",float(1))
-                
-            
             if resp2==False:
                     print('Action Failed')        
                     return userdata, False, to_exec_action
@@ -492,8 +503,7 @@ class ExAction(smach.State):
 
             return userdata,True, to_exec_action
 
-                
-        
+                       
 class CheckPerc(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
@@ -502,7 +512,7 @@ class CheckPerc(smach.State):
                              output_keys=["out_action"])
         
     def execute(self, userdata):
-        global emotion, new_emotion, new_sentence, new_hint, new_number, data, new_attention, attention, sentence
+        global emotion, new_emotion, new_sentence, new_hint, new_number, data, new_attention, attention, sentence, number
         resp=requests.put(url_navel+'get_input', json=data, headers=headers)
         
         a=userdata.action
@@ -527,18 +537,23 @@ class CheckPerc(smach.State):
             sentence=eval(resp.text)["sentence"]
             new_hint = self.ask_for_hint(sentence)
 
-        #aggiungere il controllo sulla frase che può essere estrapolato come hint
-
-        #aggiungere il controllo sul numero
+       
+        if eval(resp.text)["new_number"]=="True":
+            number=float(eval(resp.text)["number"])
+            if number<9:
+                new_number=True
+            else:
+                quiz_guessed=True
         
 
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
-        if new_emotion==False and new_attention==False and new_hint==False and new_number==False and quiz_guessed==False:
+        if new_emotion==False and new_attention==False and new_hint==False and new_number==False and new_sentence==False:
 
             if userdata.action=="start": #if I start I need to add first goals
                 add_goal("feel_comfort")
                 remove_predicate("feel_comfort")
                 if quiz_guessed:
+                    quiz_guessed=False
                     remove_goal("waited")
                     add_predicate("guessed_quiz")
                     remove_predicate("game_finished")
@@ -597,10 +612,16 @@ class CheckPerc(smach.State):
                 add_predicate("number_seen")
                 new_number=False
 
+            if new_sentence:
+                add_goal("answered")
+                remove_predicate("answered")
+                add_predicate("new_sentence")
+                new_sentence=False
 
             add_goal("feel_comfort")
             remove_predicate("feel_comfort")
             if quiz_guessed:
+                quiz_guessed=False
                 remove_goal("waited")
                 add_predicate("guessed_quiz")
                 remove_predicate("game_finished")

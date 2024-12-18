@@ -15,6 +15,7 @@ file_path_openai_config_dict = {"Agreeable":"/home/alice/PROPER_Sofar/proper_rea
                        "Conscientious":"/home/alice/PROPER_Sofar/proper_reasoning/resources/config_openai_C.yaml",
                        "Unscrupolous":"/home/alice/PROPER_Sofar/proper_reasoning/resources/config_openai_U.yaml",
                        "global":"/home/alice/PROPER_Sofar/proper_reasoning/resources/config_openai_personality_v2_it.yaml",
+                       "hint":"/home/alice/PROPER_Sofar/proper_reasoning/resources/generate_hint.yaml"
                        }
 
 openai.organization = "org-OWePijhLCGVSJWhT7TQXBK7D"
@@ -33,12 +34,17 @@ map_emotion={
    "F":"Angry",
    "N":"Neutral",
 }
-messages=[]
+
 openai_config = OmegaConf.load(file_path_openai_config_dict["global"]).config
 system_message = openai_config.system_message
 start_message = [
         {"role": "system", "content": system_message},
     ]
+
+messages_hint=[]
+openai_config_hint = OmegaConf.load(file_path_openai_config_dict["hint"]).config
+actual_quiz="quiz1"
+
 def generate_sentence(user_emotion, robot_emotion, text, personality, response_style, action):
     
     user_input = "{"
@@ -75,3 +81,32 @@ def generate_sentence(user_emotion, robot_emotion, text, personality, response_s
     return res["text"], res["voice_style"]
 
 
+def generate_hint(quiz, solution, sentence):
+    if actual_quiz!=quiz:
+        actual_quiz=quiz
+        messages_hint=[]
+        
+    if quiz=="quiz1":
+        system_message2 = openai_config_hint.system_message_quiz1
+        system_message2.replace("XXX", solution)
+    else:
+        system_message2 = openai_config_hint.system_message_quiz2
+        system_message2.replace("XX", solution).replace("XY", sentence)
+
+    start_message2 = [
+        {"role": "system", "content": system_message2},
+    ]
+
+    start_message2.append(messages_hint)
+    response = client.chat.completions.create(
+        model=model,
+        messages=start_message2,
+        temperature=1,
+        top_p=1,
+    )
+
+    print(response.choices[0].message.content)
+    #chat_message = emoji.replace_emoji(string=chat_message, replace='')
+    res = json.loads(response.choices[0].message.content)
+    messages_hint.append({"role": "user", "content": {"previous_hint_given":res["hint"]}})
+    return res["hint"]

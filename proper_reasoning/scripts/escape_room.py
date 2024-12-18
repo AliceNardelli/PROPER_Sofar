@@ -1,5 +1,11 @@
 import random
 
+animal=""
+date=""
+event=""
+code=""
+sentence=""
+
 
 animals=["Rana","Lumaca","Foca","Elefante", "Libellula", "Coccinella","Marmotta","Pellicano","Alpaca","Stella Marina"]
 
@@ -40,5 +46,25 @@ def select_dates():
 
 
 def select_sentence():
-    code, sentence =random.choice(list(sentences.items()))
-    return code, sentence
+    c, s =random.choice(list(sentences.items()))
+    return c, s
+
+
+def start_escape_room():
+    global animal, date, event, code, sentence
+    animal=select_animal()
+    date, event =select_dates()
+    code, sentence = select_sentence()
+
+
+def retrieve_animal():
+    global animal
+    return animal
+
+def retrieve_year():
+    global date, event
+    return date, event
+
+def retrieve_code():
+    global code, sentence 
+    return code, sentence 
