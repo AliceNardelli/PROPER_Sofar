@@ -24,13 +24,14 @@ traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=1
 wi=0
 wc=0
-wu=0
+wu=1
 wa=0
 wd=0
+start_new_session=True
 sum_weights=0
 weights=[]
 gamma=1
-emotion="N"
+emotion="Neutral"
 attention="NA"
 sentence=""
 start=True
@@ -107,47 +108,48 @@ class State_Init(smach.State):
 
    def execute(self, userdata):
         print('Executing state INIT') 
-        global wa,wd,we,wi,wc,wd,sum_weights,weights    
-        with open(userdata.init_pb,'r') as firstfile, open(userdata.problem_path,'w') as secondfile:
-            for line in firstfile:
-            
-                if "extroversion_coefficient" in line:
-                    if we!=0.0:
-                        l="        (= (extroversion_coefficient) "+str(weights[0]) +")\n"
-                        secondfile.write(l)
-                        p="        "+traits_preds[0]+"\n"
-                        secondfile.write(p)
+        global wa,wd,we,wi,wc,wd,sum_weights,weights 
+        if start_new_session:   
+            with open(userdata.init_pb,'r') as firstfile, open(userdata.problem_path,'w') as secondfile:
+                for line in firstfile:
+                
+                    if "extroversion_coefficient" in line:
+                        if we!=0.0:
+                            l="        (= (extroversion_coefficient) "+str(weights[0]) +")\n"
+                            secondfile.write(l)
+                            p="        "+traits_preds[0]+"\n"
+                            secondfile.write(p)
+                        else:
+                            print(str(gamma*(wi/sum_weights)))
+                            l="        (= (extroversion_coefficient) "+str(weights[1]) +")\n"
+                            secondfile.write(l)
+                            p="        "+traits_preds[1]+"\n"
+                            secondfile.write(p)
+                    elif "conscientious_coefficient" in line:
+                        if wc!=0.0:
+                            l="        (= (conscientious_coefficient) "+str(weights[2]) +")\n"
+                            secondfile.write(l)
+                            p="        "+traits_preds[2]+"\n"
+                            secondfile.write(p)
+                        else:
+                            print(gamma*(wu/sum_weights))
+                            l="        (= (conscientious_coefficient) "+str(weights[3]) +")\n"
+                            secondfile.write(l)
+                            p="        "+traits_preds[3]+"\n"
+                            secondfile.write(p)
+                    elif "agreeableness_coefficient" in line:
+                        if wa!=0:
+                            l="        (= (agreeableness_coefficient) "+str(weights[4]) +")\n"
+                            secondfile.write(l)
+                            p="        "+traits_preds[4]+"\n"
+                            secondfile.write(p)
+                        else:
+                            l="        (= (agreeableness_coefficient) "+str(weights[5]) +")\n"
+                            secondfile.write(l)
+                            p="        "+traits_preds[5]+"\n"
+                            secondfile.write(p)
                     else:
-                        print(str(gamma*(wi/sum_weights)))
-                        l="        (= (extroversion_coefficient) "+str(weights[1]) +")\n"
-                        secondfile.write(l)
-                        p="        "+traits_preds[1]+"\n"
-                        secondfile.write(p)
-                elif "conscientious_coefficient" in line:
-                    if wc!=0.0:
-                        l="        (= (conscientious_coefficient) "+str(weights[2]) +")\n"
-                        secondfile.write(l)
-                        p="        "+traits_preds[2]+"\n"
-                        secondfile.write(p)
-                    else:
-                        print(gamma*(wu/sum_weights))
-                        l="        (= (conscientious_coefficient) "+str(weights[3]) +")\n"
-                        secondfile.write(l)
-                        p="        "+traits_preds[3]+"\n"
-                        secondfile.write(p)
-                elif "agreeableness_coefficient" in line:
-                    if wa!=0:
-                        l="        (= (agreeableness_coefficient) "+str(weights[4]) +")\n"
-                        secondfile.write(l)
-                        p="        "+traits_preds[4]+"\n"
-                        secondfile.write(p)
-                    else:
-                        l="        (= (agreeableness_coefficient) "+str(weights[5]) +")\n"
-                        secondfile.write(l)
-                        p="        "+traits_preds[5]+"\n"
-                        secondfile.write(p)
-                else:
-                    secondfile.write(line)
+                        secondfile.write(line)
         print('Reading domain and populate ontology')
         populate_ontology(userdata.domain_path)
         print('Initialize function and predicates in the ontology')
