@@ -50,12 +50,8 @@ person
         (anger_emotion_r)
         (sad_emotion)
         (sad_emotion_r)
-        (surprise_emotion)
-        (surprise_emotion_r)
-        (fear_emotion)
-        (fear_emotion_r)
-        (disgust_emotion)
-        (disgust_emotion_r)
+        (calm_emotion)
+        (calm_emotion_r)
         (emotion_r)
         (attention)
         (attention_r)
@@ -217,45 +213,6 @@ person
 )
 
 
-(:action REACT_DISGUST_EMOTION
-        :precondition
-                (and
-                   (disgust_emotion)
-                   (not (emotion_r))
-                   (not (disgust_emotion_r))
-                )
-
-        :effect
-                (and
-                   (when (disagree)(increase (agreeableness_level)(*(agreeableness_coefficient)(react))))
-                   (when (agree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(react))))
-                   (when (consc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(react)))) 
-		   (disgust_emotion_r)
-                   (emotion_r)	
-                   (not (disgust_emotion))
-                )
-)
-
-
-(:action REACT_FEAR_EMOTION
-        :precondition
-                (and
-                   (fear_emotion)
-                   (not (emotion_r))
-                   (not (fear_emotion_r))
-                )
-
-        :effect
-                (and
-                   (when (disagree)(increase (agreeableness_level)(*(agreeableness_coefficient)(react))))
-                   (when (agree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(react))))
-                   (when (consc)(decrease (scrupulousness_level)(*(conscientious_coefficient)(react)))) 
-		   (fear_emotion_r)
-                   (emotion_r)	
-                   (not (fear_emotion))
-                )
-)
-
 (:action REACT_HAPPY_EMOTION
         :precondition
                 (and
@@ -267,32 +224,33 @@ person
         :effect
                 (and
                    (when (disagree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(react))))
-                   (when (agree)(increase (agreeableness_level)(*(agreeableness_coefficient)(react))))   
+                   (when (agree)(increase (agreeableness_level)(*(agreeableness_coefficient)(react))))  
 		   (happy_emotion_r)
                    (emotion_r)	
                    (not (happy_emotion))
                 )
 )
 
-(:action REACT_SURPRISE_EMOTION
+
+(:action REACT_CALM_EMOTION
         :precondition
                 (and
-                   (surprise_emotion) 
+                   (calm_emotion) 
                    (not (emotion_r))
-                   (not (surprise_emotion_r))
+                   (not (calm_emotion_r))
                 )
 
         :effect
                 (and
                    (when (disagree)(decrease (agreeableness_level)(*(agreeableness_coefficient)(react))))
                    (when (agree)(increase (agreeableness_level)(*(agreeableness_coefficient)(react))))   
-		   (surprise_emotion_r)
-                   (emotion_r)
-                   (not (surprise_emotion))	
+                   (when (extro)(decrease (interaction_level)(*(extroversion_coefficient)(react))))
+                   (when (intro)(increase (interaction_level)(*(extroversion_coefficient)(react))))
+		   (calm_emotion_r)
+                   (emotion_r)	
+                   (not (calm_emotion))
                 )
 )
-
-
 
 (:action REACT_NEUTRAL_EMOTION
         :precondition

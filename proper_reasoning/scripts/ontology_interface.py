@@ -61,8 +61,8 @@ data={
 emotion_mask={
     "A":[4,2,3,1,5,5],
     "H":[4,2,1,1,5,5],
-    "SA":[2,2,1,1,5,2],
-    "SU":[4,2,1,1,5,5],
+    "S":[2,2,1,1,5,2],
+    "C":[4,4,1,1,5,5],
     "N":[4,4,1,1,4,4],
 }
 
@@ -191,24 +191,28 @@ class GetActions(smach.State):
 class ExAction(smach.State):
     def __init__(self):
         smach.State.__init__(self, 
-                             outcomes=['outcome8','outcome9','outcome13'],
+                             outcomes=['outcome8','outcome9'],
                              input_keys=['executing_actions'],
                              output_keys=['updated_actions','action','state']) 
     def execute(self, userdata):
         global new_emotion, emotion, new_sentence, sentence, new_attention, attention
         
         personality=np.random.choice(traits,p=weights)
-        ac=userdata.executing_actions[0]
+        try:
+            ac=userdata.executing_actions[0]
+        except:
+            userdata.updated_actions=[]
+            userdata.action="start"
+            return "outcome8"
         
         if ac=="EXTRO_ACTION":
             resp = requests.get(url+'get_perception', params=data)
             emotion=eval(resp.text)["emotion"]
+            print(emotion)
             if emotion not in list_of_emotions:
-                    emotion="N"
-            if eval(resp.text)["attention"]=="positive":
-                pi="A_"+map_emotion_AV_axis[emotion]
-            else:
-                pi="NA_"+map_emotion_AV_axis[emotion]
+                    emotion="Neutral"
+            pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+            pi += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
             file_data = initialize_or_load_person_e(person)
             
             chosen_action, weight = choose_action_e(file_data, pi)
@@ -217,12 +221,11 @@ class ExAction(smach.State):
             if response:
                 resp = requests.get(url+'get_perception', params=data)
                 emotion=eval(resp.text)["emotion"]
+                print(emotion)
                 if emotion not in list_of_emotions:
-                    emotion="N"
-                if eval(resp.text)["attention"]=="positive":
-                    pn="A_"+map_emotion_AV_axis[emotion]
-                else:
-                    pn="NA_"+map_emotion_AV_axis[emotion]
+                    emotion="Neutral"
+                pn = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+                pn += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
 
                 file_data, rr = update_weights_e(file_data, chosen_action, pi, pn)
                 save_person_data_e(person, file_data)
@@ -236,12 +239,12 @@ class ExAction(smach.State):
         if ac=="INTRO_ACTION":
             resp = requests.get(url+'get_perception', params=data)
             emotion=eval(resp.text)["emotion"]
+            
+            print(emotion)
             if emotion not in list_of_emotions:
-                    emotion="N"
-            if eval(resp.text)["attention"]=="positive":
-                pi="A_"+map_emotion_AV_axis[emotion]
-            else:
-                pi="NA_"+map_emotion_AV_axis[emotion]
+                    emotion="Neutral"
+            pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+            pi += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
             file_data = initialize_or_load_person_i(person)
             
             chosen_action, weight = choose_action_i(file_data, pi)
@@ -250,12 +253,11 @@ class ExAction(smach.State):
             if response:
                 resp = requests.get(url+'get_perception', params=data)
                 emotion=eval(resp.text)["emotion"]
+                print(emotion)
                 if emotion not in list_of_emotions:
-                    emotion="N"
-                if eval(resp.text)["attention"]=="positive":
-                    pn="A_"+map_emotion_AV_axis[emotion]
-                else:
-                    pn="NA_"+map_emotion_AV_axis[emotion]
+                        emotion="Neutral"
+                pn = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+                pn += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
 
                 file_data, rr = update_weights_i(file_data, chosen_action, pi, pn)
                 save_person_data_i(person, file_data)
@@ -268,12 +270,11 @@ class ExAction(smach.State):
         elif ac=="DISAGREE_ACTION":
             resp = requests.get(url+'get_perception', params=data)
             emotion=eval(resp.text)["emotion"]
+            print(emotion)
             if emotion not in list_of_emotions:
-                    emotion="N"
-            if eval(resp.text)["attention"]=="positive":
-                pi="A_"+map_emotion_AV_axis[emotion]
-            else:
-                pi="NA_"+map_emotion_AV_axis[emotion]
+                    emotion="Neutral"
+            pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+            pi += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
             file_data = initialize_or_load_person_d(person)
             
             chosen_action, weight = choose_action_d(file_data, pi)
@@ -282,12 +283,11 @@ class ExAction(smach.State):
             if response:
                 resp = requests.get(url+'get_perception', params=data)
                 emotion=eval(resp.text)["emotion"]
+                print(emotion)
                 if emotion not in list_of_emotions:
-                    emotion="N"
-                if eval(resp.text)["attention"]=="positive":
-                    pn="A_"+map_emotion_AV_axis[emotion]
-                else:
-                    pn="NA_"+map_emotion_AV_axis[emotion]
+                        emotion="Neutral"
+                pn = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+                pn += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
 
                 file_data, rr = update_weights_d(file_data, chosen_action, pi, pn)
                 save_person_data_d(person, file_data)
@@ -300,12 +300,11 @@ class ExAction(smach.State):
         elif ac=="AGREE_ACTION":
             resp = requests.get(url+'get_perception', params=data)
             emotion=eval(resp.text)["emotion"]
+            print(emotion)
             if emotion not in list_of_emotions:
-                    emotion="N"
-            if eval(resp.text)["attention"]=="positive":
-                pi="A_"+map_emotion_AV_axis[emotion]
-            else:
-                pi="NA_"+map_emotion_AV_axis[emotion]
+                    emotion="Neutral"
+            pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+            pi += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
             file_data = initialize_or_load_person_a(person)
             
             chosen_action, weight = choose_action_a(file_data, pi)
@@ -314,12 +313,11 @@ class ExAction(smach.State):
             if response:
                 resp = requests.get(url+'get_perception', params=data)
                 emotion=eval(resp.text)["emotion"]
+                print(emotion)
                 if emotion not in list_of_emotions:
-                    emotion="N"
-                if eval(resp.text)["attention"]=="positive":
-                    pn="A_"+map_emotion_AV_axis[emotion]
-                else:
-                    pn="NA_"+map_emotion_AV_axis[emotion]
+                        emotion="Neutral"
+                pn = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+                pn += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
 
                 file_data, rr = update_weights_a(file_data, chosen_action, pi, pn)
                 save_person_data_a(person, file_data)
@@ -332,12 +330,11 @@ class ExAction(smach.State):
         elif ac=="CONSC_ACTION":
             resp = requests.get(url+'get_perception', params=data)
             emotion=eval(resp.text)["emotion"]
+            print(emotion)
             if emotion not in list_of_emotions:
-                    emotion="N"
-            if eval(resp.text)["attention"]=="positive":
-                pi="A_"+map_emotion_AV_axis[emotion]
-            else:
-                pi="NA_"+map_emotion_AV_axis[emotion]
+                    emotion="Neutral"
+            pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+            pi += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
             file_data = initialize_or_load_person_c(person)
             
             chosen_action, weight = choose_action_c(file_data, pi)
@@ -346,13 +343,13 @@ class ExAction(smach.State):
             if response:
                 resp = requests.get(url+'get_perception', params=data)
                 emotion=eval(resp.text)["emotion"]
+                print(emotion)
                 if emotion not in list_of_emotions:
-                    emotion="N"
-                if eval(resp.text)["attention"]=="positive":
-                    pn="A_"+map_emotion_AV_axis[emotion]
-                else:
-                    pn="NA_"+map_emotion_AV_axis[emotion]
+                        emotion="Neutral"
 
+
+                pn = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+                pn += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
                 file_data, rr = update_weights_c(file_data, chosen_action, pi, pn)
                 save_person_data_c(person, file_data)
                 change_raward("reward_c",float(rr))
@@ -365,12 +362,11 @@ class ExAction(smach.State):
         elif ac=="UNSC_ACTION":
             resp = requests.get(url+'get_perception', params=data)
             emotion=eval(resp.text)["emotion"]
+            print(emotion)
             if emotion not in list_of_emotions:
-                    emotion="N"
-            if eval(resp.text)["attention"]=="positive":
-                pi="A_"+map_emotion_AV_axis[emotion]
-            else:
-                pi="NA_"+map_emotion_AV_axis[emotion]
+                    emotion="Neutral"
+            pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+            pi += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
             file_data = initialize_or_load_person_u(person)
             
             chosen_action, weight = choose_action_u(file_data, pi)
@@ -401,7 +397,7 @@ class ExAction(smach.State):
             global data_action, emotion, sentence 
             userdata.state="exec"
             #get the comfortability
-            mask_weights=emotion_mask[emotion]
+            mask_weights=emotion_mask[map_emotion_AV_axis[emotion]]
             emotion_weights=np.multiply(mask_weights, weights)
             
             sum_em_weights=0
@@ -533,8 +529,8 @@ class CheckPerc(smach.State):
         else:
             if new_emotion:
                new_emotion=False
-               emotion_pred=perception_predicate_map[emotion]["emotion"]
-               goals=perception_predicate_map[emotion]["goals"]
+               emotion_pred=perception_predicate_map[map_emotion_AV_axis[emotion]]["emotion"]
+               goals=perception_predicate_map[map_emotion_AV_axis[emotion]]["goals"]
                add_predicate(emotion_pred)
               
                for g in goals:

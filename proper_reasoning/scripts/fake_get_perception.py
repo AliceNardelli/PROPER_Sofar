@@ -3,6 +3,62 @@ import random
 
 app = Flask(__name__)
 last_person=""
+list_of_emotions = [
+    "Admiration",
+    "Adoration",
+    "Aesthetic Appreciation",
+    "Amusement",
+    "Anger",
+    "Annoyance",
+    "Anxiety",
+    "Awe",
+    "Awkwardness",
+    "Boredom",
+    "Calmness",
+    "Concentration",
+    "Confusion",
+    "Contemplation",
+    "Contempt",
+    "Contentment",
+    "Craving",
+    "Determination",
+    "Disappointment",
+    "Disapproval",
+    "Disgust",
+    "Distress",
+    "Doubt",
+    "Ecstasy",
+    "Embarrassment",
+    "Empathic Pain",
+    "Enthusiasm",
+    "Entrancement",
+    "Envy",
+    "Excitement",
+    "Fear",
+    "Gratitude",
+    "Guilt",
+    "Horror",
+    "Interest",
+    "Joy",
+    "Love",
+    "Nostalgia",
+    "Pain",
+    "Pride",
+    "Realization",
+    "Relief",
+    "Romance",
+    "Sadness",
+    "Sarcasm",
+    "Satisfaction",
+    "Desire",
+    "Shame",
+    "Surprise (negative)",
+    "Surprise (positive)",
+    "Sympathy",
+    "Tiredness",
+    "Triumph",
+    "Neutral"
+]
 
 @app.route('/get_perception', methods=['GET'])
 def get_perception():
@@ -30,7 +86,7 @@ def get_perception():
         person = random.choice(["alice", "fabio"])
         human_present = "True" if person else "False"
         start_proactivity = "True" if last_person != person else "False"
-        emotion = random.choice(["A", "H", "N", "SA", "SU"])
+        emotion = random.choice(list_of_emotions)
 
         # Construct the response
         response_data = {

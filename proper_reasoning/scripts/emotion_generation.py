@@ -21,16 +21,6 @@ system_message_dict = {"Agreeable":openai_config.system_message_A,
 
 model="gpt-4o"
 
-map_emotion={
-   "SA":"Sad",
-   "SU":"Happy",
-   "H":"Happy",
-   "A":"Angry",
-   "D":"Angry",
-   "F":"Angry",
-   "N":"Neutral",
-   "":"",
-}
 
 def generate_emotion( text, user_emotion, comfortability, personality):
     user_input = "{"
@@ -39,7 +29,7 @@ def generate_emotion( text, user_emotion, comfortability, personality):
         user_input += text
         user_input += ", "
     user_input += ", user_emotion: "
-    user_input += map_emotion[user_emotion]
+    user_input += user_emotion
     user_input += ", comfortability: "
     user_input += comfortability
 

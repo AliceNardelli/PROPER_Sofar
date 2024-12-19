@@ -1,28 +1,31 @@
 (define (problem p) (:domain goal1)
 (:objects
-      alice - person 
+      p - person 
       fabio - person 
+      alice - person 
 )
 (:init 
       (new_sentence)
       (person_present alice)
       (person_present fabio)
-      (person_there fabio)
+      (person_present alice)
+      (person_there alice)
+      (greetings fabio)
       (greetings alice)
-      (present_the_lab alice)
+      (ask_to_present alice)
       (extro)
       (unsc)
       (disagree)
-      (neutral_emotion_r)
+      (happy_emotion_r)
       (anger_emotion_r)
-      (surprise_emotion_r)
-      (emotion_r)
-      (attention_r)
+      (sad_emotion_r)
+      (calm_emotion)
+      (attention)
       (low_attention_r)
       (=(dur)5.0)
       (=(extroversion_coefficient)1.0)
       (=(desired_interaction)5.0)
-      (=(interaction_level)9.5)
+      (=(interaction_level)8.5)
       (=(conscientious_coefficient)0.0)
       (=(desired_scrupulousness)5.0)
       (=(scrupulousness_level)6.0)
@@ -37,4 +40,7 @@
 (:goal (and
       (finished)
       (answered)
+      (calm_emotion_r)
+      (emotion_r)
+      (attention_r)
 )))

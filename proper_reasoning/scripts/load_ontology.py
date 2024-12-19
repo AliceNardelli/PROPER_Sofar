@@ -218,7 +218,7 @@ def populate_ontology(domain):
     associated_actions=[]
     associated_orders=[]
     for p in raw_domain:
-        print(pr)
+        
         if (":duration" in p) or (":precondition" in p):
             pr=False
         if (":durative-action" in p) or (":action" in p):
@@ -262,9 +262,9 @@ def populate_ontology(domain):
                                 function_objects[check].has_operator.append(ops)
                                 break
         if pr==True:
-            print("read param")
+            
             params=p[p.index("(")+1:p.index(")")].replace("-","").split(" ")
-            print(params)
+            
             while 1:
                     try:
                      params.remove("")
@@ -273,7 +273,7 @@ def populate_ontology(domain):
             c=0
             for i in params:
                 if "?" in i:
-                    print("find a new param")
+                    
                     c+=1
                     new_params.append(i)
                     associated_actions.append(last_action)
@@ -283,7 +283,7 @@ def populate_ontology(domain):
                         associated_types.append(i)
                     c=0
         if ":parameters" in p:
-            print("hello there")
+            
             pr=True
         if ":effect" in p:
             t=True
@@ -348,9 +348,9 @@ def read_the_problem(problem_path):
                         prec.remove("")
                     except:
                         break
-                print(prec)
+                
                 if prec!=[]:
-                    print(prec)
+                   
                     if prec[0]=="=":
                         ff=prec[1]
                         function_objects[ff].has_value=float(prec[2])
@@ -444,7 +444,7 @@ def update_ontology(a):
     params=a.split(" ")[1:]
     preds=actions_objects[ac].has_effect_predicates
     #prendo tutti i predicati effetto di quell'azione
-    print(preds)
+    
     for p in preds:
             
             ops=p.has_operator
@@ -479,12 +479,11 @@ def update_ontology(a):
                             
                             if p.is_grounded:
                                     if objects_objects[params[parameters_objects[o[2]].has_order-1].lower()] not in p.has_object:
-                                        print("added")
+                                        
                                         p.has_object.append(objects_objects[params[parameters_objects[o[2]].has_order-1].lower()])
-                                        print(p,p.has_object)
+                                        
                             else:
-                                    print("removed")
-                                    print(objects_objects[params[parameters_objects[o[2]].has_order-1].lower()])
+                                    
                                     p.has_object.remove(objects_objects[params[parameters_objects[o[2]].has_order-1].lower()])
                                     if(len(p.has_object))>=1:
                                         p.is_grounded=True
@@ -625,7 +624,7 @@ def update_problem(plan_path):
     for i in Predicates.instances():
         key = list(filter(lambda x: predicates_objects[x] == i, predicates_objects))[0]
         if i.is_grounded==True:
-                print(i)
+                
                 if i.has_object!=[]:
                     #print(i.has_object,i)
                     for j in i.has_object:
@@ -656,6 +655,6 @@ def update_problem(plan_path):
     with open(output_path, "w") as pb_file:
         for line in new_pb:
             pb_file.write(line)
-    print("written")
+   
 
 

@@ -1,5 +1,6 @@
 (define (problem p) (:domain goal1)
 (:objects
+    p - person
 )
 (:init
         (=(dur)5)
