@@ -14,35 +14,28 @@ checking for cyclic := effects --- OK.
 ff: search configuration is EHC, if that fails then  best-first on 1*g(s) + 5*h(s) where
     metric is  plan length
 
-Cueing down from goal distance:    7 into depth [1]
-                                   6            [1][2]
-                                   5            [1]
-                                   4            [1][2]
+Cueing down from goal distance:    5 into depth [1]
+                                   4            [1]
                                    3            [1][2]
-                                   2            [1][2]
+                                   2            [1]
                                    1            [1]
                                    0            
 
 ff: found legal plan as follows
 
-step    0: REACT_HAPPY_EMOTION
+step    0: REACT_CALM_EMOTION
         1: REACT_LOW_ATTENTION
-        2: ANSWER_WITH_A_QUESTION
+        2: ANSWER_WRONGLY
         3: EXTRO_ACTION
-        4: GREET ALICE
-        5: EXTRO_ACTION
-        6: ASK_PREFERENCES ALICE
-        7: EXTRO_ACTION
-        8: GIVE_NEW_INFO ALICE
-        9: EXTRO_ACTION
-       10: CHECK_FINISH ALICE
+        4: EXTRO_ACTION
+        5: CHECK_FINISH_SENTENCE FABIO
      
 
-time spent:    0.00 seconds instantiating 20 easy, 0 hard action templates
-               0.00 seconds reachability analysis, yielding 25 facts and 18 actions
-               0.00 seconds creating final representation with 19 relevant facts, 3 relevant fluents
+time spent:    0.00 seconds instantiating 17 easy, 0 hard action templates
+               0.00 seconds reachability analysis, yielding 19 facts and 16 actions
+               0.00 seconds creating final representation with 17 relevant facts, 3 relevant fluents
                0.00 seconds computing LNF
                0.00 seconds building connectivity graph
-               0.00 seconds searching, evaluating 17 states, to a max depth of 2
+               0.00 seconds searching, evaluating 15 states, to a max depth of 2
                0.00 seconds total time
 

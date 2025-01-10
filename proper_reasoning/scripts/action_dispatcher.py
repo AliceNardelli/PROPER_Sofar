@@ -6,24 +6,15 @@ from personality_generator import *
 import requests
 from emotion_generation import *
 from chat_playground import *
+from client_proper import ClientProper
 
-url='http://127.0.0.1:5021/'
 
-headers= {'Content-Type':'application/json'}
-
-data_action={
-        "emotion":"",
-        "volume":"",
-        "gaze":"",
-        "language_style":"",
-        "action":"",
-        "personality":""       
-}
 
 traits_res=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 
 file_name="/home/alice/Rose/prova.txt"
 file = open(file_name, 'a')
+client_proper=ClientProper()
 
 def dispatch_action(action, personality, personality_emotions, user_emotion, user_sentence, comfortability, weights_res):
         
@@ -59,15 +50,10 @@ def dispatch_action(action, personality, personality_emotions, user_emotion, use
                 file.write(str(file_data))
                 file.write("\n")
                 file.flush()
-                
-                data_action["emotion"]=robot_emotion
-                data_action["volume"]=mmap["volume"]
-                data_action["gaze"]=mmap["gaze"]
-                data_action["language_style"]=language_sentence
-                data_action["action"]=action
-                data_action["personality"]=personality
-                print(data_action)
-                resp=requests.post(url+'exec_actions', json=data_action, headers=headers)
+                client_proper.post_new_action(language_sentence, robot_emotion, mmap["volume"], mmap["gaze"], action, personality)
+                executed = client_proper.get_exec()
+                while executed==False:
+                     executed = client_proper.get_exec()
 
         return True, action
         

@@ -26,16 +26,18 @@ person
 (:predicates 
         (finished)
         (finished_sentence)
+        (waited1)
+        (waited2)
 	(answered)
         (new_sentence)
         (person_present ?p - person)
         (person_there ?p - person)
         (greetings ?p - person)
         (ask_to_present ?p - person)
-        (present_the_lab ?p - person)
-        (ask_the_preferences ?p - person)
-        (give_information ?p - person)
-        (welcomed)
+        (ask_preferred_activities ?p - person)
+        (information_suggested ?p - person)
+        (detected_main_info ?p - person)
+        (detected_preferred_activities ?p - person)
 	(extro)
         (intro)
         (consc)
@@ -271,6 +273,8 @@ person
 )
 
 
+
+
 (:action GREET
         :parameters 
                 (?p - person)
@@ -289,14 +293,13 @@ person
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
                            (greetings ?p)
-                           (welcomed)
                            (not (person_present ?p))
                            (answered)                 
                 )
 )
 
 
-(:action ASK_PRESENT
+(:action ASK_MAIN_INFO
         :parameters 
                 (?p - person)
         :precondition
@@ -304,7 +307,6 @@ person
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
-                           (welcomed)
                            (person_there ?p)
                 )
         :effect
@@ -320,7 +322,7 @@ person
 )
 
 
-(:action PRESENT_LAB
+(:action ASK_PREFERRED_ACTIVITIES
         :parameters 
                 ( ?p - person)
         :precondition
@@ -328,9 +330,9 @@ person
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
-                           (welcomed)
                            (ask_to_present ?p)
                            (person_there ?p)
+                           (detected_main_info ?p)
                 )
         :effect
                 (and
@@ -338,15 +340,13 @@ person
                            (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-                           (present_the_lab ?p)
+                           (ask_preferred_activities ?p)
                            (not (ask_to_present ?p))
                            (answered)                 
                 )
 )
 
-
-
-(:action ASK_PREFERENCES
+(:action SUGGEST_ACTIVITIES
         :parameters 
                 (?p - person)
         :precondition
@@ -354,9 +354,9 @@ person
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
-                           (welcomed)
-                           (present_the_lab ?p)
+                           (ask_preferred_activities ?p)
                            (person_there ?p)
+                           (detected_preferred_activities ?p)
                 )
         :effect
                 (and
@@ -364,39 +364,13 @@ person
                            (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-                           (ask_the_preferences ?p)
-                           (not (present_the_lab ?p))
+                           (not (ask_preferred_activities ?p))
+                           (information_suggested ?p)
                            (answered)                 
                 )
 )
 
-
-
-(:action GIVE_NEW_INFO
-        :parameters 
-                (?p - person)
-        :precondition
-               (and 
-                           (emotion_r)
-                           (attention_r) 
-                           (low_attention_r)
-                           (welcomed)
-                           (ask_the_preferences ?p)
-                           (person_there ?p)
-                )
-        :effect
-                (and
-                           
-                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
-                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
-                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-                           (not (ask_the_preferences ?p))
-                           (give_information ?p)
-                           (answered)                 
-                )
-)
-
-(:action ANSWER
+(:action NOT_ANSWER
         :precondition
                (and 
                            (new_sentence)
@@ -417,6 +391,29 @@ person
                            (answered)                 
                 )
 )
+
+
+(:action ANSWER
+        :precondition
+               (and 
+                           (new_sentence)
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (not (answered))
+                )
+        :effect
+                (and
+                           
+                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
+                           (when (consc) (increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (when (unsc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)4))))
+                           (when (agree) (increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (when (disagree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)4))))
+                           (answered)                 
+                )
+)
+
 
 (:action ANSWER_WRONGLY
         :precondition
@@ -482,6 +479,45 @@ person
                 )
 )
 
+(:action WAIT1
+        :parameters 
+                (?p - person)
+        :precondition
+               (and 
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (ask_to_present ?p)
+                )
+        :effect
+                (and
+                           (decrease (interaction_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (waited1)               
+                )
+)
+
+
+(:action WAIT2
+        :parameters 
+                (?p - person)
+        :precondition
+               (and 
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (ask_to_present ?p)
+                )
+        :effect
+                (and
+                           (decrease (interaction_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (waited2)               
+                )
+)
+
 
 (:action CHECK_FINISH
         :parameters (?p - person)
@@ -492,7 +528,7 @@ person
                         (attention_r) 
                         (low_attention_r)   
                         (answered)
-                        (give_information ?p)
+                        (information_suggested ?p)
                         (>(interaction_level)(desired_interaction))
                         (>(scrupulousness_level)(desired_scrupulousness))
                         (>(agreeableness_level)(desired_agreeableness))

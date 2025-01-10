@@ -18,6 +18,7 @@ import numpy as np
 import time
 import threading
 import datetime
+from client_proper import ClientProper
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
@@ -40,24 +41,13 @@ new_sentence=False
 new_attention=False
 human_present=False
 start_proactivity=False
+detected_main_info=False 
+detected_preferred_activities=False
+
 person=""
 begin=True
 
-url='http://127.0.0.1:5021/'
-
-data={
-        "new_sentence":"False",
-        "new_emotion":"False",
-        "new_attention":"False",
-        "attention":"negative",
-        "emotion":"",
-        "sentence":"",
-        "listening":"False",
-        "human_present":"False",
-        "start_proactivity":"False",
-        "person":""
-}
-
+client_proper=ClientProper()
 
 emotion_mask={
     "A":[4,2,3,1,5,5],
@@ -208,8 +198,8 @@ class ExAction(smach.State):
             return "outcome8"
         
         if ac=="EXTRO_ACTION":
-            resp = requests.get(url+'get_perception', params=data)
-            emotion=eval(resp.text)["emotion"]
+            
+            emotion=client_proper.get_user_last_emotion()
             print(emotion)
             if emotion not in list_of_emotions:
                     emotion="Neutral"
@@ -221,8 +211,7 @@ class ExAction(smach.State):
             print(f"Chosen action: {chosen_action} with weight {weight}")
             userdata, response, ea  =self.call_action_server(userdata, chosen_action, personality)
             if response:
-                resp = requests.get(url+'get_perception', params=data)
-                emotion=eval(resp.text)["emotion"]
+                emotion=client_proper.get_user_last_emotion()
                 print(emotion)
                 if emotion not in list_of_emotions:
                     emotion="Neutral"
@@ -239,10 +228,7 @@ class ExAction(smach.State):
 
 
         if ac=="INTRO_ACTION":
-            resp = requests.get(url+'get_perception', params=data)
-            emotion=eval(resp.text)["emotion"]
-            
-            print(emotion)
+            emotion=client_proper.get_user_last_emotion()
             if emotion not in list_of_emotions:
                     emotion="Neutral"
             pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
@@ -253,9 +239,7 @@ class ExAction(smach.State):
             print(f"Chosen action: {chosen_action} with weight {weight}")
             userdata, response, ea  =self.call_action_server(userdata, chosen_action, personality)
             if response:
-                resp = requests.get(url+'get_perception', params=data)
-                emotion=eval(resp.text)["emotion"]
-                print(emotion)
+                emotion=client_proper.get_user_last_emotion()
                 if emotion not in list_of_emotions:
                         emotion="Neutral"
                 pn = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
@@ -270,9 +254,7 @@ class ExAction(smach.State):
 
 
         elif ac=="DISAGREE_ACTION":
-            resp = requests.get(url+'get_perception', params=data)
-            emotion=eval(resp.text)["emotion"]
-            print(emotion)
+            emotion=client_proper.get_user_last_emotion()
             if emotion not in list_of_emotions:
                     emotion="Neutral"
             pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
@@ -283,9 +265,7 @@ class ExAction(smach.State):
             print(f"Chosen action: {chosen_action} with weight {weight}")
             userdata, response, ea  =self.call_action_server(userdata, chosen_action, personality)
             if response:
-                resp = requests.get(url+'get_perception', params=data)
-                emotion=eval(resp.text)["emotion"]
-                print(emotion)
+                emotion=client_proper.get_user_last_emotion()
                 if emotion not in list_of_emotions:
                         emotion="Neutral"
                 pn = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
@@ -300,9 +280,7 @@ class ExAction(smach.State):
             
 
         elif ac=="AGREE_ACTION":
-            resp = requests.get(url+'get_perception', params=data)
-            emotion=eval(resp.text)["emotion"]
-            print(emotion)
+            emotion=client_proper.get_user_last_emotion()
             if emotion not in list_of_emotions:
                     emotion="Neutral"
             pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
@@ -313,9 +291,7 @@ class ExAction(smach.State):
             print(f"Chosen action: {chosen_action} with weight {weight}")
             userdata, response, ea  =self.call_action_server(userdata, chosen_action, personality)
             if response:
-                resp = requests.get(url+'get_perception', params=data)
-                emotion=eval(resp.text)["emotion"]
-                print(emotion)
+                emotion=client_proper.get_user_last_emotion()
                 if emotion not in list_of_emotions:
                         emotion="Neutral"
                 pn = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
@@ -330,9 +306,7 @@ class ExAction(smach.State):
 
 
         elif ac=="CONSC_ACTION":
-            resp = requests.get(url+'get_perception', params=data)
-            emotion=eval(resp.text)["emotion"]
-            print(emotion)
+            emotion=client_proper.get_user_last_emotion()
             if emotion not in list_of_emotions:
                     emotion="Neutral"
             pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
@@ -362,9 +336,7 @@ class ExAction(smach.State):
 
 
         elif ac=="UNSC_ACTION":
-            resp = requests.get(url+'get_perception', params=data)
-            emotion=eval(resp.text)["emotion"]
-            print(emotion)
+            emotion=client_proper.get_user_last_emotion()
             if emotion not in list_of_emotions:
                     emotion="Neutral"
             pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
@@ -382,8 +354,7 @@ class ExAction(smach.State):
             
 
         else:
-            resp = requests.get(url+'get_perception', params=data)
-            em=eval(resp.text)["emotion"]
+            em=client_proper.get_user_last_emotion()
             if em!="":
                 emotion=em
             userdata, response, ea =self.call_action_server(userdata, ac, personality)
@@ -461,36 +432,20 @@ class CheckPerc(smach.State):
                              output_keys=["out_action"])
         
     def execute(self, userdata):
-        global emotion, new_emotion, new_sentence, data, new_attention, attention, sentence, human_present, start_proactivity, person
-        resp = requests.get(url+'get_perception', params=data)
+        global emotion, new_emotion, new_sentence, new_attention, attention, sentence, human_present, start_proactivity, person
+        new_sentence, new_emotion, new_attention, attention, emotion, sentence, human_present, start_proactivity, new_person, detected_main_info, detected_preferred_activities =client_proper.get_user_input()
         
     
         a=userdata.action
         print("action",a)
 
-        if eval(resp.text)["new_emotion"]=="True":
-            new_emotion=True
-            emotion=eval(resp.text)["emotion"]
-            
-        if eval(resp.text)["new_sentence"]=="True":
-            new_sentence=True
-            sentence=eval(resp.text)["sentence"]
-
-        if eval(resp.text)["new_attention"]=="True":
-            new_attention=True
-            attention=eval(resp.text)["attention"]
-
-        if eval(resp.text)["human_present"]=="True":
-            human_present=True
-        else:
-            if person!="":
+        if not human_present:
                 self.remove_person(person)
                 person=""
             
 
-        if eval(resp.text)["start_proactivity"]=="True":
-            start_proactivity=True
-            person=eval(resp.text)["person"]
+        if start_proactivity:
+            person=new_person
 
         """
         while (new_emotion==False and new_sentence==False and  new_attention==False and userdata.action==""):
@@ -516,7 +471,7 @@ class CheckPerc(smach.State):
                 
         """
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
-        if new_emotion==False and new_sentence==False and new_attention==False and start_proactivity==False:
+        if new_emotion==False and new_sentence==False and new_attention==False and start_proactivity==False and detected_main_info==False and detected_preferred_activities==False:
             if userdata.state=="exec": #action fail
                 
                 return "outcome3"
@@ -534,7 +489,6 @@ class CheckPerc(smach.State):
                emotion_pred=perception_predicate_map[map_emotion_AV_axis[emotion]]["emotion"]
                goals=perception_predicate_map[map_emotion_AV_axis[emotion]]["goals"]
                add_predicate(emotion_pred)
-              
                for g in goals:
                     add_goal(g)#state that that predicate is a goal
                     remove_predicate(g) #now the goal predicate is not grounded
@@ -554,7 +508,6 @@ class CheckPerc(smach.State):
                 add_goal("answered")
                 remove_predicate("answered")
                 add_predicate("new_sentence")
-                
                 remove_predicate("finished_sentence")
                 add_goal("finished_sentence")
                 remove_goal("finished")
@@ -563,12 +516,36 @@ class CheckPerc(smach.State):
             if start_proactivity:
                 start_proactivity=False
                 self.add_person(person)
-                remove_predicate("welcomed")
+                #remove_predicate("welcomed")
                 remove_predicate("finished")
                 remove_goal("finished_sentence")
-                add_goal("finished")
+                if objects_objects[person] not in predicates_objects["detected_main_info"]:
+                    try:
+                        predicates_objects["ask_to_present"].has_objects.remove(objects_objects[person])
+                    except:
+                        print("not already asked")
+                    remove_predicate("waited1")
+                    add_goal("waited1")
 
+                elif objects_objects[person] not in predicates_objects["detected_preferred_activities"]:
+                    try:
+                        predicates_objects["ask_preferred_activities"].has_objects.remove(objects_objects[person])
+                    except:
+                        print("not already asked")
+                    remove_predicate("waited2")
+                    add_goal("waited2")
+                else:
+                    add_goal("finished")
 
+            if detected_main_info:
+                add_predicate("detected_main_info")
+                predicates_objects["detected_main_info"].has_object.append(objects_objects[person])
+               
+
+            if detected_preferred_activities:
+                add_predicate("detected_preferred_activities")
+                predicates_objects["detected_preferred_activities"].has_object.append(objects_objects[person])
+                
             return "outcome3"
         
 
