@@ -434,14 +434,16 @@ class CheckPerc(smach.State):
     def execute(self, userdata):
         global emotion, new_emotion, new_sentence, new_attention, attention, sentence, human_present, start_proactivity, person
         new_sentence, new_emotion, new_attention, attention, emotion, sentence, human_present, start_proactivity, new_person, detected_main_info, detected_preferred_activities =client_proper.get_user_input()
-        
+        print(new_sentence, new_emotion, new_attention, attention, emotion, sentence, human_present, start_proactivity, new_person, detected_main_info, detected_preferred_activities)
     
         a=userdata.action
         print("action",a)
-
-        if not human_present:
-                self.remove_person(person)
-                person=""
+        try:
+            if not human_present:
+                    self.remove_person(person)
+                    person=""
+        except:
+            print("before beginning")
             
 
         if start_proactivity:

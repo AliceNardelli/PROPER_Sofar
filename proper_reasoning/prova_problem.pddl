@@ -1,33 +1,34 @@
 (define (problem p) (:domain goal1)
 (:objects
-      p - person 
-      fabio - person 
+    p - person
 )
-(:init 
-      (new_sentence)
-      (person_there fabio)
-      (greetings fabio)
-      (extro)
-      (unsc)
-      (disagree)
-      (attention_r)
-      (low_attention_r)
-      (emotion_r)
-      (=(dur)5.0)
-      (=(extroversion_coefficient)0.5)
-      (=(desired_interaction)5.0)
-      (=(interaction_level)3.5)
-      (=(conscientious_coefficient)0.5)
-      (=(desired_scrupulousness)5.0)
-      (=(scrupulousness_level)3.5)
-      (=(agreeableness_coefficient)0.0)
-      (=(desired_agreeableness)5.0)
-      (=(agreeableness_level)6.0)
-      (=(react)2.0)
-      (=(reward_e)5)
-      (=(reward_a)5)
-      (=(reward_c)5)
+(:init
+        (=(dur)5)
+        (=(react)2)
+        (=(reward_e)5)
+        (=(reward_a)5)
+        (=(reward_c)5)
+        (= (extroversion_coefficient) 0.5)
+        (extro)
+        (=(desired_interaction) 5)
+        (=(interaction_level) 6)  
+        (= (conscientious_coefficient) 0.5)
+        (unsc)
+        (=(desired_scrupulousness)5)
+        (=(scrupulousness_level) 6)
+        (= (agreeableness_coefficient) 0.0)
+        (disagree)
+        (=(desired_agreeableness) 5)
+        (=(agreeableness_level) 6)
+        (emotion_r) 
+        (attention_r)  
+        (low_attention_r)  
+        (answered)  
 )
-(:goal (and
-      (ask_to_present fabio)
-)))
+
+(:goal (and 
+    )
+)
+
+
+)
