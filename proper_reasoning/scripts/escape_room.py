@@ -37,7 +37,9 @@ sentences={
 
 
 def select_animal():
-    return random.choice(animals)
+    an=random.choice(animals)
+    print(an)
+    return an
 
 
 def select_dates():

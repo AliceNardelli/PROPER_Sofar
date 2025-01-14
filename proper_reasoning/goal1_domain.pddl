@@ -25,7 +25,6 @@
 (:predicates 
         (present)
         (finished)
-        (feel_comfort)
 	(hint_given)
         (new_hint)
         (answered)
@@ -311,13 +310,13 @@
 (:action WAIT
         :precondition
                (and 
-
-                           (number_said)
                            (sentence_said)
-                           (hint_given)
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
+                           (>(interaction_level)(desired_interaction))
+                           (>(scrupulousness_level)(desired_scrupulousness))
+                           (>(agreeableness_level)(desired_agreeableness))
                 )
         :effect
                 (and
@@ -441,8 +440,8 @@
                            (guessed_quiz)
                            (not(finished_quiz))
                            (number_said) 
-                           (sentence_said)  
-                           (hint_given)  
+                           (sentence_said)
+                              
                 )
         :effect
                 (and

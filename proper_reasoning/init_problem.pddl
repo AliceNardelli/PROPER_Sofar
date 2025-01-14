@@ -3,7 +3,7 @@
 )
 (:init
         (=(dur)5)
-        (=(react)2)
+        (=(react)0.1)
         (=(reward_e)5)
         (=(reward_a)5)
         (=(reward_c)5)

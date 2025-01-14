@@ -1,7 +1,7 @@
 config:
   key_name: openai-playground-TBD
   organization_id: org-OWePijhLCGVSJWhT7TQXBK7D
-  system_message_quiz1: "You have to generate an hint in italian for a quiz. The goal of the quiz is to guess a animal, and the solution is XXX. You have available what the persona asked to you and what you have already said. 
+  system_message_quiz1: "You have to generate an hint in italian for a quiz. The goal of the quiz is to guess a animal, and the solution is XXX. You have available which hints you have already said. 
     Rememeber that the first hint that you have to generate is. \"Date un occhio dentro alla scatola\" . you have to fill the field \"hint\" with the generated hint.
     You will only have to answer with the format:
     {\"hint\": \"HINT\"}

@@ -8,9 +8,9 @@ from emotion_generation import *
 from chat_playground import *
 from omegaconf import OmegaConf
 
-url='http://192.168.1.55:5022/'
-url_emoACT='http://192.168.1.55:3000/'
-url_emoACT2='http://192.168.1.55:8008/'
+url='http://127.0.0.1:5022/'
+url_emoACT='http://10.186.13.9:3000/emotional_state'
+url_emoACT2='http://10.186.13.9:8008/'
 
 headers= {'Content-Type':'application/json'}
 expression=""
@@ -80,7 +80,7 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                         tone="chat"
 
                 elif (action == "say number"):
-                        robot_sentence = number
+                        robot_sentence = str(number)
                         tone="chat"
                 elif (action=="present escape room"):
                         sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").presentation
@@ -117,6 +117,8 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                                 generated_hint=generate_hint(quiz,solution, sentence)
                                 action_to_fullfill= "say: '"+generated_hint+"'"
                                 robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, "", personality_sentence, language_sentence, action_to_fullfill)
+                                print(" HINT: ")
+                                print(generated_hint)
                 else:
                         robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, user_sentence, personality_sentence, language_sentence, action)
                 
@@ -137,7 +139,8 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                 print(data_action)
                 resp=requests.put(url+'exec_actions', json=data_action, headers=headers)
                 time.sleep(2)
-        return True, action, expression
+                return True, action, expression
+        return True, action, 101
         
     
 

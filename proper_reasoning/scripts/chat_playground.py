@@ -82,31 +82,57 @@ def generate_sentence(user_emotion, robot_emotion, text, personality, response_s
 
 
 def generate_hint(quiz, solution, sentence):
-    if actual_quiz!=quiz:
-        actual_quiz=quiz
-        messages_hint=[]
-        
-    if quiz=="quiz1":
-        system_message2 = openai_config_hint.system_message_quiz1
-        system_message2.replace("XXX", solution)
-    else:
-        system_message2 = openai_config_hint.system_message_quiz2
-        system_message2.replace("XX", solution).replace("XY", sentence)
+    global actual_quiz, messages_hint
 
+    # Check if this is a new quiz and reset messages if needed
+    if actual_quiz != quiz:
+        actual_quiz = quiz
+        messages_hint = []
+
+    # Check if it's the first hint
+    if not messages_hint and quiz == "quiz1":
+        # If no hints have been generated yet, return the predefined first hint
+        first_hint = "Date un occhio dentro alla scatola"
+        messages_hint.append({"role": "user", "content": first_hint})
+        return first_hint
+
+    # Select the appropriate system message based on the quiz type
+    if quiz == "quiz1":
+        system_message2 = openai_config_hint.system_message_quiz1.replace("XXX", solution)
+    else:
+        system_message2 = openai_config_hint.system_message_quiz2.replace("XX", solution).replace("XY", sentence)
+
+    # Initialize the message list for the OpenAI API
     start_message2 = [
         {"role": "system", "content": system_message2},
     ]
 
-    start_message2.append(messages_hint)
-    response = client.chat.completions.create(
-        model=model,
-        messages=start_message2,
-        temperature=1,
-        top_p=1,
-    )
+    # Append the previous hints if they exist
+    start_message2.extend(messages_hint)
 
-    print(response.choices[0].message.content)
-    #chat_message = emoji.replace_emoji(string=chat_message, replace='')
-    res = json.loads(response.choices[0].message.content)
-    messages_hint.append({"role": "user", "content": {"previous_hint_given":res["hint"]}})
-    return res["hint"]
+    # Make the API call to OpenAI
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=start_message2,
+            temperature=1,
+            top_p=1,
+        )
+        # Extract the content of the response
+        chat_message = response.choices[0].message.content
+
+        # Parse the JSON response for the hint
+        res = json.loads(chat_message)
+
+        # Append the hint to the history of messages
+        messages_hint.append({"role": "user", "content": res["hint"]})
+
+        # Return the hint
+        return res["hint"]
+    except json.JSONDecodeError as e:
+        print("Failed to decode the JSON response:", e)
+        return None
+    except Exception as e:
+        print("An error occurred:", e)
+        return None
+
