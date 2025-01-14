@@ -10,6 +10,7 @@ from omegaconf import OmegaConf
 
 url='http://192.168.1.55:5022/'
 url_emoACT='http://192.168.1.55:3000/'
+url_emoACT2='http://192.168.1.55:8008/'
 
 headers= {'Content-Type':'application/json'}
 expression=""
@@ -25,8 +26,19 @@ data_action={
 
 traits_res=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 
+emotion_label_map={
+        "H":"Happy",
+        "A":"Angry",
+        "F":"Fear",
+        "SA":"Sad",
+        "SU":"Surprised",
+        "D":"Disgusted",
+        "N":"Neutral"
+}
 
 def dispatch_action(action, personality, user_emotion, user_sentence, comfortability, weights_res, quiz, solution, sentence, to_say_sentence, number):
+        payload = {"comfortability": comfortability}
+        response = requests.post(url_emoACT2+'comfortability', json=payload, headers=headers)
         #takes parameters
         params=generate_params(personality, action)
         mmap =get_map(params,personality)
@@ -43,16 +55,16 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                                 language_sentence=language_sentence+" "+mmap_l["language"]
         print("PERSONALITY and LANGUAGE paramos: "+ personality_sentence+" "+language_sentence)
 
-        #in each case evaluate the robot emotion
-
-
+        
         print("generate the current robot emotion ********************")
         try:
-                response = requests.get(url)
+                response = requests.get(url_emoACT)
                 if response.status_code == 200:
                         data = response.json()  # Parse the JSON response
-                        robot_emotion = data.get("emotion")
-                        expression = data.get("new_emotion")
+                        robot_emotion = emotion_label_map[data.get("emotion_label")]
+                        new_emotion = data.get("new_emotion")
+                        epa = data.get("emotion")
+                        expression=epa[0]
                         print(f"Emotion: {robot_emotion}")
                 else:
                         print(f"Failed to retrieve emotion. Status code: {response.status_code}, Response: {response.text}")
@@ -60,7 +72,7 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                 print(f"An error occurred: {e}")
 
         #TO DO: send the comfortability
-        if ("REACT" not in action) and ("WAIT" not in action) and ("NOT_ANSWER" not in action) and ("WAIT" not in action):
+        if ("REACT" not in action) and ("WAIT" not in action) and ("NOT_ANSWER" not in action) and ("CHECK" not in action):
                 action=action.replace("_"," ").lower()
                 
                 if (action == "say sentence"):

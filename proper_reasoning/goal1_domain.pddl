@@ -474,7 +474,8 @@
                            (when (unsc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)4))))
                            (when (agree) (increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
                            (when (disagree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)4))))
-                           (answered)                 
+                           (answered)
+                           (not (new_sentence))                 
                 )
 )
 
@@ -496,7 +497,8 @@
                            (when (unsc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)4))))
                            (when (agree) (increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
                            (when (disagree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)4))))
-                           (answered)                 
+                           (answered)
+                           (not (new_sentence))                  
                 )
 )
 
@@ -517,7 +519,8 @@
                            (when (unsc) (increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
                            (when (consc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)4))))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)2)))
-                           (answered)                 
+                           (answered) 
+                           (not (new_sentence))                 
                 )
 )
 
@@ -538,7 +541,8 @@
                            (when (extro) (increase (interaction_level)(*(extroversion_coefficient)(dur))))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)2)))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)2)))
-                           (answered)                 
+                           (answered)    
+                           (not (new_sentence))              
                 )
 )
 
@@ -561,7 +565,8 @@
                            (when (disagree) (increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
                            (when (agree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)4))))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)2)))
-                           (answered)                 
+                           (answered)     
+                           (not (new_sentence))             
                 )
 )
 

@@ -7,7 +7,7 @@ config:
     {\"hint\": \"HINT\"}
 
     Now let's get started:"
-  system_message_quiz2: "You have to generate an hint in italian for a quiz. The goal of the quiz is to guess a sequence of number, and the solution is XX which is the date of XY . You have available what the persona asked to you and what you have already said. 
+  system_message_quiz2: "You have to generate an hint in italian for a quiz. The goal of the quiz is to guess a sequence of number. The first number is a number that you have already pronounced.  The second number is  XX which is the first to number of this year: XY . The third number is today. You have available what the persona asked to you and what you have already said. 
     Rememeber that the first hint that you have to generate is. \"Fammi guardare il numero dinuovo\". If they ask you about the year firslty you have to generate \"Se l'anno è 2024 la cifra che dovrete inserire è 20\" Secondly \"L'Inizio della prima guerra mondiale, Lo sbarco slla luna e Il crollo del muro di berlino hanno tutti la stessa cifra\"
     Finally, if they ask you abou the calendar you have to generate  \"Che giorno è?\" you have to fill the field \"hint\" with the generated hint.
     You will only have to answer with the format:

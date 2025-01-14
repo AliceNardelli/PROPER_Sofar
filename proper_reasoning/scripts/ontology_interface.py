@@ -44,20 +44,25 @@ number=0
 begin=True
 url_navel='http://192.168.1.55:5021/'
 url_emoACT='http://192.168.1.55:8008/'
+url_number='http://192.168.1.55:8080/'
 expression=""
 quiz_guessed=False
 actual_goal=""
 headers= {'Content-Type':'application/json'}
 
 data={
-        "new_number":"False",
+        
         "new_sentence":"False",
         "new_emotion":"False",
         "new_attention":"False",
         "attention":"negative",
         "emotion":"",
         "sentence":"",
-        "number":"",
+        
+}
+
+data_number={
+        "numbers":[],
 }
 
 
@@ -104,11 +109,10 @@ class State_Start(smach.State):
             value_we=str(we+(-wi))
             value_wa=str(wa+(-wd))
             print('Send weights to emoACT')
-            payload = [
-                {"wc": value_wc},  
-                {"we": value_we},  
-                {"wa": value_wa}   
-            ]
+            payload = {"wc": value_wc,  
+                "we": value_we,  
+                "wa": value_wa}   
+            
             response = requests.post(url_emoACT+'personality', json=payload, headers=headers)
         return 'outcome0'
 
@@ -200,7 +204,8 @@ class Reset_Quiz(smach.State):
         remove_predicate("finished_quiz")
         remove_predicate("game_finished")
         remove_predicate("sentence_said")
-        remove_predicate("number_said")
+        if actual_goal=="quiz2":
+            remove_predicate("number_said")
         remove_predicate("number_seen")
         remove_predicate("waited")
         quiz_guessed=False
@@ -537,9 +542,9 @@ class CheckPerc(smach.State):
             sentence=eval(resp.text)["sentence"]
             new_hint = self.ask_for_hint(sentence)
 
-       
-        if eval(resp.text)["new_number"]=="True":
-            number=float(eval(resp.text)["number"])
+        resp_n=requests.put(url_number+'arucodetected', json=data_number, headers=headers)
+        if resp_n["numbers"]!=[]:
+            number=resp_n["numbers"][0]
             if number<9:
                 new_number=True
             else:
