@@ -7,9 +7,10 @@ import requests
 from emotion_generation import *
 from chat_playground import *
 
-url='http://192.168.1.55:5022/'
-url_emoACT='http://192.168.1.55:3000/'
-url_emoACT2='http://192.168.1.55:8008/'
+url='http://127.0.0.1:5022/'
+
+url_emoACT='http://10.186.13.9:3000/emotional_state'
+url_emoACT2='http://10.186.13.9:8008/'
 
 headers= {'Content-Type':'application/json'}
 expression=""
@@ -67,6 +68,7 @@ def dispatch_action(action, personality, personality_emotions, user_emotion, use
                         if response.status_code == 200:
                                 data = response.json()  # Parse the JSON response
                                 robot_emotion = emotion_label_map[data.get("emotion_label")]
+                                print(robot_emotion)
                                 new_emotion = data.get("new_emotion")
                                 epa = data.get("emotion")
                                 expression=epa[0]
@@ -76,7 +78,7 @@ def dispatch_action(action, personality, personality_emotions, user_emotion, use
                 except requests.exceptions.RequestException as e:
                         print(f"An error occurred: {e}")
                 #robot_emotion= generate_emotion( user_sentence, user_emotion, comfortability, personality_emotions)
-                print(robot_emotion)
+                
                 
                 robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, user_sentence, personality_sentence, language_sentence, action)
                 file_data={
@@ -103,8 +105,10 @@ def dispatch_action(action, personality, personality_emotions, user_emotion, use
                 data_action["head"]=mmap["head"]
                 print(data_action)
                 resp=requests.put(url+'exec_actions', json=data_action, headers=headers)
+
                 time.sleep(2)
-        return True, action, expression
+                return True, action, expression
+        return True, action, 101
         
     
 

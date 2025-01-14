@@ -7,29 +7,23 @@ from flask import Flask, request, jsonify
 import time
 import random
 import requests
-headers= {'Content-Type':'application/json'}
 
+headers = {'Content-Type': 'application/json'}
 size_window = 10
 app = Flask(__name__)
 
 data = {
     "new_perception": "",
     "emotion": "",
-    "attention": "False",
+    "attention": "",
 }
+
 actual_emotion = ""
-window_emotion = []
 perception_to_take = False
 gaze = ""
-emotion_dict_interface = {'anger': "A",
-                          'happy': "H",
-                          'neutral': "N",
-                          'sad': "SA",
-                          'surprise': "SU"}
+emotion_dict_interface = {'anger': "A", 'happy': "H", 'neutral': "N", 'sad': "SA", 'surprise': "SU"}
 
-emotions = ['anger', 'happy', 'neutral', 'sad', 'surprise']
-emotions_intensity = [0, 0, 0, 0, 0]
-url_emoACT='http://192.168.1.55:4000/'
+url_emoACT = 'http://10.186.13.9:4000/'
 
 @app.route('/get_camera_input', methods=['PUT'])
 def get_cam_input():
@@ -47,33 +41,21 @@ def get_cam_input():
     return jsonify(data)
 
 
-
 async def perception():
     global actual_emotion, gaze, perception_to_take
     while True:
-        asyncio.sleep(2)  # Use asyncio.sleep to avoid blocking the event loop
+        await asyncio.sleep(2)  # Fix: Use 'await' here
         random_number = random.choice([0, 1])
-        if random_number==0:
+        if random_number == 0:
             perception_to_take = True
-            
+            gaze = "positive" if random.choice([True, False]) else "negative"
+            actual_emotion = random.choice(['anger', 'happy', 'neutral', 'sad', 'surprise'])
+            payload = {"emotion": emotion_dict_interface[actual_emotion], "attention": gaze}
             try:
-                random_number2 = random.choice([0, 1])
-                if random_number2 ==0:
-                    is_looking = True
-                else: 
-                    is_looking = False
-                gaze = "positive" if is_looking else "negative"
-            except:
-                gaze=""
-            
-            actual_emotion = random.choice(['anger','happy','neutral','sad','surprise'])
-            
-            payload={
-                "emotion":actual_emotion,
-                "attention":gaze
-            }
-            resp =requests.post(url_emoACT+'navel_perception', json=payload, headers=headers)
-            print(gaze,actual_emotion)
+                resp = requests.post(url_emoACT + 'navel_perception', json=payload, headers=headers)
+                print(gaze, actual_emotion)
+            except requests.exceptions.RequestException as e:
+                print(f"Failed to connect to external service: {e}")
 
 
 async def run_flask_app():
@@ -84,11 +66,10 @@ async def run_flask_app():
     config.bind = ["0.0.0.0:5019"]
     await serve(app, config)
 
+
 async def main():
-    await asyncio.gather(
-        run_flask_app(),
-        perception(),
-    )
+    await asyncio.gather(run_flask_app(), perception())
+
 
 if __name__ == "__main__":
     try:

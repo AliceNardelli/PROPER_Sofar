@@ -38,8 +38,8 @@ new_emotion=False
 new_sentence=False
 new_attention=False
 begin=True
-url_navel='http://192.168.1.55:5021/'
-url_emoACT='http://192.168.1.55:8008/'
+url_navel='http://127.0.0.1:5021/'
+url_emoACT='http://10.186.13.9:8008/'
 expression=""
 
 headers= {'Content-Type':'application/json'}
@@ -76,6 +76,7 @@ class State_Start(smach.State):
         
     def execute(self, userdata):
         global wa,wd,we,wi,wc,wd,sum_weights,weights
+        global personality_to_send
         goals=userdata.input_goals
         #actual_goal=goals.pop(0) #always goal1
         print('Executing goal: '+ actual_goal)
@@ -95,15 +96,14 @@ class State_Start(smach.State):
                 sum_weights=1
         if personality_to_send:
             personality_to_send=False
-            value_wc=str(wc+(-wu))
-            value_we=str(we+(-wi))
-            value_wa=str(wa+(-wd))
+            value_wc=wc+(-wu)
+            value_we=we+(-wi)
+            value_wa=wa+(-wd)
             print('Send weights to emoACT')
-            payload = [
-                {"wc": value_wc},  
-                {"we": value_we},  
-                {"wa": value_wa}   
-            ]
+            payload = {"wc": value_wc,  
+                       "we": value_we,  
+                       "wa": value_wa}   
+            
             response = requests.post(url_emoACT+'personality', json=payload, headers=headers)
         return 'outcome0'
 
@@ -447,8 +447,9 @@ class ExAction(smach.State):
             
             resp, to_exec_action, expression = dispatch_action(ac, personality, personality_emotions, emotion, sentence, comfortability, weights)
             #effect of emotions on comfortability
-            scale_factor=0.5
-            emotion_effect(float(expression), scale_factor)
+            if expression!=101:
+                scale_factor=0.5
+                emotion_effect(float(expression), scale_factor)
             resp2=True
             #if ("react" not in to_exec_action) and ("compute" not in to_exec_action) and ("check" not in to_exec_action):
                 #change_raward("react",float(1))
