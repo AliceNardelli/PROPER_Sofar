@@ -116,9 +116,9 @@ def change_raward(func,r):
 
 
 def emotion_effect(r, scale):
-    function_objects["interaction_level"].has_value=function_objects["interaction_level"].has_value-scale*r
-    function_objects["scrupulousness_level"].has_value=function_objects["scrupulousness_level"].has_value-scale*r
-    function_objects["agreeableness_level"].has_value=function_objects["agreeableness_level"].has_value-scale*r
+    function_objects["interaction_level"].has_value=function_objects["interaction_level"].has_value+scale*r
+    function_objects["scrupulousness_level"].has_value=function_objects["scrupulousness_level"].has_value+scale*r
+    function_objects["agreeableness_level"].has_value=function_objects["agreeableness_level"].has_value+scale*r
 
 
 def initialize_reward():

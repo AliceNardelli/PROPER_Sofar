@@ -9,6 +9,7 @@ from chat_playground import *
 
 url='http://192.168.1.55:5022/'
 url_emoACT='http://192.168.1.55:3000/'
+url_emoACT2='http://192.168.1.55:8008/'
 
 headers= {'Content-Type':'application/json'}
 expression=""
@@ -23,13 +24,25 @@ data_action={
          
 }
 
+emotion_label_map={
+        "H":"Happy",
+        "A":"Angry",
+        "F":"Fear",
+        "SA":"Sad",
+        "SU":"Surprised",
+        "D":"Disgusted",
+        "N":"Neutral"
+}
+
 traits_res=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 
 file_name="/home/alice/navel_files/p28ff.txt"
 file = open(file_name, 'a')
 
 def dispatch_action(action, personality, personality_emotions, user_emotion, user_sentence, comfortability, weights_res):
-        
+        #send comfortability
+        payload = {"comfortability": comfortability}
+        response = requests.post(url_emoACT2+'comfortability', json=payload, headers=headers)
         params=generate_params(personality, action)
         mmap =get_map(params,personality)
         personality_sentence=""
@@ -50,11 +63,13 @@ def dispatch_action(action, personality, personality_emotions, user_emotion, use
         if ("react" not in action) and ("compute" not in action) and ("check" not in action):
                 print("generate the current robot emotion ********************")
                 try:
-                        response = requests.get(url)
+                        response = requests.get(url_emoACT)
                         if response.status_code == 200:
                                 data = response.json()  # Parse the JSON response
-                                robot_emotion = data.get("emotion")
-                                expression = data.get("new_emotion")
+                                robot_emotion = emotion_label_map[data.get("emotion_label")]
+                                new_emotion = data.get("new_emotion")
+                                epa = data.get("emotion")
+                                expression=epa[0]
                                 print(f"Emotion: {robot_emotion}")
                         else:
                                 print(f"Failed to retrieve emotion. Status code: {response.status_code}, Response: {response.text}")
