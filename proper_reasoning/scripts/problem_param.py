@@ -124,3 +124,8 @@ list_of_emotions = [
     "Triumph",
     "Neutral"
 ]
+
+
+person_dict={
+    "counter_person":0,
+}

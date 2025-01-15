@@ -25,7 +25,7 @@ traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=1
 wi=0
 wc=0
-wu=1
+wu=0
 wa=0
 wd=0
 start_new_session=True
@@ -203,7 +203,7 @@ class ExAction(smach.State):
             print(emotion)
             if emotion not in list_of_emotions:
                     emotion="Neutral"
-            pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+            pi = "A_" # if eval(resp.text)["attention"] == "positive" else "NA_"
             pi += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
             file_data = initialize_or_load_person_e(person)
             
@@ -215,7 +215,7 @@ class ExAction(smach.State):
                 print(emotion)
                 if emotion not in list_of_emotions:
                     emotion="Neutral"
-                pn = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+                pn = "A_" # if eval(resp.text)["attention"] == "positive" else "NA_"
                 pn += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
 
                 file_data, rr = update_weights_e(file_data, chosen_action, pi, pn)
@@ -231,7 +231,7 @@ class ExAction(smach.State):
             emotion=client_proper.get_user_last_emotion()
             if emotion not in list_of_emotions:
                     emotion="Neutral"
-            pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+            pi = "A_" # if eval(resp.text)["attention"] == "positive" else "NA_"
             pi += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
             file_data = initialize_or_load_person_i(person)
             
@@ -242,7 +242,7 @@ class ExAction(smach.State):
                 emotion=client_proper.get_user_last_emotion()
                 if emotion not in list_of_emotions:
                         emotion="Neutral"
-                pn = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+                pn = "A_" #if eval(resp.text)["attention"] == "positive" else "NA_"
                 pn += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
 
                 file_data, rr = update_weights_i(file_data, chosen_action, pi, pn)
@@ -257,7 +257,7 @@ class ExAction(smach.State):
             emotion=client_proper.get_user_last_emotion()
             if emotion not in list_of_emotions:
                     emotion="Neutral"
-            pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+            pi = "A_" #if eval(resp.text)["attention"] == "positive" else "NA_"
             pi += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
             file_data = initialize_or_load_person_d(person)
             
@@ -268,7 +268,7 @@ class ExAction(smach.State):
                 emotion=client_proper.get_user_last_emotion()
                 if emotion not in list_of_emotions:
                         emotion="Neutral"
-                pn = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+                pn = "A_" # if eval(resp.text)["attention"] == "positive" else "NA_"
                 pn += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
 
                 file_data, rr = update_weights_d(file_data, chosen_action, pi, pn)
@@ -283,7 +283,7 @@ class ExAction(smach.State):
             emotion=client_proper.get_user_last_emotion()
             if emotion not in list_of_emotions:
                     emotion="Neutral"
-            pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+            pi = "A_" #if eval(resp.text)["attention"] == "positive" else "NA_"
             pi += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
             file_data = initialize_or_load_person_a(person)
             
@@ -294,7 +294,7 @@ class ExAction(smach.State):
                 emotion=client_proper.get_user_last_emotion()
                 if emotion not in list_of_emotions:
                         emotion="Neutral"
-                pn = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+                pn = "A_" #if eval(resp.text)["attention"] == "positive" else "NA_"
                 pn += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
 
                 file_data, rr = update_weights_a(file_data, chosen_action, pi, pn)
@@ -309,7 +309,7 @@ class ExAction(smach.State):
             emotion=client_proper.get_user_last_emotion()
             if emotion not in list_of_emotions:
                     emotion="Neutral"
-            pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+            pi = "A_" # if eval(resp.text)["attention"] == "positive" else "NA_"
             pi += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
             file_data = initialize_or_load_person_c(person)
             
@@ -317,14 +317,10 @@ class ExAction(smach.State):
             print(f"Chosen action: {chosen_action} with weight {weight}")
             userdata, response, ea  =self.call_action_server(userdata, chosen_action, personality)
             if response:
-                resp = requests.get(url+'get_perception', params=data)
-                emotion=eval(resp.text)["emotion"]
-                print(emotion)
+                emotion=client_proper.get_user_last_emotion()
                 if emotion not in list_of_emotions:
                         emotion="Neutral"
-
-
-                pn = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+                pn = "A_" #if eval(resp.text)["attention"] == "positive" else "NA_"
                 pn += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
                 file_data, rr = update_weights_c(file_data, chosen_action, pi, pn)
                 save_person_data_c(person, file_data)
@@ -339,7 +335,7 @@ class ExAction(smach.State):
             emotion=client_proper.get_user_last_emotion()
             if emotion not in list_of_emotions:
                     emotion="Neutral"
-            pi = "A_" if eval(resp.text)["attention"] == "positive" else "NA_"
+            pi = "A_" #if eval(resp.text)["attention"] == "positive" else "NA_"
             pi += "N" if map_emotion_AV_axis[emotion] == "C" else map_emotion_AV_axis[emotion]
             file_data = initialize_or_load_person_u(person)
             
@@ -433,47 +429,32 @@ class CheckPerc(smach.State):
         
     def execute(self, userdata):
         global emotion, new_emotion, new_sentence, new_attention, attention, sentence, human_present, start_proactivity, person
-        new_sentence, new_emotion, new_attention, attention, emotion, sentence, human_present, start_proactivity, new_person, detected_main_info, detected_preferred_activities =client_proper.get_user_input()
-        print(new_sentence, new_emotion, new_attention, attention, emotion, sentence, human_present, start_proactivity, new_person, detected_main_info, detected_preferred_activities)
+        new_sentence, new_emotion, new_attention, attention, emotion, sentence, human_present, start_proactivity, new_person_index, detected_main_info, detected_preferred_activities =client_proper.get_user_input()
+        time.sleep(5)
+        print(new_sentence, new_emotion, new_attention, attention, emotion, sentence, human_present, start_proactivity, new_person_index, detected_main_info, detected_preferred_activities)
     
         a=userdata.action
         print("action",a)
         try:
             if not human_present:
-                    self.remove_person(person)
-                    person=""
+                if not detected_main_info:
+                    if not new_emotion:
+                        if not detected_preferred_activities:
+                            print("REMOVING PERSON ",person)
+                            self.remove_person(person)
+                            person=""
         except:
             print("before beginning")
             
+        if (detected_main_info) and (objects_objects[person] in predicates_objects["detected_main_info"].has_object):
+                detected_main_info=False
+        
+        if (detected_preferred_activities) and (objects_objects[person] in predicates_objects["detected_preferred_activities"].has_object):
+                detected_preferred_activities=False
 
-        if start_proactivity:
-            person=new_person
 
-        """
-        while (new_emotion==False and new_sentence==False and  new_attention==False and userdata.action==""):
-            time.sleep(1)
-            resp=requests.put(url+'get_input', json=data, headers=headers)
-
-            while eval(resp.text)["listening"]=="True":
-                time.sleep(0.5)
-                print("listening ...")
-                resp=requests.put(url+'get_input', json=data, headers=headers)
-
-            if eval(resp.text)["new_emotion"]=="True":
-                new_emotion=True
-                emotion=eval(resp.text)["emotion"]
-                
-            if eval(resp.text)["new_sentence"]=="True":
-                new_sentence=True
-                sentence=eval(resp.text)["sentence"]
-
-            if eval(resp.text)["new_attention"]=="True":
-                new_attention=True
-                attention=eval(resp.text)["attention"]
-                
-        """
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
-        if new_emotion==False and new_sentence==False and new_attention==False and start_proactivity==False and detected_main_info==False and detected_preferred_activities==False:
+        if new_emotion==False and new_sentence==False and new_attention==False and start_proactivity==False and human_present==False and detected_main_info==False and detected_preferred_activities==False:
             if userdata.state=="exec": #action fail
                 
                 return "outcome3"
@@ -486,6 +467,17 @@ class CheckPerc(smach.State):
                     return "outcome2"
         #IF NEW PERCEPTION
         else:
+
+            if human_present:
+                human_present=False
+                if new_person_index in person_dict:
+                    person=person_dict[new_person_index]    
+                else:
+                    person_dict[new_person_index]="a"+str(person_dict["counter_person"])
+                    person_dict["counter_person"]=person_dict["counter_person"]+1
+                    person=person_dict[new_person_index]
+                    self.add_person_object(person)
+
             if new_emotion:
                new_emotion=False
                emotion_pred=perception_predicate_map[map_emotion_AV_axis[emotion]]["emotion"]
@@ -521,7 +513,9 @@ class CheckPerc(smach.State):
                 #remove_predicate("welcomed")
                 remove_predicate("finished")
                 remove_goal("finished_sentence")
-                if objects_objects[person] not in predicates_objects["detected_main_info"]:
+                print("OBJ OBJ1: ", predicates_objects["detected_main_info"].has_object)
+                print("OBJ OBJ2: ", predicates_objects["detected_preferred_activities"].has_object)
+                if objects_objects[person] not in predicates_objects["detected_main_info"].has_object:
                     try:
                         predicates_objects["ask_to_present"].has_objects.remove(objects_objects[person])
                     except:
@@ -529,33 +523,46 @@ class CheckPerc(smach.State):
                     remove_predicate("waited1")
                     add_goal("waited1")
 
-                elif objects_objects[person] not in predicates_objects["detected_preferred_activities"]:
+                elif objects_objects[person] not in predicates_objects["detected_preferred_activities"].has_object:
                     try:
                         predicates_objects["ask_preferred_activities"].has_objects.remove(objects_objects[person])
                     except:
                         print("not already asked")
+
+                    remove_predicate("waited1")
+                    remove_goal("waited1")
                     remove_predicate("waited2")
                     add_goal("waited2")
                 else:
+                    remove_predicate("waited2")
+                    remove_goal("waited2")
+                    remove_predicate("finished")
                     add_goal("finished")
 
             if detected_main_info:
+                print("DETECTED MAIN INFO")
                 add_predicate("detected_main_info")
-                predicates_objects["detected_main_info"].has_object.append(objects_objects[person])
+                if objects_objects[person] not in predicates_objects["detected_main_info"].has_object: 
+                    predicates_objects["detected_main_info"].has_object.append(objects_objects[person])
                
 
             if detected_preferred_activities:
+                print("DETECTED PREFERRED")
                 add_predicate("detected_preferred_activities")
-                predicates_objects["detected_preferred_activities"].has_object.append(objects_objects[person])
+                if objects_objects[person] not in predicates_objects["detected_preferred_activities"].has_object:
+                    predicates_objects["detected_preferred_activities"].has_object.append(objects_objects[person])
                 
             return "outcome3"
         
 
-    def add_person(self, name):
+    def add_person_object(self, name):
         objects_objects[name]=Objects(name)
         objects_objects[name].has_type=[types_objects["person"]]
         predicates_objects["person_present"].is_grounded=True
         predicates_objects["person_present"].has_object.append(objects_objects[name])
+
+
+    def add_person(self, name):
         predicates_objects["person_there"].is_grounded=True
         predicates_objects["person_there"].has_object=[]
         predicates_objects["person_there"].has_object.append(objects_objects[name])

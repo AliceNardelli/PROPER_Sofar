@@ -13,7 +13,7 @@ from datetime import datetime
 # external modules
 import requests
 
-HOST = '172.30.64.1'
+HOST = '10.186.13.18'
 PORT = '2001'
 URL_SERVER_SESSION = f'http://{HOST}:{PORT}/api/'
 
@@ -87,14 +87,14 @@ class ClientProper:
         response = requests.get(API_GET_INPUT, timeout=5)
         if response.status_code == 200:
             payload = response.json()
-            new_sentence = bool(payload['new_sentence'])
-            new_emotion =  bool(payload['new_emotion'])
-            new_attention =  bool(payload['new_attention'])
+            new_sentence = payload['new_sentence']
+            new_emotion =  payload['new_emotion']
+            new_attention =  payload['new_attention']
             attention = payload['attention']
             emotion = payload['emotion']
             sentence = payload['sentence']
-            human_present =  bool(payload['human_present'])
-            start_proactivity =  bool(payload['start_proactivity'])
+            human_present =  payload['human_present']
+            start_proactivity =  payload['start_proactivity']
             person = payload['person']
             detected_main_info=payload["detected_main_info"]
             detected_preferred_activities=payload["detected_preferred_activities"]
@@ -120,6 +120,7 @@ class ClientProper:
         
         
     def post_new_action(self,language_style, emotion,volume, gaze, action, personality):
+        print("POST NEW ACTION")
         payload = {
             "language_style":language_style,
             "emotion":emotion,
@@ -140,7 +141,7 @@ class ClientProper:
             volume = payload['volume']
             action =  payload['action']
             personality =  payload['personality']
-            new_action =  bool(payload['new_action'])
+            new_action =  payload['new_action']
             gaze = payload['gaze']
             return language_style, emotion, volume, gaze , action, personality, new_action
         else:
@@ -159,7 +160,6 @@ class ClientProper:
         response = requests.get(API_GET_EXEC, timeout=5)
         if response.status_code == 200:
             payload = response.json()
-            
             return payload['executed_action']
         else:
             print(f"Error: {response.status_code}")
