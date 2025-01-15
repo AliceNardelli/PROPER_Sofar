@@ -116,15 +116,15 @@ def change_raward(func,r):
 
 
 def emotion_effect(r, scale):
-    function_objects["interaction_level"].has_value=function_objects["interaction_level"].has_value+scale*r
-    function_objects["scrupulousness_level"].has_value=function_objects["scrupulousness_level"].has_value+scale*r
-    function_objects["agreeableness_level"].has_value=function_objects["agreeableness_level"].has_value+scale*r
+    function_objects["interaction_level"].has_value=function_objects["interaction_level"].has_value+function_objects["extroversion_coefficient"].has_value*scale*r
+    function_objects["scrupulousness_level"].has_value=function_objects["scrupulousness_level"].has_value+function_objects["conscientious_coefficient"].has_value*scale*r
+    function_objects["agreeableness_level"].has_value=function_objects["agreeableness_level"].has_value+function_objects["agreeableness_coefficient"].has_value*scale*r
 
 
 def initialize_reward():
-    function_objects["reward_a"].has_value=5
-    function_objects["reward_e"].has_value=5
-    function_objects["reward_c"].has_value=5
+    function_objects["reward_a"].has_value=10
+    function_objects["reward_e"].has_value=10
+    function_objects["reward_c"].has_value=10
 
 def add_predicate(new_pred):
     #mi serve per aggiungere delle percezioni

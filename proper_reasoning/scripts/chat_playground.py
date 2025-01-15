@@ -83,7 +83,9 @@ def generate_sentence(user_emotion, robot_emotion, text, personality, response_s
 
 def generate_hint(quiz, solution, sentence):
     global actual_quiz, messages_hint
-
+    print("---------------------------------")
+    print("FROM CHAT PLAYGROUND")
+    print("Solution: ", solution)
     # Check if this is a new quiz and reset messages if needed
     if actual_quiz != quiz:
         actual_quiz = quiz
@@ -94,6 +96,8 @@ def generate_hint(quiz, solution, sentence):
         # If no hints have been generated yet, return the predefined first hint
         first_hint = "Date un occhio dentro alla scatola"
         messages_hint.append({"role": "user", "content": first_hint})
+        print("GENERATED HINT ", first_hint)
+        print("---------------------------------")
         return first_hint
 
     # Select the appropriate system message based on the quiz type
@@ -109,7 +113,7 @@ def generate_hint(quiz, solution, sentence):
 
     # Append the previous hints if they exist
     start_message2.extend(messages_hint)
-
+    print("PROMPT TO LLM: ", start_message2)
     # Make the API call to OpenAI
     try:
         response = client.chat.completions.create(
@@ -126,7 +130,8 @@ def generate_hint(quiz, solution, sentence):
 
         # Append the hint to the history of messages
         messages_hint.append({"role": "user", "content": res["hint"]})
-
+        print("GENERATED HINT ", res["hint"])
+        print("---------------------------------")
         # Return the hint
         return res["hint"]
     except json.JSONDecodeError as e:

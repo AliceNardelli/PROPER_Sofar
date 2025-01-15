@@ -290,13 +290,13 @@ class ExAction(smach.State):
                 else:
                     pn="NA_"+map_emotion_AV_axis[emotion]
                 rr=update_weights_a(aa,pi,pn) #qui in ogni caso avrò una new perception
-                change_raward("reward_a",float(rr))
+                change_raward("reward_a",float(10))
                 return "outcome9"
             else:
                 return "outcome8"
 
         
-        if ac=="DISAGREE_ACTION":
+        elif ac=="DISAGREE_ACTION":
             data["update"]="False"
             resp=requests.put(url_navel+'get_input', json=data, headers=headers)
             emotion=eval(resp.text)["emotion"]
@@ -322,7 +322,7 @@ class ExAction(smach.State):
                 else:
                     pn="NA_"+map_emotion_AV_axis[emotion]
                 rr=update_weights_d(aa,pi,pn) #qui in ogni caso avrò una new perception
-                change_raward("reward_a",float(rr))
+                change_raward("reward_a",float(10))
                 return "outcome9"
             else:
                 return "outcome8"
@@ -354,7 +354,7 @@ class ExAction(smach.State):
                 else:
                     pn="NA_"+map_emotion_AV_axis[emotion]
                 rr=update_weights_i(aa,pi,pn) #qui in ogni caso avrò una new perception
-                change_raward("reward_e",float(rr))
+                change_raward("reward_e",float(10))
                 return "outcome9"
             else:
                 return "outcome8"
@@ -387,7 +387,7 @@ class ExAction(smach.State):
                 else:
                     pn="NA_"+map_emotion_AV_axis[emotion]
                 rr=update_weights_e(aa,pi,pn) #qui in ogni caso avrò una new perception
-                change_raward("reward_e",float(rr))
+                change_raward("reward_e",float(10))
                 return "outcome9"
             else:
                 return "outcome8"
@@ -409,7 +409,7 @@ class ExAction(smach.State):
                 aa,rew=choose_action_c(pi,False)
             userdata, response, ea  =self.call_action_server(userdata, aa,personality)
             if response:
-                change_raward("reward_c",float(rew))
+                change_raward("reward_c",float(10))
                 return "outcome9"
             else:
                 return "outcome8"
@@ -432,7 +432,7 @@ class ExAction(smach.State):
            
             userdata, response, ea  =self.call_action_server(userdata, aa,personality)
             if response:
-                change_raward("reward_c",float(rew))
+                change_raward("reward_c",float(10))
                 return "outcome9"
             else:
                 return "outcome8"
@@ -496,8 +496,9 @@ class ExAction(smach.State):
             else:
                 sol1, sol2 = retrieve_code()
             a, to_say_sentence = retrieve_code()
-
-            resp, to_exec_action, expression = dispatch_action(ac, personality, emotion, sentence, comfortability, weights, actual_goal, sol2, sol1, to_say_sentence, number )
+            print("FROM ONTOLOGY")
+            print(sol1, sol2)
+            resp, to_exec_action, expression = dispatch_action(ac, personality, emotion, sentence, comfortability, weights, actual_goal, sol1, sol2, to_say_sentence, number )
 
             #effect of emotions on comfortability
             if expression!=101:
@@ -529,7 +530,8 @@ class CheckPerc(smach.State):
         if predicates_objects["game_finished"].is_grounded:
             userdata.exec_actions_out=[]
             return "outcome4"
-        time.sleep(4)
+        
+        time.sleep(5)
         resp=requests.put(url_navel+'get_input', json=data, headers=headers)
         
         a=userdata.action
@@ -577,6 +579,7 @@ class CheckPerc(smach.State):
             print("THERE")
             if userdata.action=="start": #if I start I need to add first goals
                 print("THERE2")
+                remove_predicate("executed_task") 
                 remove_predicate("waited")
                 add_goal("waited")
                 return "outcome3" #plan
@@ -617,6 +620,7 @@ class CheckPerc(smach.State):
                     remove_predicate("low_attention_r")  
 
             if new_hint:
+                remove_predicate("executed_task") 
                 add_goal("hint_given")
                 remove_predicate("hint_given")
                 add_predicate("new_hint")
@@ -624,6 +628,7 @@ class CheckPerc(smach.State):
 
             
             if new_number:
+                remove_predicate("executed_task") 
                 add_goal("number_said")
                 remove_predicate("number_said")
                 add_predicate("number_seen")
@@ -637,6 +642,8 @@ class CheckPerc(smach.State):
 
             
             if quiz_guessed:
+                add_predicate("number_said")
+                remove_predicate("executed_task") 
                 print("CHANGING GOAL TO GAME_FINISHED")
                 quiz_guessed=False
                 remove_goal("waited")
@@ -644,7 +651,7 @@ class CheckPerc(smach.State):
                 remove_predicate("game_finished")
                 add_goal("game_finished")
 
-            else:
+            else: 
                 remove_predicate("waited")
                 add_goal("waited")
 
@@ -815,8 +822,6 @@ def main():
 
      
         outcome = sm.execute()
-        
-    
 
     except:
         print("interrupt")

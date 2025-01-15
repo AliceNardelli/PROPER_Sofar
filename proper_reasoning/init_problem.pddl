@@ -4,9 +4,9 @@
 (:init
         (=(dur)5)
         (=(react)0.1)
-        (=(reward_e)5)
-        (=(reward_a)5)
-        (=(reward_c)5)
+        (=(reward_e)10)
+        (=(reward_a)10)
+        (=(reward_c)10)
         (=(extroversion_coefficient) 0)
         (=(desired_interaction) 5)
         (=(interaction_level) 6)  

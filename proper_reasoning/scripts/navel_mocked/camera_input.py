@@ -45,7 +45,7 @@ async def perception():
     global actual_emotion, gaze, perception_to_take
     while True:
         await asyncio.sleep(2)  # Fix: Use 'await' here
-        random_number = random.choice([0, 1])
+        random_number = random.choice([0, 1, 2, 3])
         if random_number == 0:
             perception_to_take = True
             gaze = "positive" if random.choice([True, False]) else "negative"
