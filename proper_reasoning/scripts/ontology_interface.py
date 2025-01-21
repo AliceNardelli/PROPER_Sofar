@@ -22,12 +22,12 @@ from client_proper import ClientProper
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=1
+we=0
 wi=0
 wc=0
 wu=0
 wa=0
-wd=0
+wd=1
 start_new_session=True
 sum_weights=0
 weights=[]
@@ -399,15 +399,15 @@ class ExAction(smach.State):
             else:
                 comfortability = "negative"
 
-            
+            print("BEFORE EXECUTING: ", ac)
             resp, to_exec_action = dispatch_action(ac, personality, personality_emotions, emotion, sentence, comfortability, weights)
             
-            resp2=True
+            #resp2=True
             #if ("react" not in to_exec_action) and ("compute" not in to_exec_action) and ("check" not in to_exec_action):
                 #change_raward("react",float(1))
                 
             
-            if resp2==False:
+            if resp==False:
                     print('Action Failed')        
                     return userdata, False, to_exec_action
             else:
@@ -429,10 +429,17 @@ class CheckPerc(smach.State):
         
     def execute(self, userdata):
         global emotion, new_emotion, new_sentence, new_attention, attention, sentence, human_present, start_proactivity, person
+        time.sleep(2)
+        speaking = client_proper.get_speaking()
+        while speaking:
+            print("LISTENING")
+            speaking= client_proper.get_speaking()
+            time.sleep(1)
+
+        
         new_sentence, new_emotion, new_attention, attention, emotion, sentence, human_present, start_proactivity, new_person_index, detected_main_info, detected_preferred_activities =client_proper.get_user_input()
-        time.sleep(5)
         print(new_sentence, new_emotion, new_attention, attention, emotion, sentence, human_present, start_proactivity, new_person_index, detected_main_info, detected_preferred_activities)
-    
+        
         a=userdata.action
         print("action",a)
         try:
@@ -451,8 +458,11 @@ class CheckPerc(smach.State):
         
         if (detected_preferred_activities) and (objects_objects[person] in predicates_objects["detected_preferred_activities"].has_object):
                 detected_preferred_activities=False
-
-
+   
+        if human_present:
+            if new_person_index in person_dict:
+                    person=person_dict[new_person_index]  
+                
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
         if new_emotion==False and new_sentence==False and new_attention==False and start_proactivity==False and human_present==False and detected_main_info==False and detected_preferred_activities==False:
             if userdata.state=="exec": #action fail
@@ -465,14 +475,11 @@ class CheckPerc(smach.State):
                     return "outcome4"
                 else:
                     return "outcome2"
+                
         #IF NEW PERCEPTION
         else:
-
             if human_present:
-                human_present=False
-                if new_person_index in person_dict:
-                    person=person_dict[new_person_index]    
-                else:
+                if not (new_person_index in person_dict):
                     person_dict[new_person_index]="a"+str(person_dict["counter_person"])
                     person_dict["counter_person"]=person_dict["counter_person"]+1
                     person=person_dict[new_person_index]
@@ -504,40 +511,7 @@ class CheckPerc(smach.State):
                 add_predicate("new_sentence")
                 remove_predicate("finished_sentence")
                 add_goal("finished_sentence")
-                remove_goal("finished")
                 new_sentence=False
-
-            if start_proactivity:
-                start_proactivity=False
-                self.add_person(person)
-                #remove_predicate("welcomed")
-                remove_predicate("finished")
-                remove_goal("finished_sentence")
-                print("OBJ OBJ1: ", predicates_objects["detected_main_info"].has_object)
-                print("OBJ OBJ2: ", predicates_objects["detected_preferred_activities"].has_object)
-                if objects_objects[person] not in predicates_objects["detected_main_info"].has_object:
-                    try:
-                        predicates_objects["ask_to_present"].has_objects.remove(objects_objects[person])
-                    except:
-                        print("not already asked")
-                    remove_predicate("waited1")
-                    add_goal("waited1")
-
-                elif objects_objects[person] not in predicates_objects["detected_preferred_activities"].has_object:
-                    try:
-                        predicates_objects["ask_preferred_activities"].has_objects.remove(objects_objects[person])
-                    except:
-                        print("not already asked")
-
-                    remove_predicate("waited1")
-                    remove_goal("waited1")
-                    remove_predicate("waited2")
-                    add_goal("waited2")
-                else:
-                    remove_predicate("waited2")
-                    remove_goal("waited2")
-                    remove_predicate("finished")
-                    add_goal("finished")
 
             if detected_main_info:
                 print("DETECTED MAIN INFO")
@@ -551,7 +525,69 @@ class CheckPerc(smach.State):
                 add_predicate("detected_preferred_activities")
                 if objects_objects[person] not in predicates_objects["detected_preferred_activities"].has_object:
                     predicates_objects["detected_preferred_activities"].has_object.append(objects_objects[person])
+
+            if start_proactivity or human_present:
+                if start_proactivity:
+                    self.add_person(person)    
+                    print("------------------------")
+                    print("START PROACTIVITY")
+                    print("------------------------")
                 
+                
+                #remove_predicate("welcomed")
+                remove_goal("finished_sentence")
+                print("OBJ OBJ1: ", predicates_objects["detected_main_info"].has_object)
+                print("OBJ OBJ2: ", predicates_objects["detected_preferred_activities"].has_object)
+                if objects_objects[person] not in predicates_objects["detected_main_info"].has_object:
+                    if start_proactivity:
+                        if objects_objects[person] in predicates_objects["ask_to_present"].has_object:
+                            predicates_objects["ask_to_present"].has_object.remove(objects_objects[person])
+                            if predicates_objects["ask_to_present"].has_object==[]:
+                                remove_predicate("ask_to_present")
+                            predicates_objects["greetings"].has_object.append(objects_objects[person])
+                            if not predicates_objects["greetings"].is_grounded:
+                                predicates_objects["greetings"].is_grounded=True
+                            print("removedddddd")
+                    remove_predicate("waited1")
+                    add_goal("waited1")
+                    
+                    
+
+                elif objects_objects[person] not in predicates_objects["detected_preferred_activities"].has_object:
+                    if start_proactivity:
+                        if objects_objects[person] in predicates_objects["ask_preferred_activities"].has_object:
+                            predicates_objects["ask_preferred_activities"].has_object.remove(objects_objects[person])
+                            if predicates_objects["ask_preferred_activities"].has_object==[]:
+                                remove_predicate("ask_preferred_activities")
+                            predicates_objects["ask_to_present"].has_object.append(objects_objects[person])
+                            if not predicates_objects["ask_to_present"].is_grounded:
+                                predicates_objects["ask_to_present"].is_grounded=True
+                            print("removedddddd")
+
+                    remove_predicate("waited1")
+                    remove_goal("waited1")
+                    remove_predicate("waited2")
+                    add_goal("waited2")
+                    
+
+                else:
+                    if start_proactivity:
+                        if objects_objects[person] in predicates_objects["information_suggested"].has_object:
+                            
+                            predicates_objects["information_suggested"].has_object.remove(objects_objects[person])
+                            if predicates_objects["information_suggested"].has_object==[]:
+                                remove_predicate("information_suggested")
+                            predicates_objects["ask_preferred_activities"].has_object.append(objects_objects[person])
+                            if not predicates_objects["ask_preferred_activities"].is_grounded:
+                                predicates_objects["ask_preferred_activities"].is_grounded=True
+                            print("removedddddd")
+
+                    remove_predicate("waited2")
+                    remove_goal("waited2")
+                    remove_predicate("finished")
+                    add_goal("finished")
+                start_proactivity=False 
+                human_present=False   
             return "outcome3"
         
 
@@ -599,8 +635,8 @@ class UpdateOntology(smach.State):
         initialize_reward()
         userdata.out_action=acc
         print(acc)
-        if "REACT" in acc:
-            return 'outcome11'
+        #if "REACT" in acc:
+            #return 'outcome11'
         return 'outcome10'
     
 

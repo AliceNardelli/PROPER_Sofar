@@ -23,7 +23,7 @@ person
         (reward_c)      
 )
 
-(:predicates 
+(:predicates
         (finished)
         (finished_sentence)
         (waited1)
@@ -65,7 +65,7 @@ person
 (:action EXTRO_ACTION
         :precondition
                (and 
-                (answered)
+                (answered)               
                	(extro)
                 )
         :effect
@@ -83,7 +83,7 @@ person
                )
         :effect
                 (and
-                     (increase (interaction_level)(reward_e))                 
+                     (increase (interaction_level)(reward_e))              
                 )
 )
 
@@ -122,7 +122,7 @@ person
                 )
         :effect
                 (and
-                        (increase (agreeableness_level)(reward_a))                                   
+                        (increase (agreeableness_level)(reward_a))                                  
                 )
 )
 
@@ -134,8 +134,7 @@ person
                 )
         :effect
                 (and
-                        (increase (agreeableness_level)(reward_a))
-                                      
+                        (increase (agreeableness_level)(reward_a))          
                 )
 )
 
@@ -285,6 +284,7 @@ person
                            (low_attention_r)
                            (person_present ?p)
                            (person_there ?p)
+                           (answered)
                 )
         :effect
                 (and
@@ -293,8 +293,7 @@ person
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
                            (greetings ?p)
-                           (not (person_present ?p))
-                           (answered)                 
+                           (not (person_present ?p))           
                 )
 )
 
@@ -309,6 +308,7 @@ person
                            (low_attention_r)
                            (person_there ?p)
                            (greetings ?p)
+                           (answered)
                 )
         :effect
                 (and
@@ -317,8 +317,7 @@ person
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
                            (ask_to_present ?p)
-                           (answered)   
-                           (not (greetings ?p))              
+                           (not (greetings ?p))           
                 )
 )
 
@@ -334,6 +333,7 @@ person
                            (ask_to_present ?p)
                            (person_there ?p)
                            (detected_main_info ?p)
+                           (answered)
                 )
         :effect
                 (and
@@ -343,7 +343,6 @@ person
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
                            (ask_preferred_activities ?p)
                            (not (ask_to_present ?p))
-                           (answered)                 
                 )
 )
 
@@ -358,6 +357,7 @@ person
                            (ask_preferred_activities ?p)
                            (person_there ?p)
                            (detected_preferred_activities ?p)
+                           (answered)
                 )
         :effect
                 (and
@@ -366,8 +366,7 @@ person
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
                            (not (ask_preferred_activities ?p))
-                           (information_suggested ?p)
-                           (answered)                 
+                           (information_suggested ?p)         
                 )
 )
 
@@ -497,13 +496,12 @@ person
                            (>(scrupulousness_level)(desired_scrupulousness))
                            (>(agreeableness_level)(desired_agreeableness))
                            (ask_to_present ?p)
+                           (answered)
                 )
         :effect
                 (and
-                           (decrease (interaction_level)(*(conscientious_coefficient)(dur)))
-                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
-                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-                           (waited1)               
+                           
+                           (waited1)             
                 )
 )
 
@@ -520,13 +518,13 @@ person
                            (>(scrupulousness_level)(desired_scrupulousness))
                            (>(agreeableness_level)(desired_agreeableness))
                            (ask_preferred_activities ?p)
+                           (answered)
                 )
         :effect
                 (and
-                           (decrease (interaction_level)(*(conscientious_coefficient)(dur)))
-                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
-                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
-                           (waited2)               
+                           
+                           (waited2)
+
                 )
 )
 

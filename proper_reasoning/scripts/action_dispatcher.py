@@ -56,8 +56,18 @@ def dispatch_action(action, personality, personality_emotions, user_emotion, use
                 time.sleep(3)
                 executed = client_proper.get_exec()
                 while executed==False:
-                     time.sleep(8)
+                     
                      executed = client_proper.get_exec()
+                     # LA AZIONE SE LA PERSONA HA INIZIATO A PARLARE FALLISCE
+                     speaking = client_proper.get_speaking()
+                     if speaking and (not executed):
+                        if action in ["greet","ask main info","ask preferred activities","suggest activities"]:
+                              return True, action
+                        elif "answer" in action:
+                               return True, action
+                        else:
+                                return False, action 
+                     time.sleep(0.5)  
 
         return True, action
         

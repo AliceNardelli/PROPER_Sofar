@@ -30,8 +30,28 @@ API_POST_NEW_ACTION = URL_SERVER_SESSION + 'post_new_action'
 API_GET_NEW_ACTION = URL_SERVER_SESSION + 'get_new_action'
 API_POST_EXEC = URL_SERVER_SESSION + 'post_exec'
 API_GET_EXEC = URL_SERVER_SESSION + 'get_exec'
+API_GET_SPEAKING = URL_SERVER_SESSION + 'get_speaking'
+API_POST_SPEAKING = URL_SERVER_SESSION + 'set_speaking'
 
 class ClientProper:
+
+
+    def get_speaking(self):
+        response = requests.get(API_GET_SPEAKING, timeout=5)
+        if response.status_code == 200:
+            payload = response.json()
+            return payload['speaking']
+        else:
+            print(f"Error: {response.status_code}")
+            return None
+
+
+    def post_speaking(self, speaking):
+        payload = {
+            'stopped': speaking,
+        }
+        requests.post(API_POST_SPEAKING, json=payload, timeout=5)
+
     def save_main_info(self):
         payload = {
             'detected_main_info': True
