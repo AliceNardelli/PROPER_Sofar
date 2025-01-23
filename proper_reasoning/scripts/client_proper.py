@@ -32,9 +32,27 @@ API_POST_EXEC = URL_SERVER_SESSION + 'post_exec'
 API_GET_EXEC = URL_SERVER_SESSION + 'get_exec'
 API_GET_SPEAKING = URL_SERVER_SESSION + 'get_speaking'
 API_POST_SPEAKING = URL_SERVER_SESSION + 'set_speaking'
+API_GET_PERSONALITY = URL_SERVER_SESSION + 'get_personality'
+API_POST_PERSONALITY = URL_SERVER_SESSION + 'post_personality'
+
 
 class ClientProper:
 
+    def get_personality(self):
+        response = requests.get(API_GET_PERSONALITY, timeout=5)
+        if response.status_code == 200:
+            payload = response.json()
+            return payload['personality']
+        else:
+            print(f"Error: {response.status_code}")
+            return None
+
+
+    def post_personality(self, personality):
+        payload = {
+            'personality':  personality,
+        }
+        requests.post(API_POST_PERSONALITY, json=payload, timeout=5)
 
     def get_speaking(self):
         response = requests.get(API_GET_SPEAKING, timeout=5)

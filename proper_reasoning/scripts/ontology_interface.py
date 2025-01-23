@@ -25,10 +25,10 @@ traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
 wi=0
 wc=0
-wu=0
+wu=1
 wa=0
-wd=1
-start_new_session=True
+wd=0
+start_new_session=False
 sum_weights=0
 weights=[]
 gamma=1
@@ -85,7 +85,11 @@ class State_Start(smach.State):
         except:
                 weights=6*[0]
                 sum_weights=1
-
+        #posting personality
+        tt=["Extrovert","Introvert","Conscientious","Distracted","Agreeable","Disagreeable"]
+        for i in range(len(weights)):
+                if weights[i]!=0:
+                        client_proper.post_personality(tt[i])
         return 'outcome0'
 
 
@@ -140,6 +144,14 @@ class State_Init(smach.State):
                             secondfile.write(p)
                     else:
                         secondfile.write(line)
+        else:
+            # Read dictionary from a JSON file
+            with open("/home/alice/PROPER_Sofar/proper_reasoning/data.json", "r") as file:
+                person_dict = json.load(file)
+            print("Dictionary loaded from data.json:")
+            print(person_dict)
+
+
         print('Reading domain and populate ontology')
         populate_ontology(userdata.domain_path)
         print('Initialize function and predicates in the ontology')
@@ -484,6 +496,8 @@ class CheckPerc(smach.State):
                     person_dict["counter_person"]=person_dict["counter_person"]+1
                     person=person_dict[new_person_index]
                     self.add_person_object(person)
+                    with open("/home/alice/PROPER_Sofar/proper_reasoning/data.json", "w") as file:
+                        json.dump(person_dict, file, indent=4)
 
             if new_emotion:
                new_emotion=False

@@ -12,6 +12,15 @@ from client_proper import ClientProper
 
 traits_res=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 
+traits_dict = {
+       "Extrovert":"Extrovert",
+       "Introvert":"Introvert",
+       "Conscientious":"Conscientious",
+       "Unscrupolous":"Distracted",
+       "Agreeable":"Agreeable",
+       "Disagreeable":"Disagreeable"
+}
+
 file_name="/home/alice/Rose/prova.txt"
 file = open(file_name, 'a')
 client_proper=ClientProper()
@@ -52,21 +61,23 @@ def dispatch_action(action, personality, personality_emotions, user_emotion, use
                 file.write(str(file_data))
                 file.write("\n")
                 file.flush()
-                client_proper.post_new_action(language_sentence, robot_emotion, mmap["volume"], mmap["gaze"], action, personality)
+                client_proper.post_new_action(language_sentence, robot_emotion, mmap["volume"], mmap["gaze"], action, traits_dict[personality])
                 time.sleep(3)
                 executed = client_proper.get_exec()
                 while executed==False:
-                     
-                     executed = client_proper.get_exec()
                      # LA AZIONE SE LA PERSONA HA INIZIATO A PARLARE FALLISCE
+                     """
                      speaking = client_proper.get_speaking()
-                     if speaking and (not executed):
+                     if speaking:
                         if action in ["greet","ask main info","ask preferred activities","suggest activities"]:
                               return True, action
                         elif "answer" in action:
-                               return True, action
+                                return True, action
                         else:
                                 return False, action 
+                     """                    
+                     executed = client_proper.get_exec()
+
                      time.sleep(0.5)  
 
         return True, action
