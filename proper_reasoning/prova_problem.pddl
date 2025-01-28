@@ -2,20 +2,19 @@
 (:objects
       p - person 
       a0 - person 
-      a1 - person 
 )
 (:init 
-      (answered)
-      (person_there a1)
-      (information_suggested a0)
+      (waited1)
+      (new_sentence)
+      (person_there a0)
+      (ask_preferred_activities a0)
       (detected_main_info a0)
-      (detected_main_info a1)
       (detected_preferred_activities a0)
-      (detected_preferred_activities a1)
       (intro)
       (unsc)
       (disagree)
-      (calm_emotion)
+      (happy_emotion_r)
+      (emotion_r)
       (attention_r)
       (low_attention_r)
       (=(dur)2.0)
@@ -24,7 +23,7 @@
       (=(interaction_level)6.0)
       (=(conscientious_coefficient)1.0)
       (=(desired_scrupulousness)5.0)
-      (=(scrupulousness_level)8.0)
+      (=(scrupulousness_level)0.0)
       (=(agreeableness_coefficient)0.0)
       (=(desired_agreeableness)5.0)
       (=(agreeableness_level)6.0)
@@ -35,6 +34,5 @@
 )
 (:goal (and
       (finished)
-      (calm_emotion_r)
-      (emotion_r)
+      (answered)
 )))

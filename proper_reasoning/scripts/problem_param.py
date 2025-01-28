@@ -1,9 +1,9 @@
 problem_goals=['goal1']
 actual_goal="goal1"
-goals_dict={"goal1": {"domain":'/home/alice/PROPER_Sofar/proper_reasoning/goal1_domain.pddl', 
+goals_dict={"goal1": {"domain":'/home/alice/PROPER_Sofar/proper_reasoning/goal1_domain_sa.pddl', 
       "problem":'/home/alice/PROPER_Sofar/proper_reasoning/prova_problem.pddl',
       "init":'/home/alice/PROPER_Sofar/proper_reasoning/init_problem.pddl',
-      "command":'./ff -p /home/alice/PROPER_Sofar/proper_reasoning/ -o goal1_domain.pddl -f prova_problem.pddl',
+      "command":'./ff -p /home/alice/PROPER_Sofar/proper_reasoning/ -o goal1_domain_sa.pddl -f prova_problem.pddl',
       "folder":'/home/alice/PROPER_Sofar/proper_reasoning/',
       "plan":"/home/alice/PROPER_Sofar/proper_reasoning/plan.pddl",
       "ontology":"http://www.semanticweb.org/alice/ontologies/2023/10/goal1#",

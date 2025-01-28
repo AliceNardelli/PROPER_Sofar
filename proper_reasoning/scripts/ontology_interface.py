@@ -28,7 +28,7 @@ wc=0
 wu=1
 wa=0
 wd=0
-start_new_session=False
+start_new_session=True
 sum_weights=0
 weights=[]
 gamma=1
@@ -363,6 +363,8 @@ class ExAction(smach.State):
 
         else:
             em=client_proper.get_user_last_emotion()
+            if em not in list_of_emotions:
+                    em="Neutral"
             if em!="":
                 emotion=em
             userdata, response, ea =self.call_action_server(userdata, ac, personality)
@@ -501,6 +503,8 @@ class CheckPerc(smach.State):
 
             if new_emotion:
                new_emotion=False
+               if emotion not in list_of_emotions:
+                    emotion="Neutral"
                emotion_pred=perception_predicate_map[map_emotion_AV_axis[emotion]]["emotion"]
                goals=perception_predicate_map[map_emotion_AV_axis[emotion]]["goals"]
                add_predicate(emotion_pred)

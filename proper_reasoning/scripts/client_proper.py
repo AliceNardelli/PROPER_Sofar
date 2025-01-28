@@ -13,7 +13,7 @@ from datetime import datetime
 # external modules
 import requests
 
-HOST = '10.186.13.18'
+HOST = '192.168.69.251'
 PORT = '2001'
 URL_SERVER_SESSION = f'http://{HOST}:{PORT}/api/'
 
