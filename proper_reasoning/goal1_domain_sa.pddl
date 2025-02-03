@@ -64,8 +64,7 @@ person
 
 (:action EXTRO_ACTION
         :precondition
-               (and 
-                (answered)               
+               (and                
                	(extro)
                 )
         :effect
@@ -79,7 +78,6 @@ person
         :precondition
                (and 
                (intro)
-               (answered)
                )
         :effect
                 (and
@@ -91,7 +89,6 @@ person
         :precondition
                (and 
                	(consc)
-                (answered)
                 )
         :effect
                 (and
@@ -105,7 +102,6 @@ person
         :precondition
                (and 
                	(unsc)
-                (answered)
                 )
         :effect
                 (and
@@ -118,7 +114,6 @@ person
         :precondition
                (and 
                	(agree)
-                (answered)
                 )
         :effect
                 (and
@@ -130,7 +125,6 @@ person
         :precondition
                (and 
                	(disagree)
-                (answered)
                 )
         :effect
                 (and
@@ -273,7 +267,6 @@ person
 
 
 
-
 (:action GREET
         :parameters 
                 (?p - person)
@@ -288,9 +281,9 @@ person
         :effect
                 (and
                            
-                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
-                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
-                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (decrease (interaction_level)(*(extroversion_coefficient)(-(dur)3)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(-(dur)3)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(-(dur)3)))
                            (greetings ?p)
                            (not (person_present ?p))  
                            (answered) 
@@ -314,9 +307,9 @@ person
         :effect
                 (and
                            
-                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
-                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
-                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (decrease (interaction_level)(*(extroversion_coefficient)(-(dur)3)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(-(dur)3)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(-(dur)3)))
                            (ask_to_present ?p)
                            (not (greetings ?p))    
                            (answered) 
@@ -342,9 +335,9 @@ person
         :effect
                 (and
                            
-                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
-                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
-                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (decrease (interaction_level)(*(extroversion_coefficient)(-(dur)3)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(-(dur)3)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(-(dur)3)))
                            (ask_preferred_activities ?p)
                            (not (ask_to_present ?p))    
                            (answered) 
@@ -369,9 +362,9 @@ person
         :effect
                 (and
                            
-                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
-                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
-                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (decrease (interaction_level)(*(extroversion_coefficient)(-(dur)3)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(-(dur)3)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(-(dur)3)))
                            (not (ask_preferred_activities ?p))
                            (information_suggested ?p)    
                            (answered) 
@@ -392,12 +385,11 @@ person
         :effect
                 (and
                            
-                           (when (intro) (increase (interaction_level)(*(extroversion_coefficient)(dur))))
+                           (when (intro) (decrease (interaction_level)(*(extroversion_coefficient)(-(dur)1))))
                            (when (extro) (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)4))))
-                           (when (consc) (increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
-                           (when (unsc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)4))))
-                           (when (agree) (increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
-                           (when (disagree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)4))))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (when (agree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)4))))
+                           (when (disagree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(-(dur)1))))
                            (answered) 
                            (finished_sentence) 
                            (not (new_sentence))               
@@ -417,10 +409,11 @@ person
         :effect
                 (and
                            
-                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
-                           (when (consc) (increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (when (intro) (decrease (interaction_level)(*(extroversion_coefficient)(-(dur)1))))
+                           (when (extro) (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)4))))
+                           (when (consc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(-(dur)1))))
                            (when (unsc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)4))))
-                           (when (agree) (increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (when (agree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(-(dur)1))))
                            (when (disagree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)4))))
                            (answered)
                            (not (new_sentence))                   
@@ -441,7 +434,7 @@ person
                 (and
                            
                            (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)2)))
-                           (when (unsc) (increase (scrupulousness_level)(*(conscientious_coefficient)(dur))))
+                           (when (unsc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(-(dur)1))))
                            (when (consc) (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)4))))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)2)))
                            (answered) 
@@ -463,7 +456,7 @@ person
                 (and
                            
                            (when (intro) (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)4))))
-                           (when (extro) (increase (interaction_level)(*(extroversion_coefficient)(dur))))
+                           (when (extro) (decrease (interaction_level)(*(extroversion_coefficient)(-(dur)1))))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)2)))
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)2)))
                            (answered) 
@@ -487,7 +480,7 @@ person
                 (and
                            
                            (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)2)))
-                           (when (disagree) (increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
+                           (when (disagree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(-(dur)1))))
                            (when (agree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)4))))
                            (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)2)))
                            (answered)  

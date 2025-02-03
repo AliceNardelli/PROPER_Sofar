@@ -23,9 +23,9 @@ from client_proper import ClientProper
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=0
+wi=1
 wc=0
-wu=1
+wu=0
 wa=0
 wd=0
 start_new_session=True
@@ -57,7 +57,11 @@ emotion_mask={
     "N":[4,4,1,1,4,4],
 }
 
-
+def append_to_file(value, action):
+    filename="comfortability.txt"
+    with open(filename, "a") as file:
+        file.write(str(value) +" "+ action +"\n")
+    print(f"Appended: {value}")
 
 class State_Start(smach.State):
     def __init__(self):
@@ -443,12 +447,12 @@ class CheckPerc(smach.State):
         
     def execute(self, userdata):
         global emotion, new_emotion, new_sentence, new_attention, attention, sentence, human_present, start_proactivity, person
-        time.sleep(2)
+        time.sleep(1)
         speaking = client_proper.get_speaking()
         while speaking:
             print("LISTENING")
             speaking= client_proper.get_speaking()
-            time.sleep(1)
+            time.sleep(0.5)
 
         
         new_sentence, new_emotion, new_attention, attention, emotion, sentence, human_present, start_proactivity, new_person_index, detected_main_info, detected_preferred_activities =client_proper.get_user_input()
@@ -587,7 +591,6 @@ class CheckPerc(smach.State):
                     remove_predicate("waited2")
                     add_goal("waited2")
                     
-
                 else:
                     if start_proactivity:
                         if objects_objects[person] in predicates_objects["information_suggested"].has_object:
@@ -646,6 +649,7 @@ class UpdateOntology(smach.State):
                              output_keys=['state',"out_action"])
         
     def execute(self, userdata):
+        global we, wi, wa, wd, wc, wu
         print('Update_ontology')
         acc=userdata.action
         update_ontology(userdata.action)
@@ -653,6 +657,12 @@ class UpdateOntology(smach.State):
         initialize_reward()
         userdata.out_action=acc
         print(acc)
+        if we!=0 or wi!=0:
+            append_to_file(function_objects["interaction_level"].has_value, acc)
+        elif wc!=0 or wu!=0:
+            append_to_file(function_objects["scrupulousness_level"].has_value, acc)
+        elif wd!=0 or wa!=0:
+            append_to_file(function_objects["agreeableness_level"].has_value, acc)
         #if "REACT" in acc:
             #return 'outcome11'
         return 'outcome10'

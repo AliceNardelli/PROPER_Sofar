@@ -11,70 +11,70 @@ consc_actions=["say_the_user_to_focus_on_long_term_goals_and_not_waste_time",
                "ask_the_user_if_it_can_offer_guidance"]
 
 
-zzz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_where_it_can_be_useful":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_the_user_if_it_can_offer_guidance":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_something_to_promote_ethical_behavior":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_to_be_focused":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "remind_to_not_distract":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
+zzz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_where_it_can_be_useful":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_to_be_focused":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "remind_to_not_distract":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
      }
 
-zzo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_where_it_can_be_useful":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_the_user_if_it_can_offer_guidance":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_something_to_promote_ethical_behavior":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_to_be_focused":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "remind_to_not_distract":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
+zzo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_where_it_can_be_useful":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_to_be_focused":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "remind_to_not_distract":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
      }
 
-zoz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_where_it_can_be_useful":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_the_user_if_it_can_offer_guidance":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_something_to_promote_ethical_behavior":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_to_be_focused":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "remind_to_not_distract":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
+zoz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_where_it_can_be_useful":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_to_be_focused":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "remind_to_not_distract":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
     
      }
 
-zoo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_where_it_can_be_useful":{"w1":4,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_the_user_if_it_can_offer_guidance":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_something_to_promote_ethical_behavior":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_to_be_focused":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "remind_to_not_distract":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
+zoo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_where_it_can_be_useful":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_to_be_focused":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "remind_to_not_distract":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
      }
 
-ozz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_where_it_can_be_useful":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_the_user_if_it_can_offer_guidance":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_something_to_promote_ethical_behavior":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
+ozz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_where_it_can_be_useful":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
      "say_to_be_focused":{"w1":0,"w2":0,"expected_outcome":[1,0,0]},
      "remind_to_not_distract":{"w1":0,"w2":0,"expected_outcome":[1,0,0]},
      }
 
-ozo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":4,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_where_it_can_be_useful":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_the_user_if_it_can_offer_guidance":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_something_to_promote_ethical_behavior":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_to_be_focused":{"w1":4,"w2":0,"expected_outcome":[1,0,0]},
-     "remind_to_not_distract":{"w1":4,"w2":0,"expected_outcome":[1,0,0]},
+ozo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_where_it_can_be_useful":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_to_be_focused":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
+     "remind_to_not_distract":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
      }
 
-ooz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_where_it_can_be_useful":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_the_user_if_it_can_offer_guidance":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_something_to_promote_ethical_behavior":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_to_be_focused":{"w1":4,"w2":0,"expected_outcome":[1,0,0]},
-     "remind_to_not_distract":{"w1":4,"w2":0,"expected_outcome":[1,0,0]},
+ooz_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_where_it_can_be_useful":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_to_be_focused":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
+     "remind_to_not_distract":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
     
      }
 
-ooo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_where_it_can_be_useful":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "ask_the_user_if_it_can_offer_guidance":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_something_to_promote_ethical_behavior":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
-     "say_to_be_focused":{"w1":4,"w2":0,"expected_outcome":[1,0,0]},
-     "remind_to_not_distract":{"w1":4,"w2":0,"expected_outcome":[1,0,0]},
+ooo_c={"say_the_user_to_focus_on_long_term_goals_and_not_waste_time":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_where_it_can_be_useful":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "ask_the_user_if_it_can_offer_guidance":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_something_to_promote_ethical_behavior":{"w1":8,"w2":0,"expected_outcome":[1,0,0]},
+     "say_to_be_focused":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
+     "remind_to_not_distract":{"w1":6,"w2":0,"expected_outcome":[1,0,0]},
      }
 
 
@@ -142,11 +142,10 @@ def choose_action_c(data, perception):
 
 # Update weights based on perception change
 def update_weights_c(data, action, p_prev, p_after):
-    list_real = data[p_after]["num"][0]
-    list_expected = data[p_prev]["weights"][action]["expected_outcome"][0]
-    error = sum(np.abs(np.array(list_real) - np.array(list_expected))) / 3
+    list_real = [data[p_after]["num"][0]]
+    list_expected = [data[p_prev]["weights"][action]["expected_outcome"][0]]
+    error = sum(np.abs(np.array(list_real) - np.array(list_expected)))
     prev_w2 = data[p_prev]["weights"][action]["w2"]
-
     if error == 0:
         data[p_prev]["weights"][action]["w2"] = round(prev_w2 + 0.5, 2)
     elif prev_w2 > 0.1:

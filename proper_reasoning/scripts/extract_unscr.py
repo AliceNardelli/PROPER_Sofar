@@ -8,46 +8,46 @@ unsc_actions=["distract_the_user_asking_a_random_question",
               "say_something_inconsistent"]
 
 
-zzz_u={"distract_the_user_asking_a_random_question":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "make_a_thoughtless_consideration":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_inconsistent":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
+zzz_u={"distract_the_user_asking_a_random_question":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "make_a_thoughtless_consideration":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_inconsistent":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-zzo_u={"distract_the_user_asking_a_random_question":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "make_a_thoughtless_consideration":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_inconsistent":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     }
-
-
-zoz_u={"distract_the_user_asking_a_random_question":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "make_a_thoughtless_consideration":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_inconsistent":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
+zzo_u={"distract_the_user_asking_a_random_question":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "make_a_thoughtless_consideration":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_inconsistent":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
      }
 
 
-zoo_u={"distract_the_user_asking_a_random_question":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "make_a_thoughtless_consideration":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_inconsistent":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
+zoz_u={"distract_the_user_asking_a_random_question":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "make_a_thoughtless_consideration":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_inconsistent":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-ozz_u={"distract_the_user_asking_a_random_question":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "make_a_thoughtless_consideration":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_inconsistent":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
+
+zoo_u={"distract_the_user_asking_a_random_question":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "make_a_thoughtless_consideration":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_inconsistent":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-ozo_u={"distract_the_user_asking_a_random_question":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "make_a_thoughtless_consideration":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_inconsistent":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
+ozz_u={"distract_the_user_asking_a_random_question":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "make_a_thoughtless_consideration":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_inconsistent":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-ooz_u={"distract_the_user_asking_a_random_question":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "make_a_thoughtless_consideration":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_inconsistent":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
+ozo_u={"distract_the_user_asking_a_random_question":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "make_a_thoughtless_consideration":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_inconsistent":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
      }
 
-ooo_u={"distract_the_user_asking_a_random_question":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "make_a_thoughtless_consideration":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-     "say_something_inconsistent":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
+ooz_u={"distract_the_user_asking_a_random_question":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "make_a_thoughtless_consideration":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_inconsistent":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     }
+
+ooo_u={"distract_the_user_asking_a_random_question":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "make_a_thoughtless_consideration":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_inconsistent":{"w1":8,"w2":0,"expected_outcome":[0,0,0]},
      }
 
 default_unsc_dict={
