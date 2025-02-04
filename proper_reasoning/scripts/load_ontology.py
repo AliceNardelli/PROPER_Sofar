@@ -115,9 +115,9 @@ def change_raward(func,r):
     function_objects[func].has_value=r
 
 def initialize_reward():
-    function_objects["reward_a"].has_value=8
-    function_objects["reward_e"].has_value=8
-    function_objects["reward_c"].has_value=8
+    function_objects["reward_a"].has_value=6
+    function_objects["reward_e"].has_value=6
+    function_objects["reward_c"].has_value=6
 
 def add_predicate(new_pred):
     #mi serve per aggiungere delle percezioni

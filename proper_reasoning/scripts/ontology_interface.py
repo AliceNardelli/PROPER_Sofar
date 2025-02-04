@@ -23,9 +23,9 @@ from client_proper import ClientProper
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=1
+wi=0
 wc=0
-wu=0
+wu=1
 wa=0
 wd=0
 start_new_session=True
