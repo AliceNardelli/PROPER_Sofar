@@ -7,7 +7,7 @@ import requests
 from emotion_generation import *
 from chat_playground import *
 
-url='http://192.168.1.55:5022/'
+url='http://10.186.13.6:5022/'
 
 headers= {'Content-Type':'application/json'}
 
