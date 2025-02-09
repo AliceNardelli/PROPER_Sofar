@@ -3,11 +3,11 @@
     p - person
 )
 (:init
-        (=(dur)1)
-        (=(react)2)
-        (=(reward_e)8)
-        (=(reward_a)8)
-        (=(reward_c)8)
+        (=(dur)3)
+        (=(react)3)
+        (=(reward_e)6)
+        (=(reward_a)6)
+        (=(reward_c)6)
         (=(extroversion_coefficient) 0)
         (=(desired_interaction) 5)
         (=(interaction_level) 6)  

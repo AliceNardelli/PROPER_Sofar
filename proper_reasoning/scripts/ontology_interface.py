@@ -23,9 +23,9 @@ from client_proper import ClientProper
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=0
+wi=1
 wc=0
-wu=1
+wu=0
 wa=0
 wd=0
 start_new_session=True
@@ -511,10 +511,14 @@ class CheckPerc(smach.State):
                     emotion="Neutral"
                emotion_pred=perception_predicate_map[map_emotion_AV_axis[emotion]]["emotion"]
                goals=perception_predicate_map[map_emotion_AV_axis[emotion]]["goals"]
+               remove=perception_predicate_map[map_emotion_AV_axis[emotion]]["remove"]
                add_predicate(emotion_pred)
+               for r in remove:
+                    remove_goal(r)              
                for g in goals:
                     add_goal(g)#state that that predicate is a goal
                     remove_predicate(g) #now the goal predicate is not grounded
+
 
             if new_attention:
                 new_attention=False
