@@ -22,6 +22,7 @@ config:
       }
 
       Rememeber that the field  \"robot_emotion\" contain your own emotion, so people have to take care about it in generating a response, and say it when the user ask to you.
+      NOTE: NOT change the meaning of the action but only change the way it is said
 
       All the text must be generated in Italian.
       Below are the examples:

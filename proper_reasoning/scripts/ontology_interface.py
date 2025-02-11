@@ -22,12 +22,12 @@ import datetime
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=0
-wi=1
-wc=1
+we=1
+wi=0
+wc=0
 wu=0
 wa=0
-wd=0
+wd=1
 sum_weights=0
 weights=[]
 gamma=1
@@ -42,7 +42,7 @@ new_hint=False
 new_number=False
 number=0
 begin=True
-url_navel='http://127.0.0.1:5021/'
+url_navel='http://10.186.13.34:5021/'
 url_emoACT='http://10.186.13.9:8008/'
 url_number='http://10.186.13.9:8080/'
 expression=""
@@ -373,7 +373,7 @@ class ExAction(smach.State):
             if predicates_objects["new_sentence"].is_grounded==True:
                 aa,rew=choose_action_e(pi,False)
             else:
-                aa,rew=choose_action_e(pi,False)
+                aa,rew=choose_action_e(pi,Falsegame_finished)
             userdata, response, ea  =self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
@@ -527,9 +527,11 @@ class CheckPerc(smach.State):
     def execute(self, userdata):
         global emotion, new_emotion, new_sentence, new_hint, new_number, data, new_attention, attention, sentence, number
         global quiz_guessed
-        if predicates_objects["game_finished"].is_grounded:
-            userdata.exec_actions_out=[]
-            return "outcome4"
+        if predicates_objects["finished_quiz"].is_grounded:
+            print("CIAOOOO EXIT FROM QUIZ")
+            function_objects["interaction_level"].has_value=6
+            function_objects["scrupulousness_level"].has_value=6
+            function_objects["agreeableness_level"].has_value=6
         
         time.sleep(5)
         resp=requests.put(url_navel+'get_input', json=data, headers=headers)
@@ -650,6 +652,7 @@ class CheckPerc(smach.State):
                 add_predicate("guessed_quiz")
                 remove_predicate("game_finished")
                 add_goal("game_finished")
+
 
             else: 
                 remove_predicate("waited")
