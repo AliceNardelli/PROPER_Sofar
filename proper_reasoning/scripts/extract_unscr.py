@@ -64,8 +64,8 @@ ooz_u={"distract_the_user_asking_a_random_question":{"w1":6,"w2":0,"expected_out
 ooo_u={"distract_the_user_asking_a_random_question":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
      "make_a_thoughtless_consideration":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
      "say_that_sometimes_it_is_important_to_take_off_your_head":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
-      "say_that_it_is_nice_to_find_someone_with_its_head_in_the_clouds":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
-      "say_something_inconsistent":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
+     "say_that_it_is_nice_to_find_someone_with_its_head_in_the_clouds":{"w1":0,"w2":0,"expected_outcome":[0,0,0]},
+     "say_something_inconsistent":{"w1":6,"w2":0,"expected_outcome":[0,0,0]},
      }
 
 unsc_dict={
