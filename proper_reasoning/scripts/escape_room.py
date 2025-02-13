@@ -9,6 +9,24 @@ sentence=""
 
 animals=["Rana","Lumaca","Foca","Elefante", "Libellula", "Coccinella","Marmotta","Pellicano","Alpaca","Stella Marina"]
 
+solution_keys = {
+    "Rana":11,
+    "Lumaca":12,
+    "Foca":13,
+    "Elefante":14, 
+    "Libellula":15, 
+    "Coccinella":16,
+    "Marmotta":17,
+    "Pellicano":18,
+    "Alpaca":19,
+    "Stella Marina":20,
+    "Lucchetto":10,
+    "VGBR":21,
+    "GBRV":22,
+    "VRGB":23,
+    "VBRG":24,
+    "RVGB":25
+}
 
 dates={
     "0476": "Caduta dell'Impero Romano d'Occidente",

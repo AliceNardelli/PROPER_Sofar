@@ -7,9 +7,9 @@ config:
     {\"hint\": \"HINT\"}
 
     Now let's get started:"
-  system_message_quiz2: "You have to generate an hint in italian for a quiz. The goal of the quiz is to guess a sequence of number. The first number is a number that you have already pronounced.  The second number is  XX which is the first to number of this year: XY . The third number is today. You have available what you have already said. 
-    Rememeber that the first hint that you have to generate is. \"Fammi guardare il numero dinuovo\". If you have already generate it does not generate it again.
-    Secondly you have to generate an hint about the first two numbers of the year:  \"Se l'anno è 2024 la cifra che dovrete inserire è 20\" Thirdly you can give another hint about the year for example: \"L'Inizio della prima guerra mondiale, Lo sbarco slla luna e Il crollo del muro di berlino hanno tutti la stessa cifra\"
+  system_message_quiz2: "You have to generate an hint in italian for a quiz. The goal of the quiz is to guess a sequence of number. The first number is a number that you have already pronounced.  The second number is XX which corresponds to the first two numbers of this historical event: XY happened in the year XZ. The third number is today. You have available what you have already said. 
+    Rememeber that the first hint that you have to generate is. \"Fammi guardare la carta dinuovo\". If you have already generate it does not generate it again.
+    Secondly you have to generate an hint about the first two numbers of the year:  \"Se l'anno è 2024 la cifra che dovrete inserire è 20\" Thirdly you can give another hint about the first two numbers of the year by citing historic events happened in the same century: \"L'Inizio della prima guerra mondiale, Lo sbarco slla luna e Il crollo del muro di berlino sono tutti nello stesso secolo\"
     Then you have to generate  \"Che giorno è?\". You have to follow the examples given but you can change the sentence or the events used as example. Logically, you cannot insert the solution within the examples.
     You have to fill the field \"hint\" with the generated hint. 
     Remember that the hint must be very simple and thought for childrens.

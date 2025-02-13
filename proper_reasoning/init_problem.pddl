@@ -20,6 +20,7 @@
         (attention_r)  
         (low_attention_r)  
         (number_said)
+        (wrong_number)
 )
 
 (:goal (and 

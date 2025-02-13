@@ -6,3 +6,4 @@ present_quiz2_2: "Successivamente dovrete guardare il calendario. Ditemi quando 
 guess_quiz2: "Siete riusciti a sbloccare il lucchetto"
 present_quiz3: "Il terzo e ultimo enigma consiste nel mostrarmi la sequenza di colori corretta. Avete un ultimo tentativo."
 guess_quiz3: "Siete stati molto astuti, ora avete il permesso di uscire."
+wrong_solution: "Avete sbagliato soluzione"

@@ -78,7 +78,7 @@ def generate_sentence(user_emotion, robot_emotion, text, personality, response_s
     print(response.choices[0].message.content)
     #chat_message = emoji.replace_emoji(string=chat_message, replace='')
     res = json.loads(response.choices[0].message.content)
-    return res["text"], res["voice_style"]
+    return res["text"], "chat"
 
 
 def generate_hint(quiz, solution, sentence):
@@ -104,7 +104,7 @@ def generate_hint(quiz, solution, sentence):
     if quiz == "quiz1":
         system_message2 = openai_config_hint.system_message_quiz1.replace("XXX", solution)
     else:
-        system_message2 = openai_config_hint.system_message_quiz2.replace("XX", solution).replace("XY", sentence)
+        system_message2 = openai_config_hint.system_message_quiz2.replace("XX", solution[0:1]).replace("XY", sentence).replace("XZ", solution)
 
     # Initialize the message list for the OpenAI API
     start_message2 = [

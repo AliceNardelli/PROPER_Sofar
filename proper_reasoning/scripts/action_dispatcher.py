@@ -8,10 +8,10 @@ from emotion_generation import *
 from chat_playground import *
 from omegaconf import OmegaConf
 
-url='http://10.186.13.34:5022/'
+url='http://10.186.13.13:5022/'
 url_emoACT='http://10.186.13.9:3000/emotional_state'
 url_emoACT2='http://10.186.13.9:8008/'
-
+emoact_active=True
 headers= {'Content-Type':'application/json'}
 expression=""
 data_action={
@@ -38,7 +38,8 @@ emotion_label_map={
 
 def dispatch_action(action, personality, user_emotion, user_sentence, comfortability, weights_res, quiz, solution, sentence, to_say_sentence, number):
         payload = {"comfortability": comfortability}
-        response = requests.post(url_emoACT2+'comfortability', json=payload, headers=headers)
+        if emoact_active:
+                response = requests.post(url_emoACT2+'comfortability', json=payload, headers=headers)
         #takes parameters
         params=generate_params(personality, action)
         mmap =get_map(params,personality)
@@ -57,17 +58,24 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
 
         
         print("generate the current robot emotion ********************")
-        try:
-                response = requests.get(url_emoACT)
-                if response.status_code == 200:
-                        data = response.json()  # Parse the JSON response
-                        robot_emotion = emotion_label_map[data.get("emotion_label")]
-                        new_emotion = data.get("new_emotion")
+        try:    
+                if emoact_active:
+                        response = requests.get(url_emoACT)
+                        if response.status_code == 200:
+                                data = response.json()  # Parse the JSON response
+                                robot_emotion = emotion_label_map[data.get("emotion_label")]
+                                new_emotion = data.get("new_emotion")
+                                epa = data.get("emotion")
+                                expression=epa[0]
+                                print(f"Emotion: {robot_emotion}")
+                        else:
+                                print(f"Failed to retrieve emotion. Status code: {response.status_code}, Response: {response.text}")
+                else:
+                                
+                        robot_emotion = emotion_label_map["N"]
                         epa = data.get("emotion")
                         expression=epa[0]
-                        print(f"Emotion: {robot_emotion}")
-                else:
-                        print(f"Failed to retrieve emotion. Status code: {response.status_code}, Response: {response.text}")
+                        
         except requests.exceptions.RequestException as e:
                 print(f"An error occurred: {e}")
 
@@ -82,6 +90,12 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                 elif (action == "say number"):
                         robot_sentence = str(number)
                         tone="chat"
+                
+                elif ( action == "say wrong"):
+                        sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").wrong_solution
+                        action_to_fullfill= "say: '"+sentence_to_say+"'"
+                        robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, "", personality_sentence, language_sentence, action_to_fullfill)
+
                 elif (action=="present escape room"):
                         sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").presentation
                         action_to_fullfill= "say: '"+sentence_to_say+"'"

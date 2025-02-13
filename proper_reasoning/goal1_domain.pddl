@@ -63,6 +63,7 @@
         (low_attention_r)
         (waited)  
         (executed_task)
+        (wrong_number)
 )
 
 
@@ -71,6 +72,7 @@
                (and 
                	(extro)
                 (executed_task)
+                (wrong_number)
                 )
         :effect
                 (and
@@ -85,6 +87,7 @@
                (and 
                (intro)
                (executed_task)
+               (wrong_number)
                )
         :effect
                 (and
@@ -98,6 +101,7 @@
                (and 
                	(consc)
                 (executed_task)
+                (wrong_number)
                 )
         :effect
                 (and
@@ -113,6 +117,7 @@
                (and 
                	(unsc)
                 (executed_task)
+                (wrong_number)
                 )
         :effect
                 (and
@@ -127,6 +132,7 @@
                (and 
                	(agree)
                 (executed_task)
+                (wrong_number)
                 )
         :effect
                 (and
@@ -140,6 +146,7 @@
                (and 
                	(disagree)
                 (executed_task)
+                (wrong_number)
                 )
         :effect
                 (and
@@ -326,6 +333,7 @@
                            (emotion_r)
                            (attention_r) 
                            (low_attention_r)
+                           (wrong_number)
                            (>(interaction_level)(desired_interaction))
                            (>(scrupulousness_level)(desired_scrupulousness))
                            (>(agreeableness_level)(desired_agreeableness))
@@ -333,7 +341,7 @@
         :effect
                 (and
                            (waited)   
-                           (executed_task)          
+                           (when (not(new_hint))(executed_task))          
                 )
 )
 
@@ -369,6 +377,7 @@
                            (low_attention_r)
                            (not (hint_given))
                            (present_quiz)
+                           (wrong_number)
                 )
         :effect
                 (and
@@ -389,6 +398,7 @@
                            (attention_r) 
                            (low_attention_r)
                            (present_quiz)
+                           (wrong_number)
                 )
         :effect
                 (and
@@ -397,6 +407,23 @@
                            (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
                            (sentence_said) 
                                          
+                )
+)
+
+(:action SAY_WRONG
+        :precondition
+               (and 
+                           (emotion_r)
+                           (attention_r) 
+                           (low_attention_r)
+                           (not (wrong_number))
+                )
+        :effect
+                (and
+                           (decrease (interaction_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
+                           (wrong_number)           
                 )
 )
 
@@ -409,6 +436,7 @@
                            (attention_r)  
                            (low_attention_r)
                            (not(present))
+                           (wrong_number)
                         
                 )
         :effect
@@ -430,6 +458,7 @@
                            (low_attention_r)
                            (present)
                            (not(present_quiz))
+                           (wrong_number)
                         
                 )
         :effect
@@ -456,6 +485,7 @@
                            (not(finished_quiz))
                            (number_said) 
                            (sentence_said)
+                           (wrong_number)
                               
                 )
         :effect
@@ -483,6 +513,7 @@
                         (>(interaction_level)(desired_interaction))
                         (>(scrupulousness_level)(desired_scrupulousness))
                         (>(agreeableness_level)(desired_agreeableness))
+                        (wrong_number)
                 )
 
         :effect

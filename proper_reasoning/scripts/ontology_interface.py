@@ -42,14 +42,14 @@ new_hint=False
 new_number=False
 number=0
 begin=True
-url_navel='http://10.186.13.34:5021/'
+url_navel='http://10.186.13.13:5021/'
 url_emoACT='http://10.186.13.9:8008/'
 url_number='http://10.186.13.9:8080/'
 expression=""
 quiz_guessed=False
 actual_goal=""
 headers= {'Content-Type':'application/json'}
-
+emoact_active=True
 data={
         
         "new_sentence":"False",
@@ -113,8 +113,8 @@ class State_Start(smach.State):
             payload = {"wc": value_wc,  
                 "we": value_we,  
                 "wa": value_wa}   
-            
-            response = requests.post(url_emoACT+'personality', json=payload, headers=headers)
+            if emoact_active:
+                response = requests.post(url_emoACT+'personality', json=payload, headers=headers)
         return 'outcome0'
 
 
@@ -529,11 +529,9 @@ class CheckPerc(smach.State):
         global quiz_guessed
         if predicates_objects["finished_quiz"].is_grounded:
             print("CIAOOOO EXIT FROM QUIZ")
-            function_objects["interaction_level"].has_value=6
-            function_objects["scrupulousness_level"].has_value=6
-            function_objects["agreeableness_level"].has_value=6
+            return "outcome4"
         
-        time.sleep(5)
+        time.sleep(3)
         resp=requests.put(url_navel+'get_input', json=data, headers=headers)
         
         a=userdata.action
@@ -568,16 +566,46 @@ class CheckPerc(smach.State):
         resp_n=requests.put(url_number+'arucodetected', json=data_number, headers=headers)
         #print(type(eval(resp_n.text)["numbers"]))
         numbers=eval(resp_n.text)["numbers"]
+        print(numbers)
+        wrong_number = False
         if numbers!=[]:
             number=numbers[0]
             if number<9:
+                print("NEW NUMBER")
                 new_number=True
+
+            elif number == 26:
+                new_hint = True
+
             else:
-                quiz_guessed=True
+                if actual_goal=="quiz1":
+                    sol1=retrieve_animal()
+                    sol2=""
+
+                elif actual_goal=="quiz2":
+                    sol1, sol2 =retrieve_year()
+
+                else:
+                    sol1, sol2 = retrieve_code()
+
+                key = self.find_key(number, solution_keys)
+
+                if (key == sol1) or (actual_goal=="quiz2" and key=="Lucchetto"):
+                    print("SOLUTION CORRECT")
+                    quiz_guessed=True
+
+                elif (actual_goal=="quiz1") and (number>10) and (number<21):
+                    wrong_number =True
+
+                elif (actual_goal=="quiz3") and (number>20) and (number<26):
+                    wrong_number =True
+                
+                    
+                    
         
 
         #IF I HAVE NO NEW PERCEPTION IT MEANS THAT I COME FROM THE PREVIOUS ACTION
-        if new_emotion==False and new_attention==False and new_hint==False and new_number==False and new_sentence==False and quiz_guessed==False:
+        if new_emotion==False and new_attention==False and new_hint==False and new_number==False and new_sentence==False and quiz_guessed==False and wrong_number==False:
             print("THERE")
             if userdata.action=="start": #if I start I need to add first goals
                 print("THERE2")
@@ -642,6 +670,8 @@ class CheckPerc(smach.State):
                 #add_predicate("new_sentence")
                 new_sentence=False
 
+            if wrong_number:
+                remove_predicate("wrong_number")
             
             if quiz_guessed:
                 add_predicate("number_said")
@@ -665,6 +695,9 @@ class CheckPerc(smach.State):
             return True
         else:
             return False
+    
+    def find_key(self,value, dictionary):
+        return next((key for key, val in dictionary.items() if val == value), None)
         
 class WriteProblem(smach.State):
     def __init__(self):
@@ -706,13 +739,14 @@ class Finish(smach.State):
                              )
         
     def execute(self,userdata):
-        if predicates_objects["game_finished"].is_grounded==False: #if I have only achieved the goal waited I need to return above
+        if predicates_objects["finished_quiz"].is_grounded==False: #if I have only achieved the goal waited I need to return above
             return "outcome1"
         
-        if userdata.input_goals!=[]:
+        elif userdata.input_goals!=[]:
             print('Passing to the next goal')
             userdata.out_action="start"
             return "outcome11"
+        
         else:
             print('Finishhh')
             return 'outcome12'
