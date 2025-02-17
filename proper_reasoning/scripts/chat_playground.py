@@ -35,18 +35,76 @@ map_emotion={
    "N":"Neutral",
 }
 
+
 openai_config = OmegaConf.load(file_path_openai_config_dict["global"]).config
 system_message = openai_config.system_message
-start_message = [
-        {"role": "system", "content": system_message},
-    ]
+
+
+traits_des={"Extrovert":openai_config.system_message_describe_e,
+            "Introvert": openai_config.system_message_describe_i,
+            "Conscientious": openai_config.system_message_describe_c,
+            "Unscrupolous": openai_config.system_message_describe_u,
+            "Agreeable": openai_config.system_message_describe_a,
+            "Disagreeable": openai_config.system_message_describe_d}
+
+
 
 messages_hint=[]
 openai_config_hint = OmegaConf.load(file_path_openai_config_dict["hint"]).config
 actual_quiz="quiz1"
 
-def generate_sentence(user_emotion, robot_emotion, text, personality, response_style, action):
-    
+
+def generate_sentence(p1, s1, ls1, p2, s2, ls2, action, user_emotion, robot_emotion, text):
+
+    system_message_updated=system_message.replace(
+        "{TRAIT1}", p1
+    ).replace(
+        "{TRAIT1_LEVEL}", s1
+    ).replace(
+        "{L_S1}", ls1
+    ).replace(
+        "{TRAIT1_DESCRIPTION}", traits_des[p1]
+    ).replace(
+        "{TRAIT2}", p2
+    ).replace(
+        "{TRAIT2_LEVEL}", s2
+    ).replace(
+        "{L_S2}", ls2
+    ).replace(
+        "{TRAIT2_DESCRIPTION}", traits_des[p2]
+    ).replace(
+        "{ACTION}",
+        action
+    ).replace(
+        "{TEXT}",
+        text
+    ).replace(
+        "{U_E}",
+        user_emotion
+    ).replace(
+        "{R_E}",
+        robot_emotion
+    )
+
+    start_message = [
+            {"role": "system", "content": system_message_updated},
+        ]
+
+ 
+
+    response = client.chat.completions.create(
+        model=model,
+        messages=start_message,
+        temperature=1,
+        top_p=1,
+    )
+
+    print(response.choices[0].message.content)
+    #chat_message = emoji.replace_emoji(string=chat_message, replace='')
+    res = json.loads(response.choices[0].message.content)
+    return res["text"], "chat"
+
+def generate_sentenceold(user_emotion, robot_emotion, text, personality, response_style, action):
     user_input = "{"
     user_input += "text: "
     user_input += text

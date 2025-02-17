@@ -37,6 +37,9 @@ emotion_label_map={
 }
 
 def dispatch_action(action, personality, user_emotion, user_sentence, comfortability, weights_res, quiz, solution, sentence, to_say_sentence, number):
+        perss =[]
+        scores =[]
+        lss = []
         payload = {"comfortability": comfortability}
         if emoact_active:
                 response = requests.post(url_emoACT2+'comfortability', json=payload, headers=headers)
@@ -47,13 +50,19 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
         language_sentence=""
         for i in range(len(weights_res)):
                 if weights_res[i]!=0:
+
                         personality_sentence=personality_sentence+" "+traits_res[i]
                         if traits_res[i]==personality:
                                 language_sentence=language_sentence+" "+mmap["language"]
+                                lss.append(mmap["language"])
                         else:
                                 params_l=generate_params(traits_res[i], action)
                                 mmap_l =get_map(params_l,traits_res[i])
                                 language_sentence=language_sentence+" "+mmap_l["language"]
+                                lss.append(mmap_l["language"])
+                        scores.append(weights_res[i])
+                        perss.append(traits_res[i])
+                        
         print("PERSONALITY and LANGUAGE paramos: "+ personality_sentence+" "+language_sentence)
 
         
@@ -93,14 +102,16 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                 
                 elif ( action == "say wrong"):
                         sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").wrong_solution
-                        action_to_fullfill= "say: '"+sentence_to_say+"'"
-                        robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, "", personality_sentence, language_sentence, action_to_fullfill)
+                        action_to_fullfill= "advice students have done an error by saying : '"+sentence_to_say+"'"
+                        robot_sentence, tone = generate_sentence(perss[0],scores[0],lss[0], perss[1],scores[1],lss[1], action_to_fullfill,user_emotion, robot_emotion, "")
+                        #p1, s1, ls1, p2, s2, ls2, action, user_emotion, robot_emotion, text
+
 
                 elif (action=="present escape room"):
                         sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").presentation
-                        action_to_fullfill= "say: '"+sentence_to_say+"'"
-                        robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, "", personality_sentence, language_sentence, action_to_fullfill)
-
+                        action_to_fullfill= "present the escape room by saying: '"+sentence_to_say+"'"
+                        robot_sentence, tone = generate_sentence(perss[0],scores[0],lss[0], perss[1],scores[1],lss[1], action_to_fullfill,user_emotion, robot_emotion, "")
+                        
                 elif (action=="present quiz"):
                         if quiz=="quiz1":
                                 sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").present_quiz1
@@ -110,9 +121,9 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                         else:
                                 sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").present_quiz3
 
-                        action_to_fullfill= "say: '"+sentence_to_say+"'"
-                        robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, "", personality_sentence, language_sentence, action_to_fullfill)
-
+                        action_to_fullfill= "present the quiz by saying: '"+sentence_to_say+"'"
+                        robot_sentence, tone = generate_sentence(perss[0],scores[0],lss[0], perss[1],scores[1],lss[1], action_to_fullfill,user_emotion, robot_emotion, "")
+                        
                 elif (action=="guess quiz"):
                         if quiz=="quiz1":
                                 sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").guess_quiz1
@@ -121,21 +132,23 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                         else:
                                 sentence_to_say = OmegaConf.load("/home/alice/PROPER_Sofar/proper_reasoning/resources/quiz.yaml").guess_quiz3
                                 
-                        action_to_fullfill= "say: '"+sentence_to_say+"'"
-                        robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, "", personality_sentence, language_sentence, action_to_fullfill)
+                        action_to_fullfill= "advice the students the have guess the quiz: '"+sentence_to_say+"'"
+                        robot_sentence, tone = generate_sentence(perss[0],scores[0],lss[0], perss[1],scores[1],lss[1], action_to_fullfill,user_emotion, robot_emotion, "")
+                        
+                
                 elif (action=="give hint"):
                         if quiz=="quiz3":
                                 robot_sentence = to_say_sentence
                                 tone="chat"   
                         else:
                                 generated_hint=generate_hint(quiz,solution, sentence)
-                                action_to_fullfill= "say: '"+generated_hint+"'"
-                                robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, "", personality_sentence, language_sentence, action_to_fullfill)
+                                action_to_fullfill= "Give an hint to student by saying: '"+generated_hint+"'"
+                                robot_sentence, tone = generate_sentence(perss[0],scores[0],lss[0], perss[1],scores[1],lss[1], action_to_fullfill,user_emotion, robot_emotion, "")
                                 print(" HINT: ")
                                 print(generated_hint)
                 else:
-                        robot_sentence, tone = generate_sentence(user_emotion, robot_emotion, user_sentence, personality_sentence, language_sentence, action)
-                
+                        robot_sentence, tone = generate_sentence(perss[0],scores[0],lss[0], perss[1],scores[1],lss[1], action_to_fullfill,user_emotion, robot_emotion, user_sentence)
+                         
                 print(robot_sentence)
 
                 data_action["facial_expression"]=robot_emotion

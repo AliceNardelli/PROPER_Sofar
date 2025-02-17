@@ -22,10 +22,10 @@ import datetime
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=1
+we=0
 wi=0
 wc=0
-wu=0
+wu=1
 wa=0
 wd=1
 sum_weights=0
@@ -51,7 +51,6 @@ actual_goal=""
 headers= {'Content-Type':'application/json'}
 emoact_active=True
 data={
-        
         "new_sentence":"False",
         "new_emotion":"False",
         "new_attention":"False",
@@ -538,10 +537,13 @@ class CheckPerc(smach.State):
         print("action",a)
 
         #se l'utente sta parlando aspetto di avere una frase riconosciuta
-        while eval(resp.text)["listening"]=="True":
+        start_time=time.time()
+        elapsed_time = 0
+        while eval(resp.text)["listening"]=="True" and elapsed_time<10:
             time.sleep(0.2)
             print("listening ...")
             resp=requests.put(url_navel+'get_input', json=data, headers=headers)
+            elapsed_time = time.time() - start_time
 
         if eval(resp.text)["new_emotion"]=="True":
             new_emotion=True
