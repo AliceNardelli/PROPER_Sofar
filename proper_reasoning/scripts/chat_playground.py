@@ -56,10 +56,11 @@ actual_quiz="quiz1"
 
 def generate_sentence(p1, s1, ls1, p2, s2, ls2, action, user_emotion, robot_emotion, text):
 
+
     system_message_updated=system_message.replace(
         "{TRAIT1}", p1
     ).replace(
-        "{TRAIT1_LEVEL}", s1
+        "{TRAIT1_LEVEL}", str(s1)
     ).replace(
         "{L_S1}", ls1
     ).replace(
@@ -67,7 +68,7 @@ def generate_sentence(p1, s1, ls1, p2, s2, ls2, action, user_emotion, robot_emot
     ).replace(
         "{TRAIT2}", p2
     ).replace(
-        "{TRAIT2_LEVEL}", s2
+        "{TRAIT2_LEVEL}", str(s2)
     ).replace(
         "{L_S2}", ls2
     ).replace(
@@ -86,6 +87,8 @@ def generate_sentence(p1, s1, ls1, p2, s2, ls2, action, user_emotion, robot_emot
         robot_emotion
     )
 
+
+    print(system_message_updated)
     start_message = [
             {"role": "system", "content": system_message_updated},
         ]

@@ -8,7 +8,7 @@ from emotion_generation import *
 from chat_playground import *
 from omegaconf import OmegaConf
 
-url='http://10.186.13.13:5022/'
+url='http://10.186.13.30:5022/'
 url_emoACT='http://10.186.13.9:3000/emotional_state'
 url_emoACT2='http://10.186.13.9:8008/'
 emoact_active=True
@@ -36,7 +36,7 @@ emotion_label_map={
         "N":"Neutral"
 }
 
-def dispatch_action(action, personality, user_emotion, user_sentence, comfortability, weights_res, quiz, solution, sentence, to_say_sentence, number):
+def dispatch_action(action, personality, user_emotion, user_sentence, comfortability, weights_res, sw, quiz, solution, sentence, to_say_sentence, number):
         perss =[]
         scores =[]
         lss = []
@@ -60,7 +60,7 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                                 mmap_l =get_map(params_l,traits_res[i])
                                 language_sentence=language_sentence+" "+mmap_l["language"]
                                 lss.append(mmap_l["language"])
-                        scores.append(weights_res[i])
+                        scores.append(weights_res[i]*sw*10)
                         perss.append(traits_res[i])
                         
         print("PERSONALITY and LANGUAGE paramos: "+ personality_sentence+" "+language_sentence)
@@ -147,7 +147,7 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                                 print(" HINT: ")
                                 print(generated_hint)
                 else:
-                        robot_sentence, tone = generate_sentence(perss[0],scores[0],lss[0], perss[1],scores[1],lss[1], action_to_fullfill,user_emotion, robot_emotion, user_sentence)
+                        robot_sentence, tone = generate_sentence(perss[0],scores[0],lss[0], perss[1],scores[1],lss[1], action,user_emotion, robot_emotion, user_sentence)
                          
                 print(robot_sentence)
 

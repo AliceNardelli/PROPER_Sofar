@@ -23,11 +23,11 @@ import datetime
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=0
+wi=1
 wc=0
-wu=1
-wa=0
-wd=1
+wu=0
+wa=0.3
+wd=0
 sum_weights=0
 weights=[]
 gamma=1
@@ -42,7 +42,7 @@ new_hint=False
 new_number=False
 number=0
 begin=True
-url_navel='http://10.186.13.13:5021/'
+url_navel='http://10.186.13.30:5021/'
 url_emoACT='http://10.186.13.9:8008/'
 url_number='http://10.186.13.9:8080/'
 expression=""
@@ -256,7 +256,7 @@ class ExAction(smach.State):
                              input_keys=['executing_actions'],
                              output_keys=['updated_actions','action','state']) 
     def execute(self, userdata):
-        global new_emotion, emotion, new_sentence, sentence, new_attention, attention
+        global new_emotion, emotion, new_sentence, sentence, new_attention, attention, sum_weights
         
         personality=np.random.choice(traits,p=weights)
         ac=userdata.executing_actions[0]
@@ -372,7 +372,7 @@ class ExAction(smach.State):
             if predicates_objects["new_sentence"].is_grounded==True:
                 aa,rew=choose_action_e(pi,False)
             else:
-                aa,rew=choose_action_e(pi,Falsegame_finished)
+                aa,rew=choose_action_e(pi,False)
             userdata, response, ea  =self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
@@ -451,7 +451,7 @@ class ExAction(smach.State):
 
 
     def call_action_server(self, userdata, ac, personality):
-            global data_action, emotion, sentence, actual_goal, number
+            global data_action, emotion, sentence, actual_goal, number, sum_weights
             userdata.state="exec"
             #get the comfortability
             mask_weights=emotion_mask[emotion]
@@ -497,7 +497,7 @@ class ExAction(smach.State):
             a, to_say_sentence = retrieve_code()
             print("FROM ONTOLOGY")
             print(sol1, sol2)
-            resp, to_exec_action, expression = dispatch_action(ac, personality, emotion, sentence, comfortability, weights, actual_goal, sol1, sol2, to_say_sentence, number )
+            resp, to_exec_action, expression = dispatch_action(ac, personality, emotion, sentence, comfortability, weights, sum_weights, actual_goal, sol1, sol2, to_say_sentence, number )
 
             #effect of emotions on comfortability
             if expression!=101:
