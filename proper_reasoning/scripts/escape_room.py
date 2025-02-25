@@ -30,7 +30,7 @@ solution_keys = {
 
 dates={
     "0476": "Caduta dell'Impero Romano d'Occidente",
-    "1492":"Scoperta dell'America",
+    "1492": "Scoperta dell'America",
     "1789": "Inizio della Rivoluzione Francese",
     "1861": "Unità d'Italia",
     "1914": "Inizio della Prima Guerra Mondiale",
@@ -55,7 +55,8 @@ def select_animal():
 
 
 def select_dates():
-    random_year, random_event = random.choice(list(dates.items()))
+    random_year = "1861"
+    random_event = "Unità d'Italia"
     return random_year, random_event
 
 
