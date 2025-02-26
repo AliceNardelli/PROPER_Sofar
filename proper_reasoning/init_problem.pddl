@@ -21,6 +21,7 @@
         (low_attention_r)  
         (number_said)
         (wrong_number)
+        (answered)
 )
 
 (:goal (and 

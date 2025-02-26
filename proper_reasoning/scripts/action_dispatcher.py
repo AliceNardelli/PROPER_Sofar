@@ -8,10 +8,10 @@ from emotion_generation import *
 from chat_playground import *
 from omegaconf import OmegaConf
 
-url='http://10.186.13.25:5022/'
+url='http://10.186.13.5:5022/'
 url_emoACT='http://10.186.13.9:3000/emotional_state'
 url_emoACT2='http://10.186.13.9:8008/'
-emoact_active=True
+emoact_active=False
 headers= {'Content-Type':'application/json'}
 expression=""
 data_action={
@@ -82,8 +82,7 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                 else:
                                 
                         robot_emotion = emotion_label_map["N"]
-                        epa = data.get("emotion")
-                        expression=epa[0]
+                        expression=0
                         
         except requests.exceptions.RequestException as e:
                 print(f"An error occurred: {e}")

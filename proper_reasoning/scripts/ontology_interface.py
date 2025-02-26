@@ -19,15 +19,18 @@ import numpy as np
 import time
 import threading
 import datetime
+from flask import Flask, request, jsonify
+
+PORT = 8080
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=0.5
+wi=0
 wc=0
-wu=0
-wa=0
-wd=1
+wu=1
+wa=0.5
+wd=0
 sum_weights=0
 weights=[]
 gamma=1
@@ -41,15 +44,16 @@ new_sentence=False
 new_hint=False
 new_number=False
 number=0
+numbers = []
 begin=True
-url_navel='http://10.186.13.25:5021/'
+url_navel='http://10.186.13.5:5021/'
 url_emoACT='http://10.186.13.9:8008/'
-url_number='http://10.186.13.9:8080/'
+#url_number='http://10.186.13.9:8080/'
 expression=""
 quiz_guessed=False
 actual_goal=""
 headers= {'Content-Type':'application/json'}
-emoact_active=True
+emoact_active=False
 data={
         "new_sentence":"False",
         "new_emotion":"False",
@@ -64,6 +68,14 @@ data_number={
         "numbers":[],
 }
 
+data_face={
+        "attention":"",
+        "emotion":"",
+}
+
+data_sentence={
+        "sentece":"",
+}
 
 emotion_mask={
     "A":[4,2,3,1,5,5],
@@ -74,6 +86,63 @@ emotion_mask={
 }
 
 personality_to_send=True
+
+app = Flask(__name__)
+
+
+@app.route("/arucodetected", methods=['POST'])
+def put_aruco():
+    global data_number, numbers
+
+    print("DETECTED A NEW ARUCO")
+    
+    update_data = request.get_json()
+    
+    print(update_data["numbers"])
+
+
+    # Update global data dictionary
+    data_number.update(update_data)
+
+    
+    # Extract the updated numbers list
+    numbers = data_number["numbers"]
+    
+    return jsonify(data_number), 200    
+
+
+
+@app.route("/camera_input", methods=['POST'])
+def get_face():
+    global attention, emotion, new_attention, new_emotion
+    update_data = request.get_json()
+    print(update_data)
+
+    data_face.update(update_data)
+    # Extract the updated numbers list
+    emotion= data_face["emotion"]
+    attention= data_face["attention"]
+    new_attention = True
+    new_emotion = True
+    print("EM RECEIVED "+emotion)
+    return jsonify(data_face), 200 
+
+
+@app.route("/mic_input", methods=['POST'])
+def get_sentence():
+    global sentence, new_sentence
+    update_data = request.get_json()
+    
+    data_sentence.update(update_data)
+    
+    sentence= data_sentence["sentence"]
+    new_sentence = True
+    print("SENTENCE RECEIVED "+sentence)
+    return jsonify(data_face), 200 
+
+
+def run_flask():
+    app.run(host='0.0.0.0', port=PORT)
 
 
 class State_Start(smach.State):
@@ -86,6 +155,7 @@ class State_Start(smach.State):
     def execute(self, userdata):
         global wa,wd,we,wi,wc,wd,sum_weights,weights, actual_goal
         global personality_to_send
+        time.sleep(10)
         goals=userdata.input_goals
         actual_goal=goals.pop(0) 
         print('Executing goal: '+ actual_goal)
@@ -212,6 +282,7 @@ class Reset_Quiz(smach.State):
         remove_goal("game_finished")
         remove_goal("number_said")
         remove_goal("hint_given")
+        add_predicate("answered") 
         quiz_guessed=False
         return 'outcome1'
     
@@ -263,11 +334,10 @@ class ExAction(smach.State):
 
         if ac=="AGREE_ACTION":
             data["update"]="False"
-            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-            emotion=eval(resp.text)["emotion"]
+            
             if emotion not in list_of_emotions:
                     emotion="N"
-            if  eval(resp.text)["attention"]=="positive":
+            if  attention=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
@@ -280,11 +350,10 @@ class ExAction(smach.State):
             
             if response:
                 data["update"]="False"
-                resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-                emotion=eval(resp.text)["emotion"]
+                
                 if emotion not in list_of_emotions:
                     emotion="N"
-                if eval(resp.text)["attention"]=="positive":
+                if attention=="positive":
                     pn="A_"+map_emotion_AV_axis[emotion]
                 else:
                     pn="NA_"+map_emotion_AV_axis[emotion]
@@ -297,11 +366,10 @@ class ExAction(smach.State):
         
         elif ac=="DISAGREE_ACTION":
             data["update"]="False"
-            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-            emotion=eval(resp.text)["emotion"]
+            
             if emotion not in list_of_emotions:
                     emotion="N"
-            if eval(resp.text)["attention"]=="positive":
+            if attention=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
@@ -312,11 +380,10 @@ class ExAction(smach.State):
             userdata, response , ea =self.call_action_server(userdata, aa, personality)            
             if response:
                 data["update"]="False"
-                resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-                emotion=eval(resp.text)["emotion"]
+                
                 if emotion not in list_of_emotions:
                     emotion="N"
-                if eval(resp.text)["attention"]=="positive":
+                if attention=="positive":
                     pn="A_"+map_emotion_AV_axis[emotion]
                 else:
                     pn="NA_"+map_emotion_AV_axis[emotion]
@@ -329,11 +396,10 @@ class ExAction(smach.State):
             
         elif ac=="INTRO_ACTION":
             data["update"]="False"
-            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-            emotion=eval(resp.text)["emotion"]
+            
             if emotion not in list_of_emotions:
                     emotion="N"
-            if eval(resp.text)["attention"]=="positive":
+            if attention=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
@@ -344,11 +410,10 @@ class ExAction(smach.State):
             userdata, response, ea =self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
-                resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-                emotion=eval(resp.text)["emotion"]
+                
                 if emotion not in list_of_emotions:
                     emotion="N"
-                if eval(resp.text)["attention"]=="positive":
+                if attention=="positive":
                     pn="A_"+map_emotion_AV_axis[emotion]
                 else:
                     pn="NA_"+map_emotion_AV_axis[emotion]
@@ -361,11 +426,9 @@ class ExAction(smach.State):
 
         elif ac=="EXTRO_ACTION":
             data["update"]="False"
-            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-            emotion=eval(resp.text)["emotion"]
             if emotion not in list_of_emotions:
                     emotion="N"
-            if eval(resp.text)["attention"]=="positive":
+            if attention=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
@@ -376,12 +439,9 @@ class ExAction(smach.State):
             userdata, response, ea  =self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
-                resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-                
-                emotion=eval(resp.text)["emotion"]
                 if emotion not in list_of_emotions:
                     emotion="N"
-                if eval(resp.text)["attention"]=="positive":
+                if attention=="positive":
                     pn="A_"+map_emotion_AV_axis[emotion]
                 else:
                     pn="NA_"+map_emotion_AV_axis[emotion]
@@ -394,11 +454,9 @@ class ExAction(smach.State):
 
         elif ac=="CONSC_ACTION":
             data["update"]="False"
-            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-            emotion=eval(resp.text)["emotion"]
             if emotion not in list_of_emotions:
                     emotion="N"
-            if eval(resp.text)["attention"]=="positive":
+            if attention=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
@@ -416,11 +474,9 @@ class ExAction(smach.State):
 
         elif ac=="UNSC_ACTION":
             data["update"]="False"
-            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-            emotion=eval(resp.text)["emotion"]
             if emotion not in list_of_emotions:
                     emotion="N"
-            if eval(resp.text)["attention"]=="positive":
+            if attention=="positive":
                 pi="A_"+map_emotion_AV_axis[emotion]
             else:
                 pi="NA_"+map_emotion_AV_axis[emotion]
@@ -437,8 +493,7 @@ class ExAction(smach.State):
                 return "outcome8"
 
         else:
-            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-            em=eval(resp.text)["emotion"]
+            em=emotion
             if em!="":
                 emotion=em
             userdata, response, ea =self.call_action_server(userdata, ac, personality)
@@ -524,38 +579,17 @@ class CheckPerc(smach.State):
                              output_keys=["out_action","exec_actions_out"])
         
     def execute(self, userdata):
-        global emotion, new_emotion, new_sentence, new_hint, new_number, data, new_attention, attention, sentence, number
+        global emotion, new_emotion, new_sentence, new_hint, new_number, data, new_attention, attention, sentence, number, numbers
         global quiz_guessed
+        
         if predicates_objects["finished_quiz"].is_grounded:
             print("CIAOOOO EXIT FROM QUIZ")
             return "outcome4"
         
-        time.sleep(3)
-        resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-        
         a=userdata.action
         print("action",a)
 
-        #se l'utente sta parlando aspetto di avere una frase riconosciuta
-        start_time=time.time()
-        elapsed_time = 0
-        while eval(resp.text)["listening"]=="True" and elapsed_time<10:
-            time.sleep(0.2)
-            print("listening ...")
-            resp=requests.put(url_navel+'get_input', json=data, headers=headers)
-            elapsed_time = time.time() - start_time
-
-        if eval(resp.text)["new_emotion"]=="True":
-            new_emotion=True
-            emotion=eval(resp.text)["emotion"]
-
-        if eval(resp.text)["new_attention"]=="True":
-            new_attention=True
-            attention=eval(resp.text)["attention"]
-
-        if eval(resp.text)["new_sentence"]=="True":
-            new_sentence=True
-            sentence=eval(resp.text)["sentence"]
+        if new_sentence:
             print("--------------------------")
             print("LISTNED")
             print(sentence)
@@ -563,12 +597,18 @@ class CheckPerc(smach.State):
             print("NEW HINT")
             print(new_hint)
             print("--------------------------")
+            if actual_goal=="quiz1":
+                sol1=retrieve_animal()
+                sol2=""
+                if sol1 in sentence or sol1.lower() in sentence:
+                    quiz_guessed=True
+                    new_sentence = False
 
         print("before number request")
-        resp_n=requests.put(url_number+'arucodetected', json=data_number, headers=headers)
+        #resp_n=requests.put(url_number+'arucodetected', json=data_number, headers=headers)
         #print(type(eval(resp_n.text)["numbers"]))
-        numbers=eval(resp_n.text)["numbers"]
-        print(numbers)
+        #numbers=eval(resp_n.text)["numbers"]
+        
         wrong_number = False
         if numbers!=[]:
             number=numbers[0]
@@ -601,6 +641,8 @@ class CheckPerc(smach.State):
 
                 elif (actual_goal=="quiz3") and (number>20) and (number<26):
                     wrong_number =True
+                
+            numbers = []
                 
                     
                     
@@ -657,6 +699,7 @@ class CheckPerc(smach.State):
                 remove_predicate("hint_given")
                 add_predicate("new_hint")
                 new_hint=False
+                new_sentence = False
 
             
             if new_number:
@@ -667,9 +710,9 @@ class CheckPerc(smach.State):
                 new_number=False
 
             if new_sentence:
-                #add_goal("answered")
-                #remove_predicate("answered")
-                #add_predicate("new_sentence")
+                add_goal("answered")
+                remove_predicate("answered")
+                add_predicate("new_sentence")
                 new_sentence=False
 
             if wrong_number:
@@ -859,9 +902,8 @@ def main():
         #sis = smach_ros.IntrospectionServer('server_name', sm, '/SM_ROOT')
         #sis.start()
 
-     
-        outcome = sm.execute()
-
+        threading.Thread(target=sm.execute).start()
+        threading.Thread(target=run_flask).start()
     except:
         print("interrupt")
 

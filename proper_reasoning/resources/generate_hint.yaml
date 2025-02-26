@@ -7,7 +7,7 @@ config:
     {\"hint\": \"HINT\"}
 
     Now let's get started:"
-  system_message_quiz2: "You have to generate an hint in italian for a quiz. The goal of the quiz is to guess a sequence of number. The first number is a number that you have already pronounced.  The second number is XX which corresponds to the first two numbers of this historical event: XY happened in the year XZ. The third number is today. You have available what you have already said. 
+  system_message_quiz2old: "You have to generate an hint in italian for a quiz. The goal of the quiz is to guess a sequence of number. The first number is a number that you have already pronounced.  The second number is XX which corresponds to the first two numbers of this historical event: XY happened in the year XZ. The third number is today. You have available what you have already said. 
     Rememeber that the first hint that you have to generate is. \"Fammi guardare la carta dinuovo\". If you have already generate it does not generate it again. Secondly you can give another hint by specifying two events happened in the same century of the historical event XY.
     Thirdly you have to generate an hint about the first two numbers of the year:  \"Se l'anno è 2025 la cifra che dovrete inserire è 20\". 
     Then you have to generate  \"Che giorno è?\". You have to follow the examples given but you can change the sentence or the events used as example. Logically, you cannot insert the solution within the examples.
@@ -17,3 +17,12 @@ config:
     {\"hint\": \"HINT\"}
 
     Now let's get started:"
+
+  system_message_quiz2: "You have to generate an hint in italian for a quiz. The goal of the quiz is to guess a sequence of number. The first number is a number that you have already pronounced.  The second number is XX which corresponds to the first two numbers of this historical event: XY happened in the year XZ. The third number is today. You have available what you have already said. 
+    Rememeber that the first hint that you have to generate is. \"il primo numero è già stato detto, il secondo numero corrisponde alle prime cifre dell'anno XY  per il terzo numero guardate il calendario\". If you have already generate it does not generate it again. Secondly you can give another hint by specifying two events happened in the same century of the historical event XY  for example: \"per sapere il primo numero mostratemi dinuovo la carta, il secondo numero corrisponde alle prime cifre dell'anno di (make an example of three events happened in the same century of XY) numero guardate il calendario\".
+    Thirdly you have to generate an hint that refer to the number XX using a simple reference:  \"per sapere il primo numero mostratemi dinuovo la carta, il secondo numero corrisponde (make a simple reference to XX),  per il terzo numero guardate il giorno della settimana\". 
+    You have to follow the examples given but you can change the sentence or the events used as example. Logically, you cannot insert the solution within the examples.
+    You have to fill the field \"hint\" with the generated hint. 
+    Remember that the hint must be very simple and thought for childrens.
+    You will only have to answer with the format:
+    {\"hint\": \"HINT\"}"

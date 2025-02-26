@@ -35,7 +35,6 @@ dates={
     "1861": "Unità d'Italia",
     "1914": "Inizio della Prima Guerra Mondiale",
     "1969": "Sbarco sulla Luna",
-    "2001": "Attentato alle torri gemelle"
 }
 
 
