@@ -496,12 +496,12 @@ def update_ontology(a):
                                         v2=function_objects[o[8]].has_value-float(o[9])
                                     else:
                                         v2=function_objects[o[7]].has_value
-                                    f.has_value=actual_value + v1*v2
+                                    f.has_value=round(actual_value + v1*v2, 3)
                                 else:
                                     try:
-                                        f.has_value=actual_value + float(o[5])
+                                        f.has_value=round(actual_value + float(o[5]), 3)
                                     except:
-                                        f.has_value=actual_value + function_objects[o[5]].has_value
+                                        f.has_value=round(actual_value + function_objects[o[5]].has_value, 3)
 
                             elif o[3]=="decrease":
                                 actual_value=f.has_value
@@ -513,12 +513,12 @@ def update_ontology(a):
                                         v2=function_objects[o[8]].has_value-float(o[9])
                                     else:
                                         v2=function_objects[o[7]].has_value
-                                    f.has_value=actual_value - v1*v2
+                                    f.has_value=round(actual_value - v1*v2, 3)
                                 else:
                                     try:
-                                        f.has_value=actual_value - float(o[5])
+                                        f.has_value=round(actual_value - float(o[5]), 3)
                                     except:
-                                        f.has_value=actual_value - function_objects[o[5]].has_value
+                                        f.has_value=round(actual_value - function_objects[o[5]].has_value, 3)
                     else:
                         if o[1]=="assign":
                             f.has_value=int(o[3])
@@ -532,12 +532,12 @@ def update_ontology(a):
                                         v2=function_objects[o[6]].has_value-float(o[7])
                                     else:
                                         v2=function_objects[o[5]].has_value
-                                    f.has_value=actual_value + v1*v2
+                                    f.has_value=round(actual_value + v1*v2, 3)
                                 else:
                                     try:
-                                        f.has_value=actual_value + float(o[3])
+                                        f.has_value=round(actual_value + float(o[3]), 3)
                                     except:
-                                        f.has_value=actual_value + function_objects[o[3]].has_value
+                                        f.has_value=round(actual_value + function_objects[o[3]].has_value, 3)
                         elif o[1]=="decrease":
                             
                                 actual_value=f.has_value
@@ -549,12 +549,12 @@ def update_ontology(a):
                                         v2=function_objects[o[6]].has_value-float(o[7])
                                     else:
                                         v2=function_objects[o[5]].has_value
-                                    f.has_value=actual_value - v1*v2
+                                    f.has_value=round(actual_value - v1*v2, 3)
                                 else:
                                     try:
-                                        f.has_value=actual_value - float(o[3])
+                                        f.has_value=round(actual_value - float(o[3]), 3)
                                     except:
-                                        f.has_value=actual_value - function_objects[o[3]].has_value
+                                        f.has_value=round(actual_value - function_objects[o[3]].has_value, 3)
 
 
 def update_problem(plan_path):

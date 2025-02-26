@@ -165,7 +165,7 @@ def generate_hint(quiz, solution, sentence):
     if quiz == "quiz1":
         system_message2 = openai_config_hint.system_message_quiz1.replace("XXX", solution)
     else:
-        system_message2 = openai_config_hint.system_message_quiz2.replace("XX", solution[0:1]).replace("XY", sentence).replace("XZ", solution)
+        system_message2 = openai_config_hint.system_message_quiz2.replace("XX", solution[0:2]).replace("XY", sentence).replace("XZ", solution)
 
     # Initialize the message list for the OpenAI API
     start_message2 = [
@@ -185,16 +185,18 @@ def generate_hint(quiz, solution, sentence):
         )
         # Extract the content of the response
         chat_message = response.choices[0].message.content
+        try:
+            # Parse the JSON response for the hint
+            res = json.loads(chat_message)
 
-        # Parse the JSON response for the hint
-        res = json.loads(chat_message)
-
-        # Append the hint to the history of messages
-        messages_hint.append({"role": "user", "content": res["hint"]})
-        print("GENERATED HINT ", res["hint"])
-        print("---------------------------------")
-        # Return the hint
-        return res["hint"]
+            # Append the hint to the history of messages
+            messages_hint.append({"role": "user", "content": res["hint"]})
+            print("GENERATED HINT ", res["hint"])
+            print("---------------------------------")
+            # Return the hint
+            return res["hint"]
+        except:
+            return ""
     except json.JSONDecodeError as e:
         print("Failed to decode the JSON response:", e)
         return None

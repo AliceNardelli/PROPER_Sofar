@@ -2,7 +2,7 @@
 (:objects
 )
 (:init
-        (=(dur)5)
+        (=(dur)2)
         (=(react)0.1)
         (=(reward_e)10)
         (=(reward_a)10)

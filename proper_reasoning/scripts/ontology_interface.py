@@ -28,8 +28,8 @@ traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
 wi=0
 wc=0
-wu=1
-wa=0.5
+wu=0.5
+wa=1
 wd=0
 sum_weights=0
 weights=[]
@@ -43,10 +43,11 @@ new_attention=False
 new_sentence=False
 new_hint=False
 new_number=False
+listening = False
 number=0
 numbers = []
 begin=True
-url_navel='http://10.186.13.5:5021/'
+url_navel='http://10.186.13.18:5021/'
 url_emoACT='http://10.186.13.9:8008/'
 #url_number='http://10.186.13.9:8080/'
 expression=""
@@ -130,13 +131,16 @@ def get_face():
 
 @app.route("/mic_input", methods=['POST'])
 def get_sentence():
-    global sentence, new_sentence
+    global sentence, new_sentence, listening
     update_data = request.get_json()
     
     data_sentence.update(update_data)
-    
-    sentence= data_sentence["sentence"]
-    new_sentence = True
+    if data_sentence["state"]=="recognized":
+        sentence= data_sentence["sentence"]
+        new_sentence = True
+        listening = False
+    elif data_sentence["state"]=="listening":
+        listening = True
     print("SENTENCE RECEIVED "+sentence)
     return jsonify(data_face), 200 
 
@@ -588,6 +592,11 @@ class CheckPerc(smach.State):
         
         a=userdata.action
         print("action",a)
+        start_time = time.time()
+        while listening:
+            if ((time.time()-start_time)<15):
+                break
+            time.sleep(1)
 
         if new_sentence:
             print("--------------------------")
