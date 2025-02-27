@@ -26,11 +26,11 @@ PORT = 8080
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=0
+wi=1
 wc=0
-wu=0.5
-wa=1
-wd=0
+wu=0
+wa=0
+wd=0.5
 sum_weights=0
 weights=[]
 gamma=1
@@ -47,7 +47,6 @@ listening = False
 number=0
 numbers = []
 begin=True
-url_navel='http://10.186.13.18:5021/'
 url_emoACT='http://10.186.13.9:8008/'
 #url_number='http://10.186.13.9:8080/'
 expression=""
@@ -159,7 +158,7 @@ class State_Start(smach.State):
     def execute(self, userdata):
         global wa,wd,we,wi,wc,wd,sum_weights,weights, actual_goal
         global personality_to_send
-        time.sleep(10)
+        
         goals=userdata.input_goals
         actual_goal=goals.pop(0) 
         print('Executing goal: '+ actual_goal)
@@ -603,13 +602,15 @@ class CheckPerc(smach.State):
             print("LISTNED")
             print(sentence)
             new_hint = self.ask_for_hint(sentence)
+            if new_hint:
+                new_sentence = False
             print("NEW HINT")
             print(new_hint)
             print("--------------------------")
             if actual_goal=="quiz1":
                 sol1=retrieve_animal()
                 sol2=""
-                if sol1 in sentence or sol1.lower() in sentence:
+                if (sol1 in sentence) or (sol1.lower() in sentence.lower()):
                     quiz_guessed=True
                     new_sentence = False
 
@@ -810,6 +811,7 @@ class Finish(smach.State):
 
 def main():
     try:
+        time.sleep(20)
         sm = smach.StateMachine(outcomes=['outcome13'])
         sm.userdata.goals=problem_goals
         sm.userdata.path_domain=""
