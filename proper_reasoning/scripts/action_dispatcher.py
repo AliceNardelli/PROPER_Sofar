@@ -8,7 +8,7 @@ from emotion_generation import *
 from chat_playground import *
 from omegaconf import OmegaConf
 
-url='http://10.186.13.7:5022/'
+url='http://192.168.1.101:5022/'
 url_emoACT='http://10.186.13.9:3000/emotional_state'
 url_emoACT2='http://10.186.13.9:8008/'
 emoact_active=False
@@ -147,7 +147,9 @@ def dispatch_action(action, personality, user_emotion, user_sentence, comfortabi
                                 print(generated_hint)
                 else:
                         robot_sentence, tone = generate_sentence(perss[0],scores[0],lss[0], perss[1],scores[1],lss[1], action,user_emotion, robot_emotion, user_sentence)
-                         
+
+                if robot_sentence=="" :
+                      return True, action, 0      
                 print(robot_sentence)
 
                 data_action["facial_expression"]=robot_emotion

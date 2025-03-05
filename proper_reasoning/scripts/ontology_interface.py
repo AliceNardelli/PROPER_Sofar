@@ -26,11 +26,11 @@ PORT = 8080
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=1
+wi=0.5
 wc=0
-wu=0
+wu=1
 wa=0
-wd=0.5
+wd=0
 sum_weights=0
 weights=[]
 gamma=1
@@ -158,7 +158,7 @@ class State_Start(smach.State):
     def execute(self, userdata):
         global wa,wd,we,wi,wc,wd,sum_weights,weights, actual_goal
         global personality_to_send
-        
+        time.sleep(20)
         goals=userdata.input_goals
         actual_goal=goals.pop(0) 
         print('Executing goal: '+ actual_goal)
@@ -811,7 +811,7 @@ class Finish(smach.State):
 
 def main():
     try:
-        time.sleep(20)
+        
         sm = smach.StateMachine(outcomes=['outcome13'])
         sm.userdata.goals=problem_goals
         sm.userdata.path_domain=""

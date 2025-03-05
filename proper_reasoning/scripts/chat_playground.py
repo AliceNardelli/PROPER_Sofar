@@ -104,7 +104,10 @@ def generate_sentence(p1, s1, ls1, p2, s2, ls2, action, user_emotion, robot_emot
 
     print(response.choices[0].message.content)
     #chat_message = emoji.replace_emoji(string=chat_message, replace='')
-    res = json.loads(response.choices[0].message.content)
+    try:
+        res = json.loads(response.choices[0].message.content)
+    except:
+        return "", "chat"
     return res["text"], "chat"
 
 def generate_sentenceold(user_emotion, robot_emotion, text, personality, response_style, action):
