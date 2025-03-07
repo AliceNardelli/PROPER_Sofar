@@ -38,8 +38,8 @@ new_emotion=False
 new_sentence=False
 new_attention=False
 begin=True
-url_navel='http://10.186.13.15:5021/'
-url_emoACT='http://10.186.13.9:8008/'
+url_navel='http://192.168.1.102:5021/'
+url_emoACT='http://10.186.13.3:8008/'
 expression=""
 
 headers= {'Content-Type':'application/json'}
@@ -294,7 +294,7 @@ class ExAction(smach.State):
                 aa,rew=choose_action_i(pi,False)
             else:
                 aa,rew =choose_action_i(pi,False)
-            userdata, response =self.call_action_server(userdata, aa, personality)
+            userdata, response, ea =self.call_action_server(userdata, aa, personality)
             if response:
                 data["update"]="False"
                 resp=requests.put(url_navel+'get_input', json=data, headers=headers)
