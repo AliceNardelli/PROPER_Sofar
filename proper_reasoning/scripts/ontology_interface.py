@@ -25,12 +25,12 @@ PORT = 8080
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=0
-wi=0.5
+we=1
+wi=0
 wc=0
-wu=1
+wu=0
 wa=0
-wd=0
+wd=0.5
 sum_weights=0
 weights=[]
 gamma=1
@@ -47,7 +47,7 @@ listening = False
 number=0
 numbers = []
 begin=True
-url_emoACT='http://10.186.13.9:8008/'
+url_emoACT='http://192.168.1.100:8008/'
 #url_number='http://10.186.13.9:8080/'
 expression=""
 quiz_guessed=False
@@ -199,7 +199,7 @@ class State_Init(smach.State):
 
    def execute(self, userdata):
         print('Executing state INIT') 
-        global wa,wd,we,wi,wc,wd,sum_weights,weights    
+        global wa,wd,we,wi,wc,wd,sum_weights,weights 
         with open(userdata.init_pb,'r') as firstfile, open(userdata.problem_path,'w') as secondfile:
             for line in firstfile:
             
@@ -622,7 +622,7 @@ class CheckPerc(smach.State):
         wrong_number = False
         if numbers!=[]:
             number=numbers[0]
-            if number<9:
+            if number<10:
                 print("NEW NUMBER")
                 new_number=True
 

@@ -1,8 +1,8 @@
 problem_goals=["quiz1","quiz2","quiz3"]
 
-
+#problem_goals=["quiz2","quiz3"]
 actual_goal="quiz1"
-
+#actual_goal="quiz2"
 
 goals_dict={"quiz1": {"domain":'/home/alice/PROPER_Sofar/proper_reasoning/goal1_domain.pddl', 
       "problem":'/home/alice/PROPER_Sofar/proper_reasoning/prova_problem.pddl',
