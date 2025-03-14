@@ -23,7 +23,7 @@ traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disa
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
 wi=0
-wc=0
+wc=1
 wu=0
 wa=0
 wd=1
@@ -38,7 +38,7 @@ new_emotion=False
 new_sentence=False
 new_attention=False
 begin=True
-url_navel='http://192.168.1.102:5021/'
+url_navel='http://10.186.13.25:5021/'
 url_emoACT='http://10.186.13.3:8008/'
 expression=""
 

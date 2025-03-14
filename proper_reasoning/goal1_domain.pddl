@@ -59,6 +59,7 @@
         :precondition
                (and 
                 (answered)
+
                	(extro)
                 )
         :effect
@@ -361,8 +362,8 @@
                            
                            (when (intro) (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)4))))
                            (when (extro) (increase (interaction_level)(*(extroversion_coefficient)(dur))))
-                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)2)))
-                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)2)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
+                           (decrease (agreeableness_level)(*(agreeableness_coefficient)(dur)))
                            (answered)                 
                 )
 )
@@ -382,10 +383,10 @@
         :effect
                 (and
                            
-                           (decrease (interaction_level)(*(extroversion_coefficient)(+(dur)2)))
+                           (decrease (interaction_level)(*(extroversion_coefficient)(dur)))
                            (when (disagree) (increase (agreeableness_level)(*(agreeableness_coefficient)(dur))))
                            (when (agree) (decrease (agreeableness_level)(*(agreeableness_coefficient)(+(dur)4))))
-                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(+(dur)2)))
+                           (decrease (scrupulousness_level)(*(conscientious_coefficient)(dur)))
                            (answered)                 
                 )
 )
