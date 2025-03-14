@@ -54,8 +54,8 @@ def select_animal():
 
 
 def select_dates():
-    random_year = "1492"
-    random_event = "Scoperta dell'America"
+    random_year = "1969"
+    random_event = "Sbarco sulla Luna"
     return random_year, random_event
 
 
