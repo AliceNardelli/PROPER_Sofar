@@ -47,13 +47,14 @@ listening = False
 number=0
 numbers = []
 begin=True
-url_emoACT='http://192.168.1.100:8008/'
+url_emoACT='http://10.186.13.3:8008/'
+url_emoACT2='http://10.186.13.3:4000/'
 #url_number='http://10.186.13.9:8080/'
 expression=""
 quiz_guessed=False
 actual_goal=""
 headers= {'Content-Type':'application/json'}
-emoact_active=False
+emoact_active=True
 data={
         "new_sentence":"False",
         "new_emotion":"False",
@@ -606,6 +607,8 @@ class CheckPerc(smach.State):
                 new_sentence = False
             print("NEW HINT")
             print(new_hint)
+            if emoact_active:
+                response = requests.post(url_emoACT2+'ask_hint', json={}, headers=headers)
             print("--------------------------")
             if actual_goal=="quiz1":
                 sol1=retrieve_animal()

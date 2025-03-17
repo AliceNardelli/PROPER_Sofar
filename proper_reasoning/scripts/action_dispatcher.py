@@ -9,8 +9,8 @@ from chat_playground import *
 from omegaconf import OmegaConf
 
 url='http://192.168.147.169:5022/'
-url_emoACT='http://10.186.13.9:3000/emotional_state'
-url_emoACT2='http://10.186.13.9:8008/'
+url_emoACT='http://10.186.13.3:3000/emotional_state'
+url_emoACT2='http://10.186.13.3:8008/'
 emoact_active=False
 headers= {'Content-Type':'application/json'}
 expression=""
