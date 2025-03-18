@@ -21,11 +21,11 @@ import datetime
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=0
-wi=1
+we=1
+wi=0
 wc=0
-wu=1
-wa=0
+wu=0
+wa=1
 wd=0
 sum_weights=0
 weights=[]
@@ -38,7 +38,7 @@ new_emotion=False
 new_sentence=False
 new_attention=False
 begin=True
-url_navel='http://10.186.13.15:5021/'
+url_navel='http://10.186.13.1:5021/'
 url_emoACT='http://10.186.13.3:8008/'
 expression=""
 
