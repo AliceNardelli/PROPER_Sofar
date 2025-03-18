@@ -26,11 +26,11 @@ PORT = 8080
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=1
+wi=0
 wc=0
-wu=0
-wa=0.5
-wd=0
+wu=1
+wa=0
+wd=1
 sum_weights=0
 weights=[]
 gamma=1
@@ -607,8 +607,7 @@ class CheckPerc(smach.State):
                 new_sentence = False
             print("NEW HINT")
             print(new_hint)
-            if emoact_active:
-                response = requests.post(url_emoACT2+'ask_hint', json={}, headers=headers)
+
             print("--------------------------")
             if actual_goal=="quiz1":
                 sol1=retrieve_animal()
@@ -707,6 +706,9 @@ class CheckPerc(smach.State):
                     remove_predicate("low_attention_r")  
 
             if new_hint:
+
+                if emoact_active:
+                    response = requests.post(url_emoACT2+'ask_hint', json={}, headers=headers)
                 remove_predicate("executed_task") 
                 add_goal("hint_given")
                 remove_predicate("hint_given")
