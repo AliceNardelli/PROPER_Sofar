@@ -21,8 +21,8 @@ import datetime
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=1
-wi=0
+we=0
+wi=1
 wc=0
 wu=0
 wa=1
@@ -38,8 +38,9 @@ new_emotion=False
 new_sentence=False
 new_attention=False
 begin=True
-url_navel='http://10.186.13.1:5021/'
-url_emoACT='http://10.186.13.3:8008/'
+#url_navel='http://10.186.13.21:5021/'
+url_emoACT='http://127.0.0.1:8008/'
+url_navel='http://10.186.13.41:5021/'
 expression=""
 
 headers= {'Content-Type':'application/json'}
