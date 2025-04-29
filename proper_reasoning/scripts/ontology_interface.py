@@ -40,7 +40,7 @@ new_attention=False
 begin=True
 #url_navel='http://10.186.13.21:5021/'
 url_emoACT='http://127.0.0.1:8008/'
-url_navel='http://10.186.13.41:5021/'
+url_navel='http://192.168.147.169:5021/'
 expression=""
 
 headers= {'Content-Type':'application/json'}

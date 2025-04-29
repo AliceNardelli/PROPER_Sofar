@@ -8,7 +8,7 @@ from emotion_generation import *
 from chat_playground import *
 
  #url='http://10.186.13.21:5022/'
-url='http://10.186.13.41:5022/'
+url='http://192.168.147.169:5022/'
 
 url_emoACT='http://127.0.0.1:3000/emotional_state'
 url_emoACT2='http://127.0.0.1:8008/'
