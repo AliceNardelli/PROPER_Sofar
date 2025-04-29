@@ -25,12 +25,12 @@ PORT = 8080
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=0
+we=1
 wi=0
 wc=0
 wu=1
 wa=0
-wd=1
+wd=0
 sum_weights=0
 weights=[]
 gamma=1
@@ -47,8 +47,8 @@ listening = False
 number=0
 numbers = []
 begin=True
-url_emoACT='http://10.186.13.3:8008/'
-url_emoACT2='http://10.186.13.3:4000/'
+url_emoACT='http://127.0.0.1:8008/'
+url_emoACT2='http://127.0.0.1:4000/'
 #url_number='http://10.186.13.9:8080/'
 expression=""
 quiz_guessed=False
@@ -554,6 +554,9 @@ class ExAction(smach.State):
             else:
                 sol1, sol2 = retrieve_code()
             a, to_say_sentence = retrieve_code()
+            if ac in ["SAY_WRONG"]:
+                if emoact_active:
+                    response = requests.post(url_emoACT2+'ask_hint', json={}, headers=headers)
             print("FROM ONTOLOGY")
             print(sol1, sol2)
             resp, to_exec_action, expression = dispatch_action(ac, personality, emotion, sentence, comfortability, weights, sum_weights, actual_goal, sol1, sol2, to_say_sentence, number )
