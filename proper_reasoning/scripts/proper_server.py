@@ -1,27 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import requests
-from load_ontology import *
-#from problem_param_vm import *
-from problem_param import *
-from perception_predicate import *
-from extract_agree import *
-from extract_intro import *
-from extract_disagree import *
-from extract_extro import *
-from extract_consc import *
-from extract_unscr import *
+
 from action_dispatcher import *
-import smach
 import random
 import numpy as np
 import time
 import threading
 import datetime
 from client_proper import ClientProper
+
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
-traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
 wi=1
 wc=0
