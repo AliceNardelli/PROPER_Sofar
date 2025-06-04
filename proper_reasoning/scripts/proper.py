@@ -2,6 +2,10 @@ from flask import Flask, request, jsonify, abort
 from flask_cors import CORS # Import the CORS extension
 from client_proper import *
 from problem_param import *
+from emotion_generation import *
+from call_prospection import *
+from get_parameters import *
+from personality_generator import *
 import requests
 import numpy as np
 
@@ -17,7 +21,7 @@ user_episodes = ""
 #distance, gaze??
 
 traits=["Extrovert","Introvert","Conscientious","Distracted","Agreeable","Disagreeable"]
-weights = [0,0,0,0,0,0]
+weights = [1,0,0,0,0,0]
 comfortability = 5
 emotion_mask={
     "A":[4,2,3,1,5,5],
@@ -54,9 +58,11 @@ def get_em():
 
 @app.route('/api/post_perception', methods=['POST'])
 def received_user_perception():
+    global new_perception, user_emotion, user_sentence, user_episodes
+    print("hello there")
     if not request.json:
         abort(400)
-    global new_perception, user_emotion, user_sentence, user_episodes
+    
 
     frame_payload = request.json
     
@@ -72,15 +78,42 @@ def received_user_perception():
 def proper_llm(new_perception, user_emotion, user_sentence, user_episodes):
     global comfortability, emotion_weights
     actions = []
+    comfortability_variation = []
+    outcomes = []
     if new_perception:
         new_perception=False
         #PROSPECTION
-        #actions = propection()
-        #comfortability = X
+        e_level = 10*weights[0] + (-10)*weights[1]
+        c_level = 10*weights[2] + (-10)*weights[3]
+        a_level = 10*weights[4] + (-10)*weights[5]
+        response = run_prospection(comfortability, user_emotion, user_sentence, user_episodes, e_level, a_level, c_level)
+        for r in response:
+            actions.append(r["action"])
+            comfortability_variation.append(r["comfortability"])
+            outcomes.append(r["outcome_emotion"])
+
 
     while actions!=[] and new_perception==False:
         action = actions.pop(0)
+        comfortability = comfortability_variation.pop(0)
+        em_out = outcomes.pop(0)
+
         #PESONALITY GENERATOR
+        personality=np.random.choice(traits, p=weights)
+        params=generate_params(personality, action)
+        mmap =get_map(params,personality)
+        personality_sentence=""
+        language_sentence=""
+        for i in range(len(weights)):
+                if weights[i]!=0:
+                        personality_sentence=personality_sentence+" "+traits[i]
+                        if traits[i]==personality:
+                                language_sentence=language_sentence+" "+mmap["language"]
+                        else:
+                                params_l=generate_params(traits[i], action)
+                                mmap_l =get_map(params_l,traits[i])
+                                language_sentence=language_sentence+" "+mmap_l["language"]
+        
         #EMOTION
         mask_weights=emotion_mask[map_emotion_AV_axis[user_emotion]]
         emotion_weights=np.multiply(mask_weights, weights)
@@ -89,19 +122,23 @@ def proper_llm(new_perception, user_emotion, user_sentence, user_episodes):
         for ew in emotion_weights:
             sum_em_weights+=ew
 
-        
         ind=0
         for ew in emotion_weights:
             emotion_weights[ind]=ew/sum_em_weights
             ind+=1
 
-        
-        personality_emotions=np.random.choice(traits,p=emotion_weights)
+        personality_emotion=np.random.choice(traits,p=emotion_weights)
+        if comfortability<=5:
+            comfortability_label= "negative"
+        else:
+            comfortability_label= "positive"
+            
+        agent_emotion = generate_emotion( user_sentence, user_emotion, comfortability_label, personality_emotion)
 
-        agent_emotion= ""
         language_style =""
         gaze_behavior = ""
         client_proper.post_action(action, agent_emotion, language_style, gaze_behavior)
+
 
 
 if __name__ == '__main__':

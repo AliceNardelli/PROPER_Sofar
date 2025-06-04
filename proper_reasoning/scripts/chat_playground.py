@@ -31,6 +31,7 @@ system_message = openai_config.system_message
 start_message = [
         {"role": "system", "content": system_message},
     ]
+
 def generate_sentence(user_emotion, robot_emotion, text, personality, response_style, action):
     
     user_input = "{"

@@ -6,7 +6,7 @@ from omegaconf import OmegaConf
 from openai import OpenAI
 
 #openai vars
-file_path_openai_config = "/home/alice/PROPER_Sofar/proper_reasoning/resources/config_openai_EI.yaml"
+file_path_openai_config = "C:\\Workspace\\PROPER_Sofar\\proper_reasoning\\resources\\config_openai_EI.yaml"
 openai_config = OmegaConf.load(file_path_openai_config).config
 openai.organization = "org-OWePijhLCGVSJWhT7TQXBK7D"
 openai.api_key = os.getenv("OPENAI_API_KEY")

@@ -23,10 +23,12 @@ API_POST_ACTION = URL_SERVER_SESSION + 'post_action'
 
 class ClientProper:
 
-    def post_action(self, action, emotion):
+    def post_action(self, action, agent_emotion, language_style, gaze_behavior):
         payload = {
             'action':  action,
-            'emotion': emotion,
+            'emotion': agent_emotion,
+            'language_style': language_style,
+            'gaze_behavior': gaze_behavior
         }
         requests.post(API_POST_ACTION, json=payload, timeout=5)
 
