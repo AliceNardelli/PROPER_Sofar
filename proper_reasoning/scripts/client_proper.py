@@ -30,7 +30,7 @@ class ClientProper:
             'language_style': language_style,
             'gaze_behavior': gaze_behavior
         }
-        requests.post(API_POST_ACTION, json=payload, timeout=5)
+        requests.post(API_POST_ACTION, json=payload, timeout=10)
 
     
     

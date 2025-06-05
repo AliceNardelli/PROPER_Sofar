@@ -8,6 +8,8 @@ from get_parameters import *
 from personality_generator import *
 import requests
 import numpy as np
+import yaml
+import threading
 
 app = Flask(__name__)
 CORS(app)
@@ -21,7 +23,7 @@ user_episodes = ""
 #distance, gaze??
 
 traits=["Extrovert","Introvert","Conscientious","Distracted","Agreeable","Disagreeable"]
-weights = [1,0,0,0,0,0]
+weights = [0,0,0,0,0,0]
 comfortability = 5
 emotion_mask={
     "A":[4,2,3,1,5,5],
@@ -31,25 +33,55 @@ emotion_mask={
     "N":[4,4,1,1,4,4],
 }
 
+dict_em ={
+     "Extrovert":"em_E",
+     "Introvert": "em_I",
+     "Conscientious":"em_C",
+     "Distracted": "em_U",
+     "Agreeable": "em_A",
+     "Disagreeable": "em_D"
+}
+
+# Load the YAML file
+with open("C:\\Workspace\\PROPER_Sofar\\proper_reasoning\\resources\\config_episodicmemory.yaml", "r") as file:
+    data = yaml.safe_load(file)
+
+# Accessing the 'config' dictionary
+config_em = data['config']
 
 @app.route('/api/post_personality', methods=['POST'])
 def received_agent_personality():
+    global traits, weights
     if not request.json:
         abort(400)
-    global traits, weights
+    
     frame_payload = request.json
     if frame_payload["personality"]!="":
         i = 0
-        for p in frame_payload["personality"]:
-            if p in traits[i]:
+        for p in traits:
+            if p in frame_payload["personality"]:
                 weights[i] +=1
+                print(p)
             i +=1
+        sum_weights = sum(weights)
+
+        if sum_weights != 0:
+            weights = [w / sum_weights for w in weights]
+        else:
+            weights = [0] * len(weights)
     return ''
 
 
 @app.route('/api/get_em_description', methods=['GET'])
 def get_em():
+    global config_em, dict_em
+    
     em_description="" #INSERT MEM DESCRIPTION
+    for i in range(len(weights)):
+        if weights[i]!=0:
+            em_description = em_description + config_em[dict_em[traits[i]]]
+
+    print(em_description)      
     payload = {
         "em_descrption":em_description
     }
@@ -71,12 +103,15 @@ def received_user_perception():
         user_emotion=frame_payload["emotion"]
         user_sentence =frame_payload["sentence"]
         user_episodes =frame_payload["episodes"]
-        proper_llm(new_perception, user_emotion, user_sentence, user_episodes)
+        threading.Thread(
+            target=proper_llm, 
+            args=(new_perception, user_emotion, user_sentence, user_episodes)
+        ).start()
     return ''
     
 
 def proper_llm(new_perception, user_emotion, user_sentence, user_episodes):
-    global comfortability, emotion_weights
+    global comfortability, emotion_weights, weights
     actions = []
     comfortability_variation = []
     outcomes = []
@@ -86,7 +121,9 @@ def proper_llm(new_perception, user_emotion, user_sentence, user_episodes):
         e_level = 10*weights[0] + (-10)*weights[1]
         c_level = 10*weights[2] + (-10)*weights[3]
         a_level = 10*weights[4] + (-10)*weights[5]
+        start_time = time.time()
         response = run_prospection(comfortability, user_emotion, user_sentence, user_episodes, e_level, a_level, c_level)
+        print(time.time()-start_time)
         for r in response:
             actions.append(r["action"])
             comfortability_variation.append(r["comfortability"])
@@ -97,48 +134,54 @@ def proper_llm(new_perception, user_emotion, user_sentence, user_episodes):
         action = actions.pop(0)
         comfortability = comfortability_variation.pop(0)
         em_out = outcomes.pop(0)
-
-        #PESONALITY GENERATOR
-        personality=np.random.choice(traits, p=weights)
-        params=generate_params(personality, action)
-        mmap =get_map(params,personality)
-        personality_sentence=""
-        language_sentence=""
-        for i in range(len(weights)):
-                if weights[i]!=0:
-                        personality_sentence=personality_sentence+" "+traits[i]
-                        if traits[i]==personality:
-                                language_sentence=language_sentence+" "+mmap["language"]
-                        else:
-                                params_l=generate_params(traits[i], action)
-                                mmap_l =get_map(params_l,traits[i])
-                                language_sentence=language_sentence+" "+mmap_l["language"]
-        
-        #EMOTION
-        mask_weights=emotion_mask[map_emotion_AV_axis[user_emotion]]
-        emotion_weights=np.multiply(mask_weights, weights)
-        
-        sum_em_weights=0
-        for ew in emotion_weights:
-            sum_em_weights+=ew
-
-        ind=0
-        for ew in emotion_weights:
-            emotion_weights[ind]=ew/sum_em_weights
-            ind+=1
-
-        personality_emotion=np.random.choice(traits,p=emotion_weights)
-        if comfortability<=5:
-            comfortability_label= "negative"
-        else:
-            comfortability_label= "positive"
+        if action!="react to perception":
+            #PESONALITY GENERATOR
+            personality=np.random.choice(traits, p=weights)
+            params=generate_params(personality, action)
+            mmap =get_map(params,personality)
+            personality_sentence=""
+            language_sentence=""
+            for i in range(len(weights)):
+                    if weights[i]!=0:
+                            personality_sentence=personality_sentence+" "+traits[i]
+                            if traits[i]==personality:
+                                    language_sentence=language_sentence+" "+mmap["language"]
+                            else:
+                                    params_l=generate_params(traits[i], action)
+                                    mmap_l =get_map(params_l,traits[i])
+                                    language_sentence=language_sentence+" "+mmap_l["language"]
             
-        agent_emotion = generate_emotion( user_sentence, user_emotion, comfortability_label, personality_emotion)
+            #EMOTION
+            mask_weights=emotion_mask[map_emotion_AV_axis[user_emotion]]
+            emotion_weights=np.multiply(mask_weights, weights)
+            
+            sum_em_weights=0
+            for ew in emotion_weights:
+                sum_em_weights+=ew
 
-        language_style =""
-        gaze_behavior = ""
-        client_proper.post_action(action, agent_emotion, language_style, gaze_behavior)
+            ind=0
+            for ew in emotion_weights:
+                emotion_weights[ind]=ew/sum_em_weights
+                ind+=1
 
+            personality_emotion=np.random.choice(traits,p=emotion_weights)
+            if comfortability<=5:
+                comfortability_label= "negative"
+            else:
+                comfortability_label= "positive"
+            start_time2= time.time()
+            agent_emotion = generate_emotion( user_sentence, user_emotion, comfortability_label, personality_emotion)
+            print(time.time()-start_time2)
+            print(time.time()-start_time)
+            language_style =""
+            gaze_behavior = ""
+            client_proper.post_action(action, agent_emotion, language_style, gaze_behavior)
+            time.sleep(20)
+            #get face emotion da server_session
+            #if map_emotion_AV_axis[new_emotion]==em_out
+                #comfortability +=0.5
+            #else
+                #comfortability -= 0.5
 
 
 if __name__ == '__main__':
