@@ -25,12 +25,12 @@ PORT = 8080
 #define the actual personality
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
-we=1
-wi=0
+we=0
+wi=1
 wc=0
-wu=1
+wu=0
 wa=0
-wd=0
+wd=1
 sum_weights=0
 weights=[]
 gamma=1
@@ -54,7 +54,7 @@ expression=""
 quiz_guessed=False
 actual_goal=""
 headers= {'Content-Type':'application/json'}
-emoact_active=True
+emoact_active=False
 data={
         "new_sentence":"False",
         "new_emotion":"False",
@@ -592,7 +592,7 @@ class CheckPerc(smach.State):
         if predicates_objects["finished_quiz"].is_grounded:
             print("CIAOOOO EXIT FROM QUIZ")
             return "outcome4"
-        
+        time.sleep(1)
         a=userdata.action
         print("action",a)
         start_time = time.time()

@@ -8,10 +8,10 @@ from emotion_generation import *
 from chat_playground import *
 from omegaconf import OmegaConf
 
-url='http://10.186.13.15:5022/'
+url='http://10.186.13.47:5022/'
 url_emoACT='http://127.0.0.1:3000/emotional_state'
 url_emoACT2='http://127.0.0.1:8008/'
-emoact_active=True
+emoact_active=False
 headers= {'Content-Type':'application/json'}
 expression=""
 data_action={

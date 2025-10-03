@@ -1,6 +1,6 @@
 problem_goals=["quiz1","quiz2","quiz3"]
 
-#problem_goals=["quiz2","quiz3"]
+#problem_goals=["quiz3"]
 actual_goal="quiz1"
 #actual_goal="quiz2"
 
