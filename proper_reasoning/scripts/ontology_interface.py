@@ -22,7 +22,7 @@ import datetime
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=1
+wi=0
 wc=0
 wu=0
 wa=1
@@ -38,9 +38,9 @@ new_emotion=False
 new_sentence=False
 new_attention=False
 begin=True
-#url_navel='http://10.186.13.21:5021/'
+url_navel='http://10.186.13.30:5021/'
 url_emoACT='http://127.0.0.1:8008/'
-url_navel='http://192.168.147.169:5021/'
+#url_navel='http://192.168.147.169:5021/'
 expression=""
 
 headers= {'Content-Type':'application/json'}

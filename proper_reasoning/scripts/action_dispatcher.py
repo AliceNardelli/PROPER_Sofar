@@ -7,8 +7,8 @@ import requests
 from emotion_generation import *
 from chat_playground import *
 
- #url='http://10.186.13.21:5022/'
-url='http://192.168.147.169:5022/'
+url='http://10.186.13.30:5022/'
+#url='http://192.168.147.169:5022/'
 
 url_emoACT='http://127.0.0.1:3000/emotional_state'
 url_emoACT2='http://127.0.0.1:8008/'
@@ -38,7 +38,7 @@ emotion_label_map={
 
 traits_res=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 
-file_name="/home/alice/navel_files_emoact/p29_t3.txt"
+file_name="/home/alice/APQ_experiment/p29_t3.txt"
 file = open(file_name, 'a')
 
 def dispatch_action(action, personality, personality_emotions, user_emotion, user_sentence, comfortability, weights_res):
