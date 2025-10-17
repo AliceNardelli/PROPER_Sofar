@@ -7,7 +7,7 @@ import requests
 from emotion_generation import *
 from chat_playground import *
 
-url='http://192.168.147.169:5022/'
+url='http://10.186.13.30:5022/'
 
 headers= {'Content-Type':'application/json'}
 
@@ -24,7 +24,7 @@ data_action={
 
 traits_res=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 
-file_name="/home/alice/navel_files/p28ff.txt"
+file_name="/home/alice/APQ_experiment/p_trial2.txt"
 file = open(file_name, 'a')
 
 def dispatch_action(action, personality, personality_emotions, user_emotion, user_sentence, comfortability, weights_res):
