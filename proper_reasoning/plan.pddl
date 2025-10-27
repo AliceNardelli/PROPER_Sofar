@@ -21,16 +21,16 @@ Cueing down from goal distance:    3 into depth [1]
 
 ff: found legal plan as follows
 
-step    0: ANSWER_WITH_A_NEGATION
+step    0: ANSWER
         1: CHECK_FINISH
         2: COMPUTE_HEDONIC_FEELINGS
      
 
 time spent:    0.00 seconds instantiating 9 easy, 0 hard action templates
-               0.00 seconds reachability analysis, yielding 8 facts and 9 actions
+               0.00 seconds reachability analysis, yielding 7 facts and 9 actions
                0.00 seconds creating final representation with 4 relevant facts, 3 relevant fluents
                0.00 seconds computing LNF
                0.00 seconds building connectivity graph
-               0.00 seconds searching, evaluating 4 states, to a max depth of 1
+               0.00 seconds searching, evaluating 6 states, to a max depth of 1
                0.00 seconds total time
 
