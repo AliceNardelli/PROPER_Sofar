@@ -26,9 +26,9 @@ PORT = 8080
 traits=["Extrovert","Introvert","Conscientious","Unscrupolous","Agreeable","Disagreeable"]
 traits_preds=["(extro)","(intro)","(consc)","(unsc)","(agree)","(disagree)"]
 we=0
-wi=1
+wi=0
 wc=0
-wu=0
+wu=0.5
 wa=0
 wd=1
 sum_weights=0
@@ -54,7 +54,7 @@ expression=""
 quiz_guessed=False
 actual_goal=""
 headers= {'Content-Type':'application/json'}
-emoact_active=False
+emoact_active=True
 data={
         "new_sentence":"False",
         "new_emotion":"False",

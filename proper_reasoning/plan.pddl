@@ -14,7 +14,9 @@ checking for cyclic := effects --- OK.
 ff: search configuration is EHC, if that fails then  best-first on 1*g(s) + 5*h(s) where
     metric is  plan length
 
-Cueing down from goal distance:    4 into depth [1]
+Cueing down from goal distance:    6 into depth [1]
+                                   5            [1]
+                                   4            [1]
                                    3            [1]
                                    2            [1]
                                    1            [1]
@@ -22,17 +24,19 @@ Cueing down from goal distance:    4 into depth [1]
 
 ff: found legal plan as follows
 
-step    0: REACT_HAPPY_EMOTION
+step    0: REACT_SAD_EMOTION
         1: REACT_LOW_ATTENTION
         2: GUESS_QUIZ
-        3: CHECK_FINISH
+        3: UNSC_ACTION
+        4: INTRO_ACTION
+        5: CHECK_FINISH
      
 
 time spent:    0.00 seconds instantiating 9 easy, 0 hard action templates
-               0.00 seconds reachability analysis, yielding 26 facts and 9 actions
+               0.00 seconds reachability analysis, yielding 27 facts and 9 actions
                0.00 seconds creating final representation with 15 relevant facts, 3 relevant fluents
                0.00 seconds computing LNF
                0.00 seconds building connectivity graph
-               0.00 seconds searching, evaluating 5 states, to a max depth of 1
+               0.00 seconds searching, evaluating 7 states, to a max depth of 1
                0.00 seconds total time
 
